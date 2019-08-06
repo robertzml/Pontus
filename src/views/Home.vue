@@ -3,7 +3,7 @@
     <dx-box :height="400" direction="col" width="100%">
       <dx-item :base-size="100" :ratio="0">
         <div slot-scope="_" class="rect demo-dark header">
-          <dx-tabs :data-source="headerTabs" />
+          <dx-tabs :width="300" :data-source="headerTabs" :selected-index.sync="selectedTab"></dx-tabs>
         </div>
       </dx-item>
 
@@ -34,20 +34,27 @@ import HelloWorld from "@/components/HelloWorld.vue";
 
 export default {
   name: "home",
-  components: {
-    
-  },
+  components: {},
   data() {
     return {
-      headerTabs: [{
-        id: 0,
-        text: "冷库管理",
-        icon: "home"
-      }, {
-        id: 1,
-        text: '统计报表',
-        icon: "chart"
-      }]     
+      headerTabs: [
+        {
+          id: 0,
+          text: "冷库管理",
+          icon: "home"
+        },
+        {
+          id: 1,
+          text: "统计报表",
+          icon: "chart"
+        }
+      ],
+      selectedTab: 0
+    };
+  },
+  watch: {
+    selectedTab: function(val) {
+      console.log(val);
     }
   }
 };
