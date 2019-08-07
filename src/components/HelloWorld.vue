@@ -15,6 +15,10 @@
             target="_blank"
           >Discord Community</a>
         </p>
+        <v-btn>Button</v-btn>
+        <v-btn text icon color="pink">
+          <v-icon>favorite</v-icon>
+        </v-btn>
       </v-flex>
 
       <v-flex mb-5 xs12>
