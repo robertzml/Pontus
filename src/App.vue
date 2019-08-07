@@ -6,9 +6,7 @@
 
     <v-content>
       <v-container fluid fill-height>
-        <v-layout align-center justify-center>
-          <v-btn>Button</v-btn>
-        </v-layout>
+        <router-view></router-view>
       </v-container>
     </v-content>
 
