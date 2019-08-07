@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="blue darken-3" dark>
+  <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app dense color="blue darken-3" dark>
     <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
       <v-app-bar-nav-icon @click.stop="expand"></v-app-bar-nav-icon>
       <span class="hidden-sm-and-down">海安润思达食品有限公司</span>
@@ -20,7 +20,7 @@
       <v-icon>notifications</v-icon>
     </v-btn>
     <v-btn icon large>
-      <v-avatar size="32px" item>
+      <v-avatar size="16px" item>
         <v-img src="https://cdn.vuetifyjs.com/images/logos/logo.svg" alt="Vuetify"></v-img>
       </v-avatar>
     </v-btn>

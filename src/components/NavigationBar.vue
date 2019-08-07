@@ -24,7 +24,7 @@
               </v-list-item-content>
             </v-list-item>
           </template>
-          <v-list-item v-for="(child, i) in item.children" :key="i" @click>
+          <v-list-item v-for="(child, i) in item.children" :key="i" @click="navTo(child.name)">
             <v-list-item-action v-if="child.icon">
               <v-icon>{{ child.icon }}</v-icon>
             </v-list-item-action>
@@ -62,7 +62,7 @@ export default {
           text: "信息管理",
           model: false,
           children: [
-            { text: "Import" },
+            { text: "客户管理", name: "customer" },
             { text: "Export" },
             { text: "Print" },
             { text: "Undo changes" },
