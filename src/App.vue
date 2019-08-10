@@ -5,20 +5,19 @@
     <header-bar :drawer.sync="drawer"></header-bar>
 
     <v-content>
-      <v-container fluid>
+      <v-container fluid grid-list-md>
         <router-view></router-view>
       </v-container>
     </v-content>
-
   </v-app>
 </template>
 
 <script>
-import HeaderBar from "@/components/HeaderBar";
-import NavigationBar from "@/components/NavigationBar"
+import HeaderBar from '@/components/HeaderBar';
+import NavigationBar from '@/components/NavigationBar';
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     HeaderBar,
     NavigationBar
@@ -27,7 +26,6 @@ export default {
     //
     drawer: false
   }),
-  methods: {
-  }
+  methods: {}
 };
 </script>
