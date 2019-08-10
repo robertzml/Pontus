@@ -14,12 +14,13 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn small color="primary" style="margin-right:5px;">添加客户</v-btn>
-
-          <customer-edit></customer-edit>
+          <v-btn small color="primary">添加客户</v-btn>
+          <v-btn small color="primary" @click.stop="openMod">Open Dialog</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
+
+    <customer-edit ref="customerMod"></customer-edit>
 
     <v-flex xs12>
       <v-card dark color="primary">
@@ -42,10 +43,15 @@ export default {
   components: {
     CustomerEdit
   },
-  data: () => ({    
+  data: () => ({
     select: 'Programming',
     items: ['Programming', 'Design', 'Vue', 'Vuetify'],
-    dialog: false    
-  })
-};
+    dialog: false
+  }),
+  methods: {
+    openMod() {
+      this.$refs.customerMod.init(0)
+    }
+  }
+}
 </script>

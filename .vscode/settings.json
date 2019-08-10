@@ -1,0 +1,18 @@
+{
+  "editor.formatOnSave": true,
+  "prettier.eslintIntegration": true,
+  "eslint.autoFixOnSave": true,
+  "vetur.format.defaultFormatter.html": "js-beautify-html",
+  "vetur.format.defaultFormatterOptions": {
+    "js-beautify-html": {
+      "wrap_attributes": "auto",
+      "singleQuote": true
+    },
+    "prettyhtml": {
+      "printWidth": 100,
+      "singleQuote": true,
+      "wrapAttributes": false,
+      "sortAttributes": false
+    }
+  }
+}
