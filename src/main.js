@@ -5,7 +5,7 @@ import store from './store/index'
 import vuetify from './plugins/vuetify'
 import axios from 'axios'
 
-Vue.prototype.axios = axios
+Vue.prototype.$axios = axios
 axios.defaults.baseURL = 'https://localhost:44328/api'
 Vue.config.productionTip = false
 

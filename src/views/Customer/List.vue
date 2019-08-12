@@ -1,15 +1,6 @@
 <template>
   <v-layout wrap>
     <v-flex xs12 md12>
-      <v-window v-model="window">
-        <v-window-item>
-          <customer-list></customer-list>
-        </v-window-item>
-        <v-window-item>
-          <customer-details></customer-details>
-        </v-window-item>
-      </v-window>
-
       <v-card class="mx-auto">
         <v-card-title class="cyan">客户管理</v-card-title>
         <v-card-text>
@@ -29,10 +20,18 @@
 
     <v-flex xs12>
       <v-card dark>
-        <v-card-title class="orange">客户列表</v-card-title>
+        <v-card-title class="orange">
+          客户列表
+          <v-spacer></v-spacer>
+          <v-text-field v-model="search" append-icon="search" label="搜索" single-line hide-details></v-text-field>
+        </v-card-title>
         <v-card-text class="px-0">
-          <v-data-table :headers="headers" :items="customerData" :items-per-page="10">
+          <v-data-table :headers="headers" :items="customerData" :search="search" :items-per-page="10">
             <template v-slot:item.action="{ item }">
+              <v-btn small color="success" @click="viewItem(item)">
+                <v-icon left dark>pageview</v-icon>
+                查看
+              </v-btn>
               <v-icon small @click="editItem(item)">
                 edit
               </v-icon>
@@ -51,19 +50,14 @@
 
 <script>
 import CustomerEdit from '@/components/Customer/Edit'
-import CustomerList from './List'
-import CustomerDetails from './Details'
 
 export default {
-  name: 'CustomerIndex',
+  name: 'CustomerList',
   components: {
-    CustomerEdit,
-    CustomerList,
-    CustomerDetails
+    CustomerEdit
   },
   data: () => ({
-    window: 0,
-    show: 'CustomerDetails',
+    search: '',
     select: 'Programming',
     items: ['Programming', 'Design', 'Vue', 'Vuetify'],
     dialog: false,
@@ -80,6 +74,9 @@ export default {
   methods: {
     openMod() {
       this.$refs.customerMod.init(0)
+    },
+    viewItem(item) {
+      console.log(item.id)
     }
   },
   mounted: function() {
