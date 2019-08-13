@@ -2,10 +2,26 @@
   <v-layout wrap>
     <v-flex xs12 md12>
       <v-card class="mx-auto">
-        <v-card-title class="cyan">客户信息</v-card-title>
+        <v-card-title class="cyan">
+          客户信息
+          <v-spacer></v-spacer>
+          <v-btn outlined @click="backToList">
+            <v-icon left>arrow_back</v-icon>
+            返回
+          </v-btn>
+        </v-card-title>
         <v-card-text>
-          I'm card text
-          <v-combobox v-model="select" :items="items" label="Select a favorite activity or create a new one"></v-combobox>
+          <v-form>
+            <v-layout wrap>
+              <v-flex md3>
+                <v-text-field v-model="info.number" label="客户编号" readonly></v-text-field>
+              </v-flex>
+              <v-flex md3>
+                <v-text-field v-model="info.name" label="客户名称" readonly></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-form>
+
         </v-card-text>
       </v-card>
     </v-flex>
@@ -15,6 +31,31 @@
 <script>
 export default {
   name: 'CustomerDetails',
-  data: () => ({})
+  data: () => ({
+    customerId: 0,
+    info: {}
+  }),
+  methods: {
+    getInfo(id) {
+      console.log('Getinfo ' + id)
+      this.customerId = id
+      if (this.customerId == 0) {
+        return
+      }
+      let vm = this
+      this.$axios
+        .get('/customer/get', { params: { id: this.customerId } })
+        .then(function(res) {
+          vm.info = res.data
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
+    },
+    backToList() {
+      this.$emit('toList')
+    }
+  },
+  activated: function() {}
 }
 </script>

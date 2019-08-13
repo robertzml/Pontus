@@ -23,7 +23,8 @@
         <v-card-title class="orange">
           客户列表
           <v-spacer></v-spacer>
-          <v-text-field v-model="search" append-icon="search" label="搜索" single-line hide-details></v-text-field>
+          <v-text-field v-model="search" append-icon="search" label="搜索" single-line hide-details>
+          </v-text-field>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="customerData" :search="search" :items-per-page="10">
@@ -38,11 +39,6 @@
             </template>
           </v-data-table>
         </v-card-text>
-      </v-card>
-    </v-flex>
-    <v-flex v-for="i in 2" :key="`6${i}`" xs6>
-      <v-card dark color="secondary">
-        <v-card-text class="px-0">6</v-card-text>
       </v-card>
     </v-flex>
   </v-layout>
@@ -76,11 +72,10 @@ export default {
       this.$refs.customerMod.init(0)
     },
     viewItem(item) {
-      console.log(item.id)
+      this.$emit('toDetails', item.id)
     }
   },
   mounted: function() {
-    console.log('customer')
     let vm = this
     this.$axios
       .get('/customer/list')
