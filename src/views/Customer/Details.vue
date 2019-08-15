@@ -19,17 +19,45 @@
               <v-flex md3>
                 <v-text-field v-model="info.name" label="客户名称" readonly></v-text-field>
               </v-flex>
+              <v-flex md3>
+                <v-text-field v-model="info.address" label="地址" readonly></v-text-field>
+              </v-flex>
+              <v-flex md3>
+                <v-text-field v-model="info.telephone" label="电话" readonly></v-text-field>
+              </v-flex>
+              <v-flex md3>
+                <v-text-field v-model="info.contact" label="联系人" readonly></v-text-field>
+              </v-flex>
+              <v-flex md3>
+                <v-text-field v-model="info.contactTelephone" label="联系人电话" readonly></v-text-field>
+              </v-flex>
+              <v-flex md3>
+                <v-text-field :value="customerType(info.type)" label="客户类型" readonly></v-text-field>
+              </v-flex>
+              <v-flex md3>
+                <v-text-field v-model="info.remark" label="备注" readonly></v-text-field>
+              </v-flex>
             </v-layout>
           </v-form>
-
         </v-card-text>
+        <v-card-actions>
+          <v-btn outlined color="warning">编辑</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-flex>
+
+    <v-flex xs12 md12>
+      <v-card class="mx-auto">
+        <v-card-title class="green">
+          合同信息
+        </v-card-title>
       </v-card>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'CustomerDetails',
@@ -37,12 +65,11 @@ export default {
     customerId: 0,
     info: {}
   }),
+  computed: {
+    ...mapGetters(['customerType'])
+  },
   methods: {
-    ...mapMutations([
-      'alertInfo', // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
-
-      'alertError'
-    ]),
+    ...mapMutations(['alertInfo', 'alertError']),
     getInfo(id) {
       this.customerId = id
       if (this.customerId == 0) {
