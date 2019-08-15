@@ -1,11 +1,11 @@
 <template>
   <v-layout wrap>
     <v-flex xs12 md12>
-      <v-window v-model="window" :eager="true">
-        <v-window-item value="list">
+      <v-window v-model="window">
+        <v-window-item value="list" :eager="true">
           <customer-list @toDetails="toDetails"></customer-list>
         </v-window-item>
-        <v-window-item value="details">
+        <v-window-item value="details" :eager="true">
           <customer-details ref="detailsMod" @toList="toList"></customer-details>
         </v-window-item>
       </v-window>

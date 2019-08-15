@@ -10,13 +10,7 @@
             <a href="#!" class="body-2 black--text">EDIT</a>
           </v-flex>
         </v-layout>
-        <v-list-group
-          v-else-if="item.children"
-          :key="item.text"
-          v-model="item.model"
-          :prepend-icon="item.model ? item.icon : item['icon-alt']"
-          append-icon
-        >
+        <v-list-group v-else-if="item.children" :key="item.text" v-model="item.model" :prepend-icon="item.model ? item.icon : item['icon-alt']" append-icon>
           <template v-slot:activator>
             <v-list-item>
               <v-list-item-content>
@@ -48,57 +42,57 @@
 
 <script>
 export default {
-  name: "NavigationBar",
+  name: 'NavigationBar',
   props: {
     drawer: Boolean
   },
   data() {
     return {
       items: [
-        { icon: "home", text: "主页", name: "home" },
+        { icon: 'home', text: '主页', name: 'home' },
         {
-          icon: "contacts",
-          "icon-alt": "contacts",
-          text: "信息管理",
+          icon: 'contacts',
+          'icon-alt': 'contacts',
+          text: '信息管理',
           model: false,
           children: [
-            { text: "客户管理", name: "customer" },
-            { text: "Export" },
-            { text: "Print" },
-            { text: "Undo changes" },
-            { text: "Other contacts" }
+            { text: '客户管理', name: 'customer' },
+            { text: 'Export' },
+            { text: 'Print' },
+            { text: 'Undo changes' },
+            { text: 'Other contacts' }
           ]
         },
         {
-          icon: "domain",
-          "icon-alt": "domain",
-          text: "冷库租赁",
+          icon: 'domain',
+          'icon-alt': 'domain',
+          text: '冷库租赁',
           model: false,
-          children: [{ text: "货品入库" }]
+          children: [{ text: '货品入库' }]
         },
         {
-          icon: "bar_chart",
-          "icon-alt": "bar_chart",
-          text: "统计报表",
+          icon: 'bar_chart',
+          'icon-alt': 'bar_chart',
+          text: '统计报表',
           model: false,
-          children: [{ text: "每日库存盘点" }]
+          children: [{ text: '每日库存盘点' }]
         },
         {
-          icon: "person",
-          "icon-alt": "person",
-          text: "用户管理",
+          icon: 'person',
+          'icon-alt': 'person',
+          text: '用户管理',
           model: false,
-          children: [{ text: "每日库存盘点" }]
+          children: [{ text: '每日库存盘点' }]
         },
-        { icon: "settings", text: "Settings" },
-        { icon: "help", text: "关于", name: "about" }
+        { icon: 'settings', text: 'Settings' },
+        { icon: 'help', text: '关于', name: 'about' }
       ]
-    };
+    }
   },
   methods: {
     navTo: function(name) {
-      this.$router.push({ name: name });
+      this.$router.push({ name: name })
     }
   }
-};
+}
 </script>

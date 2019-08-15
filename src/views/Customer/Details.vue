@@ -37,11 +37,11 @@ export default {
   }),
   methods: {
     getInfo(id) {
-      console.log('Getinfo ' + id)
       this.customerId = id
       if (this.customerId == 0) {
         return
       }
+
       let vm = this
       this.$axios
         .get('/customer/get', { params: { id: this.customerId } })
