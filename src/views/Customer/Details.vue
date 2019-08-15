@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 export default {
   name: 'CustomerDetails',
   data: () => ({
@@ -36,6 +38,11 @@ export default {
     info: {}
   }),
   methods: {
+    ...mapMutations([
+      'alertInfo', // 将 `this.increment()` 映射为 `this.$store.commit('increment')`
+
+      'alertError'
+    ]),
     getInfo(id) {
       this.customerId = id
       if (this.customerId == 0) {
@@ -50,6 +57,7 @@ export default {
         })
         .catch(function(error) {
           console.log(error)
+          vm.alertError('载入失败')
         })
     },
     backToList() {
