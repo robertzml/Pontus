@@ -79,8 +79,8 @@ export default {
   },
   mounted: function() {
     let vm = this
-    this.$axios
-      .get('/customer/list')
+    this.$store
+      .dispatch('getCustomerList')
       .then(function(res) {
         vm.customerData = res.data
       })

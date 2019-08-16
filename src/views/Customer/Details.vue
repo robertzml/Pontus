@@ -83,8 +83,8 @@ export default {
       }
 
       let vm = this
-      this.$axios
-        .get('/customer/get', { params: { id: this.customerId } })
+      this.$store
+        .dispatch('getCustomer', id)
         .then(function(res) {
           vm.info = res.data
         })
