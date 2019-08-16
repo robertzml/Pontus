@@ -28,14 +28,14 @@
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="customerData" :search="search" :items-per-page="10">
+            <template v-slot:item.type="{ item }">
+              {{ $store.getters.customerType(item.type) }}
+            </template>
             <template v-slot:item.action="{ item }">
               <v-btn small color="success" @click="viewItem(item)">
                 <v-icon left dark>pageview</v-icon>
                 查看
               </v-btn>
-              <v-icon small @click="editItem(item)">
-                edit
-              </v-icon>
             </template>
           </v-data-table>
         </v-card-text>
@@ -61,9 +61,11 @@ export default {
     headers: [
       { text: '编号', value: 'number', align: 'left' },
       { text: '客户名称', value: 'name' },
+      { text: '客户类型', value: 'type' },
       { text: '地址', value: 'address' },
       { text: '电话', value: 'telephone' },
       { text: '联系人', value: 'contact' },
+      { text: '备注', value: 'remark' },
       { text: '操作', value: 'action', sortable: false }
     ]
   }),
@@ -84,6 +86,7 @@ export default {
       })
       .catch(function(error) {
         console.log(error)
+        vm.$store.commit('alertError', '载入客户列表失败')
       })
   }
 }

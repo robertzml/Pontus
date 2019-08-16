@@ -35,16 +35,6 @@ export default {
       this.window = 'list'
     }
   },
-  mounted: function() {
-    let vm = this
-    this.$axios
-      .get('/customer/list')
-      .then(function(res) {
-        vm.customerData = res.data
-      })
-      .catch(function(error) {
-        console.log(error)
-      })
-  }
+  mounted: function() {}
 }
 </script>

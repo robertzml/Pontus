@@ -41,10 +41,12 @@
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn outlined color="warning">编辑</v-btn>
+          <v-btn outlined color="warning" @click.stop="showEditMod">编辑</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
+
+    <customer-edit ref="customerEditMod" @update="getInfo(customerId)"></customer-edit>
 
     <v-flex xs12 md12>
       <v-card class="mx-auto">
@@ -58,9 +60,13 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
+import CustomerEdit from '@/components/Customer/Edit'
 
 export default {
   name: 'CustomerDetails',
+  components: {
+    CustomerEdit
+  },
   data: () => ({
     customerId: 0,
     info: {}
@@ -86,6 +92,9 @@ export default {
           console.log(error)
           vm.alertError('载入失败')
         })
+    },
+    showEditMod() {
+      this.$refs.customerEditMod.init(this.customerId)
     },
     backToList() {
       this.$emit('toList')

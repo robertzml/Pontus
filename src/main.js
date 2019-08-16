@@ -7,6 +7,10 @@ import axios from 'axios'
 
 Vue.prototype.$axios = axios
 axios.defaults.baseURL = 'https://localhost:44328/api'
+axios.defaults.withCredentials = false // 允许跨域 cookie
+axios.defaults.headers = {
+  'Content-Type': 'application/json'
+}
 Vue.config.productionTip = false
 
 new Vue({

@@ -11,6 +11,12 @@ export default {
     state.alertMessage.display = true
   },
 
+  alertSuccess: (state, message) => {
+    state.alertMessage.text = message
+    state.alertMessage.color = 'success'
+    state.alertMessage.display = true
+  },
+
   alertClose: state => {
     state.alertMessage.display = false
   }
