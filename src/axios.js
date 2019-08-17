@@ -1,9 +1,30 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = 'https://localhost:44328/api'
-axios.defaults.withCredentials = false // 允许跨域 cookie
-axios.defaults.headers = {
-  'Content-Type': 'application/json'
+const ax = axios.create({
+  baseURL: 'https://localhost:44328/api',
+  timeout: 5000,
+  withCredentials: false, // 允许跨域 cookie
+  headers: { 'Content-Type': 'application/json' }
+})
+
+// get
+export const _get = async req => {
+  try {
+    const res = await ax.get(req.url, { params: req.params })
+    return res
+  } catch (err) {
+    console.log(err)
+    alert('载入失败')
+  }
 }
 
-export default axios
+// post
+export const _post = async req => {
+  try {
+    const res = await ax.post(req.url, req.data)
+    return res
+  } catch (err) {
+    console.log(err)
+    alert('载入失败')
+  }
+}

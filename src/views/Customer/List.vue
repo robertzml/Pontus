@@ -46,15 +46,9 @@ export default {
   methods: {
     loadList() {
       let vm = this
-      this.$store
-        .dispatch('getCustomerList')
-        .then(res => {
-          vm.customerData = res.data
-        })
-        .catch(err => {
-          console.log(err)
-          vm.$store.commit('alertError', '载入客户列表失败')
-        })
+      this.$store.dispatch('getCustomerList').then(res => {
+        vm.customerData = res
+      })
     },
     viewItem(item) {
       this.$emit('toDetails', item.id)

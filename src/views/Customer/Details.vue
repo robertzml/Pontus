@@ -69,15 +69,9 @@ export default {
       }
 
       let vm = this
-      this.$store
-        .dispatch('getCustomer', id)
-        .then(res => {
-          vm.info = res.data
-        })
-        .catch(err => {
-          console.log(err)
-          vm.alertError('载入失败')
-        })
+      this.$store.dispatch('getCustomer', id).then(res => {
+        vm.info = res
+      })
     }
   },
   activated: function() {}

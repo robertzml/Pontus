@@ -1,19 +1,23 @@
-import axios from '../axios'
+import * as axios from '../axios'
 
 export default {
-  getCustomer(context, id) {
-    return axios.get('/customer/get', { params: { id: id } })
+  async getCustomer(context, id) {
+    const res = await axios._get({ url: '/customer/get', params: { id: id } })
+    return res.data
   },
 
-  getCustomerList() {
-    return axios.get('/customer/list')
+  async getCustomerList() {
+    const res = await axios._get({ url: '/customer/list' })
+    return res.data
   },
 
-  createCustomer(context, entity) {
-    return axios.post('/customer/create', entity)
+  async createCustomer(context, entity) {
+    const res = await axios._post({ url: '/customer/create', data: entity })
+    return res.data
   },
 
-  updateCustomer(context, entity) {
-    return axios.post('/customer/update', entity)
+  async updateCustomer(context, entity) {
+    const res = await axios._post({ url: '/customer/update', data: entity })
+    return res.data
   }
 }

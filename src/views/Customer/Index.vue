@@ -23,7 +23,7 @@
       </v-window>
     </v-flex>
 
-    <customer-edit ref="customerEditMod" @update="updateDetails"></customer-edit>
+    <customer-edit ref="customerEditMod" @update="refresh"></customer-edit>
   </v-layout>
 </template>
 
@@ -60,7 +60,7 @@ export default {
       this.$refs.customerEditMod.init(this.currentCustomerId)
     },
 
-    updateDetails() {
+    refresh() {
       if (this.currentCustomerId != 0) {
         this.$refs.detailsMod.getInfo(this.currentCustomerId)
       } else {

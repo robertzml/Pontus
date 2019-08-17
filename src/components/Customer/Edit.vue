@@ -87,15 +87,9 @@ export default {
         }
       } else {
         let vm = this
-        this.$store
-          .dispatch('getCustomer', customerId)
-          .then(res => {
-            vm.customerInfo = res.data
-          })
-          .catch(err => {
-            console.log(err)
-            vm.alertError('载入失败')
-          })
+        this.$store.dispatch('getCustomer', customerId).then(res => {
+          vm.customerInfo = res
+        })
       }
       this.dialog = true
       this.$refs.form.resetValidation()
@@ -108,27 +102,25 @@ export default {
           this.$store
             .dispatch('createCustomer', this.customerInfo)
             .then(res => {
-              vm.$store.commit('alertSuccess', '添加客户信息成功')
-              vm.$emit('update')
-              vm.dialog = false
-            })
-            .catch(err => {
-              console.log(err)
-              vm.$store.commit('alertError', '添加客户信息失败')
-              vm.dialog = false
+              if (res.status == 0) {
+                vm.$store.commit('alertSuccess', '添加客户信息成功')
+                vm.$emit('update')
+                vm.dialog = false
+              } else {
+                vm.$store.commit('alertError', res.errorMessage)
+              }
             })
         } else {
-          this.$axios
-            .post('/customer/update', this.customerInfo)
-            .then(function(response) {
-              vm.$store.commit('alertSuccess', '修改客户信息成功')
-              vm.$emit('update')
-              vm.dialog = false
-            })
-            .catch(function(error) {
-              console.log(error)
-              vm.$store.commit('alertError', '修改客户信息失败')
-              vm.dialog = false
+          this.$store
+            .dispatch('updateCustomer', this.customerInfo)
+            .then(res => {
+              if (res.status == 0) {
+                vm.$store.commit('alertSuccess', '修改客户信息成功')
+                vm.$emit('update')
+                vm.dialog = false
+              } else {
+                vm.$store.commit('alertError', res.errorMessage)
+              }
             })
         }
       }
