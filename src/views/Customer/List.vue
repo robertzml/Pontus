@@ -1,23 +1,5 @@
 <template>
   <v-layout wrap>
-    <v-flex xs12 md12>
-      <v-card class="mx-auto">
-        <v-card-title class="cyan">客户管理</v-card-title>
-        <v-card-text>
-          I'm card text
-          <v-combobox v-model="select" :items="items" label="Select a favorite activity or create a new one"></v-combobox>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn small color="primary">添加客户</v-btn>
-          <v-btn small color="primary" @click.stop="openMod">Open Dialog</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
-
-    <customer-edit ref="customerMod"></customer-edit>
-
     <v-flex xs12>
       <v-card dark>
         <v-card-title class="orange">
@@ -45,18 +27,10 @@
 </template>
 
 <script>
-import CustomerEdit from '@/components/Customer/Edit'
-
 export default {
   name: 'CustomerList',
-  components: {
-    CustomerEdit
-  },
   data: () => ({
     search: '',
-    select: 'Programming',
-    items: ['Programming', 'Design', 'Vue', 'Vuetify'],
-    dialog: false,
     customerData: [],
     headers: [
       { text: '编号', value: 'number', align: 'left' },
@@ -70,24 +44,24 @@ export default {
     ]
   }),
   methods: {
-    openMod() {
-      this.$refs.customerMod.init(0)
+    loadList() {
+      let vm = this
+      this.$store
+        .dispatch('getCustomerList')
+        .then(res => {
+          vm.customerData = res.data
+        })
+        .catch(err => {
+          console.log(err)
+          vm.$store.commit('alertError', '载入客户列表失败')
+        })
     },
     viewItem(item) {
       this.$emit('toDetails', item.id)
     }
   },
   mounted: function() {
-    let vm = this
-    this.$store
-      .dispatch('getCustomerList')
-      .then(function(res) {
-        vm.customerData = res.data
-      })
-      .catch(function(error) {
-        console.log(error)
-        vm.$store.commit('alertError', '载入客户列表失败')
-      })
+    this.loadList()
   }
 }
 </script>

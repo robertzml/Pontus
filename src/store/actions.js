@@ -7,5 +7,13 @@ export default {
 
   getCustomerList() {
     return axios.get('/customer/list')
+  },
+
+  createCustomer(context, entity) {
+    return axios.post('/customer/create', entity)
+  },
+
+  updateCustomer(context, entity) {
+    return axios.post('/customer/update', entity)
   }
 }

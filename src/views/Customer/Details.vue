@@ -4,11 +4,6 @@
       <v-card class="mx-auto">
         <v-card-title class="cyan">
           客户信息
-          <v-spacer></v-spacer>
-          <v-btn outlined @click="backToList">
-            <v-icon left>arrow_back</v-icon>
-            返回
-          </v-btn>
         </v-card-title>
         <v-card-text>
           <v-form>
@@ -40,13 +35,8 @@
             </v-layout>
           </v-form>
         </v-card-text>
-        <v-card-actions>
-          <v-btn outlined color="warning" @click.stop="showEditMod">编辑</v-btn>
-        </v-card-actions>
       </v-card>
     </v-flex>
-
-    <customer-edit ref="customerEditMod" @update="getInfo(customerId)"></customer-edit>
 
     <v-flex xs12 md12>
       <v-card class="mx-auto">
@@ -60,13 +50,9 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import CustomerEdit from '@/components/Customer/Edit'
 
 export default {
   name: 'CustomerDetails',
-  components: {
-    CustomerEdit
-  },
   data: () => ({
     customerId: 0,
     info: {}
@@ -85,19 +71,13 @@ export default {
       let vm = this
       this.$store
         .dispatch('getCustomer', id)
-        .then(function(res) {
+        .then(res => {
           vm.info = res.data
         })
-        .catch(function(error) {
-          console.log(error)
+        .catch(err => {
+          console.log(err)
           vm.alertError('载入失败')
         })
-    },
-    showEditMod() {
-      this.$refs.customerEditMod.init(this.customerId)
-    },
-    backToList() {
-      this.$emit('toList')
     }
   },
   activated: function() {}

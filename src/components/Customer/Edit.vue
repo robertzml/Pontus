@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" persistent max-width="600px">
+  <v-dialog v-model="dialog" persistent eager max-width="600px">
     <v-card>
       <v-card-title>
         <span class="headline">客户信息</span>
@@ -54,7 +54,17 @@ export default {
   data: () => ({
     valid: true,
     dialog: false,
-    customerInfo: {},
+    customerId: 0,
+    customerInfo: {
+      number: '',
+      name: '',
+      address: '',
+      telephone: '',
+      contact: '',
+      contactTelephone: '',
+      type: 1,
+      remark: ''
+    },
     numberRules: [v => !!v || '请输入客户编号'],
     nameRules: [v => !!v || '请输入客户名称']
   }),
@@ -63,43 +73,64 @@ export default {
   }),
   methods: {
     init(customerId) {
+      this.customerId = customerId
       if (customerId == 0) {
         this.customerInfo = {
           number: '',
           name: '',
-          type: 0
+          address: '',
+          telephone: '',
+          contact: '',
+          contactTelephone: '',
+          type: 1,
+          remark: ''
         }
       } else {
         let vm = this
-        this.$axios
-          .get('/customer/get', { params: { id: customerId } })
-          .then(function(res) {
+        this.$store
+          .dispatch('getCustomer', customerId)
+          .then(res => {
             vm.customerInfo = res.data
           })
-          .catch(function(error) {
-            console.log(error)
+          .catch(err => {
+            console.log(err)
             vm.alertError('载入失败')
           })
       }
       this.dialog = true
+      this.$refs.form.resetValidation()
     },
 
     submit() {
       if (this.$refs.form.validate()) {
-        console.log('valid')
         let vm = this
-        this.$axios
-          .post('/customer/update', this.customerInfo)
-          .then(function(response) {
-            vm.$store.commit('alertSuccess', '修改客户信息成功')
-            vm.$emit('update')
-            vm.dialog = false
-          })
-          .catch(function(error) {
-            console.log(error)
-            vm.$store.commit('alertError', '修改客户信息失败')
-            vm.dialog = false
-          })
+        if (this.customerId == 0) {
+          this.$store
+            .dispatch('createCustomer', this.customerInfo)
+            .then(res => {
+              vm.$store.commit('alertSuccess', '添加客户信息成功')
+              vm.$emit('update')
+              vm.dialog = false
+            })
+            .catch(err => {
+              console.log(err)
+              vm.$store.commit('alertError', '添加客户信息失败')
+              vm.dialog = false
+            })
+        } else {
+          this.$axios
+            .post('/customer/update', this.customerInfo)
+            .then(function(response) {
+              vm.$store.commit('alertSuccess', '修改客户信息成功')
+              vm.$emit('update')
+              vm.dialog = false
+            })
+            .catch(function(error) {
+              console.log(error)
+              vm.$store.commit('alertError', '修改客户信息失败')
+              vm.dialog = false
+            })
+        }
       }
     },
     reset() {
