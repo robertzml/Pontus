@@ -34,6 +34,11 @@ export default new Router({
       path: '/category',
       name: 'category',
       component: () => import('./views/Category/Index.vue')
+    },
+    {
+      path: '/usergroup',
+      name: 'usergroup',
+      component: () => import('./views/UserGroup/Index.vue')
     }
   ]
 })

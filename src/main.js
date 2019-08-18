@@ -3,10 +3,12 @@ import App from './App.vue'
 import router from './router'
 import store from './store/index'
 import vuetify from './plugins/vuetify'
+import filters from './plugins/filters'
 import util from './plugins/util'
 
-//Vue.prototype.$axios = axios
 Vue.prototype.$util = util
+
+filters(Vue)
 
 Vue.config.productionTip = false
 

@@ -54,5 +54,11 @@ export default {
   async updateCategory(context, entity) {
     const res = await axios._post({ url: '/category/update', data: entity })
     return res.data
+  },
+
+  //用户组操作
+  async getUserGroup() {
+    const res = await axios._get({ url: '/usergroup/list' })
+    return res.data
   }
 }
