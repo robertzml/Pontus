@@ -57,10 +57,8 @@ export default {
           model: false,
           children: [
             { text: '客户管理', name: 'customer' },
-            { text: 'Export' },
-            { text: 'Print' },
-            { text: 'Undo changes' },
-            { text: 'Other contacts' }
+            { text: '合同管理' },
+            { text: '类别管理', name: 'category' }
           ]
         },
         {
@@ -68,21 +66,29 @@ export default {
           'icon-alt': 'domain',
           text: '冷库租赁',
           model: false,
-          children: [{ text: '货品入库' }]
+          children: [
+            { text: '货品入库' },
+            { text: '货品出库' },
+            { text: '货品移库' }
+          ]
         },
         {
           icon: 'bar_chart',
           'icon-alt': 'bar_chart',
           text: '统计报表',
           model: false,
-          children: [{ text: '每日库存盘点' }]
+          children: [
+            { text: '货品总报表' },
+            { text: '货品分项报表' },
+            { text: '每日库存盘点' }
+          ]
         },
         {
           icon: 'person',
           'icon-alt': 'person',
           text: '用户管理',
           model: false,
-          children: [{ text: '每日库存盘点' }]
+          children: [{ text: '用户列表' }, { text: '用户组列表' }]
         },
         { icon: 'settings', text: 'Settings' },
         { icon: 'help', text: '关于', name: 'about' }

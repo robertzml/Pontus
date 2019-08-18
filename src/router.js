@@ -25,6 +25,11 @@ export default new Router({
       path: '/customer',
       name: 'customer',
       component: () => import('./views/Customer/Index.vue')
+    },
+    {
+      path: '/category',
+      name: 'category',
+      component: () => import('./views/Category/Index.vue')
     }
   ]
 })
