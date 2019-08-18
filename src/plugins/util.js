@@ -1,4 +1,5 @@
 // 辅助工具类
+import moment from 'moment'
 
 export default {
   treeListTransform(source) {
@@ -24,5 +25,21 @@ export default {
     }
 
     return tree
+  },
+
+  displayDateTime(date) {
+    if (date === null || date === '') {
+      return ''
+    } else {
+      return moment(date).format('YYYY-MM-DD HH:mm:ss')
+    }
+  },
+
+  displayDate(date) {
+    if (date === null || date === '') {
+      return ''
+    } else {
+      return moment(date).format('YYYY-MM-DD')
+    }
   }
 }

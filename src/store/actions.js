@@ -56,8 +56,25 @@ export default {
     return res.data
   },
 
+  //用户操作
+  async getUserList() {
+    const res = await axios._get({ url: '/user/list' })
+    return res.data
+  },
+
+  async enableUser(context, data) {
+    let param = new URLSearchParams()
+    param.append('id', data.id)
+    param.append('enable', data.enable)
+    const res = await axios._post({
+      url: '/user/enable',
+      data: param
+    })
+    return res.data
+  },
+
   //用户组操作
-  async getUserGroup() {
+  async getUserGroupList() {
     const res = await axios._get({ url: '/usergroup/list' })
     return res.data
   }

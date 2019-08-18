@@ -88,7 +88,7 @@ export default {
           text: '用户管理',
           model: false,
           children: [
-            { text: '用户列表' },
+            { text: '用户列表', model: false, name: 'user' },
             { text: '用户组列表', model: false, name: 'usergroup' }
           ]
         },

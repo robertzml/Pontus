@@ -19,7 +19,7 @@
             <td>{{ item.title }}</td>
             <td>{{ item.rank }}</td>
             <td>{{ item.remark }}</td>
-            <td>{{ item.status | status }}</td>
+            <td>{{ item.status | displayStatus }}</td>
           </tr>
         </tbody>
       </v-simple-table>
@@ -36,7 +36,7 @@ export default {
   methods: {
     loadUserGroup() {
       let vm = this
-      this.$store.dispatch('getUserGroup').then(res => {
+      this.$store.dispatch('getUserGroupList').then(res => {
         vm.userGroupData = res
       })
     }
