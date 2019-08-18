@@ -27,6 +27,10 @@ export default new Router({
       component: () => import('./views/Customer/Index.vue')
     },
     {
+      path: '/contract',
+      name: 'contract'
+    },
+    {
       path: '/category',
       name: 'category',
       component: () => import('./views/Category/Index.vue')

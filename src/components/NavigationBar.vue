@@ -7,7 +7,6 @@
             <v-subheader v-if="item.heading">{{ item.heading }}</v-subheader>
           </v-flex>
           <v-flex xs6 class="text-center">
-            <a href="#!" class="body-2 black--text">EDIT</a>
           </v-flex>
         </v-layout>
         <v-list-group v-else-if="item.children" :key="item.text" v-model="item.model" :prepend-icon="item.model ? item.icon : item['icon-alt']" append-icon>
@@ -18,7 +17,7 @@
               </v-list-item-content>
             </v-list-item>
           </template>
-          <v-list-item v-for="(child, i) in item.children" :key="i" @click="navTo(child.name)">
+          <v-list-item v-for="(child, i) in item.children" v-model="child.model" :key="i" :to="{name: child.name}">
             <v-list-item-action v-if="child.icon">
               <v-icon>{{ child.icon }}</v-icon>
             </v-list-item-action>
@@ -27,7 +26,7 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
-        <v-list-item v-else :key="item.text" @click="navTo(item.name)">
+        <v-list-item v-else :key="item.text" @click="navTo(item)">
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -56,11 +55,12 @@ export default {
           text: '信息管理',
           model: false,
           children: [
-            { text: '客户管理', name: 'customer' },
-            { text: '合同管理' },
-            { text: '类别管理', name: 'category' }
+            { text: '客户管理', model: false, name: 'customer' },
+            { text: '合同管理', model: false, name: 'contract' },
+            { text: '类别管理', model: false, name: 'category' }
           ]
         },
+        { icon: 'home', text: '标题', heading: '标题' },
         {
           icon: 'domain',
           'icon-alt': 'domain',
@@ -96,8 +96,8 @@ export default {
     }
   },
   methods: {
-    navTo: function(name) {
-      this.$router.push({ name: name })
+    navTo: function(item) {
+      this.$router.push({ name: item.name })
     }
   }
 }
