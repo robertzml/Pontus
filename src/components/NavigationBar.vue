@@ -60,7 +60,6 @@ export default {
             { text: '类别管理', model: false, name: 'category' }
           ]
         },
-        { icon: 'home', text: '标题', heading: '标题' },
         {
           icon: 'domain',
           'icon-alt': 'domain',

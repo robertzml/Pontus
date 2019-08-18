@@ -26,5 +26,33 @@ export default {
   async getCategoryList() {
     const res = await axios._get({ url: '/category/list' })
     return res.data
+  },
+
+  async getFirstCategory() {
+    const res = await axios._get({ url: '/category/getFirstCategory' })
+    return res.data
+  },
+
+  async getChildrenCategory(context, parentId) {
+    const res = await axios._get({
+      url: '/category/GetChildren',
+      params: { parentId: parentId }
+    })
+    return res.data
+  },
+
+  async getCategory(context, id) {
+    const res = await axios._get({ url: '/category/get', params: { id: id } })
+    return res.data
+  },
+
+  async createCategory(context, entity) {
+    const res = await axios._post({ url: '/category/create', data: entity })
+    return res.data
+  },
+
+  async updateCategory(context, entity) {
+    const res = await axios._post({ url: '/category/update', data: entity })
+    return res.data
   }
 }
