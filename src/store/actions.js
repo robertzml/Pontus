@@ -78,6 +78,19 @@ export default {
     return res.data
   },
 
+  /**
+   * 合同操作
+   */
+  async getContractList() {
+    const res = await axios._get({ url: '/contract/list' })
+    return res.data
+  },
+
+  async getContract(context, id) {
+    const res = await axios._get({ url: '/contract/get', params: { id: id } })
+    return res.data
+  },
+
   /** 用户操作 */
   async getUserList() {
     const res = await axios._get({ url: '/user/list' })
