@@ -63,12 +63,10 @@ export default {
   },
 
   async enableUser(context, data) {
-    let param = new URLSearchParams()
-    param.append('id', data.id)
-    param.append('enable', data.enable)
-    const res = await axios._post({
+    console.log(data)
+    const res = await axios._postqs({
       url: '/user/enable',
-      data: param
+      params: data
     })
     return res.data
   },

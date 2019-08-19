@@ -8,7 +8,7 @@
         <v-toolbar-items>
           <v-btn text>添加用户</v-btn>
           <v-btn text @click.stop="enableUser">启用</v-btn>
-          <v-btn text>禁用</v-btn>
+          <v-btn text @click.stop="disableUser">禁用</v-btn>
         </v-toolbar-items>
       </v-toolbar>
     </v-flex>
@@ -79,7 +79,19 @@ export default {
       this.$store
         .dispatch('enableUser', { id: this.selectedUser[0].id, enable: true })
         .then(res => {
-          console.log(res)
+          this.loadUser()
+        })
+    },
+
+    disableUser() {
+      if (this.selectedUser.length == 0) {
+        return
+      }
+
+      this.$store
+        .dispatch('enableUser', { id: this.selectedUser[0].id, enable: false })
+        .then(res => {
+          this.loadUser()
         })
     }
   },

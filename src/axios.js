@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { async } from 'q'
-import qs from 'qs'
 
 const ax = axios.create({
   baseURL: 'https://localhost:44328/api',
@@ -31,9 +30,9 @@ export const _post = async req => {
   }
 }
 
-export const _postplain = async req => {
+export const _postqs = async req => {
   try {
-    const res = await ax.post(req.url, qs.stringify(req.data))
+    const res = await ax.post(req.url, null, { params: req.params })
     return res
   } catch (err) {
     console.log(err)
