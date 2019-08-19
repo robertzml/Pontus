@@ -12,6 +12,14 @@
     <v-btn icon>
       <v-icon>notifications</v-icon>
     </v-btn>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-btn icon v-on="on" @click.stop="logout">
+          <v-icon>exit_to_app</v-icon>
+        </v-btn>
+      </template>
+      <span>退出系统</span>
+    </v-tooltip>
   </v-app-bar>
 </template>
 
@@ -28,6 +36,9 @@ export default {
     expand: function() {
       let show = !this.drawer
       this.$emit('update:drawer', show)
+    },
+    logout() {
+      this.$store.dispatch('logout')
     }
   }
 }

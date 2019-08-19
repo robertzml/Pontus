@@ -40,8 +40,10 @@ export default {
     ...mapGetters(['isLogin', 'alertMessage'])
   },
   methods: {
-    ...mapMutations(['alertClose'])
+    ...mapMutations(['getToken', 'alertClose'])
   },
-  mounted: function() {}
+  mounted: function() {
+    this.getToken()
+  }
 }
 </script>

@@ -8,14 +8,14 @@
           </v-toolbar>
           <v-card-text>
             <v-form ref="form" v-model="valid" lazy-validation>
-              <v-text-field label="用户名" prepend-icon="person" type="text" v-model="loginUser.username" :rules="nameRules" required></v-text-field>
+              <v-text-field label="用户名" prepend-icon="person" type="text" v-model="loginUser.userName" :rules="nameRules" required></v-text-field>
 
               <v-text-field label="密码" prepend-icon="lock" type="password" v-model="loginUser.password" :rules="passwordRules" required></v-text-field>
             </v-form>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" :disabled="!valid" block @click.stop="submit">登录</v-btn>
+            <v-btn color="primary" :disabled="!valid" block @click.stop="submit" @keyup.enter.native="submit">登录</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -42,7 +42,21 @@ export default {
 
     submit() {
       if (this.$refs.form.validate()) {
-        this.login(this.loginUser)
+        let vm = this
+        this.login(this.loginUser).then(res => {
+          if (res.status != 0) {
+            alert(res.errorMessage)
+          }
+        })
+      }
+    }
+  },
+  created: function() {
+    let vm = this
+    document.onkeydown = function(e) {
+      let key = window.event.keyCode
+      if (key == 13) {
+        vm.submit()
       }
     }
   }

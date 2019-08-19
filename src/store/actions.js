@@ -1,17 +1,26 @@
 import * as axios from '../axios'
 
 export default {
-  login({ commit }, payload) {
-    console.log('login' + payload)
-    commit('login', {
-      login: true,
-      id: 1,
-      userName: payload.userName,
-      name: 'zml',
-      userGroupId: 1
-    })
+  /** 登录 */
+  async login({ commit }, payload) {
+    const res = await axios._postqs({ url: '/user/login', params: payload })
+    if (res.data.status == 0) {
+      commit('login', {
+        login: true,
+        id: 1,
+        userName: payload.userName,
+        name: 'zml',
+        userGroupId: 1
+      })
+    } else {
+      commit('logout')
+    }
+    return res.data
+  },
 
-    return { status: 0 }
+  /** 注销 */
+  logout({ commit }) {
+    commit('logout')
   },
 
   /** 客户操作 */
@@ -35,7 +44,7 @@ export default {
     return res.data
   },
 
-  /** 类别操作 */
+  /** 分类操作 */
   async getCategoryList() {
     const res = await axios._get({ url: '/category/list' })
     return res.data
@@ -69,14 +78,13 @@ export default {
     return res.data
   },
 
-  //用户操作
+  /** 用户操作 */
   async getUserList() {
     const res = await axios._get({ url: '/user/list' })
     return res.data
   },
 
   async enableUser(context, data) {
-    console.log(data)
     const res = await axios._postqs({
       url: '/user/enable',
       params: data
@@ -84,7 +92,7 @@ export default {
     return res.data
   },
 
-  //用户组操作
+  /** 用户组操作 */
   async getUserGroupList() {
     const res = await axios._get({ url: '/usergroup/list' })
     return res.data
