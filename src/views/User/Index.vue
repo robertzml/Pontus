@@ -78,7 +78,7 @@ export default {
 
       this.$store
         .dispatch('enableUser', { id: this.selectedUser[0].id, enable: true })
-        .then(res => {
+        .then(() => {
           this.loadUser()
         })
     },
@@ -90,7 +90,7 @@ export default {
 
       this.$store
         .dispatch('enableUser', { id: this.selectedUser[0].id, enable: false })
-        .then(res => {
+        .then(() => {
           this.loadUser()
         })
     }

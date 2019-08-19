@@ -1,4 +1,8 @@
 export default {
+  login: (state, userInfo) => {
+    state.user = userInfo
+  },
+
   alertError: (state, message) => {
     state.alertMessage.text = message
     state.alertMessage.color = 'error'

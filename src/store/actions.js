@@ -1,6 +1,19 @@
 import * as axios from '../axios'
 
 export default {
+  login({ commit }, payload) {
+    console.log('login' + payload)
+    commit('login', {
+      login: true,
+      id: 1,
+      userName: payload.userName,
+      name: 'zml',
+      userGroupId: 1
+    })
+
+    return { status: 0 }
+  },
+
   /** 客户操作 */
   async getCustomer(context, id) {
     const res = await axios._get({ url: '/customer/get', params: { id: id } })

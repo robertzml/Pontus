@@ -1,7 +1,6 @@
 <template>
-  <v-app id="inspire">
+  <v-app id="inspire" v-if="isLogin">
     <navigation-bar :drawer="drawer"></navigation-bar>
-
     <header-bar :drawer.sync="drawer"></header-bar>
 
     <v-content>
@@ -16,24 +15,29 @@
       </v-container>
     </v-content>
   </v-app>
+  <v-app id="login" v-else>
+    <login></login>
+  </v-app>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
 import HeaderBar from '@/components/HeaderBar'
 import NavigationBar from '@/components/NavigationBar'
+import Login from '@/components/Login'
 
 export default {
   name: 'App',
   components: {
     HeaderBar,
-    NavigationBar
+    NavigationBar,
+    Login
   },
   data: () => ({
     drawer: false
   }),
   computed: {
-    ...mapGetters(['alertMessage'])
+    ...mapGetters(['isLogin', 'alertMessage'])
   },
   methods: {
     ...mapMutations(['alertClose'])
