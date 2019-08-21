@@ -66,7 +66,7 @@ export default {
           text: '冷库租赁',
           model: false,
           children: [
-            { text: '货品入库' },
+            { text: '货品入库', model: false, name: 'stockin' },
             { text: '货品出库' },
             { text: '货品移库' }
           ]
