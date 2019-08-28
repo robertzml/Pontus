@@ -1,5 +1,6 @@
 // 辅助工具类
 import moment from 'moment'
+import dict from './dict'
 
 export default {
   treeListTransform(source) {
@@ -40,6 +41,16 @@ export default {
       return ''
     } else {
       return moment(date).format('YYYY-MM-DD')
+    }
+  },
+
+  // 客户类型
+  warehouseType: type => {
+    let wt = dict.warehouseType.find(r => r.value == type)
+    if (wt != undefined) {
+      return wt.text
+    } else {
+      return ''
     }
   }
 }

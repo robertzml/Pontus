@@ -57,7 +57,8 @@ export default {
           children: [
             { text: '客户管理', model: false, name: 'customer' },
             { text: '合同管理', model: false, name: 'contract' },
-            { text: '类别管理', model: false, name: 'category' }
+            { text: '类别管理', model: false, name: 'category' },
+            { text: '仓库管理', model: false, name: 'warehouse' }
           ]
         },
         {
@@ -65,22 +66,14 @@ export default {
           'icon-alt': 'domain',
           text: '冷库租赁',
           model: false,
-          children: [
-            { text: '货品入库', model: false, name: 'stockin' },
-            { text: '货品出库' },
-            { text: '货品移库' }
-          ]
+          children: [{ text: '货品入库', model: false, name: 'stockin' }, { text: '货品出库' }, { text: '货品移库' }]
         },
         {
           icon: 'bar_chart',
           'icon-alt': 'bar_chart',
           text: '统计报表',
           model: false,
-          children: [
-            { text: '货品总报表' },
-            { text: '货品分项报表' },
-            { text: '每日库存盘点' }
-          ]
+          children: [{ text: '货品总报表' }, { text: '货品分项报表' }, { text: '每日库存盘点' }]
         },
         {
           icon: 'person',
