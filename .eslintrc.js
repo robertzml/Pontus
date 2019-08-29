@@ -10,7 +10,7 @@ module.exports = {
   rules: {
     "no-console": "off",
     "no-debugger": "off",
-    "vue/no-unused-vars": "warning"
+    "vue/no-unused-vars": "warn"
   },
 
   parserOptions: {

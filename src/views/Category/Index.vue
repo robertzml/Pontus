@@ -73,11 +73,9 @@ export default {
     refresh() {
       if (this.currentCategoryId != 0) {
         let vm = this
-        this.$store
-          .dispatch('getCategory', this.currentCategoryId)
-          .then(res => {
-            vm.categoryInfo = res
-          })
+        this.$store.dispatch('getCategory', this.currentCategoryId).then(res => {
+          vm.categoryInfo = res
+        })
       } else {
         this.loadCategory()
       }

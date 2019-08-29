@@ -102,17 +102,15 @@ export default {
       if (this.$refs.form.validate()) {
         let vm = this
         if (this.categoryId != 0) {
-          this.$store
-            .dispatch('updateCategory', this.categoryInfo)
-            .then(res => {
-              if (res.status == 0) {
-                vm.$store.commit('alertSuccess', '编辑分类信息成功')
-                vm.$emit('update')
-                vm.dialog = false
-              } else {
-                vm.$store.commit('alertError', res.errorMessage)
-              }
-            })
+          this.$store.dispatch('updateCategory', this.categoryInfo).then(res => {
+            if (res.status == 0) {
+              vm.$store.commit('alertSuccess', '编辑分类信息成功')
+              vm.$emit('update')
+              vm.dialog = false
+            } else {
+              vm.$store.commit('alertError', res.errorMessage)
+            }
+          })
         } else {
           if (this.categoryInfo.hierarchy == 2) {
             this.categoryInfo.parentId = this.firstId
@@ -120,17 +118,15 @@ export default {
             this.categoryInfo.parentId = this.secondId
           }
 
-          this.$store
-            .dispatch('createCategory', this.categoryInfo)
-            .then(res => {
-              if (res.status == 0) {
-                vm.$store.commit('alertSuccess', '添加分类信息成功')
-                vm.$emit('update')
-                vm.dialog = false
-              } else {
-                vm.$store.commit('alertError', res.errorMessage)
-              }
-            })
+          this.$store.dispatch('createCategory', this.categoryInfo).then(res => {
+            if (res.status == 0) {
+              vm.$store.commit('alertSuccess', '添加分类信息成功')
+              vm.$emit('update')
+              vm.dialog = false
+            } else {
+              vm.$store.commit('alertError', res.errorMessage)
+            }
+          })
         }
       }
     }
