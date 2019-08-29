@@ -30,7 +30,7 @@
 <script>
 import CustomerList from './List'
 import CustomerDetails from './Details'
-import CustomerEdit from '@/components/Customer/Edit'
+import CustomerEdit from './Edit'
 
 export default {
   name: 'CustomerIndex',

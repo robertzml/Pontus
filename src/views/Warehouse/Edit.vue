@@ -66,6 +66,11 @@ export default {
           capacity: '',
           remark: ''
         }
+      } else {
+        let vm = this
+        this.$store.dispatch('getWarehouse', warehouseId).then(res => {
+          vm.warehouseInfo = res
+        })
       }
       this.dialog = true
       this.$refs.form.resetValidation()
@@ -78,6 +83,16 @@ export default {
           this.$store.dispatch('createWarehouse', this.warehouseInfo).then(res => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '添加仓库成功')
+              vm.$emit('update')
+              vm.dialog = false
+            } else {
+              vm.$store.commit('alertError', res.errorMessage)
+            }
+          })
+        } else {
+          this.$store.dispatch('updateWarehouse', this.warehouseInfo).then(res => {
+            if (res.status == 0) {
+              vm.$store.commit('alertSuccess', '修改仓库成功')
               vm.$emit('update')
               vm.dialog = false
             } else {

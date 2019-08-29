@@ -11,7 +11,7 @@
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="customerData" :search="search" :items-per-page="10">
             <template v-slot:item.type="{ item }">
-              {{ $store.getters.customerType(item.type) }}
+              {{ item.type | customerType }}
             </template>
             <template v-slot:item.action="{ item }">
               <v-btn small color="success" @click="viewItem(item)">

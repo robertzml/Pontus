@@ -35,7 +35,7 @@
     <v-flex xs12 md12>
       <v-card class="mx-auto">
         <v-card-title class="green">
-          合同信息
+          货架信息
         </v-card-title>
       </v-card>
     </v-flex>

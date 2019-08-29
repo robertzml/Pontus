@@ -14,6 +14,14 @@ const filters = Vue => {
   Vue.filter('displayDate', function(date) {
     return util.displayDate(date)
   })
+
+  Vue.filter('customerType', function(val) {
+    return util.customerType(val)
+  })
+
+  Vue.filter('warehouseType', function(val) {
+    return util.warehouseType(val)
+  })
 }
 
 export default filters

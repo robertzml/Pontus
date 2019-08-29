@@ -109,6 +109,11 @@ export default {
     return res.data
   },
 
+  async updateWarehouse(context, entity) {
+    const res = await axios._post({ url: '/warehouse/update', data: entity })
+    return res.data
+  },
+
   /** 用户操作 */
   async getUserList() {
     const res = await axios._get({ url: '/user/list' })

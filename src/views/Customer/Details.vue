@@ -27,7 +27,7 @@
                 <v-text-field v-model="info.contactTelephone" label="联系人电话" readonly></v-text-field>
               </v-flex>
               <v-flex md3>
-                <v-text-field :value="customerType(info.type)" label="客户类型" readonly></v-text-field>
+                <v-text-field :value="$util.customerType(info.type)" label="客户类型" readonly></v-text-field>
               </v-flex>
               <v-flex md3>
                 <v-text-field v-model="info.remark" label="备注" readonly></v-text-field>
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'CustomerDetails',
@@ -57,9 +57,6 @@ export default {
     customerId: 0,
     info: {}
   }),
-  computed: {
-    ...mapGetters(['customerType'])
-  },
   methods: {
     ...mapMutations(['alertInfo', 'alertError']),
     getInfo(id) {

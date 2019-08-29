@@ -48,6 +48,9 @@ export default {
     showCreate: function() {
       this.$refs.warehouseEditMod.init(0)
     },
+    showEdit() {
+      this.$refs.warehouseEditMod.init(this.currentWarehouseId)
+    },
 
     toDetails(id) {
       this.window = 'details'

@@ -63,6 +63,16 @@ export default {
   },
 
   // 客户类型
+  customerType: type => {
+    let ct = dict.customerType.find(r => r.value == type)
+    if (ct != undefined) {
+      return ct.text
+    } else {
+      return ''
+    }
+  },
+
+  // 仓库类型
   warehouseType: type => {
     let wt = dict.warehouseType.find(r => r.value == type)
     if (wt != undefined) {

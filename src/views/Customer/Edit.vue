@@ -28,7 +28,7 @@
                 <v-text-field label="联系人电话" v-model="customerInfo.contactTelephone"></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-select :items="customerType" label="客户类型*" v-model="customerInfo.type" required></v-select>
+                <v-select :items="$dict.customerType" label="客户类型*" v-model="customerInfo.type" required></v-select>
               </v-flex>
               <v-flex xs12 sm6 md8>
                 <v-text-field label="备注" v-model="customerInfo.remark"></v-text-field>
@@ -47,8 +47,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 export default {
   name: 'CustomerEdit',
   data: () => ({
@@ -67,9 +65,6 @@ export default {
     },
     numberRules: [v => !!v || '请输入客户编号'],
     nameRules: [v => !!v || '请输入客户名称']
-  }),
-  computed: mapState({
-    customerType: state => state.customerType
   }),
   methods: {
     init(customerId) {

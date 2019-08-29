@@ -19,12 +19,13 @@
                       <v-list-item-title class="headline mb-4">{{ item.name }}</v-list-item-title>
 
                       <v-list-item-subtitle class="mb-2">编号：{{ item.number }}</v-list-item-subtitle>
+                      <v-list-item-subtitle class="mb-2">类型：{{ item.type | warehouseType }}</v-list-item-subtitle>
                       <v-list-item-subtitle class="mb-2">容量: {{ item.capacity }}</v-list-item-subtitle>
                       <v-list-item-subtitle class="mb-2">备注: {{ item.remark }}</v-list-item-subtitle>
                     </v-list-item-content>
 
                     <v-list-item-avatar size="125" tile>
-                      <v-img src="../../assets/warehouse.png"></v-img>
+                      <v-img src="@/assets/warehouse.png"></v-img>
                     </v-list-item-avatar>
                   </v-list-item>
 
