@@ -16,7 +16,7 @@
     <v-flex xs12 md12>
       <v-window v-model="window">
         <v-window-item value="list" :eager="true">
-
+          <warehouse-list ref="listMod" @toDetails="toDetails"></warehouse-list>
         </v-window-item>
       </v-window>
     </v-flex>
@@ -26,19 +26,30 @@
 </template>
 
 <script>
+import WarehouseList from './List'
 import WarehouseEdit from './Edit'
 
 export default {
   name: 'WarehouseIndex',
   components: {
+    WarehouseList,
     WarehouseEdit
   },
   data: () => ({
-    window: ''
+    window: 'list'
   }),
   methods: {
     showCreate: function() {
       this.$refs.warehouseEditMod.init(0)
+    },
+
+    toDetails(id) {
+      this.window = 'details'
+      // this.currentCustomerId = id
+      // this.$refs.detailsMod.getInfo(id)
+    },
+    toList() {
+      this.window = 'list'
     }
   }
 }

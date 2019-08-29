@@ -13,13 +13,13 @@
                 <v-text-field label="名称*" v-model="warehouseInfo.name" :rules="nameRules" required></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-text-field label="编号*" v-model="warehouseInfo.number" :rules="numberRules" required></v-text-field>
+                <v-text-field label="编号*" v-model="warehouseInfo.number" :rules="numberRules" hint="格式：A01" persistent-hint required></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md4>
                 <v-select :items="this.$dict.warehouseType" label="类型*" v-model="warehouseInfo.type" required></v-select>
               </v-flex>
               <v-flex xs12 sm6 md6>
-                <v-text-field label="容量" v-model="warehouseInfo.contact"></v-text-field>
+                <v-text-field label="容量" v-model="warehouseInfo.capacity"></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md6>
                 <v-text-field label="备注" v-model="warehouseInfo.remark"></v-text-field>
@@ -73,6 +73,18 @@ export default {
 
     submit: function() {
       if (this.$refs.form.validate()) {
+        let vm = this
+        if (this.warehouseId == 0) {
+          this.$store.dispatch('createWarehouse', this.warehouseInfo).then(res => {
+            if (res.status == 0) {
+              vm.$store.commit('alertSuccess', '添加仓库成功')
+              vm.$emit('update')
+              vm.dialog = false
+            } else {
+              vm.$store.commit('alertError', res.errorMessage)
+            }
+          })
+        }
       }
     }
   }

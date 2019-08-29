@@ -55,6 +55,19 @@ export default {
     return res.data
   },
 
+  /**
+   * 合同操作
+   */
+  async getContractList() {
+    const res = await axios._get({ url: '/contract/list' })
+    return res.data
+  },
+
+  async getContract(context, id) {
+    const res = await axios._get({ url: '/contract/get', params: { id: id } })
+    return res.data
+  },
+
   async getChildrenCategory(context, parentId) {
     const res = await axios._get({
       url: '/category/GetChildren',
@@ -79,15 +92,15 @@ export default {
   },
 
   /**
-   * 合同操作
+   * 仓库操作
    */
-  async getContractList() {
-    const res = await axios._get({ url: '/contract/list' })
+  async getWarehouseList() {
+    const res = await axios._get({ url: '/warehouse/list' })
     return res.data
   },
 
-  async getContract(context, id) {
-    const res = await axios._get({ url: '/contract/get', params: { id: id } })
+  async createWarehouse(context, entity) {
+    const res = await axios._post({ url: '/warehouse/create', data: entity })
     return res.data
   },
 

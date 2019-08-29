@@ -99,29 +99,25 @@ export default {
       if (this.$refs.form.validate()) {
         let vm = this
         if (this.customerId == 0) {
-          this.$store
-            .dispatch('createCustomer', this.customerInfo)
-            .then(res => {
-              if (res.status == 0) {
-                vm.$store.commit('alertSuccess', '添加客户信息成功')
-                vm.$emit('update')
-                vm.dialog = false
-              } else {
-                vm.$store.commit('alertError', res.errorMessage)
-              }
-            })
+          this.$store.dispatch('createCustomer', this.customerInfo).then(res => {
+            if (res.status == 0) {
+              vm.$store.commit('alertSuccess', '添加客户信息成功')
+              vm.$emit('update')
+              vm.dialog = false
+            } else {
+              vm.$store.commit('alertError', res.errorMessage)
+            }
+          })
         } else {
-          this.$store
-            .dispatch('updateCustomer', this.customerInfo)
-            .then(res => {
-              if (res.status == 0) {
-                vm.$store.commit('alertSuccess', '修改客户信息成功')
-                vm.$emit('update')
-                vm.dialog = false
-              } else {
-                vm.$store.commit('alertError', res.errorMessage)
-              }
-            })
+          this.$store.dispatch('updateCustomer', this.customerInfo).then(res => {
+            if (res.status == 0) {
+              vm.$store.commit('alertSuccess', '修改客户信息成功')
+              vm.$emit('update')
+              vm.dialog = false
+            } else {
+              vm.$store.commit('alertError', res.errorMessage)
+            }
+          })
         }
       }
     },
