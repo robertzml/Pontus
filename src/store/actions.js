@@ -99,6 +99,11 @@ export default {
     return res.data
   },
 
+  async getWarehouse(context, id) {
+    const res = await axios._get({ url: '/warehouse/get', params: { id: id } })
+    return res.data
+  },
+
   async createWarehouse(context, entity) {
     const res = await axios._post({ url: '/warehouse/create', data: entity })
     return res.data

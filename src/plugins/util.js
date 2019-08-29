@@ -44,6 +44,24 @@ export default {
     }
   },
 
+  // 实体状态
+  entityStatus: statue => {
+    if (statue == undefined || statue == null) {
+      return ''
+    }
+
+    switch (statue) {
+      case 0:
+        return '正常'
+      case 1:
+        return '删除'
+      case 2:
+        return '禁用'
+      default:
+        return '未知'
+    }
+  },
+
   // 客户类型
   warehouseType: type => {
     let wt = dict.warehouseType.find(r => r.value == type)
