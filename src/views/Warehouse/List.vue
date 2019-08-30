@@ -21,11 +21,11 @@
                       <v-list-item-subtitle class="mb-2">编号：{{ item.number }}</v-list-item-subtitle>
                       <v-list-item-subtitle class="mb-2">类型：{{ item.type | warehouseType }}</v-list-item-subtitle>
                       <v-list-item-subtitle class="mb-2">容量: {{ item.capacity }}</v-list-item-subtitle>
-                      <v-list-item-subtitle class="mb-2">备注: {{ item.remark }}</v-list-item-subtitle>
+                      <v-list-item-subtitle>备注: {{ item.remark }}</v-list-item-subtitle>
                     </v-list-item-content>
 
-                    <v-list-item-avatar size="125" tile>
-                      <v-img src="@/assets/warehouse.png"></v-img>
+                    <v-list-item-avatar width="120px" height="75px" tile class="align-self-center">
+                      <v-img :src="item.src"></v-img>
                     </v-list-item-avatar>
                   </v-list-item>
 
@@ -53,8 +53,8 @@
               <template v-slot:item.type="{ item }">
                 {{ $util.warehouseType(item.type) }}
               </template>
-              <template v-slot:item.status="{ item}">
-                {{ item.status | displayStatus}}
+              <template v-slot:item.status="{ item }">
+                {{ item.status | displayStatus }}
               </template>
               <template v-slot:item.action="{ item }">
                 <v-btn small color="success" @click="viewItem(item)">
@@ -66,7 +66,6 @@
           </v-card>
         </v-tab-item>
       </v-tabs-items>
-
     </v-flex>
   </v-layout>
 </template>
@@ -93,6 +92,9 @@ export default {
       let vm = this
       this.$store.dispatch('getWarehouseList').then(res => {
         vm.warehouseListData = res
+        vm.warehouseListData.forEach(r => {
+          r.src = require('@/assets/warehouse' + r.type + '.png')
+        })
       })
     },
     viewItem(item) {

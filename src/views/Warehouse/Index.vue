@@ -6,8 +6,8 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-btn v-if="window=='details'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
-          <v-btn v-if="window=='details'" text @click.stop="showEdit">编辑仓库</v-btn>
+          <v-btn v-if="window == 'details'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
+          <v-btn v-if="window == 'details'" text @click.stop="showEdit">编辑仓库</v-btn>
           <v-btn text @click.stop="showCreate">添加仓库</v-btn>
         </v-toolbar-items>
       </v-toolbar>
