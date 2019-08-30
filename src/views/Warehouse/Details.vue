@@ -1,6 +1,6 @@
 <template>
   <v-layout wrap>
-    <v-flex xs12 md12>
+    <v-flex xs12 md6>
       <v-card class="mx-auto">
         <v-card-title class="cyan">
           仓库信息
@@ -32,19 +32,20 @@
       </v-card>
     </v-flex>
 
-    <v-flex xs12 md12>
-      <v-card class="mx-auto">
-        <v-card-title class="green">
-          货架信息
-        </v-card-title>
-      </v-card>
+    <v-flex xs12 md6>
+      <shelf-list :warehouse-id="this.warehouseId"></shelf-list>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
+import ShelfList from '../Shelf/List'
+
 export default {
   name: 'WarehouseDetails',
+  components: {
+    ShelfList
+  },
   data: () => ({
     warehouseId: 0,
     warehouseInfo: {}

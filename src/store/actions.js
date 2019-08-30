@@ -114,6 +114,29 @@ export default {
     return res.data
   },
 
+  /**
+   * 货架操作
+   */
+  async getShelfList(context, warehouseId) {
+    const res = await axios._get({ url: '/shelf/list', params: { warehouseId: warehouseId } })
+    return res.data
+  },
+
+  async getShelf(context, id) {
+    const res = await axios._get({ url: '/shelf/get', params: { id: id } })
+    return res.data
+  },
+
+  async createShelf(context, entity) {
+    const res = await axios._post({ url: '/shelf/create', data: entity })
+    return res.data
+  },
+
+  async updateShelf(context, entity) {
+    const res = await axios._post({ url: '/shelf/update', data: entity })
+    return res.data
+  },
+
   /** 用户操作 */
   async getUserList() {
     const res = await axios._get({ url: '/user/list' })

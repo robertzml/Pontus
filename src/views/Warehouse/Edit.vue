@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" persistent eager max-width="600px">
+  <v-dialog v-model="dialog" persistent eager max-width="800px">
     <v-card>
       <v-card-title>
         <span class="headline">仓库信息</span>
@@ -13,7 +13,7 @@
                 <v-text-field label="名称*" v-model="warehouseInfo.name" :rules="nameRules" required></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-text-field label="编号*" v-model="warehouseInfo.number" :rules="numberRules" hint="格式：A01" persistent-hint required></v-text-field>
+                <v-text-field label="编号*" v-model="warehouseInfo.number" :rules="numberRules" counter="3" hint="格式：A01" persistent-hint required></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md4>
                 <v-select :items="this.$dict.warehouseType" label="类型*" v-model="warehouseInfo.type" required></v-select>
@@ -52,7 +52,7 @@ export default {
       capacity: '',
       remark: ''
     },
-    numberRules: [v => !!v || '请输入编号'],
+    numberRules: [v => (!!v && v.length <= 3) || '请输入编号，长度3位'],
     nameRules: [v => !!v || '请输入名称']
   }),
   methods: {

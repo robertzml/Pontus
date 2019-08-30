@@ -7,6 +7,7 @@
 
         <v-toolbar-items>
           <v-btn v-if="window == 'details'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
+          <v-btn v-if="window == 'details'" text @click.stop="showEditShelf">添加货架</v-btn>
           <v-btn v-if="window == 'details'" text @click.stop="showEdit">编辑仓库</v-btn>
           <v-btn text @click.stop="showCreate">添加仓库</v-btn>
         </v-toolbar-items>
@@ -25,6 +26,7 @@
     </v-flex>
 
     <warehouse-edit ref="warehouseEditMod" @update="refresh"></warehouse-edit>
+    <shelf-edit ref="shelfEditMod"></shelf-edit>
   </v-layout>
 </template>
 
@@ -32,13 +34,15 @@
 import WarehouseList from './List'
 import WarehouseDetails from './Details'
 import WarehouseEdit from './Edit'
+import ShelfEdit from '../Shelf/Edit'
 
 export default {
   name: 'WarehouseIndex',
   components: {
     WarehouseList,
     WarehouseDetails,
-    WarehouseEdit
+    WarehouseEdit,
+    ShelfEdit
   },
   data: () => ({
     window: 'list',
@@ -50,6 +54,10 @@ export default {
     },
     showEdit() {
       this.$refs.warehouseEditMod.init(this.currentWarehouseId)
+    },
+
+    showEditShelf() {
+      this.$refs.shelfEditMod.init(this.currentWarehouseId, 0)
     },
 
     toDetails(id) {

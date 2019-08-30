@@ -80,5 +80,15 @@ export default {
     } else {
       return ''
     }
+  },
+
+  // 货架类型
+  shelfType: type => {
+    let st = dict.shelfType.find(r => r.value == type)
+    if (st != undefined) {
+      return st.text
+    } else {
+      return ''
+    }
   }
 }

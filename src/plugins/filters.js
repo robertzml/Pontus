@@ -22,6 +22,10 @@ const filters = Vue => {
   Vue.filter('warehouseType', function(val) {
     return util.warehouseType(val)
   })
+
+  Vue.filter('shelfType', function(val) {
+    return util.shelfType(val)
+  })
 }
 
 export default filters

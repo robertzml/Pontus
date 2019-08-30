@@ -20,5 +20,10 @@ export default {
       text: '急冻库',
       value: 3
     }
-  ]
+  ],
+
+  /**
+   * 货架类型
+   */
+  shelfType: [{ text: '普通货架', value: 1 }, { text: '仓位货架', value: 2 }, { text: '虚拟货架', value: 3 }]
 }
