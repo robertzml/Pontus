@@ -22,6 +22,9 @@
         <v-window-item value="details" :eager="true">
           <warehouse-details ref="detailsMod"></warehouse-details>
         </v-window-item>
+        <v-window-item value="shelfDetails" :eager="true">
+          <shelf-details ref="shelfDetailsMod"></shelf-details>
+        </v-window-item>
       </v-window>
     </v-flex>
 
@@ -34,6 +37,7 @@
 import WarehouseList from './List'
 import WarehouseDetails from './Details'
 import WarehouseEdit from './Edit'
+import ShelfDetails from '../Shelf/Details'
 import ShelfEdit from '../Shelf/Edit'
 
 export default {
@@ -42,6 +46,7 @@ export default {
     WarehouseList,
     WarehouseDetails,
     WarehouseEdit,
+    ShelfDetails,
     ShelfEdit
   },
   data: () => ({
@@ -68,6 +73,10 @@ export default {
     toList() {
       this.window = 'list'
       this.currentWarehouseId = 0
+    },
+    toShelfDetails(id) {
+      this.window = 'shelfDetails'
+      this.$refs.shelfDetailsMod.getInfo(id)
     },
 
     refresh() {

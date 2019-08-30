@@ -1,6 +1,6 @@
 <template>
   <v-layout wrap>
-    <v-flex xs12 md6>
+    <v-flex xs12 md12>
       <v-card class="mx-auto">
         <v-card-title class="cyan">
           仓库信息
@@ -32,9 +32,10 @@
       </v-card>
     </v-flex>
 
-    <v-flex xs12 md6>
-      <shelf-list :warehouse-id="this.warehouseId"></shelf-list>
+    <v-flex xs12 md12>
+      <shelf-list :warehouse-id="this.warehouseId" @toDetails="toShelfDetails"></shelf-list>
     </v-flex>
+
   </v-layout>
 </template>
 
@@ -61,6 +62,10 @@ export default {
       this.$store.dispatch('getWarehouse', id).then(res => {
         vm.warehouseInfo = res
       })
+    },
+
+    toShelfDetails(id) {
+      this.$parent.toShelfDetails(id)
     }
   }
 }
