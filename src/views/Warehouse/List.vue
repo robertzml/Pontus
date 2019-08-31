@@ -73,6 +73,12 @@
 <script>
 export default {
   name: 'WarehouseList',
+  props: {
+    showWindow: {
+      type: Function,
+      default: null
+    }
+  },
   data: () => ({
     tab: null,
     search: '',
@@ -98,7 +104,10 @@ export default {
       })
     },
     viewItem(item) {
-      this.$emit('toDetails', item.id)
+      // this.$emit('toDetails', item.id)
+      if (this.showWindow) {
+        this.showWindow('details', item.id)
+      }
     }
   },
   mounted: function() {

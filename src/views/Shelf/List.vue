@@ -6,7 +6,7 @@
           货架列表
         </v-card-title>
         <v-card-text class="px-0">
-          <v-data-table :headers="headers" :items="shelfListData" :items-per-page="10">
+          <v-data-table :headers="headers" :items="shelfListData" :items-per-page="10" show-select single-select>
             <template v-slot:item.type="{ item }">
               {{ item.type | shelfType }}
             </template>
@@ -50,14 +50,14 @@ export default {
   data: () => ({
     shelfListData: [],
     headers: [
-      { text: '编号', value: 'number', align: 'left' },
-      { text: '类型', value: 'type' },
-      { text: '入口数', value: 'entrance' },
-      { text: '入口编号', value: 'entranceNumber' },
-      { text: '排数', value: 'row' },
-      { text: '层数', value: 'layer' },
-      { text: '进数', value: 'depth' },
-      { text: '备注', value: 'remark' },
+      { text: '编号', value: 'number', align: 'left', sortable: false },
+      { text: '类型', value: 'type', sortable: false },
+      { text: '入口数', value: 'entrance', sortable: false },
+      { text: '入口编号', value: 'entranceNumber', sortable: false },
+      { text: '排数', value: 'row', sortable: false },
+      { text: '层数', value: 'layer', sortable: false },
+      { text: '进数', value: 'depth', sortable: false },
+      { text: '备注', value: 'remark', sortable: false },
       { text: '操作', value: 'action', sortable: false }
     ]
   }),

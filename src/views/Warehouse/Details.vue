@@ -47,6 +47,12 @@ export default {
   components: {
     ShelfList
   },
+  props: {
+    showWindow: {
+      type: Function,
+      default: null
+    }
+  },
   data: () => ({
     warehouseId: 0,
     warehouseInfo: {}
@@ -65,7 +71,9 @@ export default {
     },
 
     toShelfDetails(id) {
-      this.$parent.toShelfDetails(id)
+      if (this.showWindow) {
+        this.showWindow('shelfDetails', id)
+      }
     }
   }
 }

@@ -3,7 +3,7 @@
     <v-flex xs12 md12>
       <v-card class="mx-auto">
         <v-card-title class="cyan">
-          客户信息
+          货架信息
         </v-card-title>
         <v-card-text>
           <v-form>
@@ -18,13 +18,16 @@
                 <v-text-field v-model="shelfInfo.entrance" label="入口数" readonly></v-text-field>
               </v-flex>
               <v-flex md3>
-                <v-text-field v-model="shelfInfo.telephone" label="电话" readonly></v-text-field>
+                <v-text-field v-model="shelfInfo.entranceNumber" label="入口编号" readonly></v-text-field>
               </v-flex>
               <v-flex md3>
-                <v-text-field v-model="shelfInfo.contact" label="联系人" readonly></v-text-field>
+                <v-text-field v-model="shelfInfo.row" label="排数" readonly></v-text-field>
               </v-flex>
               <v-flex md3>
-                <v-text-field v-model="shelfInfo.contactTelephone" label="联系人电话" readonly></v-text-field>
+                <v-text-field v-model="shelfInfo.layer" label="层数" readonly></v-text-field>
+              </v-flex>
+              <v-flex md3>
+                <v-text-field v-model="shelfInfo.depth" label="进数" readonly></v-text-field>
               </v-flex>
               <v-flex md3>
                 <v-text-field v-model="shelfInfo.remark" label="备注" readonly></v-text-field>
