@@ -2,7 +2,7 @@
   <v-layout wrap>
     <v-flex xs12 md12>
       <v-card class="mx-auto">
-        <v-card-title class="cyan">
+        <v-card-title>
           货架信息
         </v-card-title>
         <v-card-text>

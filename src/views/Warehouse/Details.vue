@@ -33,7 +33,7 @@
     </v-flex>
 
     <v-flex xs12 md12>
-      <shelf-list :warehouse-id="this.warehouseId" @toDetails="toShelfDetails"></shelf-list>
+      <shelf-list :warehouse-id="this.warehouseId"></shelf-list>
     </v-flex>
   </v-layout>
 </template>
@@ -67,12 +67,6 @@ export default {
       this.$store.dispatch('getWarehouse', id).then(res => {
         vm.warehouseInfo = res
       })
-    },
-
-    toShelfDetails(id) {
-      if (this.showWindow) {
-        this.showWindow('shelfDetails', id)
-      }
     }
   }
 }

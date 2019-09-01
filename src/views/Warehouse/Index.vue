@@ -7,10 +7,7 @@
 
         <v-toolbar-items>
           <v-btn v-if="window == 'details'" text color="amber accent-4" @click.stop="showWindow('list')">返回</v-btn>
-          <v-btn v-if="window == 'shelfDetails'" text color="amber accent-4" @click.stop="showWindow('details', currentWarehouseId)">返回</v-btn>
-          <v-btn v-if="window == 'details'" text @click.stop="showEditShelf">添加货架</v-btn>
           <v-btn v-if="window == 'details'" text @click.stop="showEdit">编辑仓库</v-btn>
-          <v-btn v-if="window == 'shelfDetails'" text @click.stop="showEditShelf">编辑货架</v-btn>
           <v-btn v-if="window != 'shelfDetails'" text @click.stop="showCreate">添加仓库</v-btn>
         </v-toolbar-items>
       </v-toolbar>
@@ -24,14 +21,10 @@
         <v-window-item value="details" :eager="true">
           <warehouse-details ref="detailsMod" :show-window="showWindow"></warehouse-details>
         </v-window-item>
-        <v-window-item value="shelfDetails" :eager="true">
-          <shelf-details ref="shelfDetailsMod"></shelf-details>
-        </v-window-item>
       </v-window>
     </v-flex>
 
     <warehouse-edit ref="warehouseEditMod" @update="refresh"></warehouse-edit>
-    <shelf-edit ref="shelfEditMod"></shelf-edit>
   </v-layout>
 </template>
 
@@ -39,17 +32,13 @@
 import WarehouseList from './List'
 import WarehouseDetails from './Details'
 import WarehouseEdit from './Edit'
-import ShelfDetails from '../Shelf/Details'
-import ShelfEdit from '../Shelf/Edit'
 
 export default {
   name: 'WarehouseIndex',
   components: {
     WarehouseList,
     WarehouseDetails,
-    WarehouseEdit,
-    ShelfDetails,
-    ShelfEdit
+    WarehouseEdit
   },
   data: () => ({
     window: 'list',
@@ -63,10 +52,6 @@ export default {
       this.$refs.warehouseEditMod.init(this.currentWarehouseId)
     },
 
-    showEditShelf() {
-      this.$refs.shelfEditMod.init(this.currentWarehouseId, 0)
-    },
-
     // 切换视图
     showWindow: function(window, id) {
       this.window = window
@@ -78,21 +63,7 @@ export default {
         case 'list':
           this.currentWarehouseId = 0
           break
-        case 'shelfDetails':
-          this.$refs.shelfDetailsMod.getInfo(id)
-          break
       }
-    },
-
-    toDetails(id) {
-      this.window = 'details'
-      this.currentWarehouseId = id
-      this.$refs.detailsMod.getInfo(id)
-    },
-
-    toShelfDetails(id) {
-      this.window = 'shelfDetails'
-      this.$refs.shelfDetailsMod.getInfo(id)
     },
 
     refresh() {

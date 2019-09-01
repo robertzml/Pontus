@@ -2,22 +2,31 @@
   <v-layout wrap>
     <v-flex xs12 md12>
       <v-card class="mx-auto">
-        <v-card-title class="orange">
-          货架列表
-        </v-card-title>
-        <v-card-text class="px-0">
-          <v-data-table :headers="headers" :items="shelfListData" :items-per-page="10" show-select single-select>
-            <template v-slot:item.type="{ item }">
-              {{ item.type | shelfType }}
-            </template>
-            <template v-slot:item.action="{ item }">
-              <v-btn small color="success" @click="viewItem(item)">
-                <v-icon left dark>pageview</v-icon>
-                查看
+        <v-data-table :headers="headers" :items="shelfListData" :items-per-page="10">
+          <template v-slot:top>
+            <v-toolbar flat>
+              <v-toolbar-title>货架列表</v-toolbar-title>
+              <v-divider class="mx-4" inset vertical></v-divider>
+              <div class="flex-grow-1"></div>
+              <v-btn small="" color="primary" class="mb-2" @click="createItem">
+                添加货架
               </v-btn>
-            </template>
-          </v-data-table>
-        </v-card-text>
+            </v-toolbar>
+          </template>
+          <template v-slot:item.type="{ item }">
+            {{ item.type | shelfType }}
+          </template>
+          <template v-slot:item.action="{ item }">
+            <v-btn small color="success" @click="viewItem(item)" class="mr-2">
+              <v-icon left dark>pageview</v-icon>
+              查看
+            </v-btn>
+            <v-btn small color="warning" @click="editItem(item)">
+              <v-icon left dark>edit</v-icon>
+              编辑
+            </v-btn>
+          </template>
+        </v-data-table>
       </v-card>
     </v-flex>
 
@@ -35,10 +44,26 @@
         </v-flex>
       </v-card>
     </v-flex>
+
+    <shelf-edit ref="shelfEditMod" @update="loadList"></shelf-edit>
+
+    <v-dialog v-model="dialog" persistent eager max-width="800px">
+      <shelf-details ref="shelfDetailsMod"></shelf-details>
+
+      <v-card tile>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue-grey lighten-3" text @click="dialog = false">关闭</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-layout>
 </template>
 
 <script>
+import ShelfDetails from './Details'
+import ShelfEdit from './Edit'
+
 export default {
   name: 'ShelfList',
   props: {
@@ -46,6 +71,10 @@ export default {
       type: Number,
       default: 0
     }
+  },
+  components: {
+    ShelfDetails,
+    ShelfEdit
   },
   data: () => ({
     shelfListData: [],
@@ -59,7 +88,8 @@ export default {
       { text: '进数', value: 'depth', sortable: false },
       { text: '备注', value: 'remark', sortable: false },
       { text: '操作', value: 'action', sortable: false }
-    ]
+    ],
+    dialog: false
   }),
   watch: {
     warehouseId: function(val) {
@@ -78,7 +108,14 @@ export default {
       })
     },
     viewItem(item) {
-      this.$emit('toDetails', item.id)
+      this.$refs.shelfDetailsMod.getInfo(item.id)
+      this.dialog = true
+    },
+    createItem() {
+      this.$refs.shelfEditMod.init(this.warehouseId, 0)
+    },
+    editItem(item) {
+      this.$refs.shelfEditMod.init(this.warehouseId, item.id)
     }
   }
 }

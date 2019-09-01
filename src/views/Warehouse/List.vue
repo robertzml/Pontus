@@ -104,7 +104,6 @@ export default {
       })
     },
     viewItem(item) {
-      // this.$emit('toDetails', item.id)
       if (this.showWindow) {
         this.showWindow('details', item.id)
       }

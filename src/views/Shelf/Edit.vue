@@ -13,7 +13,7 @@
                 <v-select v-model="selectWarehouse" :items="warehouseList" item-text="name" item-value="id" :rules="warehouseRules" label="所属仓库" :hint="`${selectWarehouse.name}, ${selectWarehouse.number}`" return-object persistent-hint required></v-select>
               </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-text-field label="编号*" v-model="shelfInfo.number" :rules="numberRules" hint="3位：001" counter="3" persistent-hint required></v-text-field>
+                <v-text-field label="编号*" v-model="shelfInfo.number" :rules="numberRules" hint="2位：01" counter="2" persistent-hint required></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md4>
                 <v-select :items="this.$dict.shelfType" label="类型*" v-model="shelfInfo.type" required></v-select>
@@ -22,7 +22,7 @@
                 <v-text-field label="入口数" v-model="shelfInfo.entrance" type="number" :rules="digitRules"></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md6>
-                <v-text-field label="入口编号" v-model="shelfInfo.entranceNumber" hint="每个入口一位，用-连接，如：1或 2-3" persistent-hint></v-text-field>
+                <v-text-field label="入口编号" v-model="shelfInfo.entranceNumber" hint="每个入口一位，用-连接，如：X或 X-Y" persistent-hint></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md4>
                 <v-text-field label="排数" v-model="shelfInfo.row" type="number" :rules="digitRules"></v-text-field>
@@ -76,8 +76,8 @@ export default {
       number: ''
     },
     warehouseRules: [v => (v && v.number != '') || '请选择仓库'],
-    numberRules: [v => (!!v && v.length <= 3) || '请输入编号，长度3位'],
-    digitRules: [v => (v && /^\d+/.test(v)) || '请输入数字']
+    numberRules: [v => (!!v && v.length <= 2) || '请输入编号，长度2位'],
+    digitRules: [v => (v != null && /^\d+/.test(v)) || '请输入数字']
   }),
   methods: {
     init: function(warehouseId, shelfId) {

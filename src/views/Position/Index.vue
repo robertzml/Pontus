@@ -31,29 +31,27 @@
 
     <v-flex xs9 md9>
       <v-container class="pa-0" fluid style="max-height:310px;overflow-y:auto;overflow-x:hidden;">
-        <v-item-group v-model="sShelf" mandatory>
-          <v-row>
-            <v-col v-for="item in shelfListData" :key="item.id" :value="item" cols="12" sm="6" md="4" class="pt-0">
-              <v-item v-slot:default="{ active, toggle }">
-                <v-card class="align-center" :color="active ? 'primary' : ''" @click="toggle">
-                  <v-list-item three-line>
-                    <v-list-item-content class="align-self-start">
-                      <v-list-item-subtitle class="mb-2">编号：{{ item.number }}</v-list-item-subtitle>
-                      <v-list-item-subtitle class="mb-2">类型：{{ item.type | shelfType }}</v-list-item-subtitle>
-                      <v-list-item-subtitle class="mb-2">入口编号：{{ item.entranceNumber }}</v-list-item-subtitle>
-                      <v-list-item-subtitle class="mb-2">排数: {{ item.row }} 层数: {{ item.layer }} 进数: {{ item.depth }}</v-list-item-subtitle>
-                      <v-list-item-subtitle>备注: {{ item.remark }}</v-list-item-subtitle>
-                    </v-list-item-content>
+        <v-row>
+          <v-col v-for="item in shelfListData" :key="item.id" :value="item" cols="12" sm="6" md="4" class="pt-0">
+            <v-card class="align-center" @click="viewShelf(item)">
+              <v-list-item three-line>
+                <v-list-item-content class="align-self-start">
+                  <v-list-item-subtitle class="mb-2">编号：{{ item.number }}</v-list-item-subtitle>
+                  <v-list-item-subtitle class="mb-2">类型：{{ item.type | shelfType }}</v-list-item-subtitle>
+                  <v-list-item-subtitle class="mb-2">入口编号：{{ item.entranceNumber }}</v-list-item-subtitle>
+                  <v-list-item-subtitle class="mb-2">排数: {{ item.row }} 层数: {{ item.layer }} 进数: {{ item.depth }}</v-list-item-subtitle>
+                  <v-list-item-subtitle>备注: {{ item.remark }}</v-list-item-subtitle>
+                </v-list-item-content>
 
-                    <v-list-item-avatar width="100px" height="60px" tile class="align-self-center">
-                      <v-img :src="item.img"></v-img>
-                    </v-list-item-avatar>
-                  </v-list-item>
-                </v-card>
-              </v-item>
-            </v-col>
-          </v-row>
-        </v-item-group>
+                <v-list-item-avatar width="100px" height="60px" tile class="align-self-center">
+                  <v-img :src="item.img"></v-img>
+                </v-list-item-avatar>
+              </v-list-item>
+            </v-card>
+
+          </v-col>
+        </v-row>
+
       </v-container>
     </v-flex>
 
@@ -86,9 +84,6 @@ export default {
   watch: {
     sWarehouse: function(val) {
       this.loadShelf(val.id)
-    },
-    sShelf: function(val) {
-      console.log(val)
     }
   },
   methods: {
@@ -127,6 +122,10 @@ export default {
     },
     showEdit() {
       this.$refs.customerEditMod.init(this.currentCustomerId)
+    },
+
+    viewShelf(item) {
+      console.log(item)
     },
 
     refresh() {
