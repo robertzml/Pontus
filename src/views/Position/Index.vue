@@ -14,7 +14,7 @@
     </v-flex>
 
     <v-flex xs3 md3>
-      <v-list>
+      <v-list min-height="300px">
         <v-subheader>仓库选择</v-subheader>
         <v-list-item-group v-model="sWarehouse" mandatory>
           <v-list-item v-for="item in warehouseListData" :key="item.id" :value="item">
@@ -30,27 +30,31 @@
     </v-flex>
 
     <v-flex xs9 md9>
-      <v-subheader>货架列表</v-subheader>
-      <v-item-group>
-        <v-row>
-          <v-col v-for="item in shelfListData" :key="item.id" cols="12" md="4">
-            <v-item v-slot:default="{ active, toggle }">
-              <v-card class="align-center">
-                <v-img src="../../assets/shelf.png" class="white--text" height="200px" gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)">
-                  <v-card-title class="fill-height align-end">{{ item.number }}</v-card-title>
-                </v-img>
+      <v-container class="pa-0" fluid style="max-height:310px;overflow-y:auto;overflow-x:hidden;">
+        <v-item-group v-model="sShelf" mandatory>
+          <v-row>
+            <v-col v-for="item in shelfListData" :key="item.id" :value="item" cols="12" sm="6" md="4" class="pt-0">
+              <v-item v-slot:default="{ active, toggle }">
+                <v-card class="align-center" :color="active ? 'primary' : ''" @click="toggle">
+                  <v-list-item three-line>
+                    <v-list-item-content class="align-self-start">
+                      <v-list-item-subtitle class="mb-2">编号：{{ item.number }}</v-list-item-subtitle>
+                      <v-list-item-subtitle class="mb-2">类型：{{ item.type | shelfType }}</v-list-item-subtitle>
+                      <v-list-item-subtitle class="mb-2">入口编号：{{ item.entranceNumber }}</v-list-item-subtitle>
+                      <v-list-item-subtitle class="mb-2">排数: {{ item.row }} 层数: {{ item.layer }} 进数: {{ item.depth }}</v-list-item-subtitle>
+                      <v-list-item-subtitle>备注: {{ item.remark }}</v-list-item-subtitle>
+                    </v-list-item-content>
 
-                <v-card-actions>
-                  <v-btn small text color="success" @click.stop="viewItem(item)">
-                    查看
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-item>
-          </v-col>
-        </v-row>
-
-      </v-item-group>
+                    <v-list-item-avatar width="100px" height="60px" tile class="align-self-center">
+                      <v-img :src="item.img"></v-img>
+                    </v-list-item-avatar>
+                  </v-list-item>
+                </v-card>
+              </v-item>
+            </v-col>
+          </v-row>
+        </v-item-group>
+      </v-container>
     </v-flex>
 
     <v-flex xs12 md12>
@@ -76,11 +80,15 @@ export default {
     currentCustomerId: 0,
     warehouseListData: [],
     shelfListData: [],
-    sWarehouse: null
+    sWarehouse: null,
+    sShelf: null
   }),
   watch: {
     sWarehouse: function(val) {
       this.loadShelf(val.id)
+    },
+    sShelf: function(val) {
+      console.log(val)
     }
   },
   methods: {
@@ -99,6 +107,9 @@ export default {
       let vm = this
       this.$store.dispatch('getShelfList', warehouseId).then(res => {
         vm.shelfListData = res
+        vm.shelfListData.forEach(r => {
+          r.img = require('@/assets/shelf' + r.type + '.png')
+        })
       })
     },
 

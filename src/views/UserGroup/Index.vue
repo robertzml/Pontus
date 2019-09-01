@@ -1,6 +1,12 @@
 <template>
   <v-layout wrap>
     <v-flex xs12 md12>
+      <v-toolbar dense>
+        <v-toolbar-title>用户组管理</v-toolbar-title>
+      </v-toolbar>
+    </v-flex>
+
+    <v-flex xs12 md12>
       <v-simple-table>
         <thead>
           <tr class="red lighten-1">
