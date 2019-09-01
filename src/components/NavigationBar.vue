@@ -58,7 +58,8 @@ export default {
             { text: '客户管理', model: false, name: 'customer' },
             { text: '合同管理', model: false, name: 'contract' },
             { text: '类别管理', model: false, name: 'category' },
-            { text: '仓库管理', model: false, name: 'warehouse' }
+            { text: '仓库管理', model: false, name: 'warehouse' },
+            { text: '仓位管理', model: false, name: 'position' }
           ]
         },
         {

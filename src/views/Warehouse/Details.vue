@@ -35,7 +35,6 @@
     <v-flex xs12 md12>
       <shelf-list :warehouse-id="this.warehouseId" @toDetails="toShelfDetails"></shelf-list>
     </v-flex>
-
   </v-layout>
 </template>
 

@@ -41,6 +41,11 @@ export default new Router({
       component: () => import('./views/Warehouse/Index.vue')
     },
     {
+      path: '/position',
+      name: 'position',
+      component: () => import('./views/Position/Index.vue')
+    },
+    {
       path: '/stockin',
       name: 'stockin',
       component: () => import('./views/StockIn/Index.vue')

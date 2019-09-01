@@ -94,8 +94,8 @@ export default {
   /**
    * 仓库操作
    */
-  async getWarehouseList() {
-    const res = await axios._get({ url: '/warehouse/list' })
+  async getWarehouseList(context, type) {
+    const res = await axios._get({ url: '/warehouse/list', params: { type: type } })
     return res.data
   },
 
