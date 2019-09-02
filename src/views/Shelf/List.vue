@@ -32,7 +32,7 @@
 
     <shelf-edit ref="shelfEditMod" @update="loadList"></shelf-edit>
 
-    <v-dialog v-model="dialog" persistent eager max-width="800px">
+    <v-dialog v-model="dialog" eager max-width="800px">
       <shelf-details ref="shelfDetailsMod"></shelf-details>
 
       <v-card tile>

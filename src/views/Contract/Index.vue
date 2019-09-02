@@ -23,18 +23,22 @@
         </v-window-item>
       </v-window>
     </v-flex>
+
+    <contract-edit ref="contractEditMod"></contract-edit>
   </v-layout>
 </template>
 
 <script>
 import ContractList from './List'
 import ContractDetails from './Details'
+import ContractEdit from './Edit'
 
 export default {
   name: 'ContractIndex',
   components: {
     ContractList,
-    ContractDetails
+    ContractDetails,
+    ContractEdit
   },
   data: () => ({
     window: 'list',
@@ -43,12 +47,19 @@ export default {
   methods: {
     toDetails(id) {
       this.window = 'details'
-      this.currentCustomerId = id
+      this.currentContractId = id
       this.$refs.detailsMod.getInfo(id)
     },
     toList() {
       this.window = 'list'
-      this.currentCustomerId = 0
+      this.currentContractId = 0
+    },
+
+    showCreate() {
+      this.$refs.contractEditMod.init(0)
+    },
+    showEdit() {
+      this.$refs.contractEditMod.init(this.currentContractId)
     }
   }
 }
