@@ -6,13 +6,12 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-btn v-if="window == 'details'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
         </v-toolbar-items>
       </v-toolbar>
     </v-flex>
 
     <v-flex xs3 md3>
-      <v-list min-height="300px">
+      <v-list min-height="292px">
         <v-subheader>仓库选择</v-subheader>
         <v-list-item-group v-model="sWarehouse" mandatory>
           <v-list-item v-for="item in warehouseListData" :key="item.id" :value="item">
@@ -41,7 +40,7 @@
                   <v-list-item-subtitle>备注: {{ item.remark }}</v-list-item-subtitle>
                 </v-list-item-content>
 
-                <v-list-item-avatar width="100px" height="60px" tile class="align-self-center">
+                <v-list-item-avatar width="100px" height="65px" tile class="align-self-center">
                   <v-img :src="item.img"></v-img>
                 </v-list-item-avatar>
               </v-list-item>
@@ -53,27 +52,39 @@
       </v-container>
     </v-flex>
 
+    <position-list v-show="sShelf != null" ref="listMod"></position-list>
+
     <v-flex xs12 md12>
-      <v-window v-model="window">
-        <v-window-item value="list" :eager="true">
+      <v-card class="mx-auto">
+        <v-card-title class="cyan">
+          仓位信息
+        </v-card-title>
 
-        </v-window-item>
-        <v-window-item value="details" :eager="true">
+        <v-card-text class="headline">货架情况</v-card-text>
 
-        </v-window-item>
-      </v-window>
+        <v-flex md12 v-for="shelf in shelfListData" :key="shelf.id" class="pa-2">
+          <div class="d-md-block">货架号：{{ shelf.number }}</div>
+          <div class="d-flex flex-wrap">
+            <v-card v-for="n in shelf.row" :key="n" class="pa-2" outlined tile>
+              第 {{ n }} 排
+            </v-card>
+          </div>
+        </v-flex>
+      </v-card>
     </v-flex>
 
   </v-layout>
 </template>
 
 <script>
+import PositionList from './List'
+
 export default {
   name: 'PositionIndex',
-  components: {},
+  components: {
+    PositionList
+  },
   data: () => ({
-    window: 'list',
-    currentCustomerId: 0,
     warehouseListData: [],
     shelfListData: [],
     sWarehouse: null,
@@ -81,6 +92,7 @@ export default {
   }),
   watch: {
     sWarehouse: function(val) {
+      this.sShelf = null
       this.loadShelf(val.id)
     }
   },
@@ -106,26 +118,9 @@ export default {
       })
     },
 
-    toDetails(id) {
-      this.window = 'details'
-      this.currentCustomerId = id
-      this.$refs.detailsMod.getInfo(id)
-    },
-    toList() {
-      this.window = 'list'
-      this.currentCustomerId = 0
-    },
-
     viewShelf(item) {
-      console.log(item)
-    },
-
-    refresh() {
-      if (this.currentCustomerId != 0) {
-        this.$refs.detailsMod.getInfo(this.currentCustomerId)
-      } else {
-        this.$refs.listMod.loadList()
-      }
+      this.sShelf = item
+      this.$refs.listMod.init(item.id)
     }
   },
   mounted: function() {

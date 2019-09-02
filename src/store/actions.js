@@ -137,7 +137,25 @@ export default {
     return res.data
   },
 
-  /** 用户操作 */
+  /**
+   * 仓位操作
+   */
+  async countPosition(context, shelfId) {
+    const res = await axios._get({ url: '/position/count', params: { shelfId: shelfId } })
+    return res.data
+  },
+
+  async generatePosition(context, data) {
+    const res = await axios._postqs({
+      url: '/position/generate',
+      params: data
+    })
+    return res.data
+  },
+
+  /**
+   *  用户操作
+   */
   async getUserList() {
     const res = await axios._get({ url: '/user/list' })
     return res.data
