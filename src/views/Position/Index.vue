@@ -53,26 +53,6 @@
     </v-flex>
 
     <position-list v-show="sShelf != null" ref="listMod"></position-list>
-
-    <v-flex xs12 md12>
-      <v-card class="mx-auto">
-        <v-card-title class="cyan">
-          仓位信息
-        </v-card-title>
-
-        <v-card-text class="headline">货架情况</v-card-text>
-
-        <v-flex md12 v-for="shelf in shelfListData" :key="shelf.id" class="pa-2">
-          <div class="d-md-block">货架号：{{ shelf.number }}</div>
-          <div class="d-flex flex-wrap">
-            <v-card v-for="n in shelf.row" :key="n" class="pa-2" outlined tile>
-              第 {{ n }} 排
-            </v-card>
-          </div>
-        </v-flex>
-      </v-card>
-    </v-flex>
-
   </v-layout>
 </template>
 

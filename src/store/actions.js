@@ -140,6 +140,14 @@ export default {
   /**
    * 仓位操作
    */
+  async getPosition(context, { shelfId, row, layer, depth }) {
+    const res = await axios._get({
+      url: '/position/find',
+      params: { shelfId: shelfId, row: row, layer: layer, depth: depth }
+    })
+    return res.data
+  },
+
   async countPosition(context, shelfId) {
     const res = await axios._get({ url: '/position/count', params: { shelfId: shelfId } })
     return res.data

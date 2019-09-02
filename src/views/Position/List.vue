@@ -27,13 +27,28 @@
                 <v-icon>arrow_forward</v-icon>
               </div>
               <div class="d-flex flex-wrap" v-for="layer in shelfInfo.layer" :key="layer">
-                <v-card v-for="row in shelfInfo.row" :key="row" class="pa-2" outlined tile>
+                <v-card v-for="row in shelfInfo.row" :key="row" class="pa-2" outlined tile @click.stop="selectRowLayer(row, shelfInfo.layer - layer + 1)">
                   {{ row.toString().padStart(2, '0') }} - {{ shelfInfo.layer - layer + 1 }}
                 </v-card>
               </div>
             </div>
           </div>
 
+          <div v-show="sRowLayer">
+            <div class="d-flex flex-column mt-4 pl-7">
+              <div class="d-flex mb-2">
+                {{ positionTitle }}
+              </div>
+              <div class="d-flex flex-wrap">
+                <v-card v-for="depth in shelfInfo.depth" :key="depth" class="pa-2" outlined tile @click.stop="selectPosition(depth)">
+                  {{ depth.toString().padStart(2, '0') }}
+                </v-card>
+              </div>
+              <div class="d-flex my-4">
+                仓位编号：{{ positionInfo.number }}&nbsp;&nbsp;&nbsp; 副编号：{{ positionInfo.viceNumber }}
+              </div>
+            </div>
+          </div>
         </v-flex>
 
       </v-card>
@@ -59,18 +74,27 @@
 </template>
 
 <script>
-import { ftruncate } from 'fs'
 export default {
   name: 'PositionList',
   data: () => ({
     sheet: false,
     loading: false,
+    sRowLayer: false,
     shelfInfo: {},
     positionCount: 0,
-    positionListData: []
+    positionListData: [],
+    positionTitle: '',
+    positionInfo: {},
+    sRow: 0,
+    sLayer: 0
   }),
   methods: {
     init(shelfId) {
+      this.sRowLayer = false
+      this.sRow = 0
+      this.sLayer = 0
+      this.positionInfo = {}
+
       let vm = this
       this.$store.dispatch('getShelf', shelfId).then(res => {
         vm.shelfInfo = res
@@ -104,6 +128,23 @@ export default {
           vm.$store.commit('alertError', res.errorMessage)
         }
       })
+    },
+
+    selectRowLayer(row, layer) {
+      this.sRowLayer = true
+      this.sRow = row
+      this.sLayer = layer
+      this.positionTitle = this.shelfInfo.number + '货架' + row + '列' + layer + '层 仓位'
+      this.positionInfo = {}
+    },
+
+    selectPosition(depth) {
+      let vm = this
+      this.$store
+        .dispatch('getPosition', { shelfId: this.shelfInfo.id, row: this.sRow, layer: this.sLayer, depth: depth })
+        .then(res => {
+          vm.positionInfo = res
+        })
     }
   }
 }
