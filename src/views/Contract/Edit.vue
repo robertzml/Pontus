@@ -9,19 +9,19 @@
         <v-container grid-list-md>
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-layout wrap>
-              <v-flex xs12 sm6 md4>
+              <v-flex xs12 sm6 md6>
                 <v-text-field label="合同编号*" v-model="contractInfo.number" :rules="numberRules" required></v-text-field>
               </v-flex>
-              <v-flex xs12 sm6 md4>
+              <v-flex xs12 sm6 md6>
                 <v-text-field label="合同名称*" v-model="contractInfo.name" :rules="nameRules" required></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md6>
                 <customer-select :customer-id.sync="contractInfo.customerId"></customer-select>
               </v-flex>
-              <v-flex xs12 sm6 md4>
+              <v-flex xs12 sm6 md6>
                 <v-select :items="$dict.contractType" label="合同类型*" v-model="contractInfo.type" required></v-select>
               </v-flex>
-              <v-flex xs12 sm6 md4>
+              <v-flex xs12 sm6 md6>
                 <v-menu v-model="signDateMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y full-width min-width="290px">
                   <template v-slot:activator="{ on }">
                     <v-text-field v-model="contractInfo.signDate" label="签订日期" readonly v-on="on"></v-text-field>
@@ -29,7 +29,7 @@
                   <v-date-picker v-model="contractInfo.signDate" :day-format="dayFormat" @input="signDateMenu = false"></v-date-picker>
                 </v-menu>
               </v-flex>
-              <v-flex xs12 sm6 md4>
+              <v-flex xs12 sm6 md6>
                 <v-menu v-model="closeDateMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y full-width min-width="290px">
                   <template v-slot:activator="{ on }">
                     <v-text-field v-model="contractInfo.closeDate" label="关闭日期" readonly v-on="on"></v-text-field>
@@ -37,8 +37,14 @@
                   <v-date-picker v-model="contractInfo.closeDate" :day-format="dayFormat" @input="closeDateMenu = false"></v-date-picker>
                 </v-menu>
               </v-flex>
-              <v-flex xs12 sm6 md4>
+              <v-flex xs12 sm6 md6>
                 <v-select :items="$dict.billingType" label="计费方式*" v-model="contractInfo.billingType" required></v-select>
+              </v-flex>
+              <v-flex xs12 sm6 md6>
+                <v-text-field label="冷藏费单价*" prefix="¥" :suffix="$util.billingTypeUnit(contractInfo.billingType)" v-model="contractInfo.unitPrice" :rules="priceRule" required></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6 md4>
+                <v-text-field label="最短天数" v-model="contractInfo.parameter1"></v-text-field>
               </v-flex>
               <v-flex xs12 sm12 md12>
                 <v-text-field label="备注" v-model="contractInfo.remark"></v-text-field>
@@ -82,7 +88,8 @@ export default {
       remark: ''
     },
     numberRules: [v => !!v || '请输入合同编号'],
-    nameRules: [v => !!v || '请输入合同名称']
+    nameRules: [v => !!v || '请输入合同名称'],
+    priceRule: [v => /^[0-9]+(.[0-9]{1,2})?$/.test(v) || '请输入正确冷藏费']
   }),
   methods: {
     init: function(id) {
@@ -95,7 +102,7 @@ export default {
           type: 1,
           signDate: '',
           closeDate: '',
-          billingType: 0,
+          billingType: 1,
           unitPrice: 0,
           remark: ''
         }
@@ -104,6 +111,9 @@ export default {
         this.$store.dispatch('getContract', id).then(res => {
           vm.contractInfo = res
           vm.contractInfo.signDate = vm.contractInfo.signDate.substr(0, 10)
+          if (vm.contractInfo.closeDate != null || vm.contractInfo.closeDate != '') {
+            vm.contractInfo.closeDate = vm.contractInfo.closeDate.substr(0, 10)
+          }
         })
       }
 
@@ -112,14 +122,43 @@ export default {
     },
 
     dayFormat: function(val) {
-      if (val == null || val == undefined) {
+      if (!!val) {
+        let date = new Date(val)
+        return date.getDate()
+      } else {
         return ''
       }
-      let date = new Date(val)
-      return date.getDate()
     },
 
-    submit() {}
+    submit() {
+      if (this.$refs.form.validate()) {
+        let vm = this
+        this.contractInfo.userId = this.$store.state.user.id
+        this.contractInfo.userName = this.$store.state.user.name
+
+        if (this.contractId == 0) {
+          this.$store.dispatch('createContract', this.contractInfo).then(res => {
+            if (res.status == 0) {
+              vm.$store.commit('alertSuccess', '添加合同成功')
+              vm.$emit('update')
+              vm.dialog = false
+            } else {
+              vm.$store.commit('alertError', res.errorMessage)
+            }
+          })
+        } else {
+          this.$store.dispatch('updateContract', this.contractInfo).then(res => {
+            if (res.status == 0) {
+              vm.$store.commit('alertSuccess', '修改合同成功')
+              vm.$emit('update')
+              vm.dialog = false
+            } else {
+              vm.$store.commit('alertError', res.errorMessage)
+            }
+          })
+        }
+      }
+    }
   }
 }
 </script>

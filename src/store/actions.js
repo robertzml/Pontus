@@ -7,10 +7,10 @@ export default {
     if (res.data.status == 0) {
       commit('login', {
         login: true,
-        id: 1,
+        id: res.data.entity.id,
         userName: payload.userName,
-        name: 'zml',
-        userGroupId: 1
+        name: res.data.entity.name,
+        userGroupId: res.data.entity.userGroupId
       })
     } else {
       commit('logout')
@@ -44,17 +44,6 @@ export default {
     return res.data
   },
 
-  /** 分类操作 */
-  async getCategoryList() {
-    const res = await axios._get({ url: '/category/list' })
-    return res.data
-  },
-
-  async getFirstCategory() {
-    const res = await axios._get({ url: '/category/getFirstCategory' })
-    return res.data
-  },
-
   /**
    * 合同操作
    */
@@ -65,6 +54,29 @@ export default {
 
   async getContract(context, id) {
     const res = await axios._get({ url: '/contract/get', params: { id: id } })
+    return res.data
+  },
+
+  async createContract(context, entity) {
+    const res = await axios._post({ url: '/contract/create', data: entity })
+    return res.data
+  },
+
+  async updateContract(context, entity) {
+    const res = await axios._post({ url: '/contract/update', data: entity })
+    return res.data
+  },
+
+  /**
+   * 分类操作
+   */
+  async getCategoryList() {
+    const res = await axios._get({ url: '/category/list' })
+    return res.data
+  },
+
+  async getFirstCategory() {
+    const res = await axios._get({ url: '/category/getFirstCategory' })
     return res.data
   },
 

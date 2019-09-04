@@ -1,5 +1,5 @@
 <template>
-  <v-autocomplete label="请选择客户" prepend-icon="people" :items="customerData" item-value="id" item-text="name" return-object @change="selectItem">
+  <v-autocomplete label="请选择客户" prepend-icon="people" v-model="sCustomerId" :filter="customFilter" :items="customerData" item-value="id" item-text="name" return-object :rules="customerRules" @change="selectItem">
     <template v-slot:selection="data">
       {{ data.item.number }} - {{ data.item.name }}
     </template>
@@ -21,12 +21,22 @@ export default {
     }
   },
   data: () => ({
-    customerData: []
+    customerData: [],
+    sCustomerId: null,
+    selectCustomer: null,
+    customerRules: [v => (!!v && v.id != 0) || '请选择客户']
   }),
   methods: {
+    customFilter(item, queryText) {
+      const textOne = item.name
+      const textTwo = item.number
+      const searchText = queryText
+
+      return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
+    },
+
     selectItem(val) {
-      console.log(val)
-      // this.customerId = val.id
+      this.selectCustomer = val
       this.$emit('update:customerId', val.id)
     }
   },
@@ -34,6 +44,7 @@ export default {
     let vm = this
     this.$store.dispatch('getCustomerList').then(res => {
       vm.customerData = res
+      vm.sCustomerId = vm.customerId
     })
   }
 }

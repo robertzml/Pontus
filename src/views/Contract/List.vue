@@ -11,10 +11,16 @@
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="contractListData" :search="search" :items-per-page="10">
             <template v-slot:item.type="{ item }">
-              {{ item.type }}
+              {{ item.type | contractType }}
             </template>
             <template v-slot:item.signDate="{ item }">
               {{ item.signDate | displayDate }}
+            </template>
+            <template v-slot:item.closeDate="{ item }">
+              {{ item.closeDate | displayDate }}
+            </template>
+            <template v-slot:item.billingType="{ item }">
+              {{ item.billingType | billingType }}
             </template>
             <template v-slot:item.action="{ item }">
               <v-btn small color="success" @click="viewItem(item)">

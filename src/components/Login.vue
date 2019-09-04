@@ -42,7 +42,6 @@ export default {
 
     submit() {
       if (this.$refs.form.validate()) {
-        let vm = this
         this.login(this.loginUser).then(res => {
           if (res.status != 0) {
             alert(res.errorMessage)
@@ -53,7 +52,7 @@ export default {
   },
   created: function() {
     let vm = this
-    document.onkeydown = function(e) {
+    document.onkeydown = function() {
       let key = window.event.keyCode
       if (key == 13) {
         vm.submit()

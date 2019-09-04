@@ -110,5 +110,14 @@ export default {
     } else {
       return ''
     }
+  },
+
+  billingTypeUnit: type => {
+    let bt = dict.billingType.find(r => r.value == type)
+    if (bt != undefined) {
+      return bt.unit
+    } else {
+      return ''
+    }
   }
 }
