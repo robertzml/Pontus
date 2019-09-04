@@ -9,7 +9,7 @@
           <v-form>
             <v-layout wrap>
               <v-flex md6>
-                <customer-select></customer-select>
+
               </v-flex>
               <v-flex md3>
                 <v-text-field label="合同编号" readonly></v-text-field>
@@ -23,13 +23,9 @@
 </template>
 
 <script>
-import CustomerSelect from '@/components/Customer/CustomerSelect'
-
 export default {
   name: 'StockInCreate',
-  components: {
-    CustomerSelect
-  },
+  components: {},
   data: () => ({})
 }
 </script>

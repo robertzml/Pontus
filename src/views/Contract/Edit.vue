@@ -15,8 +15,8 @@
               <v-flex xs12 sm6 md4>
                 <v-text-field label="合同名称*" v-model="contractInfo.name" :rules="nameRules" required></v-text-field>
               </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="所属客户" v-model="contractInfo.customerId"></v-text-field>
+              <v-flex xs12 sm6 md6>
+                <customer-select :customer-id.sync="contractInfo.customerId"></customer-select>
               </v-flex>
               <v-flex xs12 sm6 md4>
                 <v-select :items="$dict.contractType" label="合同类型*" v-model="contractInfo.type" required></v-select>
@@ -57,8 +57,13 @@
 </template>
 
 <script>
+import CustomerSelect from '@/components/Control/CustomerSelect'
+
 export default {
   name: 'ContractEdit',
+  components: {
+    CustomerSelect
+  },
   data: () => ({
     valid: true,
     dialog: false,
