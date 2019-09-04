@@ -90,5 +90,25 @@ export default {
     } else {
       return ''
     }
+  },
+
+  // 合同类型
+  contractType: type => {
+    let ct = dict.contractType.find(r => r.value == type)
+    if (ct != undefined) {
+      return ct.text
+    } else {
+      return ''
+    }
+  },
+
+  // 计费方式
+  billingType: type => {
+    let bt = dict.billingType.find(r => r.value == type)
+    if (bt != undefined) {
+      return bt.text
+    } else {
+      return ''
+    }
   }
 }

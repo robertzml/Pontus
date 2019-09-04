@@ -25,5 +25,15 @@ export default {
   /**
    * 货架类型
    */
-  shelfType: [{ text: '普通货架', value: 1 }, { text: '仓位货架', value: 2 }, { text: '虚拟货架', value: 3 }]
+  shelfType: [{ text: '普通货架', value: 1 }, { text: '仓位货架', value: 2 }, { text: '虚拟货架', value: 3 }],
+
+  /**
+   * 合同类型
+   */
+  contractType: [{ text: '计时冷藏合同', value: 1 }],
+
+  /**
+   * 计费类型
+   */
+  billingType: [{ text: '件重', value: 1 }]
 }

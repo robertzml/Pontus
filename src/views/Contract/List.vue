@@ -13,6 +13,9 @@
             <template v-slot:item.type="{ item }">
               {{ item.type }}
             </template>
+            <template v-slot:item.signDate="{ item }">
+              {{ item.signDate | displayDate }}
+            </template>
             <template v-slot:item.action="{ item }">
               <v-btn small color="success" @click="viewItem(item)">
                 <v-icon left dark>pageview</v-icon>

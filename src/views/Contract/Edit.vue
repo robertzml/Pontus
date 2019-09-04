@@ -19,23 +19,28 @@
                 <v-text-field label="所属客户" v-model="contractInfo.customerId"></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-text-field label="合同类型" v-model="contractInfo.type"></v-text-field>
+                <v-select :items="$dict.contractType" label="合同类型*" v-model="contractInfo.type" required></v-select>
               </v-flex>
               <v-flex xs12 sm6 md4>
                 <v-menu v-model="signDateMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y full-width min-width="290px">
                   <template v-slot:activator="{ on }">
-                    <v-text-field v-model="contractInfo.signDate" label="签订日期" prepend-icon="event" readonly v-on="on"></v-text-field>
+                    <v-text-field v-model="contractInfo.signDate" label="签订日期" readonly v-on="on"></v-text-field>
                   </template>
-                  <v-date-picker v-model="contractInfo.signDate" @input="signDateMenu = false"></v-date-picker>
+                  <v-date-picker v-model="contractInfo.signDate" :day-format="dayFormat" @input="signDateMenu = false"></v-date-picker>
                 </v-menu>
               </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-text-field label="关闭日期" v-model="contractInfo.closeDate"></v-text-field>
+                <v-menu v-model="closeDateMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y full-width min-width="290px">
+                  <template v-slot:activator="{ on }">
+                    <v-text-field v-model="contractInfo.closeDate" label="关闭日期" readonly v-on="on"></v-text-field>
+                  </template>
+                  <v-date-picker v-model="contractInfo.closeDate" :day-format="dayFormat" @input="closeDateMenu = false"></v-date-picker>
+                </v-menu>
               </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-select :items="$dict.customerType" label="客户类型*" v-model="contractInfo.type" required></v-select>
+                <v-select :items="$dict.billingType" label="计费方式*" v-model="contractInfo.billingType" required></v-select>
               </v-flex>
-              <v-flex xs12 sm6 md8>
+              <v-flex xs12 sm12 md12>
                 <v-text-field label="备注" v-model="contractInfo.remark"></v-text-field>
               </v-flex>
             </v-layout>
@@ -58,6 +63,7 @@ export default {
     valid: true,
     dialog: false,
     signDateMenu: false,
+    closeDateMenu: false,
     contractId: 0,
     contractInfo: {
       number: '',
@@ -66,7 +72,7 @@ export default {
       type: 1,
       signDate: '',
       closeDate: '',
-      billingType: 0,
+      billingType: 1,
       unitPrice: 0,
       remark: ''
     },
@@ -98,6 +104,14 @@ export default {
 
       this.dialog = true
       this.$refs.form.resetValidation()
+    },
+
+    dayFormat: function(val) {
+      if (val == null || val == undefined) {
+        return ''
+      }
+      let date = new Date(val)
+      return date.getDate()
     },
 
     submit() {}

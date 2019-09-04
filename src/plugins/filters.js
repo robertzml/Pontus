@@ -19,6 +19,14 @@ const filters = Vue => {
     return util.customerType(val)
   })
 
+  Vue.filter('contractType', function(val) {
+    return util.contractType(val)
+  })
+
+  Vue.filter('billingType', function(val) {
+    return util.billingType(val)
+  })
+
   Vue.filter('warehouseType', function(val) {
     return util.warehouseType(val)
   })
