@@ -59,6 +59,11 @@ export default new Router({
       path: '/usergroup',
       name: 'usergroup',
       component: () => import('./views/UserGroup/Index.vue')
+    },
+    {
+      path: '/sequenceTemplate',
+      name: 'sequenceTemplate',
+      component: () => import('./views/SequenceTemplate/Index.vue')
     }
   ]
 })

@@ -193,5 +193,36 @@ export default {
   async getUserGroupList() {
     const res = await axios._get({ url: '/usergroup/list' })
     return res.data
+  },
+
+  /**
+   * 编号模板操作
+   */
+  async getSequenceTemplateList() {
+    const res = await axios._get({ url: '/sequenceTemplate/list' })
+    return res.data
+  },
+
+  async getSequenceTemplate(context, id) {
+    const res = await axios._get({ url: '/sequenceTemplate/get', params: { id: id } })
+    return res.data
+  },
+
+  async createSequenceTemplate(context, entity) {
+    const res = await axios._post({ url: '/sequenceTemplate/create', data: entity })
+    return res.data
+  },
+
+  /**
+   * 工具类
+   */
+  async getTableList() {
+    const res = await axios._get({ url: '/utility/getTables' })
+    return res.data
+  },
+
+  async getColumnList(context, tableName) {
+    const res = await axios._get({ url: '/utility/getColumns', params: { tableName: tableName } })
+    return res.data
   }
 }

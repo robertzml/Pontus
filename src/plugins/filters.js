@@ -15,6 +15,14 @@ const filters = Vue => {
     return util.displayDate(date)
   })
 
+  Vue.filter('displayBoolean1', function(val) {
+    if (val == null || val == undefined) {
+      return ''
+    }
+
+    return val ? '是' : '否'
+  })
+
   Vue.filter('customerType', function(val) {
     return util.customerType(val)
   })

@@ -86,7 +86,13 @@ export default {
             { text: '用户组列表', model: false, name: 'usergroup' }
           ]
         },
-        { icon: 'settings', text: 'Settings' },
+        {
+          icon: 'settings',
+          'icon-alt': 'settings',
+          text: '系统设置',
+          model: false,
+          children: [{ text: '编号模板', model: false, name: 'sequenceTemplate' }]
+        },
         { icon: 'help', text: '关于', name: 'about' }
       ]
     }
