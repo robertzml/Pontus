@@ -96,6 +96,8 @@ export default {
         let vm = this
         this.$store.dispatch('getSequenceTemplate', sequenceId).then(res => {
           vm.sequenceInfo = res
+
+          vm.loadColumnNames(vm.sequenceInfo.tableName)
         })
       }
 
@@ -111,11 +113,15 @@ export default {
       })
     },
 
-    selectTable(val) {
+    loadColumnNames(val) {
       let vm = this
       this.$store.dispatch('getColumnList', val).then(res => {
         vm.fieldItems = res
       })
+    },
+
+    selectTable(val) {
+      this.loadColumnNames(val)
     },
 
     submit() {

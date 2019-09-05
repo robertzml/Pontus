@@ -213,6 +213,10 @@ export default {
     return res.data
   },
 
+  async updateSequenceTemplate(context, entity) {
+    const res = await axios._post({ url: '/sequenceTemplate/update', data: entity })
+    return res.data
+  },
   /**
    * 工具类
    */

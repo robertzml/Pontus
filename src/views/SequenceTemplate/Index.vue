@@ -7,6 +7,7 @@
 
         <v-toolbar-items>
           <v-btn v-if="window == 'details'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
+          <v-btn v-if="window == 'list'" text @click.stop="refresh">刷新</v-btn>
           <v-btn v-if="window == 'details'" text @click.stop="showEdit">编辑模板</v-btn>
           <v-btn text @click.stop="showCreate">添加模板</v-btn>
         </v-toolbar-items>
@@ -18,6 +19,7 @@
           <sequence-template-list ref="listMod" @toDetails="toDetails"></sequence-template-list>
         </v-window-item>
         <v-window-item value="details" :eager="true">
+          <sequence-template-details ref="detailsMod"></sequence-template-details>
         </v-window-item>
       </v-window>
     </v-flex>
@@ -29,12 +31,14 @@
 <script>
 import SequenceTemplateList from './List'
 import SequenceTemplateEdit from './Edit'
+import SequenceTemplateDetails from './Details'
 
 export default {
   name: 'SequenceTemplateIndex',
   components: {
     SequenceTemplateList,
-    SequenceTemplateEdit
+    SequenceTemplateEdit,
+    SequenceTemplateDetails
   },
   data: () => ({
     window: 'list',
@@ -44,7 +48,7 @@ export default {
     toDetails(id) {
       this.window = 'details'
       this.currentSequenceId = id
-      //this.$refs.detailsMod.getInfo(id)
+      this.$refs.detailsMod.getInfo(id)
     },
     toList() {
       this.window = 'list'
@@ -60,7 +64,7 @@ export default {
 
     refresh() {
       if (this.currentSequenceId != 0) {
-        // this.$refs.detailsMod.getInfo(this.currentSequenceId)
+        this.$refs.detailsMod.getInfo(this.currentSequenceId)
       } else {
         this.$refs.listMod.loadList()
       }
