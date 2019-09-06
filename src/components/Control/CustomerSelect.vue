@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import customer from '@/controllers/customer'
+
 export default {
   name: 'CustomerSelect',
   props: {
@@ -47,7 +49,7 @@ export default {
   },
   mounted: function() {
     let vm = this
-    this.$store.dispatch('getCustomerList').then(res => {
+    customer.getList().then(res => {
       vm.customerData = res
       vm.sCustomerId = vm.customerId
     })

@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import customer from '@/controllers/customer'
+
 export default {
   name: 'CustomerEdit',
   data: () => ({
@@ -82,7 +84,7 @@ export default {
         }
       } else {
         let vm = this
-        this.$store.dispatch('getCustomer', customerId).then(res => {
+        customer.get(customerId).then(res => {
           vm.customerInfo = res
         })
       }
@@ -94,7 +96,7 @@ export default {
       if (this.$refs.form.validate()) {
         let vm = this
         if (this.customerId == 0) {
-          this.$store.dispatch('createCustomer', this.customerInfo).then(res => {
+          customer.create(this.customerInfo).then(res => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '添加客户信息成功')
               vm.$emit('update')
@@ -104,7 +106,7 @@ export default {
             }
           })
         } else {
-          this.$store.dispatch('updateCustomer', this.customerInfo).then(res => {
+          customer.update(this.customerInfo).then(res => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '修改客户信息成功')
               vm.$emit('update')

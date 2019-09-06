@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import customer from '@/controllers/customer'
 import { mapMutations } from 'vuex'
 
 export default {
@@ -66,7 +67,7 @@ export default {
       }
 
       let vm = this
-      this.$store.dispatch('getCustomer', id).then(res => {
+      customer.get(id).then(res => {
         vm.info = res
       })
     }

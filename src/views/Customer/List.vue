@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import customer from '@/controllers/customer'
+
 export default {
   name: 'CustomerList',
   data: () => ({
@@ -46,7 +48,7 @@ export default {
   methods: {
     loadList() {
       let vm = this
-      this.$store.dispatch('getCustomerList').then(res => {
+      customer.getList().then(res => {
         vm.customerData = res
       })
     },

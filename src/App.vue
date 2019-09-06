@@ -6,14 +6,15 @@
     <v-content>
       <v-container fluid grid-list-md>
         <router-view></router-view>
-        <v-snackbar v-model="alertMessage.display" :color="alertMessage.color" :timeout="5000" right top>
-          {{ alertMessage.text }}
-          <v-btn color="pink" small text icon @click="alertClose">
-            <v-icon>close</v-icon>
-          </v-btn>
-        </v-snackbar>
       </v-container>
     </v-content>
+
+    <v-snackbar v-model="alertMessage.display" :color="alertMessage.color" :timeout="5000" right top>
+      {{ alertMessage.text }}
+      <v-btn color="pink" small text icon @click="alertClose">
+        <v-icon>close</v-icon>
+      </v-btn>
+    </v-snackbar>
   </v-app>
   <v-app id="login" v-else>
     <login></login>

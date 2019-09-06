@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import contract from '@/controllers/contract'
 import CustomerSelect from '@/components/Control/CustomerSelect'
 
 export default {
@@ -108,7 +109,7 @@ export default {
         }
       } else {
         let vm = this
-        this.$store.dispatch('getContract', id).then(res => {
+        contract.get(id).then(res => {
           vm.contractInfo = res
           vm.contractInfo.signDate = vm.contractInfo.signDate.substr(0, 10)
           if (vm.contractInfo.closeDate != null || vm.contractInfo.closeDate != '') {
@@ -122,7 +123,7 @@ export default {
     },
 
     dayFormat: function(val) {
-      if (!!val) {
+      if (val != null || val != undefined) {
         let date = new Date(val)
         return date.getDate()
       } else {
@@ -144,7 +145,7 @@ export default {
         this.contractInfo.userName = this.$store.state.user.name
 
         if (this.contractId == 0) {
-          this.$store.dispatch('createContract', this.contractInfo).then(res => {
+          contract.create(this.contractInfo).then(res => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '添加合同成功')
               vm.$emit('update')
@@ -154,7 +155,7 @@ export default {
             }
           })
         } else {
-          this.$store.dispatch('updateContract', this.contractInfo).then(res => {
+          contract.update(this.contractInfo).then(res => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '修改合同成功')
               vm.$emit('update')

@@ -23,50 +23,6 @@ export default {
     commit('logout')
   },
 
-  /** 客户操作 */
-  async getCustomer(context, id) {
-    const res = await axios._get({ url: '/customer/get', params: { id: id } })
-    return res.data
-  },
-
-  async getCustomerList() {
-    const res = await axios._get({ url: '/customer/list' })
-    return res.data
-  },
-
-  async createCustomer(context, entity) {
-    const res = await axios._post({ url: '/customer/create', data: entity })
-    return res.data
-  },
-
-  async updateCustomer(context, entity) {
-    const res = await axios._post({ url: '/customer/update', data: entity })
-    return res.data
-  },
-
-  /**
-   * 合同操作
-   */
-  async getContractList() {
-    const res = await axios._get({ url: '/contract/list' })
-    return res.data
-  },
-
-  async getContract(context, id) {
-    const res = await axios._get({ url: '/contract/get', params: { id: id } })
-    return res.data
-  },
-
-  async createContract(context, entity) {
-    const res = await axios._post({ url: '/contract/create', data: entity })
-    return res.data
-  },
-
-  async updateContract(context, entity) {
-    const res = await axios._post({ url: '/contract/update', data: entity })
-    return res.data
-  },
-
   /**
    * 分类操作
    */

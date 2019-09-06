@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import contract from '@/controllers/contract'
+
 export default {
   name: 'ContractList',
   data: () => ({
@@ -56,7 +58,7 @@ export default {
   methods: {
     loadList() {
       let vm = this
-      this.$store.dispatch('getContractList').then(res => {
+      contract.getList().then(res => {
         vm.contractListData = res
       })
     },
