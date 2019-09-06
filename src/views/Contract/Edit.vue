@@ -10,7 +10,7 @@
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-layout wrap>
               <v-flex xs12 sm6 md6>
-                <v-text-field label="合同编号*" v-model="contractInfo.number" :rules="numberRules" required></v-text-field>
+                <v-text-field label="合同编号*" v-model="contractInfo.number" :rules="numberRules" readonly></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md6>
                 <v-text-field label="合同名称*" v-model="contractInfo.name" :rules="nameRules" required></v-text-field>
@@ -26,7 +26,7 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field v-model="contractInfo.signDate" label="签订日期" readonly v-on="on"></v-text-field>
                   </template>
-                  <v-date-picker v-model="contractInfo.signDate" :day-format="dayFormat" @input="signDateMenu = false"></v-date-picker>
+                  <v-date-picker v-model="contractInfo.signDate" :day-format="dayFormat" @input="signDateMenu = false" @change="selectSignDate"></v-date-picker>
                 </v-menu>
               </v-flex>
               <v-flex xs12 sm6 md6>
@@ -128,6 +128,13 @@ export default {
       } else {
         return ''
       }
+    },
+
+    selectSignDate(val) {
+      let vm = this
+      this.$store.dispatch('getNextSequence', { tableName: 'Contract', dt: val }).then(res => {
+        vm.contractInfo.number = res
+      })
     },
 
     submit() {

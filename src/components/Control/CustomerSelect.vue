@@ -36,8 +36,13 @@ export default {
     },
 
     selectItem(val) {
-      this.selectCustomer = val
-      this.$emit('update:customerId', val.id)
+      if (val == null || val == undefined) {
+        this.selectCustomer = null
+        this.$emit('update:customerId', 0)
+      } else {
+        this.selectCustomer = val
+        this.$emit('update:customerId', val.id)
+      }
     }
   },
   mounted: function() {

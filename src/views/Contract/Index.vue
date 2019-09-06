@@ -7,6 +7,7 @@
 
         <v-toolbar-items>
           <v-btn v-if="window=='details'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
+          <v-btn v-if="window == 'list'" text @click.stop="refresh">刷新</v-btn>
           <v-btn v-if="window=='details'" text @click.stop="showEdit">编辑合同</v-btn>
           <v-btn text @click.stop="showCreate">添加合同</v-btn>
         </v-toolbar-items>
@@ -60,6 +61,14 @@ export default {
     },
     showEdit() {
       this.$refs.contractEditMod.init(this.currentContractId)
+    },
+
+    refresh() {
+      if (this.currentContractId != 0) {
+        this.$refs.detailsMod.getInfo(this.currentContractId)
+      } else {
+        this.$refs.listMod.loadList()
+      }
     }
   }
 }
