@@ -174,28 +174,6 @@ export default {
   },
 
   /**
-   *  用户操作
-   */
-  async getUserList() {
-    const res = await axios._get({ url: '/user/list' })
-    return res.data
-  },
-
-  async enableUser(context, data) {
-    const res = await axios._postqs({
-      url: '/user/enable',
-      params: data
-    })
-    return res.data
-  },
-
-  /** 用户组操作 */
-  async getUserGroupList() {
-    const res = await axios._get({ url: '/usergroup/list' })
-    return res.data
-  },
-
-  /**
    * 编号模板操作
    */
   async getSequenceTemplateList() {

@@ -40,6 +40,9 @@
 </template>
 
 <script>
+import user from '@/controllers/user'
+import userGroup from '@/controllers/userGroup'
+
 export default {
   name: 'UserIndex',
   data: () => ({
@@ -60,13 +63,13 @@ export default {
   methods: {
     loadUser() {
       let vm = this
-      this.$store.dispatch('getUserList').then(res => {
+      user.getList().then(res => {
         vm.userList = res
       })
     },
     loadUserGroup() {
       let vm = this
-      this.$store.dispatch('getUserGroupList').then(res => {
+      userGroup.getList().then(res => {
         vm.userGroupList = res
       })
     },
@@ -76,11 +79,9 @@ export default {
         return
       }
 
-      this.$store
-        .dispatch('enableUser', { id: this.selectedUser[0].id, enable: true })
-        .then(() => {
-          this.loadUser()
-        })
+      user.enable({ id: this.selectedUser[0].id, enable: true }).then(() => {
+        this.loadUser()
+      })
     },
 
     disableUser() {
@@ -88,11 +89,9 @@ export default {
         return
       }
 
-      this.$store
-        .dispatch('enableUser', { id: this.selectedUser[0].id, enable: false })
-        .then(() => {
-          this.loadUser()
-        })
+      user.enable({ id: this.selectedUser[0].id, enable: false }).then(() => {
+        this.loadUser()
+      })
     }
   },
   mounted: function() {

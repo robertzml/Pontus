@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import userGroup from '@/controllers/userGroup'
+
 export default {
   name: 'UserGroupIndex',
   data: () => ({
@@ -42,7 +44,7 @@ export default {
   methods: {
     loadUserGroup() {
       let vm = this
-      this.$store.dispatch('getUserGroupList').then(res => {
+      userGroup.getList().then(res => {
         vm.userGroupData = res
       })
     }
