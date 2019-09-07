@@ -3,8 +3,8 @@ import * as axios from '../axios'
 export default {
   name: 'contract',
 
-  async getList() {
-    const res = await axios._get({ url: '/contract/list' })
+  async getList(customerId) {
+    const res = await axios._get({ url: '/contract/list', params: { customerId: customerId } })
     return res.data
   },
 

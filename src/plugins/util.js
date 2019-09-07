@@ -44,6 +44,15 @@ export default {
     }
   },
 
+  pickerDayFormat: val => {
+    if (val != null || val != undefined) {
+      let date = new Date(val)
+      return date.getDate()
+    } else {
+      return ''
+    }
+  },
+
   // 实体状态
   entityStatus: statue => {
     if (statue == undefined || statue == null) {
