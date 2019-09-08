@@ -12,5 +12,8 @@ export default {
     display: false,
     text: '',
     color: 'info'
-  }
+  },
+
+  // 实体状态
+  entityStatus: []
 }

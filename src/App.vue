@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import HeaderBar from '@/components/HeaderBar'
 import NavigationBar from '@/components/NavigationBar'
 import Login from '@/components/Login'
@@ -41,10 +41,12 @@ export default {
     ...mapGetters(['isLogin', 'alertMessage'])
   },
   methods: {
+    ...mapActions(['initDict']),
     ...mapMutations(['getToken', 'alertClose'])
   },
   mounted: function() {
     this.getToken()
+    this.initDict()
   }
 }
 </script>

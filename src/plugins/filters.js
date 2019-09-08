@@ -1,10 +1,11 @@
 //import moment from 'moment'
 import util from './util'
+import store from '../store/index'
 
 const filters = Vue => {
   // 实体状态
   Vue.filter('displayStatus', function(val) {
-    return util.entityStatus(val)
+    return store.getters.entityStatus(val)
   })
 
   Vue.filter('displayDateTime', function(date) {

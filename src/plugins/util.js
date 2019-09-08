@@ -1,6 +1,7 @@
 // 辅助工具类
 import moment from 'moment'
 import dict from './dict'
+import store from '../store/index'
 
 export default {
   treeListTransform(source) {
@@ -28,6 +29,10 @@ export default {
     return tree
   },
 
+  displayStatus(val) {
+    return store.getters.entityStatus(val)
+  },
+
   displayDateTime(date) {
     if (date === null || date === '') {
       return ''
@@ -50,24 +55,6 @@ export default {
       return date.getDate()
     } else {
       return ''
-    }
-  },
-
-  // 实体状态
-  entityStatus: statue => {
-    if (statue == undefined || statue == null) {
-      return ''
-    }
-
-    switch (statue) {
-      case 0:
-        return '正常'
-      case 1:
-        return '删除'
-      case 2:
-        return '禁用'
-      default:
-        return '未知'
     }
   },
 

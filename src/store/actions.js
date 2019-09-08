@@ -23,6 +23,13 @@ export default {
     commit('logout')
   },
 
+  /** 初始化字典 */
+  initDict({ commit }) {
+    axios._get({ url: '/utility/getEntityStatus' }).then(res => {
+      commit('entityStatus', res.data)
+    })
+  },
+
   /**
    * 分类操作
    */

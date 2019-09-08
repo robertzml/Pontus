@@ -21,7 +21,7 @@
                 <v-text-field v-model="info.customerName" label="客户名称" readonly></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
-                <v-text-field v-model="info.type" label="合同类型" readonly></v-text-field>
+                <v-text-field :value="$util.contractType(info.type)" label="合同类型" readonly></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
                 <v-text-field :value="$util.displayDate(info.signDate)" label="签订日期" readonly></v-text-field>
@@ -38,8 +38,12 @@
               <v-flex xs6 md3>
                 <v-text-field v-model="info.unitPrice" label="冷藏费单价" readonly></v-text-field>
               </v-flex>
+              <v-flex xs6 md3>
+                <v-text-field :value="$util.displayStatus(info.status)" label="状态" readonly></v-text-field>
+              </v-flex>
               <v-flex xs12 md12>
-                <v-textarea label="备注" :value="info.remark" readonly auto-grow></v-textarea>
+                <v-textarea label=" 备注" :value="info.remark" readonly auto-grow rows="1">
+                </v-textarea>
               </v-flex>
             </v-layout>
           </v-form>

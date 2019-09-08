@@ -44,5 +44,9 @@ export default {
 
   alertClose: state => {
     state.alertMessage.display = false
+  },
+
+  entityStatus: (state, data) => {
+    state.entityStatus = data
   }
 }
