@@ -108,6 +108,7 @@ export default {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加入库成功')
             vm.$emit('update')
+            this.showWindow('list')
           } else {
             vm.$store.commit('alertError', res.errorMessage)
           }

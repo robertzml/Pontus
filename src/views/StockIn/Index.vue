@@ -15,10 +15,10 @@
 
     <v-flex xs12 md12>
       <v-window v-model="window">
-        <v-window-item value="list">
-
+        <v-window-item value="list" eager>
+          <stock-in-list ref="listMod"></stock-in-list>
         </v-window-item>
-        <v-window-item value="create" :eager="true">
+        <v-window-item value="create" eager>
           <stock-in-create-position ref="createMod"></stock-in-create-position>
         </v-window-item>
       </v-window>
@@ -27,15 +27,17 @@
 </template>
 
 <script>
+import StockInList from './List'
 import StockInCreatePosition from './CreatePosition'
 
 export default {
   name: 'StockInIndex',
   components: {
+    StockInList,
     StockInCreatePosition
   },
   data: () => ({
-    window: ''
+    window: 'list'
   }),
   methods: {
     // 切换视图
@@ -43,13 +45,17 @@ export default {
       this.window = window
       switch (window) {
         case 'details':
-          this.currentWarehouseId = id
-          this.$refs.detailsMod.getInfo(id)
+          //this.currentWarehouseId = id
+          //this.$refs.detailsMod.getInfo(id)
           break
         case 'list':
-          this.currentWarehouseId = 0
+          //this.currentWarehouseId = 0
           break
       }
+    },
+
+    toList() {
+      this.window = 'list'
     },
 
     toCreate() {
