@@ -8,7 +8,7 @@
         <v-toolbar-items>
           <v-btn v-if="window == 'create'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
           <v-btn v-if="window == 'details'" text @click.stop="showEdit">编辑合同</v-btn>
-          <v-btn text @click.stop="toCreate" :show-window="showWindow">仓位库入库</v-btn>
+          <v-btn text @click.stop="toCreatePosition">仓位库入库</v-btn>
         </v-toolbar-items>
       </v-toolbar>
     </v-flex>
@@ -17,17 +17,22 @@
       <stock-in-list ref="listMod" @activate="showDetails"></stock-in-list>
     </v-flex>
     <v-flex xs9 md9>
-      <stock-in-details ref="detailsMod"></stock-in-details>
+      <v-expansion-panels>
+        <v-expansion-panel>
+          <v-expansion-panel-header ripple>入库信息</v-expansion-panel-header>
+          <v-expansion-panel-content eager>
+            <stock-in-details ref="detailsMod" :show-title="false"></stock-in-details>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
     </v-flex>
+
+    <v-dialog v-model="createPositionDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+      <stock-in-create-position ref="createMod" @close="closeCreatePosition"></stock-in-create-position>
+    </v-dialog>
 
     <v-flex xs12 md12>
       <v-window v-model="window">
-        <v-window-item value="list" eager>
-
-        </v-window-item>
-        <v-window-item value="create" eager>
-          <stock-in-create-position ref="createMod"></stock-in-create-position>
-        </v-window-item>
       </v-window>
     </v-flex>
   </v-layout>
@@ -46,7 +51,8 @@ export default {
     StockInDetails
   },
   data: () => ({
-    window: 'list'
+    window: 'list',
+    createPositionDialog: false
   }),
   methods: {
     // 切换视图
@@ -71,8 +77,16 @@ export default {
       this.window = 'list'
     },
 
-    toCreate() {
-      this.window = 'create'
+    toCreatePosition() {
+      this.createPositionDialog = true
+    },
+
+    closeCreatePosition(update) {
+      if (update) {
+        this.$refs.listMod.init()
+      }
+
+      this.createPositionDialog = false
     }
   }
 }
