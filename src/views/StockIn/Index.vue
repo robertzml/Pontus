@@ -7,7 +7,7 @@
 
         <v-toolbar-items>
           <v-btn v-if="window == 'create'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
-          <v-btn v-if="window == 'details'" text @click.stop="showEdit">编辑合同</v-btn>
+          <v-btn text @click.stop="toEditTask">任务设置</v-btn>
           <v-btn text @click.stop="toCreate">仓位库入库</v-btn>
         </v-toolbar-items>
       </v-toolbar>
@@ -34,6 +34,9 @@
     <v-flex xs12 md12>
       <v-window v-model="window">
       </v-window>
+      <v-window v-model="editTask">
+        <stock-in-edit-task ref="editTaskMod"></stock-in-edit-task>
+      </v-window>
     </v-flex>
   </v-layout>
 </template>
@@ -42,13 +45,15 @@
 import StockInList from './List'
 import StockInCreate from './Create'
 import StockInDetails from './Details'
+import StockInEditTask from './EditTask'
 
 export default {
   name: 'StockInIndex',
   components: {
     StockInList,
     StockInCreate,
-    StockInDetails
+    StockInDetails,
+    StockInEditTask
   },
   data: () => ({
     window: 'list',
@@ -67,6 +72,9 @@ export default {
         case 'list':
           //this.currentWarehouseId = 0
           break
+        case 'editTask':
+          this.$refs.editTaskMod.init(id)
+          break
       }
     },
 
@@ -81,6 +89,12 @@ export default {
 
     toCreate() {
       this.createDialog = true
+    },
+
+    toEditTask() {
+      if (this.currentStockInId != '') {
+        this.showWindow(this.currentStockInId)
+      }
     },
 
     closeCreate(update) {
