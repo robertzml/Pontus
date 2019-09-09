@@ -25,12 +25,16 @@
               </v-menu>
             </v-col>
 
-            <v-col cols="6" md="6" sm="6">
+            <v-col cols="6" md="2" sm="6">
+              <v-select :items="$dict.stockInType" label="入库类型*" v-model="stockInInfo.type"></v-select>
+            </v-col>
+
+            <v-col cols="6" md="4" sm="6">
               <customer-select :customer-id.sync="stockInInfo.customerId"></customer-select>
             </v-col>
 
             <v-col cols="12" md="4" sm="6">
-              <v-select :items="contractListData" label="选择合同*" :hint="`${selectedContract.number}`" item-text="name" item-value="id" v-model="selectedContract" persistent-hint return-object></v-select>
+              <v-select :items="contractListData" label="选择合同*" :rules="contractRules" :hint="`${selectedContract.number}`" item-text="name" item-value="id" v-model="selectedContract" persistent-hint return-object></v-select>
             </v-col>
 
             <v-col cols="12" md="12" sm="12">
@@ -55,7 +59,7 @@ import contract from '@/controllers/contract'
 import CustomerSelect from '@/components/Control/CustomerSelect'
 
 export default {
-  name: 'StockInCreatePosition',
+  name: 'StockInCreate',
   components: {
     CustomerSelect
   },
@@ -72,7 +76,7 @@ export default {
       inTime: null,
       monthTime: '',
       flowNumber: '',
-      type: 0,
+      type: 1,
       customerId: 0,
       contractId: 0,
       userId: 0,
@@ -80,7 +84,8 @@ export default {
       remark: ''
     },
     selectedContract: { number: '' },
-    contractListData: []
+    contractListData: [],
+    contractRules: [v => !!v.id || '请选择合同']
   }),
   watch: {
     'stockInInfo.customerId': function(val) {
@@ -89,7 +94,17 @@ export default {
   },
   methods: {
     init: function() {
-      this.stockInInfo.inTime = new Date().toISOString().substr(0, 10)
+      this.stockInInfo = {
+        inTime: new Date().toISOString().substr(0, 10),
+        monthTime: '',
+        flowNumber: '',
+        type: 1,
+        customerId: 0,
+        contractId: 0,
+        userId: 0,
+        userName: '',
+        remark: ''
+      }
       this.$refs.form.resetValidation()
     },
 
@@ -109,7 +124,6 @@ export default {
       if (this.$refs.form.validate()) {
         let vm = this
         this.stockInInfo.contractId = this.selectedContract.id
-        this.stockInInfo.type = 2
         this.stockInInfo.userId = this.$store.state.user.id
         this.stockInInfo.userName = this.$store.state.user.name
 
