@@ -24,7 +24,7 @@
                 <v-text-field v-model="warehouseInfo.remark" label="备注" readonly></v-text-field>
               </v-flex>
               <v-flex md4>
-                <v-text-field :value="$util.entityStatus(warehouseInfo.status)" label="状态" readonly></v-text-field>
+                <v-text-field :value="$util.displayStatus(warehouseInfo.status)" label="状态" readonly></v-text-field>
               </v-flex>
             </v-layout>
           </v-form>

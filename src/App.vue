@@ -4,7 +4,7 @@
     <header-bar :drawer.sync="drawer"></header-bar>
 
     <v-content>
-      <v-container fluid grid-list-md>
+      <v-container fluid class="grid-list-md">
         <router-view></router-view>
       </v-container>
     </v-content>

@@ -1,12 +1,12 @@
 <template>
   <v-layout wrap>
-    <v-flex xs3 md3>
+    <v-flex xs12 md12>
       <v-card class="mx-auto">
         <v-card-title class="orange">
           入库列表
         </v-card-title>
         <v-card-text class="px-0">
-          <v-treeview :items="monthTime" :load-children="fetchStockIn" :active.sync="active" activatable open-on-click transition>
+          <v-treeview :items="monthTime" :load-children="fetchStockIn" @update:active="showActive" :active.sync="active" activatable open-on-click transition>
             <template v-slot:prepend="{ item, active }">
               <v-icon v-if="!item.children">markunread</v-icon>
             </template>
@@ -50,12 +50,12 @@ export default {
           })
         })
       })
+    },
 
-      /*
-        return fetch('https://jsonplaceholder.typicode.com/users')
-          .then(res => res.json())
-          .then(json => (item.children.push(...json)))
-          .catch(err => console.warn(err))*/
+    showActive(item) {
+      if (item.length > 0) {
+        this.$emit('activate', item[0])
+      }
     }
   },
   mounted: function() {

@@ -34,7 +34,7 @@ export default {
   },
 
   displayDateTime(date) {
-    if (date === null || date === '') {
+    if (date === null || date == undefined || date === '') {
       return ''
     } else {
       return moment(date).format('YYYY-MM-DD HH:mm:ss')
@@ -42,7 +42,7 @@ export default {
   },
 
   displayDate(date) {
-    if (date === null || date === '') {
+    if (date === null || date == undefined || date === '') {
       return ''
     } else {
       return moment(date).format('YYYY-MM-DD')
@@ -112,6 +112,16 @@ export default {
     let bt = dict.billingType.find(r => r.value == type)
     if (bt != undefined) {
       return bt.unit
+    } else {
+      return ''
+    }
+  },
+
+  // 入库类型
+  stockInType: type => {
+    let st = dict.stockInType.find(r => r.value == type)
+    if (st != undefined) {
+      return st.text
     } else {
       return ''
     }

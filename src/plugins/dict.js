@@ -34,5 +34,8 @@ export default {
     { text: '非等重', value: 3, unit: '元/(吨*天)' },
     { text: '仓位', value: 4, unit: '元/(仓位*天)' },
     { text: '板位', value: 5, unit: '元/(板位*天)' }
-  ]
+  ],
+
+  /** 入库类型 */
+  stockInType: [{ text: '普通库入库', value: 1 }, { text: '仓位库入库', value: 2 }]
 }
