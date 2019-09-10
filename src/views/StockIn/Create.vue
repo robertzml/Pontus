@@ -1,18 +1,9 @@
 <template>
   <v-card>
-    <v-toolbar color="primary">
-      <v-btn icon @click="cancel">
-        <v-icon>close</v-icon>
-      </v-btn>
-      <v-toolbar-title>仓位库入库</v-toolbar-title>
-      <div class="flex-grow-1"></div>
-      <v-toolbar-items>
-        <v-btn text @click="submit">保存</v-btn>
-      </v-toolbar-items>
-    </v-toolbar>
-
+    <v-card-title>
+      仓位库入库
+    </v-card-title>
     <v-card-text>
-      <v-subheader>入库信息</v-subheader>
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-container fluid>
           <v-row>
@@ -113,11 +104,14 @@ export default {
       let vm = this
       contract.getList(customerId).then(res => {
         vm.contractListData = res
+        if (res.length > 0) {
+          vm.selectedContract = res[0]
+        }
       })
     },
 
     cancel() {
-      this.$emit('close', false)
+      this.$emit('close', '', false)
     },
 
     submit() {
@@ -130,7 +124,7 @@ export default {
         stockIn.create(this.stockInInfo).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加入库成功')
-            vm.$emit('close', true)
+            this.$emit('close', res.entity.id, true)
           } else {
             vm.$store.commit('alertError', res.errorMessage)
           }

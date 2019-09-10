@@ -6,9 +6,10 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-btn v-if="window == 'create'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
-          <v-btn text @click.stop="toEditTask">任务设置</v-btn>
-          <v-btn text @click.stop="toCreate">仓位库入库</v-btn>
+          <v-btn v-if="window != 'details'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
+          <v-btn v-if="window == 'details' && currentStockInId != ''" text @click.stop="toEditTask">任务设置</v-btn>
+          <v-btn text @click.stop="toCreate">货品入库</v-btn>
+          <v-btn text @click.stop="refresh">刷新</v-btn>
         </v-toolbar-items>
       </v-toolbar>
     </v-flex>
@@ -16,27 +17,32 @@
     <v-flex xs3 md3>
       <stock-in-list ref="listMod" @activate="showDetails"></stock-in-list>
     </v-flex>
+
     <v-flex xs9 md9>
-      <v-expansion-panels>
-        <v-expansion-panel>
-          <v-expansion-panel-header ripple>入库信息</v-expansion-panel-header>
-          <v-expansion-panel-content eager>
-            <stock-in-details ref="detailsMod" :show-title="false"></stock-in-details>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
+      <v-window v-model="window">
+        <v-window-item value="details" eager>
+          <v-expansion-panels>
+            <v-expansion-panel>
+              <v-expansion-panel-header ripple>入库信息</v-expansion-panel-header>
+              <v-expansion-panel-content eager>
+                <stock-in-details ref="detailsMod" :show-title="false"></stock-in-details>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-window-item>
+
+        <v-window-item value="create" eager>
+          <stock-in-create ref="createMod" @close="closeCreate"></stock-in-create>
+        </v-window-item>
+
+        <v-window-item value="editTask" eager>
+          <stock-in-edit-task ref="editTaskMod"></stock-in-edit-task>
+        </v-window-item>
+      </v-window>
     </v-flex>
 
-    <v-dialog v-model="createDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-      <stock-in-create ref="createMod" @close="closeCreate"></stock-in-create>
-    </v-dialog>
-
     <v-flex xs12 md12>
-      <v-window v-model="window">
-      </v-window>
-      <v-window v-model="editTask">
-        <stock-in-edit-task ref="editTaskMod"></stock-in-edit-task>
-      </v-window>
+
     </v-flex>
   </v-layout>
 </template>
@@ -56,9 +62,8 @@ export default {
     StockInEditTask
   },
   data: () => ({
-    window: 'list',
-    currentStockInId: '',
-    createDialog: false
+    window: 'details',
+    currentStockInId: ''
   }),
   methods: {
     // 切换视图
@@ -66,11 +71,11 @@ export default {
       this.window = window
       switch (window) {
         case 'details':
-          //this.currentWarehouseId = id
-          //this.$refs.detailsMod.getInfo(id)
+          this.currentStockInId = id
+          this.$refs.detailsMod.init(id)
           break
-        case 'list':
-          //this.currentWarehouseId = 0
+        case 'create':
+          // this.currentStockInId = ''
           break
         case 'editTask':
           this.$refs.editTaskMod.init(id)
@@ -78,31 +83,34 @@ export default {
       }
     },
 
+    refresh() {
+      this.$refs.listMod.init()
+    },
+
     showDetails(val) {
-      this.currentStockInId = val
-      this.$refs.detailsMod.init(val)
+      this.showWindow('details', val)
     },
 
     toList() {
-      this.window = 'list'
+      this.showWindow('details', this.currentStockInId)
     },
 
     toCreate() {
-      this.createDialog = true
+      this.showWindow('create')
     },
 
-    toEditTask() {
-      if (this.currentStockInId != '') {
-        this.showWindow(this.currentStockInId)
-      }
-    },
-
-    closeCreate(update) {
+    closeCreate(val, update) {
       if (update) {
         this.$refs.listMod.init()
       }
 
-      this.createDialog = false
+      this.showWindow('details', val)
+    },
+
+    toEditTask() {
+      if (this.currentStockInId != '') {
+        this.showWindow('editTask', this.currentStockInId)
+      }
     }
   }
 }
