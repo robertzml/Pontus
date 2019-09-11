@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import sequence from '@/controllers/sequence'
+
 export default {
   name: 'SequenceTemplateDetails',
   data: () => ({
@@ -61,7 +63,7 @@ export default {
       }
 
       let vm = this
-      this.$store.dispatch('getSequenceTemplate', id).then(res => {
+      sequence.getTemplate(id).then(res => {
         vm.info = res
       })
     }

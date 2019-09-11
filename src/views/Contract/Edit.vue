@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import sequence from '@/controllers/sequence'
 import contract from '@/controllers/contract'
 import CustomerSelect from '@/components/Control/CustomerSelect'
 
@@ -133,7 +134,7 @@ export default {
 
     selectSignDate(val) {
       let vm = this
-      this.$store.dispatch('getNextSequence', { tableName: 'Contract', dt: val }).then(res => {
+      sequence.getNext({ tableName: 'Contract', dt: val }).then(res => {
         vm.contractInfo.number = res
       })
     },

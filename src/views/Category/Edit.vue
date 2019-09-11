@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" persistent eager max-width="600px">
     <v-card>
       <v-card-title>
-        <span class="headline">客户信息</span>
+        <span class="headline">分类信息</span>
       </v-card-title>
       <v-divider></v-divider>
       <v-card-text>
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import category from '@/controllers/category'
+
 export default {
   name: 'CategoryEdit',
   data: () => ({
@@ -71,7 +73,7 @@ export default {
       this.categoryId = categoryId
       let vm = this
       if (categoryId != 0) {
-        this.$store.dispatch('getCategory', categoryId).then(res => {
+        category.get(categoryId).then(res => {
           vm.categoryInfo = res
         })
       } else {
@@ -82,7 +84,7 @@ export default {
           parentId: null,
           remark: ''
         }
-        this.$store.dispatch('getFirstCategory').then(res => {
+        category.getFirst().then(res => {
           vm.firstClass = res
         })
       }
@@ -93,7 +95,7 @@ export default {
 
     selectFirst(val) {
       let vm = this
-      this.$store.dispatch('getChildrenCategory', val).then(res => {
+      category.getChildren(val).then(res => {
         vm.secondClass = res
       })
     },
@@ -102,7 +104,7 @@ export default {
       if (this.$refs.form.validate()) {
         let vm = this
         if (this.categoryId != 0) {
-          this.$store.dispatch('updateCategory', this.categoryInfo).then(res => {
+          category.update(this.categoryInfo).then(res => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '编辑分类信息成功')
               vm.$emit('update')
@@ -118,7 +120,7 @@ export default {
             this.categoryInfo.parentId = this.secondId
           }
 
-          this.$store.dispatch('createCategory', this.categoryInfo).then(res => {
+          category.create(this.categoryInfo).then(res => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '添加分类信息成功')
               vm.$emit('update')

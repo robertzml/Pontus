@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import category from '@/controllers/category'
 import CategoryEdit from './Edit'
 
 export default {
@@ -59,7 +60,7 @@ export default {
   methods: {
     loadCategory() {
       let vm = this
-      this.$store.dispatch('getCategoryList').then(res => {
+      category.getList().then(res => {
         vm.categoryList = res
         vm.categoryNodes = vm.$util.treeListTransform(res)
       })
@@ -73,7 +74,7 @@ export default {
     refresh() {
       if (this.currentCategoryId != 0) {
         let vm = this
-        this.$store.dispatch('getCategory', this.currentCategoryId).then(res => {
+        category.get(this.currentCategoryId).then(res => {
           vm.categoryInfo = res
         })
       } else {

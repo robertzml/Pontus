@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import sequence from '@/controllers/sequence'
+
 export default {
   name: 'SequenceTemplateList',
   data: () => ({
@@ -52,7 +54,7 @@ export default {
   methods: {
     loadList() {
       let vm = this
-      this.$store.dispatch('getSequenceTemplateList').then(res => {
+      sequence.getTemplateList().then(res => {
         vm.sequenceListData = res
       })
     },

@@ -31,42 +31,6 @@ export default {
   },
 
   /**
-   * 分类操作
-   */
-  async getCategoryList() {
-    const res = await axios._get({ url: '/category/list' })
-    return res.data
-  },
-
-  async getFirstCategory() {
-    const res = await axios._get({ url: '/category/getFirstCategory' })
-    return res.data
-  },
-
-  async getChildrenCategory(context, parentId) {
-    const res = await axios._get({
-      url: '/category/GetChildren',
-      params: { parentId: parentId }
-    })
-    return res.data
-  },
-
-  async getCategory(context, id) {
-    const res = await axios._get({ url: '/category/get', params: { id: id } })
-    return res.data
-  },
-
-  async createCategory(context, entity) {
-    const res = await axios._post({ url: '/category/create', data: entity })
-    return res.data
-  },
-
-  async updateCategory(context, entity) {
-    const res = await axios._post({ url: '/category/update', data: entity })
-    return res.data
-  },
-
-  /**
    * 仓库操作
    */
   async getWarehouseList(context, type) {
@@ -133,34 +97,6 @@ export default {
       url: '/position/generate',
       params: data
     })
-    return res.data
-  },
-
-  /**
-   * 编号模板操作
-   */
-  async getSequenceTemplateList() {
-    const res = await axios._get({ url: '/sequenceTemplate/list' })
-    return res.data
-  },
-
-  async getSequenceTemplate(context, id) {
-    const res = await axios._get({ url: '/sequenceTemplate/get', params: { id: id } })
-    return res.data
-  },
-
-  async createSequenceTemplate(context, entity) {
-    const res = await axios._post({ url: '/sequenceTemplate/create', data: entity })
-    return res.data
-  },
-
-  async updateSequenceTemplate(context, entity) {
-    const res = await axios._post({ url: '/sequenceTemplate/update', data: entity })
-    return res.data
-  },
-
-  async getNextSequence(context, { tableName, dt }) {
-    const res = await axios._get({ url: '/sequenceTemplate/getNext', params: { tableName: tableName, dt: dt } })
     return res.data
   },
 

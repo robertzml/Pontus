@@ -53,6 +53,8 @@
 </template>
 
 <script>
+import sequence from '@/controllers/sequence'
+
 export default {
   name: 'SequenceTemplateEdit',
   data: () => ({
@@ -94,7 +96,7 @@ export default {
         }
       } else {
         let vm = this
-        this.$store.dispatch('getSequenceTemplate', sequenceId).then(res => {
+        sequence.getTemplate(sequenceId).then(res => {
           vm.sequenceInfo = res
 
           vm.loadColumnNames(vm.sequenceInfo.tableName)
@@ -128,7 +130,7 @@ export default {
       if (this.$refs.form.validate()) {
         let vm = this
         if (!this.sequenceId || this.sequenceId == '') {
-          this.$store.dispatch('createSequenceTemplate', this.sequenceInfo).then(res => {
+          sequence.createTemplate(this.sequenceInfo).then(res => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '添加编号模板成功')
               vm.$emit('update')
@@ -138,7 +140,7 @@ export default {
             }
           })
         } else {
-          this.$store.dispatch('updateSequenceTemplate', this.sequenceInfo).then(res => {
+          sequence.updateTemplate(this.sequenceInfo).then(res => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '修改编号模板成功')
               vm.$emit('update')
