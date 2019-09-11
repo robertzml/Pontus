@@ -1,5 +1,5 @@
 <template>
-  <v-autocomplete label="请选择分类" prepend-icon="people" v-model="sCustomerId" :filter="customFilter" :items="customerData" item-value="id" item-text="name" return-object :rules="customerRules" @change="selectItem">
+  <v-autocomplete label="请选择类别" prepend-icon="people" v-model="sCategoryId" :filter="customFilter" :items="categoryData" item-value="id" item-text="name" return-object :rules="categoryRules" @change="selectItem">
     <template v-slot:selection="data">
       {{ data.item.number }} - {{ data.item.name }}
     </template>
@@ -13,20 +13,20 @@
 </template>
 
 <script>
-import customer from '@/controllers/customer'
+import category from '@/controllers/category'
 
 export default {
   name: 'CategorySelect',
   props: {
-    customerId: {
+    categoryId: {
       type: Number
     }
   },
   data: () => ({
-    customerData: [],
-    sCustomerId: null,
-    selectCustomer: null,
-    customerRules: [v => (!!v && v.id != 0) || '请选择客户']
+    categoryData: [],
+    sCategoryId: null,
+    selectCategory: null,
+    categoryRules: [v => (!!v && v.id != 0) || '请选择类别']
   }),
   methods: {
     customFilter(item, queryText) {
@@ -39,19 +39,21 @@ export default {
 
     selectItem(val) {
       if (val == null || val == undefined) {
-        this.selectCustomer = null
-        this.$emit('update:customerId', 0)
+        this.selectCategory = null
+        this.$emit('update:categoryId', 0)
+        this.$emit('change', null)
       } else {
-        this.selectCustomer = val
-        this.$emit('update:customerId', val.id)
+        this.selectCategory = val
+        this.$emit('update:categoryId', val.id)
+        this.$emit('change', this.selectCategory)
       }
     }
   },
   mounted: function() {
     let vm = this
-    customer.getList().then(res => {
-      vm.customerData = res
-      vm.sCustomerId = vm.customerId
+    category.getList().then(res => {
+      vm.categoryData = res
+      vm.sCategoryId = vm.categoryId
     })
   }
 }

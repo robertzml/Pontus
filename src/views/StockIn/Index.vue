@@ -21,7 +21,7 @@
     <v-flex xs9 md9>
       <v-window v-model="window">
         <v-window-item value="details" eager>
-          <v-expansion-panels>
+          <v-expansion-panels v-model="panel" multiple>
             <v-expansion-panel>
               <v-expansion-panel-header ripple>入库信息</v-expansion-panel-header>
               <v-expansion-panel-content eager>
@@ -63,6 +63,7 @@ export default {
   },
   data: () => ({
     window: 'details',
+    panel: [0],
     currentStockInId: ''
   }),
   methods: {
