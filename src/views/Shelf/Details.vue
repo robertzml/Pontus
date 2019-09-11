@@ -41,6 +41,8 @@
 </template>
 
 <script>
+import shelf from '@/controllers/shelf'
+
 export default {
   name: 'ShelfDetails',
   data: () => ({
@@ -55,7 +57,7 @@ export default {
       }
 
       let vm = this
-      this.$store.dispatch('getShelf', id).then(res => {
+      shelf.get(id).then(res => {
         vm.shelfInfo = res
       })
     }

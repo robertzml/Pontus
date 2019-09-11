@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import warehouse from '@/controllers/warehouse'
+
 export default {
   name: 'WarehouseEdit',
   data: () => ({
@@ -68,7 +70,7 @@ export default {
         }
       } else {
         let vm = this
-        this.$store.dispatch('getWarehouse', warehouseId).then(res => {
+        warehouse.get(warehouseId).then(res => {
           vm.warehouseInfo = res
         })
       }
@@ -80,7 +82,7 @@ export default {
       if (this.$refs.form.validate()) {
         let vm = this
         if (this.warehouseId == 0) {
-          this.$store.dispatch('createWarehouse', this.warehouseInfo).then(res => {
+          warehouse.create(this.warehouseInfo).then(res => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '添加仓库成功')
               vm.$emit('update')
@@ -90,7 +92,7 @@ export default {
             }
           })
         } else {
-          this.$store.dispatch('updateWarehouse', this.warehouseInfo).then(res => {
+          warehouse.update(this.warehouseInfo).then(res => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '修改仓库成功')
               vm.$emit('update')

@@ -71,6 +71,8 @@
 </template>
 
 <script>
+import warehouse from '@/controllers/warehouse'
+
 export default {
   name: 'WarehouseList',
   props: {
@@ -96,7 +98,7 @@ export default {
   methods: {
     loadList() {
       let vm = this
-      this.$store.dispatch('getWarehouseList').then(res => {
+      warehouse.getList().then(res => {
         vm.warehouseListData = res
         vm.warehouseListData.forEach(r => {
           r.src = require('@/assets/warehouse' + r.type + '.png')

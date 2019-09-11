@@ -74,6 +74,9 @@
 </template>
 
 <script>
+import shelf from '@/controllers/shelf'
+import position from '@/controllers/position'
+
 export default {
   name: 'PositionList',
   data: () => ({
@@ -96,11 +99,11 @@ export default {
       this.positionInfo = {}
 
       let vm = this
-      this.$store.dispatch('getShelf', shelfId).then(res => {
+      shelf.get(shelfId).then(res => {
         vm.shelfInfo = res
       })
 
-      this.$store.dispatch('countPosition', shelfId).then(res => {
+      position.count(shelfId).then(res => {
         vm.positionCount = res
       })
     },
@@ -118,7 +121,7 @@ export default {
 
       let vm = this
       this.loading = true
-      this.$store.dispatch('generatePosition', { shelfId: this.shelfInfo.id }).then(res => {
+      position.generate({ shelfId: this.shelfInfo.id }).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '生成货架成功')
           vm.loading = false
@@ -140,11 +143,9 @@ export default {
 
     selectPosition(depth) {
       let vm = this
-      this.$store
-        .dispatch('getPosition', { shelfId: this.shelfInfo.id, row: this.sRow, layer: this.sLayer, depth: depth })
-        .then(res => {
-          vm.positionInfo = res
-        })
+      position.get({ shelfId: this.shelfInfo.id, row: this.sRow, layer: this.sLayer, depth: depth }).then(res => {
+        vm.positionInfo = res
+      })
     }
   }
 }

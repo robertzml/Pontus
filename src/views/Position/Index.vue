@@ -57,6 +57,8 @@
 </template>
 
 <script>
+import warehouse from '@/controllers/warehouse'
+import shelf from '@/controllers/shelf'
 import PositionList from './List'
 
 export default {
@@ -83,14 +85,14 @@ export default {
 
     loadWarehouse: function() {
       let vm = this
-      this.$store.dispatch('getWarehouseList', 2).then(res => {
+      warehouse.getList(2).then(res => {
         vm.warehouseListData = res
       })
     },
 
     loadShelf: function(warehouseId) {
       let vm = this
-      this.$store.dispatch('getShelfList', warehouseId).then(res => {
+      shelf.getList(warehouseId).then(res => {
         vm.shelfListData = res
         vm.shelfListData.forEach(r => {
           r.img = require('@/assets/shelf' + r.type + '.png')

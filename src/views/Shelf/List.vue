@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import shelf from '@/controllers/shelf'
 import ShelfDetails from './Details'
 import ShelfEdit from './Edit'
 
@@ -88,7 +89,7 @@ export default {
   methods: {
     loadList() {
       let vm = this
-      this.$store.dispatch('getShelfList', this.warehouseId).then(res => {
+      shelf.getList(this.warehouseId).then(res => {
         vm.shelfListData = res
       })
     },

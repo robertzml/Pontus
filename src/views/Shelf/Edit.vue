@@ -51,6 +51,9 @@
 </template>
 
 <script>
+import warehouse from '@/controllers/warehouse'
+import shelf from '@/controllers/shelf'
+
 export default {
   name: 'ShelfEdit',
   data: () => ({
@@ -85,7 +88,7 @@ export default {
       this.shelfId = shelfId
 
       let vm = this
-      this.$store.dispatch('getWarehouseList').then(res => {
+      warehouse.getList().then(res => {
         vm.warehouseList = res
         vm.selectWarehouse = vm.warehouseList.find(r => r.id == warehouseId)
       })
@@ -104,7 +107,7 @@ export default {
         }
       } else {
         let vm = this
-        this.$store.dispatch('getShelf', shelfId).then(res => {
+        shelf.get(shelfId).then(res => {
           vm.shelfInfo = res
         })
       }
@@ -117,7 +120,7 @@ export default {
         let vm = this
         this.shelfInfo.warehouseId = this.warehouseId
         if (this.shelfId == 0) {
-          this.$store.dispatch('createShelf', this.shelfInfo).then(res => {
+          shelf.create(this.shelfInfo).then(res => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '添加货架成功')
               vm.$emit('update')
@@ -127,7 +130,7 @@ export default {
             }
           })
         } else {
-          this.$store.dispatch('updateShelf', this.shelfInfo).then(res => {
+          shelf.update(this.shelfInfo).then(res => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '修改货架成功')
               vm.$emit('update')

@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import warehouse from '@/controllers/warehouse'
 import ShelfList from '../Shelf/List'
 
 export default {
@@ -64,7 +65,7 @@ export default {
       }
 
       let vm = this
-      this.$store.dispatch('getWarehouse', id).then(res => {
+      warehouse.get(id).then(res => {
         vm.warehouseInfo = res
       })
     }
