@@ -28,6 +28,13 @@
                 <stock-in-details ref="detailsMod" :show-title="false"></stock-in-details>
               </v-expansion-panel-content>
             </v-expansion-panel>
+
+            <v-expansion-panel>
+              <v-expansion-panel-header ripple>入库任务</v-expansion-panel-header>
+              <v-expansion-panel-content eager>
+                <stock-in-task-list ref="taskListMod"></stock-in-task-list>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
           </v-expansion-panels>
         </v-window-item>
 
@@ -51,6 +58,7 @@
 import StockInList from './List'
 import StockInCreate from './Create'
 import StockInDetails from './Details'
+import StockInTaskList from './TaskList'
 import StockInEditTask from './EditTask'
 
 export default {
@@ -59,7 +67,8 @@ export default {
     StockInList,
     StockInCreate,
     StockInDetails,
-    StockInEditTask
+    StockInEditTask,
+    StockInTaskList
   },
   data: () => ({
     window: 'details',
@@ -74,6 +83,7 @@ export default {
         case 'details':
           this.currentStockInId = id
           this.$refs.detailsMod.init(id)
+          this.$refs.taskListMod.init(id)
           break
         case 'create':
           // this.currentStockInId = ''

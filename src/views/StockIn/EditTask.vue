@@ -8,8 +8,7 @@
 
         <v-layout wrap>
           <v-flex xs12 md12>
-            <v-data-table :headers="headers" :items="taskInfoList" :items-per-page="10">
-            </v-data-table>
+            <stock-in-task-list ref="taskListMod"></stock-in-task-list>
           </v-flex>
 
           <v-flex xs12 md12>
@@ -41,11 +40,14 @@
                     <v-text-field label="保质期" v-model="taskInfo.durability" suffix="月"></v-text-field>
                   </v-flex>
                   <v-flex xs6 md3>
+                    <v-select v-model="selectWarehouse" :items="warehouseList" item-text="name" item-value="id" :rules="warehouseRules" label="所属仓库" :hint="`${selectWarehouse.name}, ${selectWarehouse.number}`" return-object persistent-hint required></v-select>
+                  </v-flex>
+                  <v-flex xs6 md3>
                     <v-text-field label="备注" v-model="taskInfo.remark"></v-text-field>
                   </v-flex>
                 </v-layout>
 
-                <v-btn class="mr-4" color="success darken-1" :disabled="!valid" @click="addTask">添加</v-btn>
+                <v-btn class="mt-4" color="success darken-1" :disabled="!valid" @click="addTask">添加</v-btn>
               </v-form>
             </v-container>
           </v-flex>
@@ -58,30 +60,21 @@
 
 <script>
 import stockIn from '@/controllers/stockIn'
+import warehouse from '@/controllers/warehouse'
 import CategorySelect from '@/components/Control/CategorySelect'
+import StockInTaskList from './TaskList'
 
 export default {
   name: 'StockInEditTask',
   components: {
-    CategorySelect
+    CategorySelect,
+    StockInTaskList
   },
   data: () => ({
     valid: false,
     stockInId: '',
+    stockInInfo: {},
     categoryId: 0,
-    headers: [
-      { text: '托盘码', value: 'trayCode', align: 'left' },
-      { text: '类别名称', value: 'categoryName' },
-      { text: '入库数量', value: 'inCount' },
-      { text: '单位重量', value: 'unitWeight' },
-      { text: '总重量', value: 'inWeight' },
-      { text: '规格', value: 'specification' },
-      { text: '产地', value: 'originPlace' },
-      { text: '保质期', value: 'durability' },
-      { text: '备注', value: 'remark' },
-      { text: '操作', value: 'action', sortable: false }
-    ],
-    taskInfoList: [],
     taskInfo: {
       stockInId: '',
       trayCode: '',
@@ -95,17 +88,48 @@ export default {
       durability: '',
       remark: ''
     },
-    trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码']
+    warehouseList: [],
+    selectWarehouse: {
+      id: 0,
+      name: '',
+      number: ''
+    },
+    trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
+    warehouseRules: [v => (v && v.number != '') || '请选择仓库']
   }),
   methods: {
     init(stockInId) {
       this.stockInId = stockInId
 
+      this.loadStockIn()
+      this.$refs.taskListMod.init(stockInId)
       this.$refs.form.resetValidation()
     },
 
+    loadStockIn() {
+      let vm = this
+      stockIn.get(this.stockInId).then(res => {
+        vm.stockInInfo = res
+
+        vm.loadWarehouse(vm.stockInInfo.type)
+      })
+    },
+
+    loadTaskList() {
+      let vm = this
+      stockIn.getTaskList(this.stockInId).then(res => {
+        vm.taskInfoList = res
+      })
+    },
+
+    loadWarehouse(type) {
+      let vm = this
+      warehouse.getList(type).then(res => {
+        vm.warehouseList = res
+      })
+    },
+
     selectCategory(val) {
-      console.log(val)
       this.taskInfo.categoryId = val.id
       this.taskInfo.categoryName = val.name
     },
@@ -115,13 +139,14 @@ export default {
         let vm = this
 
         this.taskInfo.stockInId = this.stockInId
+        this.taskInfo.warehouseId = this.selectWarehouse.id
         this.taskInfo.userId = this.$store.state.user.id
         this.taskInfo.userName = this.$store.state.user.name
 
         stockIn.addTask(this.taskInfo).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加任务成功')
-            //vm.$emit('update')
+            vm.$refs.taskListMod.init(vm.stockInId)
           } else {
             vm.$store.commit('alertError', res.errorMessage)
           }
