@@ -7,7 +7,8 @@
 
         <v-toolbar-items>
           <v-btn v-if="window != 'details'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
-          <v-btn v-if="window == 'details' && currentStockInId != ''" text @click.stop="toEditTask">任务设置</v-btn>
+          <v-btn v-if="window == 'details' && currentStockInId != ''" text @click.stop="toEntrance">上架操作</v-btn>
+          <v-btn v-if="window == 'details' && currentStockInId != ''" text @click.stop="toEditTask">任务录入</v-btn>
           <v-btn text @click.stop="toCreate">货品入库</v-btn>
           <v-btn text @click.stop="refresh">刷新</v-btn>
         </v-toolbar-items>
@@ -32,10 +33,14 @@
             <v-expansion-panel>
               <v-expansion-panel-header ripple>入库任务</v-expansion-panel-header>
               <v-expansion-panel-content eager>
-                <stock-in-task-list ref="taskListMod"></stock-in-task-list>
+                <stock-in-task-list ref="taskListMod" @showDetails="toTaskDetails"></stock-in-task-list>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
+        </v-window-item>
+
+        <v-window-item value="taskDetails" eager>
+          <stock-in-task-details ref="taskDetailsMod"></stock-in-task-details>
         </v-window-item>
 
         <v-window-item value="create" eager>
@@ -60,6 +65,7 @@ import StockInCreate from './Create'
 import StockInDetails from './Details'
 import StockInTaskList from './TaskList'
 import StockInEditTask from './EditTask'
+import StockInTaskDetails from './TaskDetails'
 
 export default {
   name: 'StockInIndex',
@@ -68,7 +74,8 @@ export default {
     StockInCreate,
     StockInDetails,
     StockInEditTask,
-    StockInTaskList
+    StockInTaskList,
+    StockInTaskDetails
   },
   data: () => ({
     window: 'details',
@@ -85,6 +92,9 @@ export default {
           this.$refs.detailsMod.init(id)
           this.$refs.taskListMod.init(id)
           break
+        case 'taskDetails':
+          this.$refs.taskDetailsMod.init(id)
+          break
         case 'create':
           // this.currentStockInId = ''
           break
@@ -98,14 +108,22 @@ export default {
       this.$refs.listMod.init()
     },
 
+    // 显示入库信息
     showDetails(val) {
       this.showWindow('details', val)
     },
 
+    // 返回入库列表
     toList() {
       this.showWindow('details', this.currentStockInId)
     },
 
+    // 显示入库任务信息
+    toTaskDetails(val) {
+      this.showWindow('taskDetails', val)
+    },
+
+    // 进入货品入库
     toCreate() {
       this.showWindow('create')
     },
@@ -121,6 +139,12 @@ export default {
     toEditTask() {
       if (this.currentStockInId != '') {
         this.showWindow('editTask', this.currentStockInId)
+      }
+    },
+
+    toEntrance() {
+      if (this.currentStockInId != '') {
+        this.showWindow('entrance', this.currentStockInId)
       }
     }
   }

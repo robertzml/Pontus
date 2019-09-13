@@ -4,8 +4,8 @@
       {{ item.status | displayStatus }}
     </template>
     <template v-slot:item.action="{ item }">
-      <v-btn small color="success" @click="editItem(item)">
-        编辑
+      <v-btn small color="success" @click="viewItem(item)">
+        查看
       </v-btn>
     </template>
   </v-data-table>
@@ -47,7 +47,9 @@ export default {
       })
     },
 
-    editItem(val) {}
+    viewItem(val) {
+      this.$emit('showDetails', val.id)
+    }
   }
 }
 </script>

@@ -29,6 +29,11 @@ export default {
     return res.data
   },
 
+  async getTask(taskId) {
+    const res = await axios._get({ url: '/stockIn/getTask', params: { taskId: taskId } })
+    return res.data
+  },
+
   // 添加入库任务
   async addTask(entity) {
     const res = await axios._post({ url: '/stockIn/addTask', data: entity })
