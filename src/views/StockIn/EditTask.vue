@@ -9,11 +9,15 @@
         <v-layout wrap>
           <v-flex xs12 md12>
             <stock-in-task-list ref="taskListMod"></stock-in-task-list>
+
+            <v-divider></v-divider>
           </v-flex>
 
           <v-flex xs12 md12>
             <v-container>
               <v-form ref="form" v-model="valid" lazy-validation>
+                <v-subheader>新增货物</v-subheader>
+
                 <v-layout wrap>
                   <v-flex xs6 md3>
                     <category-select :category-id.sync="categoryId" @change="selectCategory"></category-select>
@@ -25,7 +29,7 @@
                     <v-text-field label="单位重量*" v-model="taskInfo.unitWeight" suffix="千克"></v-text-field>
                   </v-flex>
                   <v-flex xs6 md3>
-                    <v-text-field label="总重量*" v-model="taskInfo.inWeight" suffix="吨"></v-text-field>
+                    <v-text-field label="总重量*" v-model="totalWeight" suffix="吨"></v-text-field>
                   </v-flex>
                   <v-flex xs6 md3>
                     <v-text-field label="托盘码*" v-model="taskInfo.trayCode" :rules="trayCodeRules"></v-text-field>
@@ -86,6 +90,7 @@ export default {
       inWeight: 0.0,
       originPlace: '',
       durability: '',
+      warehouseId: 0,
       remark: ''
     },
     warehouseList: [],
@@ -97,10 +102,16 @@ export default {
     trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
     warehouseRules: [v => (v && v.number != '') || '请选择仓库']
   }),
+  computed: {
+    totalWeight: function() {
+      return (this.taskInfo.inCount * this.taskInfo.unitWeight) / 1000
+    }
+  },
   methods: {
     init(stockInId) {
       this.stockInId = stockInId
 
+      this.clearTask()
       this.loadStockIn()
       this.$refs.taskListMod.init(stockInId)
       this.$refs.form.resetValidation()
@@ -129,6 +140,23 @@ export default {
       })
     },
 
+    clearTask() {
+      this.taskInfo = {
+        stockInId: '',
+        trayCode: '',
+        categoryId: 0,
+        categoryName: '',
+        specification: '',
+        inCount: 0,
+        unitWeight: 0.0,
+        inWeight: 0.0,
+        originPlace: '',
+        durability: '',
+        warehouseId: 0,
+        remark: ''
+      }
+    },
+
     selectCategory(val) {
       this.taskInfo.categoryId = val.id
       this.taskInfo.categoryName = val.name
@@ -140,6 +168,7 @@ export default {
 
         this.taskInfo.stockInId = this.stockInId
         this.taskInfo.warehouseId = this.selectWarehouse.id
+        this.taskInfo.inWeight = this.totalWeight
         this.taskInfo.userId = this.$store.state.user.id
         this.taskInfo.userName = this.$store.state.user.name
 
@@ -147,6 +176,7 @@ export default {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加任务成功')
             vm.$refs.taskListMod.init(vm.stockInId)
+            vm.clearTask()
           } else {
             vm.$store.commit('alertError', res.errorMessage)
           }
