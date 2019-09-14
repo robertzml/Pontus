@@ -68,13 +68,14 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn color="primary" v-if="this.info.status == 72" @click.stop="receive">任务接单</v-btn>
           <v-btn color="success" @click.stop="showEnter">上架操作</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
 
     <v-dialog v-model="dialog" eager max-width="600px">
-      <stock-in-enter ref="enterMod" @close="closeEnter"></stock-in-enter>
+      <stock-in-enter-task ref="enterMod" @close="closeEnter"></stock-in-enter-task>
     </v-dialog>
   </v-layout>
 </template>
@@ -82,13 +83,13 @@
 
 <script>
 import stockIn from '@/controllers/stockIn'
-import StockInEnter from './Enter'
+import StockInEnterTask from './EnterTask'
 
 export default {
   name: 'StockInTaskDetails',
   props: {},
   components: {
-    StockInEnter
+    StockInEnterTask
   },
   data: () => ({
     taskId: '',
@@ -109,6 +110,23 @@ export default {
       let vm = this
       stockIn.getTask(this.taskId).then(res => {
         vm.info = res
+      })
+    },
+
+    receive() {
+      let vm = this
+
+      this.info.receiveUserId = this.$store.state.user.id
+      this.info.receiveUserName = this.$store.state.user.name
+      this.info.status = 73
+
+      stockIn.handleTask(this.info).then(res => {
+        if (res.status == 0) {
+          vm.$store.commit('alertSuccess', '任务接单成功')
+          vm.getInfo()
+        } else {
+          vm.$store.commit('alertError', res.errorMessage)
+        }
       })
     },
 

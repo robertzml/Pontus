@@ -33,7 +33,7 @@
 import stockIn from '@/controllers/stockIn'
 
 export default {
-  name: 'StockInEnter',
+  name: 'StockInEnterTask',
   data: () => ({
     valid: true,
     taskId: '',
@@ -47,6 +47,12 @@ export default {
   methods: {
     init(taskId) {
       this.taskId = taskId
+
+      this.stockInTaskInfo = {
+        taskCode: '',
+        trayCode: '',
+        shelfCode: ''
+      }
       this.loadTask()
       this.$refs.form.resetValidation()
     },
@@ -66,7 +72,8 @@ export default {
       if (this.$refs.form.validate()) {
         let vm = this
 
-        stockIn.create(this.customerInfo).then(res => {
+        this.stockInTaskInfo.status = 74
+        stockIn.handleTask(this.stockInTaskInfo).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '货品上架成功')
             vm.$emit('close')
