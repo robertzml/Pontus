@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer :mini-variant="drawer" :clipped="$vuetify.breakpoint.lgAndUp" :width="200" app>
+  <v-navigation-drawer :mini-variant="drawer" :clipped="$vuetify.breakpoint.lgAndUp" :width="220" app>
     <v-list dense>
       <template v-for="item in items">
         <v-layout v-if="item.heading" :key="item.heading" align-center>
@@ -67,7 +67,12 @@ export default {
           'icon-alt': 'domain',
           text: '冷库租赁',
           model: false,
-          children: [{ text: '货品入库', model: false, name: 'stockin' }, { text: '货品出库' }, { text: '货品移库' }]
+          children: [
+            { text: '货品入库', model: false, name: 'stockin' },
+            { text: '货品出库', model: false },
+            { text: '货品移库', model: false },
+            { text: '库存管理', model: false, name: 'store' }
+          ]
         },
         {
           icon: 'bar_chart',

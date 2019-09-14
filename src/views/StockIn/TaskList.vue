@@ -1,5 +1,5 @@
 <template>
-  <v-data-table :headers="headers" :items="taskInfoList" hide-default-footer>
+  <v-data-table :headers="headers" :items="taskInfoList" hide-default-footer disable-pagination>
     <template v-slot:item.status="{ item }">
       {{ item.status | displayStatus }}
     </template>

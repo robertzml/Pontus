@@ -2,12 +2,11 @@
   <v-layout wrap>
     <v-flex xs12 md12>
       <v-toolbar dense>
-        <v-toolbar-title>入库管理</v-toolbar-title>
+        <v-toolbar-title>货品入库</v-toolbar-title>
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
           <v-btn v-if="window != 'details'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
-          <v-btn v-if="window == 'details' && currentStockInId != ''" text @click.stop="toEntrance">上架操作</v-btn>
           <v-btn v-if="window == 'details' && currentStockInId != ''" text @click.stop="toEditTask">任务录入</v-btn>
           <v-btn text @click.stop="toCreate">货品入库</v-btn>
           <v-btn text @click.stop="refresh">刷新</v-btn>
@@ -95,9 +94,6 @@ export default {
         case 'taskDetails':
           this.$refs.taskDetailsMod.init(id)
           break
-        case 'create':
-          // this.currentStockInId = ''
-          break
         case 'editTask':
           this.$refs.editTaskMod.init(id)
           break
@@ -139,12 +135,6 @@ export default {
     toEditTask() {
       if (this.currentStockInId != '') {
         this.showWindow('editTask', this.currentStockInId)
-      }
-    },
-
-    toEntrance() {
-      if (this.currentStockInId != '') {
-        this.showWindow('entrance', this.currentStockInId)
       }
     }
   }
