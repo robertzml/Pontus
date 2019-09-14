@@ -34,7 +34,6 @@
               <v-flex xs6 md3>
                 <v-text-field v-model="info.inWeight" label="总重量" suffix="吨" readonly></v-text-field>
               </v-flex>
-
               <v-flex xs6 md3>
                 <v-text-field v-model="info.specification" label="规格" readonly></v-text-field>
               </v-flex>
@@ -68,24 +67,33 @@
         </v-card-text>
 
         <v-card-actions>
-          <div class="flex-grow-1"></div>
-          <v-btn color="success">上架操作</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="success" @click.stop="showEnter">上架操作</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
+
+    <v-dialog v-model="dialog" eager max-width="600px">
+      <stock-in-enter ref="enterMod" @close="closeEnter"></stock-in-enter>
+    </v-dialog>
   </v-layout>
 </template>
 
 
 <script>
 import stockIn from '@/controllers/stockIn'
+import StockInEnter from './Enter'
 
 export default {
   name: 'StockInTaskDetails',
   props: {},
+  components: {
+    StockInEnter
+  },
   data: () => ({
     taskId: '',
-    info: {}
+    info: {},
+    dialog: false
   }),
   methods: {
     init(id) {
@@ -102,6 +110,15 @@ export default {
       stockIn.getTask(this.taskId).then(res => {
         vm.info = res
       })
+    },
+
+    showEnter() {
+      this.$refs.enterMod.init(this.taskId)
+      this.dialog = true
+    },
+
+    closeEnter() {
+      this.dialog = false
     }
   }
 }
