@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire" v-if="isLogin">
-    <navigation-bar :drawer="drawer"></navigation-bar>
     <header-bar :drawer.sync="drawer"></header-bar>
+    <navigation-bar :drawer="drawer"></navigation-bar>
 
     <v-content>
       <v-container fluid class="grid-list-md">

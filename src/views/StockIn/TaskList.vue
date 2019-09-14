@@ -20,7 +20,7 @@ export default {
     stockInId: '',
     headers: [
       { text: '托盘码', value: 'trayCode', align: 'left' },
-      { text: '类别ID', value: 'categoryId' },
+      { text: '类别名称', value: 'categoryName' },
       { text: '入库数量', value: 'inCount' },
       { text: '单位重量(kg)', value: 'unitWeight' },
       { text: '总重量(t)', value: 'inWeight' },

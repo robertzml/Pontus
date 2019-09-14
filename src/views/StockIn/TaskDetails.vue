@@ -17,10 +17,13 @@
                 <v-text-field v-model="info.flowNumber" label="入库流水号" readonly></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
-                <v-text-field v-model="info.categoryName" label="类别名称" readonly></v-text-field>
+                <v-text-field :value="$util.stockInType(info.type)" label="入库类型" readonly></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
-                <v-text-field v-model="info.categoryNumber" label="类别编号" readonly></v-text-field>
+                <v-text-field :value="$util.displayDateTime(info.createTime)" label="创建时间" readonly></v-text-field>
+              </v-flex>
+              <v-flex xs6 md3>
+                <v-text-field :value="`${info.categoryNumber} - ${info.categoryName}`" label="货品类别" readonly></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
                 <v-text-field v-model="info.inCount" label="入库数量" readonly></v-text-field>
@@ -31,9 +34,7 @@
               <v-flex xs6 md3>
                 <v-text-field v-model="info.inWeight" label="总重量" suffix="吨" readonly></v-text-field>
               </v-flex>
-              <v-flex xs6 md3>
-                <v-text-field v-model="info.trayCode" label="托盘码" readonly></v-text-field>
-              </v-flex>
+
               <v-flex xs6 md3>
                 <v-text-field v-model="info.specification" label="规格" readonly></v-text-field>
               </v-flex>
@@ -44,16 +45,13 @@
                 <v-text-field v-model="info.durability" label="保质期" suffix="月" readonly></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
-                <v-text-field v-model="info.warehouseName" label="仓库名称" readonly></v-text-field>
+                <v-text-field v-model="info.trayCode" label="托盘码" readonly></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
-                <v-text-field v-model="info.warehouseNumber" label="仓库编号" readonly></v-text-field>
+                <v-text-field :value="`${info.warehouseNumber} - ${info.warehouseName}`" label="仓库" readonly></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
                 <v-text-field v-model="info.userName" label="登记人" readonly></v-text-field>
-              </v-flex>
-              <v-flex xs6 md3>
-                <v-text-field :value="$util.displayDateTime(info.createTime)" label="创建时间" readonly></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
                 <v-text-field :value="$util.displayDateTime(info.confirmTime)" label="确认时间" readonly></v-text-field>
@@ -61,13 +59,18 @@
               <v-flex xs6 md3>
                 <v-text-field :value="$util.displayStatus(info.status)" label="状态" readonly></v-text-field>
               </v-flex>
-              <v-flex xs12 md12>
+              <v-flex xs12 md6>
                 <v-textarea label=" 备注" :value="info.remark" readonly auto-grow rows="1">
                 </v-textarea>
               </v-flex>
             </v-layout>
           </v-form>
         </v-card-text>
+
+        <v-card-actions>
+          <div class="flex-grow-1"></div>
+          <v-btn color="success">上架操作</v-btn>
+        </v-card-actions>
       </v-card>
     </v-flex>
   </v-layout>
