@@ -153,8 +153,11 @@ export default {
       this.dialog = true
     },
 
-    closeEnter() {
+    closeEnter(val) {
       this.dialog = false
+      if (val) {
+        this.getInfo()
+      }
     },
 
     finish() {

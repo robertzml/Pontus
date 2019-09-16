@@ -15,7 +15,7 @@
               <v-text-field label="托盘码" v-model="stockInTaskInfo.trayCode" readonly></v-text-field>
             </v-flex>
             <v-flex xs12 sm12 md12>
-              <v-text-field label="货架码" v-model="stockInTaskInfo.shelfCode" v-focus></v-text-field>
+              <v-text-field label="货架码" v-model="stockInTaskInfo.shelfCode" :rules="shelfCodeRules" v-focus></v-text-field>
             </v-flex>
           </v-layout>
         </v-form>
@@ -42,7 +42,7 @@ export default {
       trayCode: '',
       shelfCode: ''
     },
-    shelfCodeRules: [v => !!v || '请输入货架码']
+    shelfCodeRules: [v => !!v || '请输入货架码', v => (v && v.length == 12) || '请输入正确货架码']
   }),
   methods: {
     init(taskId) {
@@ -65,7 +65,7 @@ export default {
     },
 
     close() {
-      this.$emit('close')
+      this.$emit('close', false)
     },
 
     submit() {
@@ -76,7 +76,7 @@ export default {
         stockIn.handleTask(this.stockInTaskInfo).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '货品上架成功')
-            vm.$emit('close')
+            vm.$emit('close', true)
           } else {
             vm.$store.commit('alertError', res.errorMessage)
           }
