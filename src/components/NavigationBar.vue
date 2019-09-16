@@ -80,7 +80,7 @@ export default {
           model: false,
           children: [
             { text: '货品管理', model: false, name: 'cargo' },
-            { text: '库存记录', model: false, name: 'store' }
+            { text: '仓库库存', model: false, name: 'store' }
           ]
         },
         {
