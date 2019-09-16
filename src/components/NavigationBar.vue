@@ -63,15 +63,24 @@ export default {
           ]
         },
         {
-          icon: 'domain',
-          'icon-alt': 'domain',
+          icon: 'shopping_cart',
+          'icon-alt': 'shopping_cart',
           text: '冷库租赁',
           model: false,
           children: [
             { text: '货品入库', model: false, name: 'stockin' },
             { text: '货品出库', model: false },
-            { text: '货品移库', model: false },
-            { text: '库存管理', model: false, name: 'store' }
+            { text: '货品移库', model: false }
+          ]
+        },
+        {
+          icon: 'domain',
+          'icon-alt': 'domain',
+          text: '库存管理',
+          model: false,
+          children: [
+            { text: '货品管理', model: false, name: 'cargo' },
+            { text: '库存记录', model: false, name: 'store' }
           ]
         },
         {

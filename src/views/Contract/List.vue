@@ -1,6 +1,6 @@
 <template>
   <v-layout wrap>
-    <v-flex xs12>
+    <v-flex xs12 md12>
       <v-card class="mx-auto">
         <v-card-title class="orange">
           合同列表
