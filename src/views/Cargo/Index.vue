@@ -31,7 +31,7 @@
           货品列表
         </v-card-title>
         <v-card-text class="px-0">
-          <v-data-table :headers="headers" :items="cargoListData" :search="search" :items-per-page="10">
+          <v-data-table :headers="headers" :items="cargoListData" :items-per-page="10">
             <template v-slot:item.billingType="{ item }">
               {{ item.billingType | billingType }}
             </template>
