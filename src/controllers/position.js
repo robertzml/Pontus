@@ -11,6 +11,11 @@ export default {
     return res.data
   },
 
+  async getList(shelfId) {
+    const res = await axios._get({ url: '/position/list', params: { shelfId: shelfId } })
+    return res.data
+  },
+
   async count(shelfId) {
     const res = await axios._get({ url: '/position/count', params: { shelfId: shelfId } })
     return res.data
