@@ -68,20 +68,19 @@
           <span class="mb-1">仓位情况</span>
           <v-icon>arrow_forward</v-icon>
         </div>
-        <div>
-          <v-item-group v-if="sRow != undefined && sRow != 0" mandatory v-model="sPosition">
-            <v-container fluid>
-              <v-row v-for="depth in currentShelf.depth" :key="depth" no-gutters>
-                <v-col v-for="layer in currentShelf.layer" :key="layer" cols="2">
-                  <v-item v-slot:default="{ active, toggle }" :value="`${layer}-${depth}`">
-                    <v-card :color="active ? 'primary' : ''" @click="toggle" class="pa-2" outlined tile>
-                      {{ sRow }}-{{ layer }}-{{ depth }}
-                    </v-card>
-                  </v-item>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-item-group>
+        <div v-if="sRow != undefined && sRow != 0">
+          <v-container fluid>
+            <v-row v-for="depth in maxDepth" :key="depth" no-gutters>
+              <v-col v-for="layer in maxLayer" :key="layer" cols="2">
+                <v-card outlined tile :color="positionDim[layer - 1][depth - 1].isEmpty ? '' : 'primary'">
+                  {{ sRow }}-{{ layer }}-{{ depth }}
+                  <v-card-text>
+                    {{ positionDim[layer - 1][depth - 1].number }}
+                  </v-card-text>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-container>
         </div>
       </v-sheet>
     </v-flex>
@@ -102,19 +101,52 @@ export default {
     sShelfId: 0,
     sRow: 0,
     currentShelf: {},
-    sPosition: ''
+    sPosition: {}
   }),
   watch: {
     sShelfId(val) {
       if (val == undefined) {
         return
       }
+      this.sRow = 0
+      this.positionListData = []
       this.currentShelf = this.shelfListData.find(r => r.id == val)
-      this.sPosition = ''
-      this.loadPosition(val)
     },
     sRow(val) {
-      this.sPosition = ''
+      if (val == undefined || val == 0) {
+        return
+      }
+      this.loadPosition()
+    }
+  },
+  computed: {
+    maxDepth: function() {
+      if (this.positionListData.length == 0) {
+        return 0
+      }
+      const dep = this.positionListData.map(r => r.depth)
+      return Math.max(...dep)
+    },
+
+    maxLayer: function() {
+      if (this.positionListData.length == 0) {
+        return 0
+      }
+      const layer = this.positionListData.map(r => r.layer)
+      return Math.max(...layer)
+    },
+
+    positionDim: function() {
+      let arr = new Array()
+
+      for (let i = 0; i < this.maxLayer; i++) {
+        arr[i] = new Array()
+        for (let j = 0; j < this.maxDepth; j++) {
+          arr[i][j] = this.positionListData[i * this.maxDepth + j]
+        }
+      }
+
+      return arr
     }
   },
   methods: {
@@ -136,11 +168,16 @@ export default {
       })
     },
 
-    loadPosition(shelfId) {
+    loadPosition() {
       let vm = this
-      position.getList(shelfId).then(res => {
+      position.getList({ shelfId: this.sShelfId, row: this.sRow }).then(res => {
         vm.positionListData = res
       })
+    },
+
+    positionIndex(row, layer, depth) {
+      let pos = this.positionListData.find(r => r.row == row && r.layer == layer && r.depth == depth)
+      return pos
     },
 
     refresh() {}

@@ -11,8 +11,8 @@ export default {
     return res.data
   },
 
-  async getList(shelfId) {
-    const res = await axios._get({ url: '/position/list', params: { shelfId: shelfId } })
+  async getList({ shelfId, row }) {
+    const res = await axios._get({ url: '/position/list', params: { shelfId: shelfId, row: row } })
     return res.data
   },
 
