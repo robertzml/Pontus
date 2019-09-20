@@ -61,28 +61,32 @@
       </v-sheet>
     </v-flex>
 
-    <v-flex xs12 md12>
-      <v-sheet class="d-flex flex-column">
-        <div class="d-flex justify-center">
-          <v-icon>arrow_back</v-icon>
-          <span class="mb-1">仓位情况</span>
-          <v-icon>arrow_forward</v-icon>
-        </div>
-        <div v-if="sRow != undefined && sRow != 0">
-          <v-container fluid>
-            <v-row v-for="depth in maxDepth" :key="depth" no-gutters>
-              <v-col v-for="layer in maxLayer" :key="layer" cols="2">
-                <v-card outlined tile :color="positionDim[layer - 1][depth - 1].isEmpty ? '' : 'primary'">
-                  {{ sRow }}-{{ layer }}-{{ depth }}
-                  <v-card-text>
-                    {{ positionDim[layer - 1][depth - 1].number }}
-                  </v-card-text>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-container>
-        </div>
-      </v-sheet>
+    <v-flex xs12 md12 v-if="sRow != undefined && sRow != 0">
+      <v-window v-model="window">
+        <v-window-item value="list" eager>
+          <v-sheet class="d-flex flex-column">
+            <div class="d-flex justify-center">
+              <span class="mb-1">仓位情况</span>
+            </div>
+            <div>
+              <v-container fluid>
+                <v-row v-for="depth in maxDepth" :key="depth" no-gutters>
+                  <v-col v-for="layer in maxLayer" :key="layer" cols="2">
+                    <v-card outlined tile :color="positionDim[layer - 1][depth - 1].isEmpty ? '' : 'primary'">
+                      <v-card-text class="my-0 py-2 text-center align-center">
+                        {{ positionDim[layer - 1][depth - 1].number }} <v-btn text small @click="viewDetails(layer, depth)">查看</v-btn>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </div>
+          </v-sheet>
+        </v-window-item>
+        <v-window-item value="details" eager>
+          <store-details ref="detailsMod"></store-details>
+        </v-window-item>
+      </v-window>
     </v-flex>
   </v-layout>
 </template>
@@ -91,10 +95,15 @@
 import warehouse from '@/controllers/warehouse'
 import shelf from '@/controllers/shelf'
 import position from '@/controllers/position'
+import StoreDetails from './Details'
 
 export default {
   name: 'StoreIndex',
+  components: {
+    StoreDetails
+  },
   data: () => ({
+    window: 'list',
     warehouseListData: [],
     shelfListData: [],
     positionListData: [],
@@ -154,6 +163,17 @@ export default {
       this.loadWarehouse()
     },
 
+    // 切换视图
+    showWindow: function(window) {
+      this.window = window
+      switch (window) {
+        case 'list':
+          break
+        case 'details':
+          break
+      }
+    },
+
     loadWarehouse() {
       let vm = this
       warehouse.getList().then(res => {
@@ -178,6 +198,11 @@ export default {
     positionIndex(row, layer, depth) {
       let pos = this.positionListData.find(r => r.row == row && r.layer == layer && r.depth == depth)
       return pos
+    },
+
+    viewDetails(layer, depth) {
+      this.window = 'details'
+      this.$refs.detailsMod.init(this.sShelfId, this.sRow, layer, depth)
     },
 
     refresh() {}
