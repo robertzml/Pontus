@@ -5,24 +5,24 @@
         <v-card-title class="cyan">
           仓位信息
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="pb-1">
           <v-form>
             <v-container>
-              <v-row>
+              <v-row dense>
                 <v-col cols="3">
-                  <v-text-field v-model="positionInfo.number" label="主编号" readonly></v-text-field>
+                  <v-text-field v-model="positionInfo.number" label="主编号" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="3">
-                  <v-text-field v-model="positionInfo.viceNumber" label="副编号" readonly></v-text-field>
+                  <v-text-field v-model="positionInfo.viceNumber" label="副编号" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="1">
-                  <v-text-field v-model="positionInfo.row" label="排" readonly></v-text-field>
+                  <v-text-field v-model="positionInfo.row" label="排" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="1">
-                  <v-text-field v-model="positionInfo.layer" label="层" readonly></v-text-field>
+                  <v-text-field v-model="positionInfo.layer" label="层" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="1">
-                  <v-text-field v-model="positionInfo.depth" label="进" readonly></v-text-field>
+                  <v-text-field v-model="positionInfo.depth" label="进" hide-details readonly></v-text-field>
                 </v-col>
               </v-row>
             </v-container>

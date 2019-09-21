@@ -61,33 +61,41 @@
       </v-sheet>
     </v-flex>
 
-    <v-flex xs12 md12 v-if="sRow != undefined && sRow != 0">
-      <v-window v-model="window">
-        <v-window-item value="list" eager>
-          <v-sheet class="d-flex flex-column">
-            <div class="d-flex justify-center">
-              <span class="mb-1">仓位情况</span>
-            </div>
-            <div>
-              <v-container fluid>
-                <v-row v-for="depth in maxDepth" :key="depth" no-gutters>
-                  <v-col v-for="layer in maxLayer" :key="layer" cols="2">
-                    <v-card outlined tile :color="positionDim[layer - 1][depth - 1].isEmpty ? '' : 'primary'">
-                      <v-card-text class="my-0 py-2 text-center align-center">
-                        {{ positionDim[layer - 1][depth - 1].number }} <v-btn text small @click="viewDetails(layer, depth)">查看</v-btn>
-                      </v-card-text>
-                    </v-card>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </div>
-          </v-sheet>
-        </v-window-item>
-        <v-window-item value="details" eager>
-          <store-details ref="detailsMod"></store-details>
-        </v-window-item>
-      </v-window>
-    </v-flex>
+    <div v-if="sRow != undefined && sRow != 0">
+      <v-container fluid class="pa-1">
+        <v-row dense>
+          <v-col cols="6">
+            <v-sheet class="d-flex flex-column">
+              <div class="d-flex justify-center">
+                <span class="mb-1">仓位情况</span>
+              </div>
+              <div>
+                <v-container fluid>
+                  <v-row v-for="depth in maxDepth" :key="depth" no-gutters>
+                    <v-col v-for="layer in maxLayer" :key="layer" cols="2">
+                      <v-card outlined tile :color="positionDim[layer - 1][depth - 1].isEmpty ? '' : 'primary'">
+                        <v-card-text class="my-0 py-0 px-1 text-center align-center caption">
+                          {{ positionDim[layer - 1][depth - 1].number }}
+                          <v-btn text x-small color="lime" @click="viewDetails(layer, depth)">
+                            View
+                          </v-btn>
+                          <v-btn text x-small color="orange">
+                            More
+                          </v-btn>
+                        </v-card-text>
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </div>
+            </v-sheet>
+          </v-col>
+          <v-col cols="6">
+            <store-details ref="detailsMod" class="sticky-card"></store-details>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
   </v-layout>
 </template>
 
@@ -212,3 +220,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.sticky-card {
+  top: 60px;
+  position: sticky;
+  position: -webkit-sticky;
+}
+</style>
