@@ -69,7 +69,7 @@ export default {
           model: false,
           children: [
             { text: '货品入库', model: false, name: 'stockin' },
-            { text: '货品出库', model: false },
+            { text: '货品出库', model: false, name: 'stockout' },
             { text: '货品移库', model: false }
           ]
         },
