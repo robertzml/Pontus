@@ -17,7 +17,7 @@
               </v-list-item-content>
             </v-list-item>
           </template>
-          <v-list-item v-for="(child, i) in item.children" v-model="child.model" :key="i" :to="{name: child.name}">
+          <v-list-item v-for="(child, i) in item.children" v-model="child.model" :key="i" :to="{ name: child.name }">
             <v-list-item-action v-if="child.icon">
               <v-icon>{{ child.icon }}</v-icon>
             </v-list-item-action>

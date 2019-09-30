@@ -104,7 +104,6 @@
     </v-flex>
 
     <v-flex xs12 md12>
-
     </v-flex>
   </v-layout>
 </template>
