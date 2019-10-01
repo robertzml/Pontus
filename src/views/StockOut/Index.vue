@@ -13,15 +13,19 @@
         </v-toolbar-items>
       </v-toolbar>
     </v-flex>
-
-    <v-flex xs3 md3>
-      <stock-out-list ref="listMod" @activate="showDetails"></stock-out-list>
-    </v-flex>
-
-    <v-flex xs9 md9>
+    <v-flex xs12 md12>
       <v-window v-model="window">
         <v-window-item value="create" eager>
           <stock-out-create ref="createMod" @close="closeCreate"></stock-out-create>
+        </v-window-item>
+
+        <v-window-item value="details" eager>
+          <v-flex xs3 md3>
+            <stock-out-list ref="listMod" @activate="showDetails"></stock-out-list>
+          </v-flex>
+
+          <v-flex xs9 md9>
+          </v-flex>
         </v-window-item>
       </v-window>
     </v-flex>

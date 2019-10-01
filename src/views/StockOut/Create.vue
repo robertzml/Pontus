@@ -1,10 +1,10 @@
 <template>
   <v-card>
     <v-form ref="form" v-model="valid" lazy-validation>
-      <v-card-text>
-        <div class="title text--primary">货物信息</div>
+      <v-card-text class="py-2">
+        <div class="title text--primary">合同选择</div>
 
-        <v-container>
+        <v-container fluid>
           <v-row dense>
             <v-col cols="6" md="4" sm="6">
               <v-menu v-model="stockOutTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
@@ -29,19 +29,55 @@
           </v-row>
         </v-container>
 
-        <v-btn class="primary" @click="searchStore">搜索库存</v-btn>
+        <v-btn small class="primary" @click="searchStore">搜索库存</v-btn>
       </v-card-text>
 
-      <v-card-text>
-        <v-container>
+      <v-card-text class="py-2">
+        <div class="title text--primary">在库库存</div>
+
+        <v-container fluid>
           <v-row>
             <v-col cols="12" md="12" sm="12">
-              <store-view-list :store-list-data="storeListData"></store-view-list>
+              <v-data-table :headers="storeHeaders" :items="storeListData" :items-per-page="10" hide-default-footer disable-pagination>
+                <template v-slot:item.inTime="{ item }">
+                  {{ item.inTime | displayDate }}
+                </template>
+                <template v-slot:item.billingType="{ item }">
+                  {{ item.billingType | billingType }}
+                </template>
+                <template v-slot:item.action="{ item }">
+                  <v-btn small color="success" @click="addStockOut(item)">
+                    出库
+                  </v-btn>
+                </template>
+              </v-data-table>
             </v-col>
           </v-row>
         </v-container>
       </v-card-text>
 
+      <v-card-text class="py-2">
+        <div class="title text--primary">出库列表</div>
+
+        <v-container fluid>
+          <v-row>
+            <v-col cols="12" md="12" sm="12">
+              <v-data-table :headers="taskHeaders" :items="taskInfoList" hide-default-footer disable-pagination>
+                <template v-slot:item.outCount="props">
+                  <v-edit-dialog :return-value.sync="props.item.outCount" @save="taskSave" @cancel="taskCancel" @open="taskOpen" @close="taskClose"> {{ props.item.outCount }}
+                    <template v-slot:input>
+                      <v-text-field v-model="props.item.outCount" :rules="[max25chars]" label="Edit" single-line></v-text-field>
+                    </template>
+                  </v-edit-dialog>
+                </template>
+                <template v-slot:item.status="{ item }">
+                  {{ item.status | displayStatus }}
+                </template>
+              </v-data-table>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card-text>
     </v-form>
   </v-card>
 </template>
@@ -50,13 +86,11 @@
 import contract from '@/controllers/contract'
 import store from '@/controllers/store'
 import CustomerSelect from '@/components/Control/CustomerSelect'
-import StoreViewList from '@/components/Grid/StoreViewList'
 
 export default {
   name: 'StockOutCreate',
   components: {
-    CustomerSelect,
-    StoreViewList
+    CustomerSelect
   },
   data: () => ({
     valid: true,
@@ -67,7 +101,33 @@ export default {
     selectedContract: { id: 0, number: '' },
     contractListData: [],
     contractRules: [v => !!v.id || '请选择合同'],
-    storeListData: []
+    storeHeaders: [
+      { text: '分类编码', value: 'categoryNumber' },
+      { text: '分类名称', value: 'categoryName' },
+      { text: '仓位码', value: 'positionNumber' },
+      { text: '托盘码', value: 'trayCode' },
+      { text: '货品总数量', value: 'totalCount' },
+      { text: '在库数量', value: 'storeCount' },
+      { text: '货品总重量(吨)', value: 'totalWeight' },
+      { text: '在库重量(吨)', value: 'storeWeight' },
+      { text: '入库时间', value: 'inTime' },
+      { text: '操作', value: 'action', sortable: false }
+    ],
+    storeListData: [],
+    max25chars: v => v.length <= 25 || 'Input too long!',
+    taskHeaders: [
+      { text: '托盘码', value: 'trayCode', align: 'left' },
+      { text: '类别名称', value: 'categoryName' },
+      { text: '在库数量', value: 'storeCount' },
+      { text: '出库数量', value: 'outCount' },
+      { text: '单位重量(kg)', value: 'unitWeight' },
+      { text: '总重量(t)', value: 'inWeight' },
+      { text: '规格', value: 'specification' },
+      { text: '产地', value: 'originPlace' },
+      { text: '保质期(月)', value: 'durability' },
+      { text: '备注', value: 'remark' }
+    ],
+    taskInfoList: []
   }),
   watch: {
     'stockOutInfo.customerId': function(val) {
@@ -99,6 +159,29 @@ export default {
       store.findByContract({ contractId: this.selectedContract.id, isStoreIn: true }).then(res => {
         vm.storeListData = res
       })
+    },
+
+    addStockOut(item) {
+      this.taskInfoList.push(item)
+    },
+
+    taskSave() {
+      this.snack = true
+      this.snackColor = 'success'
+      this.snackText = 'Data saved'
+    },
+    taskCancel() {
+      this.snack = true
+      this.snackColor = 'error'
+      this.snackText = 'Canceled'
+    },
+    taskOpen() {
+      this.snack = true
+      this.snackColor = 'info'
+      this.snackText = 'Dialog opened'
+    },
+    taskClose() {
+      console.log('Dialog closed')
     }
   },
   mounted: function() {
