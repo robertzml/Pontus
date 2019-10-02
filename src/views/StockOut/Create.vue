@@ -66,7 +66,14 @@
                 <template v-slot:item.outCount="props">
                   <v-edit-dialog :return-value.sync="props.item.outCount" @save="taskSave" @cancel="taskCancel" @open="taskOpen" @close="taskClose"> {{ props.item.outCount }}
                     <template v-slot:input>
-                      <v-text-field v-model="props.item.outCount" :rules="[max25chars]" label="Edit" single-line></v-text-field>
+                      <v-text-field v-model="props.item.outCount" :rules="digitRules" label="出库数量" single-line></v-text-field>
+                    </template>
+                  </v-edit-dialog>
+                </template>
+                <template v-slot:item.remark="props">
+                  <v-edit-dialog :return-value.sync="props.item.remark" @save="taskSave" @cancel="taskCancel" @open="taskOpen" @close="taskClose"> {{ props.item.remark }}
+                    <template v-slot:input>
+                      <v-text-field v-model="props.item.remark" label="备注" single-line></v-text-field>
                     </template>
                   </v-edit-dialog>
                 </template>
@@ -77,6 +84,8 @@
             </v-col>
           </v-row>
         </v-container>
+
+        <v-btn small class="primary" :disabled="!valid" @click="submit">提交</v-btn>
       </v-card-text>
     </v-form>
   </v-card>
@@ -96,7 +105,15 @@ export default {
     valid: true,
     stockOutTimeMenu: false,
     stockOutInfo: {
-      customerId: 0
+      outTime: null,
+      monthTime: '',
+      flowNumber: '',
+      type: 1,
+      customerId: 0,
+      contractId: 0,
+      userId: 0,
+      userName: '',
+      remark: ''
     },
     selectedContract: { id: 0, number: '' },
     contractListData: [],
@@ -114,14 +131,14 @@ export default {
       { text: '操作', value: 'action', sortable: false }
     ],
     storeListData: [],
-    max25chars: v => v.length <= 25 || 'Input too long!',
+    digitRules: [v => (v != null && /^\d+/.test(v)) || '请输入数字'],
     taskHeaders: [
       { text: '托盘码', value: 'trayCode', align: 'left' },
       { text: '类别名称', value: 'categoryName' },
       { text: '在库数量', value: 'storeCount' },
       { text: '出库数量', value: 'outCount' },
       { text: '单位重量(kg)', value: 'unitWeight' },
-      { text: '总重量(t)', value: 'inWeight' },
+      { text: '总重量(t)', value: 'storeWeight' },
       { text: '规格', value: 'specification' },
       { text: '产地', value: 'originPlace' },
       { text: '保质期(月)', value: 'durability' },
@@ -136,6 +153,17 @@ export default {
   },
   methods: {
     init: function() {
+      this.stockOutInfo = {
+        outTime: new Date().toISOString().substr(0, 10),
+        monthTime: '',
+        flowNumber: '',
+        type: 1,
+        customerId: 0,
+        contractId: 0,
+        userId: 0,
+        userName: '',
+        remark: ''
+      }
       this.$refs.form.resetValidation()
     },
 
@@ -162,26 +190,36 @@ export default {
     },
 
     addStockOut(item) {
-      this.taskInfoList.push(item)
+      let task = {
+        storeId: item.id,
+        trayCode: item.trayCode,
+        categoryName: item.categoryName,
+        storeCount: item.storeCount,
+        outCout: 0,
+        unitWeight: item.unitWeight,
+        storeWeight: item.storeWeight,
+        specification: item.specification,
+        originPlace: item.originPlace,
+        durability: item.durability,
+        remark: ''
+      }
+      this.taskInfoList.push(task)
     },
 
-    taskSave() {
-      this.snack = true
-      this.snackColor = 'success'
-      this.snackText = 'Data saved'
-    },
-    taskCancel() {
-      this.snack = true
-      this.snackColor = 'error'
-      this.snackText = 'Canceled'
-    },
-    taskOpen() {
-      this.snack = true
-      this.snackColor = 'info'
-      this.snackText = 'Dialog opened'
-    },
+    taskSave() {},
+    taskCancel() {},
+    taskOpen() {},
     taskClose() {
       console.log('Dialog closed')
+    },
+
+    submit() {
+      if (this.$refs.form.validate()) {
+        if (this.taskInfoList.length == 0) {
+          this.$store.commit('alertError', '请选择出库货品')
+          return
+        }
+      }
     }
   },
   mounted: function() {
