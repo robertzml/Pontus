@@ -94,6 +94,7 @@
 <script>
 import contract from '@/controllers/contract'
 import store from '@/controllers/store'
+import stockOut from '@/controllers/stockOut'
 import CustomerSelect from '@/components/Control/CustomerSelect'
 
 export default {
@@ -219,6 +220,10 @@ export default {
           this.$store.commit('alertError', '请选择出库货品')
           return
         }
+
+        stockOut.create(this.stockOutInfo, this.taskInfoList).then(res => {
+          
+        })
       }
     }
   },
