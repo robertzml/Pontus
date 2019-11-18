@@ -1,5 +1,5 @@
 <template>
-  <v-autocomplete label="请选择类别" prepend-icon="people" v-model="sCategoryId" :filter="customFilter" :items="categoryData" item-value="id" item-text="name" return-object :rules="categoryRules" @change="selectItem">
+  <v-autocomplete label="请选择类别" prepend-icon="category" v-model="sCategoryId" :filter="customFilter" :items="categoryData" item-value="id" item-text="name" return-object :rules="categoryRules" @change="selectItem">
     <template v-slot:selection="data">
       {{ data.item.number }} - {{ data.item.name }}
     </template>

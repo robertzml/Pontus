@@ -59,6 +59,10 @@
             </v-flex>
           </v-layout>
         </v-form>
+
+        <v-card-actions>
+          <v-btn color="primary darken-1" :disabled="info.status != 71">添加任务</v-btn>
+        </v-card-actions>
       </v-card>
     </v-flex>
   </v-layout>

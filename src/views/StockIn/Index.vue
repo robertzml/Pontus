@@ -8,7 +8,7 @@
         <v-toolbar-items>
           <v-btn v-if="window != 'details'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
           <v-btn v-if="window == 'details' && currentStockInId != ''" text @click.stop="toEditTask">任务录入</v-btn>
-          <v-btn text @click.stop="toCreate">货品入库</v-btn>
+          <v-btn text @click.stop="showCreate">货品入库</v-btn>
           <v-btn text @click.stop="refresh">刷新</v-btn>
         </v-toolbar-items>
       </v-toolbar>
@@ -42,10 +42,6 @@
           <stock-in-task-details ref="taskDetailsMod"></stock-in-task-details>
         </v-window-item>
 
-        <v-window-item value="create" eager>
-          <stock-in-create ref="createMod" @close="closeCreate"></stock-in-create>
-        </v-window-item>
-
         <v-window-item value="editTask" eager>
           <stock-in-edit-task ref="editTaskMod"></stock-in-edit-task>
         </v-window-item>
@@ -55,6 +51,8 @@
     <v-flex xs12 md12>
 
     </v-flex>
+
+    <stock-in-create ref="stockInCreateMod" @close="closeCreate"></stock-in-create>
   </v-layout>
 </template>
 
@@ -119,10 +117,17 @@ export default {
       this.showWindow('taskDetails', val)
     },
 
-    // 进入货品入库
-    toCreate() {
-      this.showWindow('create')
+    // 显示货品入库
+    showCreate() {
+      // this.showWindow('create')
+      this.$refs.stockInCreateMod.init(0)
     },
+
+    /**
+     * 关闭添加入库
+     * val: 入库id
+     * update: 是否新增
+     *  */
 
     closeCreate(val, update) {
       if (update) {
