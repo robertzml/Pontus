@@ -15,5 +15,15 @@ export default {
   },
 
   // 实体状态
-  entityStatus: []
+  entityStatus: [],
+
+  // 角色代码
+  roleCode: [
+    { roleId: 1, code: 'root' },
+    { roleId: 2, code: 'administrator' },
+    { roleId: 3, code: 'manager' },
+    { roleId: 4, code: 'executive' },
+    { roleId: 5, code: 'warehouse' },
+    { roleId: 6, code: 'forklift' }
+  ]
 }
