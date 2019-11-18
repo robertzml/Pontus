@@ -7,7 +7,6 @@
 
         <v-toolbar-items>
           <v-btn v-if="window != 'details'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
-          <v-btn v-if="window == 'details' && currentStockInId != ''" text @click.stop="toEditTask">任务录入</v-btn>
           <v-btn text @click.stop="showCreate">货品入库</v-btn>
           <v-btn text @click.stop="refresh">刷新</v-btn>
         </v-toolbar-items>
@@ -25,7 +24,7 @@
             <v-expansion-panel>
               <v-expansion-panel-header ripple>入库信息</v-expansion-panel-header>
               <v-expansion-panel-content eager>
-                <stock-in-details ref="detailsMod" :show-title="false"></stock-in-details>
+                <stock-in-details ref="detailsMod" :show-title="false" @updateTask="updateTask"></stock-in-details>
               </v-expansion-panel-content>
             </v-expansion-panel>
 
@@ -41,15 +40,7 @@
         <v-window-item value="taskDetails" eager>
           <stock-in-task-details ref="taskDetailsMod"></stock-in-task-details>
         </v-window-item>
-
-        <v-window-item value="editTask" eager>
-          <stock-in-edit-task ref="editTaskMod"></stock-in-edit-task>
-        </v-window-item>
       </v-window>
-    </v-flex>
-
-    <v-flex xs12 md12>
-
     </v-flex>
 
     <stock-in-create ref="stockInCreateMod" @close="closeCreate"></stock-in-create>
@@ -61,7 +52,6 @@ import StockInList from './List'
 import StockInCreate from './Create'
 import StockInDetails from './Details'
 import StockInTaskList from './TaskList'
-import StockInEditTask from './EditTask'
 import StockInTaskDetails from './TaskDetails'
 
 export default {
@@ -70,7 +60,6 @@ export default {
     StockInList,
     StockInCreate,
     StockInDetails,
-    StockInEditTask,
     StockInTaskList,
     StockInTaskDetails
   },
@@ -91,9 +80,6 @@ export default {
           break
         case 'taskDetails':
           this.$refs.taskDetailsMod.init(id)
-          break
-        case 'editTask':
-          this.$refs.editTaskMod.init(id)
           break
       }
     },
@@ -128,7 +114,6 @@ export default {
      * val: 入库id
      * update: 是否新增
      *  */
-
     closeCreate(val, update) {
       if (update) {
         this.$refs.listMod.init()
@@ -137,10 +122,8 @@ export default {
       this.showWindow('details', val)
     },
 
-    toEditTask() {
-      if (this.currentStockInId != '') {
-        this.showWindow('editTask', this.currentStockInId)
-      }
+    updateTask() {
+      this.$refs.taskListMod.init(this.currentStockInId)
     }
   }
 }

@@ -61,16 +61,19 @@
         </v-form>
 
         <v-card-actions>
-          <v-btn color="primary darken-1" :disabled="info.status != 71">添加任务</v-btn>
+          <v-btn color="primary darken-1" :disabled="info.status != 71" @click="showAddTask">添加任务</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
+
+    <stock-in-edit-task ref="editTaskMod" @update="updateTask"></stock-in-edit-task>
   </v-layout>
 </template>
 
 
 <script>
 import stockIn from '@/controllers/stockIn'
+import StockInEditTask from './EditTask'
 
 export default {
   name: 'StockInDetails',
@@ -79,6 +82,9 @@ export default {
       type: Boolean,
       default: true
     }
+  },
+  components: {
+    StockInEditTask
   },
   data: () => ({
     stockInId: 0,
@@ -99,6 +105,19 @@ export default {
       stockIn.get(this.stockInId).then(res => {
         vm.info = res
       })
+    },
+
+    showAddTask() {
+      if (this.stockInId != 0) {
+        this.$refs.editTaskMod.init(this.stockInId)
+      }
+    },
+
+    /**
+     * 完成编辑入库任务
+     */
+    updateTask() {
+      this.$emit('updateTask')
     }
   }
 }
