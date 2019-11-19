@@ -37,5 +37,15 @@ export default {
   ],
 
   /** 入库类型 */
-  stockInType: [{ text: '普通库入库', value: 1 }, { text: '仓位库入库', value: 2 }]
+  stockInType: [{ text: '普通库入库', value: 1 }, { text: '仓位库入库', value: 2 }],
+
+  /** 用户组 */
+  userGroup: [
+    { text: '超级管理员', value: 1 },
+    { text: '系统管理员', value: 2 },
+    { text: '总经理', value: 3 },
+    { text: '业务主管', value: 4 },
+    { text: '仓库管理员', value: 5 },
+    { text: '叉车工', value: 6 }
+  ]
 }

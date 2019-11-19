@@ -8,6 +8,21 @@ export default {
     return res.data
   },
 
+  async get(id) {
+    const res = await axios._get({ url: '/user/getById', params: { id: id } })
+    return res.data
+  },
+
+  async create(entity) {
+    const res = await axios._post({ url: '/user/create', data: entity })
+    return res.data
+  },
+
+  async update(entity) {
+    const res = await axios._post({ url: '/user/update', data: entity })
+    return res.data
+  },
+
   async enable(data) {
     const res = await axios._postqs({
       url: '/user/enable',

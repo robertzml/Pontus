@@ -6,6 +6,7 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
+          <v-btn :disabled="selectedUser.length == 0" text @click.stop="showEdit">编辑用户</v-btn>
           <v-btn text>添加用户</v-btn>
           <v-btn text @click.stop="enableUser">启用</v-btn>
           <v-btn text @click.stop="disableUser">禁用</v-btn>
@@ -36,15 +37,21 @@
         </v-card-text>
       </v-card>
     </v-flex>
+
+    <user-edit ref="userEditMod"></user-edit>
   </v-layout>
 </template>
 
 <script>
 import user from '@/controllers/user'
 import userGroup from '@/controllers/userGroup'
+import UserEdit from './Edit'
 
 export default {
   name: 'UserIndex',
+  components: {
+    UserEdit
+  },
   data: () => ({
     userList: [],
     userGroupList: [],
@@ -92,6 +99,14 @@ export default {
       user.enable({ id: this.selectedUser[0].id, enable: false }).then(() => {
         this.loadUser()
       })
+    },
+
+    showEdit() {
+      if (this.selectedUser.length == 0) {
+        return
+      }
+
+      this.$refs.userEditMod.init(this.selectedUser[0].id)
     }
   },
   mounted: function() {
