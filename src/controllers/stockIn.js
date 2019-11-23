@@ -29,6 +29,7 @@ export default {
     return res.data
   },
 
+  // 获取入库任务
   async getTask(taskId) {
     const res = await axios._get({ url: '/stockIn/getTask', params: { taskId: taskId } })
     return res.data
@@ -37,6 +38,12 @@ export default {
   // 添加入库任务
   async addTask(entity) {
     const res = await axios._post({ url: '/stockIn/addTask', data: entity })
+    return res.data
+  },
+
+  // 根据托盘码搜索入库任务
+  async findTask(trayCode) {
+    const res = await axios._get({ url: '/stockIn/findTask', params: { trayCode: trayCode } })
     return res.data
   },
 

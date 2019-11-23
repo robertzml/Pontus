@@ -67,6 +67,9 @@ export default {
     switch (this.$store.state.user.userGroupId) {
       case 1:
         this.items = this.$store.state.rootMenu
+        break
+      case 6:
+        this.items = this.$store.state.forkliftMenu
     }
   }
 }

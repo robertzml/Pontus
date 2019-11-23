@@ -85,5 +85,10 @@ export default {
       children: [{ text: '编号模板', model: false, name: 'sequenceTemplate' }]
     },
     { icon: 'help', text: '关于', name: 'about' }
+  ],
+
+  forkliftMenu: [
+    { icon: 'home', text: '主页', name: 'home' },
+    { icon: 'person', 'icon-alt': 'person', text: '入库接单', model: false, name: 'stockinReceiveTask' }
   ]
 }

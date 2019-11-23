@@ -1,0 +1,127 @@
+<template>
+  <v-card class="mx-auto">
+    <v-card-title class="cyan">
+      入库接单
+    </v-card-title>
+
+    <v-card-text>
+      <v-row>
+        <v-col cols="12">
+
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-text-field label="托盘码" autofocus :counter="6" autocomplete="off" v-model="trayCode" :rules="trayCodeRules"></v-text-field>
+            <v-btn color="primary" class="mt-4" large :disabled="!valid" @click="search">
+              托 盘 搜 索
+            </v-btn>
+          </v-form>
+        </v-col>
+      </v-row>
+    </v-card-text>
+
+    <v-card-text class="pt-0">
+      <v-row>
+        <v-col cols="12">
+          <v-data-iterator :items="taskList" :disable-pagination="true" :hide-default-footer="true">
+            <template v-slot:header>
+              <v-toolbar color="indigo darken-5" dark flat>
+                <v-toolbar-title>货物情况</v-toolbar-title>
+              </v-toolbar>
+            </template>
+
+            <template v-slot:default="props">
+              <v-row>
+                <v-col v-for="item in props.items" :key="item.taskCode" cols="12" sm="12" md="6" lg="4">
+                  <v-card>
+                    <v-card-title class="subheading font-weight-bold">{{ item.taskCode }}</v-card-title>
+
+                    <v-divider></v-divider>
+
+                    <v-list dense>
+                      <v-list-item>
+                        <v-list-item-content>类别编码:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.categoryNumber }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>类别名称:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.categoryName }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>入库数量:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.inCount }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>单位重量(kg):</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.unitWeight }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>入库重量(t):</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.inWeight }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>规格:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.specification }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>产地:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.originPlace }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>保质期(月):</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.durability }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>创建时间:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.createTime | displayDateTime }}</v-list-item-content>
+                      </v-list-item>
+                    </v-list>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </template>
+          </v-data-iterator>
+        </v-col>
+      </v-row>
+    </v-card-text>
+  </v-card>
+</template>
+
+<script>
+import stockIn from '@/controllers/stockIn'
+
+export default {
+  name: 'StockInReceiveTask',
+  data: () => ({
+    valid: false,
+    trayCode: '',
+    trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
+    taskList: []
+  }),
+  methods: {
+    init() {
+      this.trayCode = ''
+      this.valid = false
+      this.taskList = []
+    },
+    search() {
+      if (this.$refs.form.validate()) {
+        let vm = this
+
+        stockIn.findTask(this.trayCode).then(res => {
+          vm.taskList = res
+        })
+      }
+    }
+  },
+  mounted: function() {
+    this.init()
+  }
+}
+</script>
