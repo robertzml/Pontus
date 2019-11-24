@@ -9,9 +9,13 @@
         <v-col cols="12">
 
           <v-form ref="form" v-model="valid" lazy-validation>
-            <v-text-field label="托盘码" autofocus :counter="6" autocomplete="off" v-model="trayCode" :rules="trayCodeRules"></v-text-field>
+            <v-text-field label="托盘码" autofocus prepend-icon="place" :counter="6" autocomplete="off" v-model="trayCode" :rules="trayCodeRules" @input="changeText"></v-text-field>
             <v-btn color="primary" class="mt-4" large :disabled="!valid" @click="search">
               托 盘 搜 索
+            </v-btn>
+
+            <v-btn color="success" class="mt-4 ml-8" large :disabled="taskList.length == 0 || !valid" @click="receive">
+              入 库 接 单
             </v-btn>
           </v-form>
         </v-col>
@@ -110,6 +114,9 @@ export default {
       this.valid = false
       this.taskList = []
     },
+    changeText(val) {
+      this.taskList = []
+    },
     search() {
       if (this.$refs.form.validate()) {
         let vm = this
@@ -118,6 +125,21 @@ export default {
           vm.taskList = res
         })
       }
+    },
+    receive() {
+      if (this.taskList.length == 0) {
+        return
+      }
+
+      let vm = this
+      let req = { trayCode: this.trayCode, userId: this.$store.state.user.id }
+      stockIn.receiveTask(req).then(res => {
+        if (res.status == 0) {
+          vm.$store.commit('alertSuccess', '入库接单成功')
+        } else {
+          vm.$store.commit('alertError', res.errorMessage)
+        }
+      })
     }
   },
   mounted: function() {
