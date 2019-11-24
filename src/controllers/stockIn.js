@@ -35,6 +35,12 @@ export default {
     return res.data
   },
 
+  // 获取当前接单任务
+  async findCurrentReceive(userId) {
+    const res = await axios._get({ url: '/stockIn/findCurrentReceive', params: { userId: userId } })
+    return res.data
+  },
+
   // 添加入库任务
   async addTask(entity) {
     const res = await axios._post({ url: '/stockIn/addTask', data: entity })
@@ -47,8 +53,15 @@ export default {
     return res.data
   },
 
+  // 任务接单
   async receiveTask(entity) {
     const res = await axios._post({ url: '/stockIn/receiveTask', data: entity })
+    return res.data
+  },
+
+  // 任务上架
+  async enterTask(entity) {
+    const res = await axios._post({ url: '/stockIn/enterTask', data: entity })
     return res.data
   },
 

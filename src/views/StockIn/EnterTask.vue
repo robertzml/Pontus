@@ -1,31 +1,97 @@
 <template>
-  <v-card>
-    <v-card-title>
-      <span class="headline">上架操作</span>
+  <v-card class="mx-auto">
+    <v-card-title class="light-blue lighten-2">
+      入库上架
     </v-card-title>
-    <v-divider></v-divider>
+
     <v-card-text>
-      <v-container grid-list-md>
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-layout wrap>
-            <v-flex xs12 sm12 md12>
-              <v-text-field label="任务码" v-model="stockInTaskInfo.taskCode" readonly></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm12 md12>
-              <v-text-field label="托盘码" v-model="stockInTaskInfo.trayCode" readonly></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm12 md12>
-              <v-text-field label="货架码" v-model="stockInTaskInfo.shelfCode" :rules="shelfCodeRules" v-focus></v-text-field>
-            </v-flex>
-          </v-layout>
-        </v-form>
-      </v-container>
+      <v-row>
+        <v-col cols="12">
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-text-field label="托盘码" prepend-icon="power_input" autocomplete="off" v-model="trayCode" readonly></v-text-field>
+
+            <v-text-field label="货架码" prepend-icon="border_all" v-model="shelfCode" :rules="shelfCodeRules" autofocus></v-text-field>
+
+            <v-btn color="success" class="mt-4 ml-8" large :disabled="taskList.length == 0 || !valid" @click="enter">
+              货 物 上 架
+            </v-btn>
+          </v-form>
+        </v-col>
+      </v-row>
     </v-card-text>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="blue-grey lighten-3" text @click="close">关闭</v-btn>
-      <v-btn color="success darken-1" :disabled="!valid" @click="submit">保存</v-btn>
-    </v-card-actions>
+
+    <v-card-text class="pt-0">
+      <v-row>
+        <v-col cols="12">
+          <v-data-iterator :items="taskList" :disable-pagination="true" :hide-default-footer="true">
+            <template v-slot:header>
+              <v-toolbar color="indigo darken-5" dark flat>
+                <v-toolbar-title>货物情况</v-toolbar-title>
+              </v-toolbar>
+            </template>
+
+            <template v-slot:default="props">
+              <v-row>
+                <v-col v-for="item in props.items" :key="item.taskCode" cols="12" sm="12" md="6" lg="4">
+                  <v-card>
+                    <v-card-title class="subheading font-weight-bold">{{ item.taskCode }}</v-card-title>
+
+                    <v-divider></v-divider>
+
+                    <v-list dense>
+                      <v-list-item>
+                        <v-list-item-content>类别编码:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.categoryNumber }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>类别名称:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.categoryName }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>入库数量:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.inCount }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>单位重量(kg):</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.unitWeight }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>入库重量(t):</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.inWeight }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>规格:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.specification }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>产地:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.originPlace }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>保质期(月):</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.durability }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>创建时间:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.createTime | displayDateTime }}</v-list-item-content>
+                      </v-list-item>
+                    </v-list>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </template>
+          </v-data-iterator>
+        </v-col>
+      </v-row>
+    </v-card-text>
   </v-card>
 </template>
 
@@ -35,54 +101,41 @@ import stockIn from '@/controllers/stockIn'
 export default {
   name: 'StockInEnterTask',
   data: () => ({
-    valid: true,
-    taskId: '',
-    stockInTaskInfo: {
-      taskCode: '',
-      trayCode: '',
-      shelfCode: ''
-    },
+    valid: false,
+    trayCode: '',
+    shelfCode: '',
+    taskList: [],
     shelfCodeRules: [v => !!v || '请输入货架码', v => (v && v.length == 12) || '请输入正确货架码']
   }),
   methods: {
-    init(taskId) {
-      this.taskId = taskId
+    findCurrentReceive() {
+      let userId = this.$store.state.user.id
 
-      this.stockInTaskInfo = {
-        taskCode: '',
-        trayCode: '',
-        shelfCode: ''
-      }
-      this.loadTask()
-      this.$refs.form.resetValidation()
-    },
-
-    loadTask() {
       let vm = this
-      stockIn.getTask(this.taskId).then(res => {
-        vm.stockInTaskInfo = res
+      stockIn.findCurrentReceive(userId).then(res => {
+        vm.taskList = res
+        if (vm.taskList.length > 0) {
+          vm.trayCode = vm.taskList[0].trayCode
+        }
       })
     },
 
-    close() {
-      this.$emit('close', false)
-    },
-
-    submit() {
+    enter() {
       if (this.$refs.form.validate()) {
         let vm = this
-
-        this.stockInTaskInfo.status = 74
-        stockIn.handleTask(this.stockInTaskInfo).then(res => {
+        let req = { trayCode: this.trayCode, shelfCode: this.shelfCode, userId: this.$store.state.user.id }
+        stockIn.enterTask(req).then(res => {
           if (res.status == 0) {
-            vm.$store.commit('alertSuccess', '货品上架成功')
-            vm.$emit('close', true)
+            vm.$store.commit('alertSuccess', '入库上架成功')
           } else {
             vm.$store.commit('alertError', res.errorMessage)
           }
         })
       }
     }
+  },
+  mounted: function() {
+    this.findCurrentReceive()
   }
 }
 </script>

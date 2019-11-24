@@ -89,6 +89,7 @@ export default {
 
   forkliftMenu: [
     { icon: 'home', text: '主页', name: 'home' },
-    { icon: 'person', 'icon-alt': 'person', text: '入库接单', model: false, name: 'stockinReceiveTask' }
+    { icon: 'gavel', 'icon-alt': 'gavel', text: '入库接单', model: false, name: 'stockinReceiveTask' },
+    { icon: 'cloud_upload', 'icon-alt': 'cloud_upload', text: '入库上架', model: false, name: 'stockinEnterTask' }
   ]
 }

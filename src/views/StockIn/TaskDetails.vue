@@ -93,7 +93,7 @@
     </v-flex>
 
     <v-dialog v-model="dialog" eager max-width="600px">
-      <stock-in-enter-task ref="enterMod" @close="closeEnter"></stock-in-enter-task>
+      <stock-in-handle-task ref="enterMod" @close="closeEnter"></stock-in-handle-task>
     </v-dialog>
   </v-layout>
 </template>
@@ -101,13 +101,13 @@
 
 <script>
 import stockIn from '@/controllers/stockIn'
-import StockInEnterTask from './EnterTask'
+import StockInHandleTask from './HandleTask'
 
 export default {
   name: 'StockInTaskDetails',
   props: {},
   components: {
-    StockInEnterTask
+    StockInHandleTask
   },
   data: () => ({
     taskId: '',

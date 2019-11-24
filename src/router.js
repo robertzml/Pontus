@@ -56,6 +56,11 @@ export default new Router({
       component: () => import('./views/StockIn/ReceiveTask.vue')
     },
     {
+      path: '/stockinentertask',
+      name: 'stockinEnterTask',
+      component: () => import('./views/StockIn/EnterTask.vue')
+    },
+    {
       path: '/stockout',
       name: 'stockout',
       component: () => import('./views/StockOut/Index.vue')
