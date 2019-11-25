@@ -7,11 +7,13 @@
           <v-container>
             <v-form ref="form" v-model="valid" lazy-validation>
               <v-row>
-                <v-col cols="4">
+                <v-col cols="6">
                   <customer-select :customer-id.sync="customerId"></customer-select>
                 </v-col>
-                <v-col cols="4" align-self="center">
+                <v-col cols="6" align-self="center">
                   <v-btn color="success darken-1" :disabled="!valid" @click="submit">搜索</v-btn>
+
+                  <v-btn color="lime darken-4" :disabled="!valid" class="ml-2" @click="showCreate">添加货物</v-btn>
                 </v-col>
               </v-row>
             </v-form>
@@ -37,6 +39,8 @@
             </template>
           </v-data-table>
         </v-card-text>
+
+        <cargo-edit ref="cargoEditMod"></cargo-edit>
       </v-card>
     </v-col>
   </v-row>
@@ -44,13 +48,15 @@
 
 <script>
 import CustomerSelect from '@/components/Control/CustomerSelect'
+import CargoEdit from './Edit'
 import contract from '@/controllers/contract'
 import cargo from '@/controllers/cargo'
 
 export default {
   name: 'CargoIndex',
   components: {
-    CustomerSelect
+    CustomerSelect,
+    CargoEdit
   },
   data: () => ({
     valid: true,
@@ -59,6 +65,7 @@ export default {
     contractListData: [],
     cargoListData: [],
     headers: [
+      { text: '货品名称', value: 'name' },
       { text: '客户编号', value: 'customerNumber' },
       { text: '客户名称', value: 'customerName' },
       { text: '类别名称', value: 'categoryName' },
@@ -83,6 +90,10 @@ export default {
           vm.cargoListData = res
         })
       }
+    },
+
+    showCreate() {
+      this.$refs.cargoEditMod.init(this.customerId)
     },
 
     viewItem(val) {}

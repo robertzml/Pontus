@@ -1,0 +1,98 @@
+<template>
+  <v-dialog v-model="dialog" persistent eager max-width="800px">
+    <v-card class="mx-auto">
+      <v-card-title class="cyan">
+        货品信息
+      </v-card-title>
+
+      <v-card-text>
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-container fluid>
+            <v-row>
+              <v-col cols="6" md="6" sm="6">
+                <v-text-field label="货品名称*" v-model="cargoInfo.name" :rules="nameRules"></v-text-field>
+              </v-col>
+
+              <v-col cols="6" md="6" sm="6">
+                <category-select :category-id.sync="categoryId" @change="selectCategory"></category-select>
+              </v-col>
+
+              <v-col cols="6" md="6" sm="6">
+                <v-text-field label="单位重量*" v-model="cargoInfo.unitWeight" suffix="千克"></v-text-field>
+              </v-col>
+
+              <v-col cols="6" md="6" sm="6">
+                <v-text-field label="备注" v-model="cargoInfo.remark"></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
+      </v-card-text>
+
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue-grey lighten-3" text @click="dialog = false">取消</v-btn>
+        <v-btn color="success darken-1" :disabled="!valid" @click="submit">保存</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+</template>
+
+<script>
+import CategorySelect from '@/components/Control/CategorySelect'
+import cargo from '@/controllers/cargo'
+
+export default {
+  name: 'CargoEdit',
+  components: {
+    CategorySelect
+  },
+  data: () => ({
+    dialog: false,
+    valid: true,
+    customerId: 0,
+    categoryId: 0,
+    cargoInfo: {
+      name: '',
+      customerId: 0,
+      categoryId: '',
+      unitWeight: 0,
+      remark: ''
+    },
+    nameRules: [v => !!v || '请输入货品名称']
+  }),
+  methods: {
+    init(customerId) {
+      this.customerId = customerId
+      this.cargoInfo = {
+        name: '',
+        customerId: 0,
+        categoryId: '',
+        unitWeight: 0,
+        remark: ''
+      }
+      this.dialog = true
+    },
+
+    selectCategory(val) {
+      this.cargoInfo.categoryId = val.id
+    },
+    submit() {
+      if (this.$refs.form.validate()) {
+        let vm = this
+
+        this.cargoInfo.customerId = this.customerId
+        cargo.create(this.cargoInfo).then(res => {
+          if (res.status == 0) {
+            vm.$store.commit('alertSuccess', '添加货品成功')
+            vm.$emit('update')
+            vm.dialog = false
+          } else {
+            vm.$store.commit('alertError', res.errorMessage)
+          }
+        })
+      }
+    }
+  }
+}
+</script>

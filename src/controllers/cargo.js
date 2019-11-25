@@ -6,5 +6,10 @@ export default {
   async getList(customerId) {
     const res = await axios._get({ url: '/cargo/list', params: { customerId: customerId } })
     return res.data
+  },
+
+  async create(entity) {
+    const res = await axios._post({ url: '/cargo/create', data: entity })
+    return res.data
   }
 }
