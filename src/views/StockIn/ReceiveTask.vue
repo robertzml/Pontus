@@ -8,7 +8,16 @@
       <v-row>
         <v-col cols="12">
           <v-form ref="form" v-model="valid" lazy-validation>
-            <v-text-field label="托盘码" autofocus prepend-icon="power_input" :counter="6" autocomplete="off" v-model="trayCode" :rules="trayCodeRules" @input="changeText"></v-text-field>
+            <v-text-field
+              label="托盘码"
+              autofocus
+              prepend-icon="power_input"
+              :counter="6"
+              autocomplete="off"
+              v-model="trayCode"
+              :rules="trayCodeRules"
+              @input="changeText"
+            ></v-text-field>
             <v-btn color="primary" class="mt-4" large :disabled="!valid" @click="search">
               托 盘 搜 索
             </v-btn>
@@ -82,7 +91,9 @@
 
                       <v-list-item>
                         <v-list-item-content>创建时间:</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.createTime | displayDateTime }}</v-list-item-content>
+                        <v-list-item-content class="align-end">{{
+                          item.createTime | displayDateTime
+                        }}</v-list-item-content>
                       </v-list-item>
                     </v-list>
                   </v-card>
@@ -113,7 +124,7 @@ export default {
       this.valid = false
       this.taskList = []
     },
-    changeText(val) {
+    changeText() {
       this.taskList = []
     },
     search() {
