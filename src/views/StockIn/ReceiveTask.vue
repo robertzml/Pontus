@@ -146,6 +146,7 @@ export default {
       stockIn.receiveTask(req).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '入库接单成功')
+          this.$router.push({ name: 'stockinEnterTask' })
         } else {
           vm.$store.commit('alertError', res.errorMessage)
         }

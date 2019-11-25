@@ -8,9 +8,21 @@
       <v-row>
         <v-col cols="12">
           <v-form ref="form" v-model="valid" lazy-validation>
-            <v-text-field label="托盘码" prepend-icon="power_input" autocomplete="off" v-model="trayCode" readonly></v-text-field>
+            <v-text-field
+              label="托盘码"
+              prepend-icon="power_input"
+              autocomplete="off"
+              v-model="trayCode"
+              readonly
+            ></v-text-field>
 
-            <v-text-field label="货架码" prepend-icon="border_all" v-model="shelfCode" :rules="shelfCodeRules" autofocus></v-text-field>
+            <v-text-field
+              label="货架码"
+              prepend-icon="border_all"
+              v-model="shelfCode"
+              :rules="shelfCodeRules"
+              autofocus
+            ></v-text-field>
 
             <v-btn color="success" class="mt-4 ml-8" large :disabled="taskList.length == 0 || !valid" @click="enter">
               货 物 上 架
@@ -81,7 +93,9 @@
 
                       <v-list-item>
                         <v-list-item-content>创建时间:</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.createTime | displayDateTime }}</v-list-item-content>
+                        <v-list-item-content class="align-end">{{
+                          item.createTime | displayDateTime
+                        }}</v-list-item-content>
                       </v-list-item>
                     </v-list>
                   </v-card>
@@ -127,6 +141,7 @@ export default {
         stockIn.enterTask(req).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '入库上架成功')
+            this.$router.push({ name: 'home' })
           } else {
             vm.$store.commit('alertError', res.errorMessage)
           }

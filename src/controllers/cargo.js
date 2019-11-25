@@ -8,6 +8,11 @@ export default {
     return res.data
   },
 
+  async getListByNumber(customerNumber) {
+    const res = await axios._get({ url: '/cargo/listByNumber', params: { customerNumber: customerNumber } })
+    return res.data
+  },
+
   async create(entity) {
     const res = await axios._post({ url: '/cargo/create', data: entity })
     return res.data

@@ -7,7 +7,6 @@
         </v-card-title>
 
         <v-card-text>
-
           <v-form>
             <v-layout wrap>
               <v-flex xs6 md3>
@@ -20,10 +19,18 @@
                 <v-text-field :value="$util.stockInType(info.type)" label="入库类型" readonly></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
-                <v-text-field :value="`${info.warehouseNumber} - ${info.warehouseName}`" label="仓库" readonly></v-text-field>
+                <v-text-field
+                  :value="`${info.warehouseNumber} - ${info.warehouseName}`"
+                  label="仓库"
+                  readonly
+                ></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
-                <v-text-field :value="`${info.categoryNumber} - ${info.categoryName}`" label="货品类别" readonly></v-text-field>
+                <v-text-field
+                  :value="`${info.categoryNumber} - ${info.categoryName}`"
+                  label="货品类别"
+                  readonly
+                ></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
                 <v-text-field v-model="info.inCount" label="入库数量" readonly></v-text-field>
@@ -77,8 +84,7 @@
                 <v-text-field :value="$util.displayStatus(info.status)" label="状态" readonly></v-text-field>
               </v-flex>
               <v-flex xs12 md6>
-                <v-textarea label=" 备注" :value="info.remark" readonly auto-grow rows="1">
-                </v-textarea>
+                <v-textarea label=" 备注" :value="info.remark" readonly auto-grow rows="1"> </v-textarea>
               </v-flex>
             </v-layout>
           </v-form>
@@ -86,33 +92,28 @@
 
         <v-card-actions>
           <v-btn color="primary" v-if="this.info.status == 72" @click.stop="receive">任务接单</v-btn>
-          <v-btn color="success" v-if="this.info.status == 73" @click.stop="showEnter">上架操作</v-btn>
-          <v-btn color="indigo" v-if="this.info.status == 74" @click.stop="finish">确认</v-btn>
+          <v-btn color="indigo" v-if="this.info.status == 74" @click.stop="showFinish">入库确认</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
 
-    <v-dialog v-model="dialog" eager max-width="600px">
-      <stock-in-handle-task ref="enterMod" @close="closeEnter"></stock-in-handle-task>
-    </v-dialog>
+    <stock-in-finish-task ref="finishMod"></stock-in-finish-task>
   </v-layout>
 </template>
 
-
 <script>
 import stockIn from '@/controllers/stockIn'
-import StockInHandleTask from './HandleTask'
+import StockInFinishTask from './FinishTask'
 
 export default {
   name: 'StockInTaskDetails',
   props: {},
   components: {
-    StockInHandleTask
+    StockInFinishTask
   },
   data: () => ({
     taskId: '',
-    info: {},
-    dialog: false
+    info: {}
   }),
   methods: {
     init(id) {
@@ -148,30 +149,8 @@ export default {
       })
     },
 
-    showEnter() {
-      this.$refs.enterMod.init(this.taskId)
-      this.dialog = true
-    },
-
-    closeEnter(val) {
-      this.dialog = false
-      if (val) {
-        this.getInfo()
-      }
-    },
-
-    finish() {
-      let vm = this
-      this.info.status = 75
-
-      stockIn.handleTask(this.info).then(res => {
-        if (res.status == 0) {
-          vm.$store.commit('alertSuccess', '确认成功')
-          vm.getInfo()
-        } else {
-          vm.$store.commit('alertError', res.errorMessage)
-        }
-      })
+    showFinish() {
+      this.$refs.finishMod.init(this.info.customerNumber, this.taskId)
     }
   }
 }
