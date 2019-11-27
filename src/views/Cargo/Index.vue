@@ -34,7 +34,7 @@
             <template v-slot:item.action="{ item }">
               <v-btn small color="success" @click="viewItem(item)">
                 <v-icon left dark>pageview</v-icon>
-                库存
+                查看
               </v-btn>
             </template>
           </v-data-table>

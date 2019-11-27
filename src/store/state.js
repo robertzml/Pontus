@@ -38,6 +38,7 @@ export default {
         { text: '客户管理', model: false, name: 'customer' },
         { text: '合同管理', model: false, name: 'contract' },
         { text: '类别管理', model: false, name: 'category' },
+        { text: '货品管理', model: false, name: 'cargo' },
         { text: '仓库管理', model: false, name: 'warehouse' },
         { text: '仓位管理', model: false, name: 'position' }
       ]
@@ -58,7 +59,7 @@ export default {
       'icon-alt': 'domain',
       text: '库存管理',
       model: false,
-      children: [{ text: '货品管理', model: false, name: 'cargo' }, { text: '仓库库存', model: false, name: 'store' }]
+      children: [{ text: '仓库库存', model: false, name: 'store' }]
     },
     {
       icon: 'bar_chart',
