@@ -13,8 +13,8 @@ export default {
     return res.data
   },
 
-  async create(entity, tasks) {
-    const res = await axios._post({ url: '/stockOut/create', data: { stockOut: entity, tasks: tasks } })
+  async create(entity) {
+    const res = await axios._post({ url: '/stockOut/create', data: entity })
     return res.data
   }
 }
