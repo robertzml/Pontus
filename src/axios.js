@@ -14,7 +14,9 @@ export const _get = async req => {
     const res = await ax.get(req.url, { params: req.params })
     return res
   } catch (err) {
-    console.log(err)
+    if (err.response) {
+      console.log(err.response)
+    }
     alert('载入失败')
   }
 }
@@ -25,8 +27,10 @@ export const _post = async req => {
     const res = await ax.post(req.url, req.data)
     return res
   } catch (err) {
-    console.log(err)
-    alert('载入失败')
+    if (err.response) {
+      console.log(err.response)
+    }
+    alert('提交数据错误')
   }
 }
 
@@ -35,7 +39,9 @@ export const _postqs = async req => {
     const res = await ax.post(req.url, null, { params: req.params })
     return res
   } catch (err) {
-    console.log(err)
-    alert('载入失败')
+    if (err.response) {
+      console.log(err.response)
+    }
+    alert('提交数据错误')
   }
 }

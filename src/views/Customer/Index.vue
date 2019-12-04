@@ -1,6 +1,6 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12 md12>
+  <v-row dense>
+    <v-col cols="12">
       <v-toolbar dense>
         <v-toolbar-title>客户管理</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -12,8 +12,9 @@
           <v-btn text @click.stop="showCreate">添加客户</v-btn>
         </v-toolbar-items>
       </v-toolbar>
-    </v-flex>
-    <v-flex xs12 md12>
+    </v-col>
+
+    <v-col cols="12">
       <v-window v-model="window">
         <v-window-item value="list" :eager="true">
           <customer-list ref="listMod" @toDetails="toDetails"></customer-list>
@@ -22,10 +23,12 @@
           <customer-details ref="detailsMod"></customer-details>
         </v-window-item>
       </v-window>
-    </v-flex>
+    </v-col>
 
-    <customer-edit ref="customerEditMod" @update="refresh"></customer-edit>
-  </v-layout>
+    <v-col cols="12">
+      <customer-edit ref="customerEditMod" @update="refresh"></customer-edit>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

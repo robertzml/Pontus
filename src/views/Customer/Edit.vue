@@ -1,41 +1,43 @@
 <template>
-  <v-dialog v-model="dialog" persistent eager max-width="600px">
+  <v-dialog v-model="dialog" persistent eager max-width="800px">
     <v-card>
       <v-card-title>
         <span class="headline">客户信息</span>
       </v-card-title>
       <v-divider></v-divider>
       <v-card-text>
-        <v-container grid-list-md>
-          <v-form ref="form" v-model="valid" lazy-validation>
-            <v-layout wrap>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="客户编号*" v-model="customerInfo.number" :rules="numberRules" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="客户名称*" v-model="customerInfo.name" :rules="nameRules" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="地址" v-model="customerInfo.address"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="电话" v-model="customerInfo.telephone"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="联系人" v-model="customerInfo.contact"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="联系人电话" v-model="customerInfo.contactTelephone"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-select :items="$dict.customerType" label="客户类型*" v-model="customerInfo.type" required></v-select>
-              </v-flex>
-              <v-flex xs12 sm6 md8>
-                <v-text-field label="备注" v-model="customerInfo.remark"></v-text-field>
-              </v-flex>
-            </v-layout>
-          </v-form>
-        </v-container>
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-row dense>
+            <v-col cols="3" md="3" sm="6">
+              <v-text-field label="客户编号*" v-model="customerInfo.number" :rules="numberRules" required></v-text-field>
+            </v-col>
+            <v-col cols="3" md="3" sm="6">
+              <v-text-field label="客户名称*" v-model="customerInfo.name" :rules="nameRules" required></v-text-field>
+            </v-col>
+            <v-col cols="3" md="3" sm="6">
+              <v-text-field label="地址" v-model="customerInfo.address"></v-text-field>
+            </v-col>
+            <v-col cols="3" md="3" sm="6">
+              <v-text-field label="电话" v-model="customerInfo.telephone"></v-text-field>
+            </v-col>
+            <v-col cols="3" md="3" sm="6">
+              <v-text-field label="联系人" v-model="customerInfo.contact"></v-text-field>
+            </v-col>
+            <v-col cols="3" md="3" sm="6">
+              <v-text-field label="联系人电话" v-model="customerInfo.contactTelephone"></v-text-field>
+            </v-col>
+            <v-col cols="3" md="3" sm="6">
+              <v-text-field label="身份证号" v-model="customerInfo.identityCard"></v-text-field>
+            </v-col>
+            <v-col cols="3" md="3" sm="6">
+              <v-select :items="$dict.customerType" label="客户类型*" v-model="customerInfo.type" required></v-select>
+            </v-col>
+            <v-col cols="3" md="3" sm="6">
+              <v-text-field label="备注" v-model="customerInfo.remark"></v-text-field>
+            </v-col>
+          </v-row>
+        </v-form>
+
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -62,6 +64,7 @@ export default {
       telephone: '',
       contact: '',
       contactTelephone: '',
+      identityCard: '',
       type: 1,
       remark: ''
     },
@@ -79,6 +82,7 @@ export default {
           telephone: '',
           contact: '',
           contactTelephone: '',
+          identityCard: '',
           type: 1,
           remark: ''
         }
