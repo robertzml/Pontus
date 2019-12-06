@@ -1,6 +1,6 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12 md12>
+  <v-row dense>
+    <v-col cols="12">
       <v-toolbar dense>
         <v-toolbar-title>合同管理</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -12,9 +12,9 @@
           <v-btn text @click.stop="showCreate">添加合同</v-btn>
         </v-toolbar-items>
       </v-toolbar>
-    </v-flex>
+    </v-col>
 
-    <v-flex xs12 md12>
+    <v-col cols="12">
       <v-window v-model="window">
         <v-window-item value="list" :eager="true">
           <contract-list ref="listMod" @toDetails="toDetails"></contract-list>
@@ -23,10 +23,12 @@
           <contract-details ref="detailsMod"></contract-details>
         </v-window-item>
       </v-window>
-    </v-flex>
+    </v-col>
 
-    <contract-edit ref="contractEditMod"></contract-edit>
-  </v-layout>
+    <v-col cols="12">
+      <contract-edit ref="contractEditMod"></contract-edit>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

@@ -1,38 +1,40 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12 md12>
-      <v-card class="mx-auto">
-        <v-card-title class="orange">
-          合同列表
-          <v-spacer></v-spacer>
-          <v-text-field v-model="search" append-icon="search" label="搜索" single-line hide-details>
-          </v-text-field>
-        </v-card-title>
-        <v-card-text class="px-0">
-          <v-data-table :headers="headers" :items="contractListData" :search="search" :items-per-page="10">
-            <template v-slot:item.type="{ item }">
-              {{ item.type | contractType }}
-            </template>
-            <template v-slot:item.signDate="{ item }">
-              {{ item.signDate | displayDate }}
-            </template>
-            <template v-slot:item.closeDate="{ item }">
-              {{ item.closeDate | displayDate }}
-            </template>
-            <template v-slot:item.billingType="{ item }">
-              {{ item.billingType | billingType }}
-            </template>
-            <template v-slot:item.action="{ item }">
-              <v-btn small color="success" @click="viewItem(item)">
-                <v-icon left dark>pageview</v-icon>
-                查看
-              </v-btn>
-            </template>
-          </v-data-table>
-        </v-card-text>
-      </v-card>
-    </v-flex>
-  </v-layout>
+  <v-container fluid class="pa-0">
+    <v-row dense>
+      <v-col cols="12">
+        <v-card class="mx-auto">
+          <v-card-title class="orange">
+            合同列表
+            <v-spacer></v-spacer>
+            <v-text-field v-model="search" append-icon="search" label="搜索" single-line hide-details>
+            </v-text-field>
+          </v-card-title>
+          <v-card-text class="px-0">
+            <v-data-table :headers="headers" :items="contractListData" :search="search" :items-per-page="10">
+              <template v-slot:item.type="{ item }">
+                {{ item.type | contractType }}
+              </template>
+              <template v-slot:item.signDate="{ item }">
+                {{ item.signDate | displayDate }}
+              </template>
+              <template v-slot:item.closeDate="{ item }">
+                {{ item.closeDate | displayDate }}
+              </template>
+              <template v-slot:item.billingType="{ item }">
+                {{ item.billingType | billingType }}
+              </template>
+              <template v-slot:item.action="{ item }">
+                <v-btn small color="success" @click="viewItem(item)">
+                  <v-icon left dark>pageview</v-icon>
+                  查看
+                </v-btn>
+              </template>
+            </v-data-table>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
