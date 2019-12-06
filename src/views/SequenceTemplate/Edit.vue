@@ -6,43 +6,42 @@
       </v-card-title>
       <v-divider></v-divider>
       <v-card-text>
-        <v-container grid-list-md>
-          <v-form ref="form" v-model="valid" lazy-validation>
-            <v-layout wrap>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="名称*" v-model="sequenceInfo.name" :rules="nameRules" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-select label="表名" v-model="sequenceInfo.tableName" :items="tableItems" @change="selectTable"></v-select>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-select label="字段名" v-model="sequenceInfo.fieldName" :items="fieldItems"></v-select>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-text-field label="格式" v-model="sequenceInfo.format" :rules="formatRules" hint="序列号占位符是0，日期占位符是1" persistent-hint></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md3>
-                <v-checkbox label="使用日期" v-model="sequenceInfo.includeDate"></v-checkbox>
-              </v-flex>
-              <v-flex xs12 sm6 md3>
-                <v-text-field label="附加参数个数" v-model="sequenceInfo.extParamNum"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="初始值" v-model="sequenceInfo.initial"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="步进" v-model="sequenceInfo.step"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-checkbox label="严格递增" v-model="sequenceInfo.strict"></v-checkbox>
-              </v-flex>
-              <v-flex xs12 sm6 md8>
-                <v-text-field label="备注" v-model="sequenceInfo.remark"></v-text-field>
-              </v-flex>
-            </v-layout>
-          </v-form>
-        </v-container>
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-row dense>
+            <v-col col="4" md="4" sm="6">
+              <v-text-field label="名称*" v-model="sequenceInfo.name" :rules="nameRules" required></v-text-field>
+            </v-col>
+            <v-col col="4" md="4" sm="6">
+              <v-select label="表名" v-model="sequenceInfo.tableName" :items="tableItems" @change="selectTable"></v-select>
+            </v-col>
+            <v-col col="4" md="4" sm="6">
+              <v-select label="字段名" v-model="sequenceInfo.fieldName" :items="fieldItems"></v-select>
+            </v-col>
+            <v-col col="6" md="6" sm="6">
+              <v-text-field label="格式" v-model="sequenceInfo.format" :rules="formatRules" hint="序列号占位符是0，日期占位符是1" persistent-hint></v-text-field>
+            </v-col>
+            <v-col col="2" md="2" sm="6">
+              <v-checkbox label="使用日期" v-model="sequenceInfo.includeDate"></v-checkbox>
+            </v-col>
+            <v-col col="4" md="4" sm="6">
+              <v-text-field label="附加参数个数" v-model="sequenceInfo.extParamNum"></v-text-field>
+            </v-col>
+            <v-col col="4" md="4" sm="6">
+              <v-text-field label="初始值" v-model="sequenceInfo.initial"></v-text-field>
+            </v-col>
+            <v-col col="4" md="4" sm="6">
+              <v-text-field label="步进" v-model="sequenceInfo.step"></v-text-field>
+            </v-col>
+            <v-col col="4" md="4" sm="6">
+              <v-checkbox label="严格递增" v-model="sequenceInfo.strict"></v-checkbox>
+            </v-col>
+            <v-col col="6" md="6" sm="6">
+              <v-text-field label="备注" v-model="sequenceInfo.remark"></v-text-field>
+            </v-col>
+          </v-row>
+        </v-form>
       </v-card-text>
+
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue-grey lighten-3" text @click="dialog = false">关闭</v-btn>

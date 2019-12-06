@@ -37,8 +37,8 @@
             </v-col>
           </v-row>
         </v-form>
-
       </v-card-text>
+
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue-grey lighten-3" text @click="dialog = false">关闭</v-btn>

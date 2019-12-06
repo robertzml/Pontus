@@ -1,6 +1,6 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12 md12>
+  <v-row dense>
+    <v-col cols="12">
       <v-toolbar dense>
         <v-toolbar-title>自动编号模板</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -12,8 +12,9 @@
           <v-btn text @click.stop="showCreate">添加模板</v-btn>
         </v-toolbar-items>
       </v-toolbar>
-    </v-flex>
-    <v-flex xs12 md12>
+    </v-col>
+
+    <v-col cols="12">
       <v-window v-model="window">
         <v-window-item value="list" :eager="true">
           <sequence-template-list ref="listMod" @toDetails="toDetails"></sequence-template-list>
@@ -22,10 +23,12 @@
           <sequence-template-details ref="detailsMod"></sequence-template-details>
         </v-window-item>
       </v-window>
-    </v-flex>
+    </v-col>
 
-    <sequence-template-edit ref="sequenceEditMod" @update="refresh"></sequence-template-edit>
-  </v-layout>
+    <v-col cols="12">
+      <sequence-template-edit ref="sequenceEditMod" @update="refresh"></sequence-template-edit>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
