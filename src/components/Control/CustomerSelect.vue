@@ -1,8 +1,17 @@
 <template>
-  <v-autocomplete label="请选择客户" prepend-icon="people" v-model="sCustomerId" :filter="customFilter" :items="customerData" item-value="id" item-text="name" return-object :rules="customerRules" @change="selectItem">
-    <template v-slot:selection="data">
-      {{ data.item.number }} - {{ data.item.name }}
-    </template>
+  <v-autocomplete
+    label="请选择客户"
+    prepend-icon="people"
+    v-model="selectedCustomer"
+    :filter="customFilter"
+    :items="customerData"
+    item-value="id"
+    clearable
+    return-object
+    :rules="customerRules"
+    @change="selectItem"
+  >
+    <template v-slot:selection="data"> {{ data.item.number }} - {{ data.item.name }} </template>
     <template v-slot:item="data">
       <v-list-item-content>
         <v-list-item-title v-html="data.item.name"></v-list-item-title>
@@ -24,10 +33,18 @@ export default {
   },
   data: () => ({
     customerData: [],
-    sCustomerId: null,
-    selectCustomer: null,
+    selectedCustomer: null,
     customerRules: [v => (!!v && v.id != 0) || '请选择客户']
   }),
+  watch: {
+    customerId: function(val) {
+      if (this.customerId) {
+        this.selectedCustomer = this.customerData.find(r => r.id == this.customerId)
+      } else {
+        this.selectedCustomer = null
+      }
+    }
+  },
   methods: {
     customFilter(item, queryText) {
       const textOne = item.name
@@ -39,10 +56,8 @@ export default {
 
     selectItem(val) {
       if (val == null || val == undefined) {
-        this.selectCustomer = null
         this.$emit('update:customerId', 0)
       } else {
-        this.selectCustomer = val
         this.$emit('update:customerId', val.id)
       }
     }
@@ -51,7 +66,6 @@ export default {
     let vm = this
     customer.getList().then(res => {
       vm.customerData = res
-      vm.sCustomerId = vm.customerId
     })
   }
 }
