@@ -1,38 +1,37 @@
 <template>
-  <v-dialog v-model="dialog" persistent eager max-width="600px">
+  <v-dialog v-model="dialog" persistent eager max-width="800px">
     <v-card>
       <v-card-title>
         <span class="headline">分类信息</span>
       </v-card-title>
       <v-divider></v-divider>
       <v-card-text>
-        <v-container grid-list-md>
-          <v-form ref="form" v-model="valid" lazy-validation>
-            <v-layout wrap>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="代码*" v-model="categoryInfo.number" :rules="numberRules" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="名称*" v-model="categoryInfo.name" :rules="nameRules" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="级别" v-model="categoryInfo.hierarchy" :rules="hierarchyRules" :readonly="categoryId != 0"></v-text-field>
-              </v-flex>
-              <v-flex xs12 md12>
-                <v-select :items="firstClass" v-model="firstId" item-text="name" item-value="id" label="一级分类" :rules="firstRules" v-if="categoryInfo.hierarchy > 1 && categoryId == 0" @input="selectFirst">
-                </v-select>
-              </v-flex>
-              <v-flex xs12 md12>
-                <v-select :items="secondClass" v-model="secondId" item-text="name" item-value="id" label="二级分类" :rules="secondRules" v-if="categoryInfo.hierarchy > 2 && categoryId == 0">
-                </v-select>
-              </v-flex>
-              <v-flex xs12 sm6 md12>
-                <v-text-field label="备注" v-model="categoryInfo.remark"></v-text-field>
-              </v-flex>
-            </v-layout>
-          </v-form>
-        </v-container>
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-row dense>
+            <v-col cols="4" md="4" sm="6">
+              <v-text-field label="代码*" v-model="categoryInfo.number" :rules="numberRules" required></v-text-field>
+            </v-col>
+            <v-col cols="4" md="4" sm="6">
+              <v-text-field label="名称*" v-model="categoryInfo.name" :rules="nameRules" required></v-text-field>
+            </v-col>
+            <v-col cols="4" md="4" sm="6">
+              <v-text-field label="级别" v-model="categoryInfo.hierarchy" :rules="hierarchyRules" :readonly="categoryId != 0"></v-text-field>
+            </v-col>
+            <v-col cols="12" md="12" sm="12">
+              <v-select :items="firstClass" v-model="firstId" item-text="name" item-value="id" label="一级分类" :rules="firstRules" v-if="categoryInfo.hierarchy > 1 && categoryId == 0" @input="selectFirst">
+              </v-select>
+            </v-col>
+            <v-col cols="12" md="12" sm="12">
+              <v-select :items="secondClass" v-model="secondId" item-text="name" item-value="id" label="二级分类" :rules="secondRules" v-if="categoryInfo.hierarchy > 2 && categoryId == 0">
+              </v-select>
+            </v-col>
+            <v-col cols="12" md="12" sm="12">
+              <v-text-field label="备注" v-model="categoryInfo.remark"></v-text-field>
+            </v-col>
+          </v-row>
+        </v-form>
       </v-card-text>
+
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue-grey lighten-3" text @click="dialog = false">关闭</v-btn>

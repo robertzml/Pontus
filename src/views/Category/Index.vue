@@ -1,6 +1,6 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12 md12>
+  <v-row dense>
+    <v-col cols="12">
       <v-toolbar dense>
         <v-toolbar-title>分类管理</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -10,8 +10,9 @@
           <v-btn v-if="currentCategoryId != 0" text @click.stop="showEdit">编辑分类</v-btn>
         </v-toolbar-items>
       </v-toolbar>
-    </v-flex>
-    <v-flex xs6 md6>
+    </v-col>
+
+    <v-col cols="6">
       <v-card dark>
         <v-card-title class="orange">
           分类列表
@@ -20,9 +21,9 @@
           <v-treeview :items="categoryNodes" @update:active="showActive" dense activatable rounded></v-treeview>
         </v-card-text>
       </v-card>
-    </v-flex>
+    </v-col>
 
-    <v-flex xs6 md6>
+    <v-col cols="6">
       <v-card dark scrollable>
         <v-card-title class="purple accent-2">
           分类信息
@@ -36,10 +37,12 @@
           </v-form>
         </v-card-text>
       </v-card>
-    </v-flex>
+    </v-col>
 
-    <category-edit ref="categoryEditMod" @update="refresh"></category-edit>
-  </v-layout>
+    <v-col cols="12">
+      <category-edit ref="categoryEditMod" @update="refresh"></category-edit>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
