@@ -9,12 +9,7 @@
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row dense>
             <v-col cols="6" md="6" sm="6">
-              <v-text-field
-                label="合同编号*"
-                v-model="contractInfo.number"
-                :rules="numberRules"
-                readonly
-              ></v-text-field>
+              <v-text-field label="合同编号" v-model="contractInfo.number" hint="自动生成" persistent-hint readonly></v-text-field>
             </v-col>
             <v-col cols="6" md="6" sm="6">
               <v-text-field label="合同名称*" v-model="contractInfo.name" :rules="nameRules" required></v-text-field>
@@ -26,63 +21,26 @@
               <v-select :items="$dict.contractType" label="合同类型*" v-model="contractInfo.type" required></v-select>
             </v-col>
             <v-col cols="6" md="6" sm="6">
-              <v-menu
-                v-model="signDateMenu"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                full-width
-                min-width="290px"
-              >
+              <v-menu v-model="signDateMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
-                  <v-text-field v-model="contractInfo.signDate" label="签订日期" readonly v-on="on"></v-text-field>
+                  <v-text-field v-model="contractInfo.signDate" label="签订日期" prepend-icon="event" readonly v-on="on"></v-text-field>
                 </template>
-                <v-date-picker
-                  v-model="contractInfo.signDate"
-                  :day-format="dayFormat"
-                  @input="signDateMenu = false"
-                  @change="selectSignDate"
-                ></v-date-picker>
+                <v-date-picker v-model="contractInfo.signDate" :day-format="dayFormat" @input="signDateMenu = false"></v-date-picker>
               </v-menu>
             </v-col>
             <v-col cols="6" md="6" sm="6">
-              <v-menu
-                v-model="closeDateMenu"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                full-width
-                min-width="290px"
-              >
+              <v-menu v-model="closeDateMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
-                  <v-text-field v-model="contractInfo.closeDate" label="关闭日期" readonly v-on="on"></v-text-field>
+                  <v-text-field v-model="contractInfo.closeDate" label="关闭日期" prepend-icon="event" readonly v-on="on"></v-text-field>
                 </template>
-                <v-date-picker
-                  v-model="contractInfo.closeDate"
-                  :day-format="dayFormat"
-                  @input="closeDateMenu = false"
-                ></v-date-picker>
+                <v-date-picker v-model="contractInfo.closeDate" :day-format="dayFormat" @input="closeDateMenu = false"></v-date-picker>
               </v-menu>
             </v-col>
             <v-col cols="6" md="6" sm="6">
-              <v-select
-                :items="$dict.billingType"
-                label="计费方式*"
-                v-model="contractInfo.billingType"
-                required
-              ></v-select>
+              <v-select :items="$dict.billingType" label="计费方式*" v-model="contractInfo.billingType" required></v-select>
             </v-col>
             <v-col cols="6" md="6" sm="6">
-              <v-text-field
-                label="冷藏费单价*"
-                prefix="¥"
-                :suffix="$util.billingTypeUnit(contractInfo.billingType)"
-                v-model="contractInfo.unitPrice"
-                :rules="priceRule"
-                required
-              ></v-text-field>
+              <v-text-field label="冷藏费单价*" prefix="¥" :suffix="$util.billingTypeUnit(contractInfo.billingType)" v-model="contractInfo.unitPrice" :rules="priceRule" required></v-text-field>
             </v-col>
             <v-col cols="6" md="6" sm="6">
               <v-text-field label="最短天数" v-model="contractInfo.parameter1"></v-text-field>
@@ -130,7 +88,6 @@ export default {
       unitPrice: 0,
       remark: ''
     },
-    numberRules: [v => !!v || '请输入合同编号'],
     nameRules: [v => !!v || '请输入合同名称'],
     priceRule: [v => /^[0-9]+(.[0-9]{1,2})?$/.test(v) || '请输入正确冷藏费']
   }),
@@ -154,7 +111,7 @@ export default {
         contract.get(id).then(res => {
           vm.contractInfo = res
           vm.contractInfo.signDate = vm.contractInfo.signDate.substr(0, 10)
-          if (vm.contractInfo.closeDate != null || vm.contractInfo.closeDate != '') {
+          if (vm.contractInfo.closeDate != null && vm.contractInfo.closeDate != '') {
             vm.contractInfo.closeDate = vm.contractInfo.closeDate.substr(0, 10)
           }
         })
@@ -171,13 +128,6 @@ export default {
       } else {
         return ''
       }
-    },
-
-    selectSignDate(val) {
-      let vm = this
-      /*sequence.getNext({ tableName: 'Contract', dt: val }).then(res => {
-        vm.contractInfo.number = res
-      })*/
     },
 
     submit() {
