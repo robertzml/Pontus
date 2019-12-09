@@ -1,16 +1,5 @@
 <template>
-  <v-autocomplete
-    label="请选择客户"
-    prepend-icon="people"
-    v-model="selectedCustomer"
-    :filter="customFilter"
-    :items="customerData"
-    item-value="id"
-    clearable
-    return-object
-    :rules="customerRules"
-    @change="selectItem"
-  >
+  <v-autocomplete label="请选择客户" prepend-icon="people" v-model="selectedCustomer" :filter="customFilter" :items="customerData" item-value="id" clearable return-object :rules="customerRules" @change="selectItem">
     <template v-slot:selection="data"> {{ data.item.number }} - {{ data.item.name }} </template>
     <template v-slot:item="data">
       <v-list-item-content>
@@ -37,7 +26,7 @@ export default {
     customerRules: [v => (!!v && v.id != 0) || '请选择客户']
   }),
   watch: {
-    customerId: function(val) {
+    customerId: function() {
       if (this.customerId) {
         this.selectedCustomer = this.customerData.find(r => r.id == this.customerId)
       } else {

@@ -14,7 +14,7 @@
               </v-col>
 
               <v-col cols="6" md="6" sm="6">
-                <category-select :category-id.sync="categoryId" @change="selectCategory"></category-select>
+                <category-select :category-id.sync="cargoInfo.categoryId"></category-select>
               </v-col>
 
               <v-col cols="6" md="6" sm="6">
@@ -51,46 +51,53 @@ export default {
     dialog: false,
     valid: true,
     customerId: 0,
-    categoryId: 0,
+    cargoId: '',
     cargoInfo: {
       name: '',
       customerId: 0,
-      categoryId: '',
+      categoryId: 0,
       unitWeight: 0,
       remark: ''
     },
     nameRules: [v => !!v || '请输入货品名称']
   }),
   methods: {
-    init(customerId) {
+    init(customerId, cargoId) {
       this.customerId = customerId
-      this.cargoInfo = {
-        name: '',
-        customerId: 0,
-        categoryId: '',
-        unitWeight: 0,
-        remark: ''
+      this.cargoId = cargoId
+      if (cargoId) {
+        let vm = this
+        cargo.get(cargoId).then(res => {
+          vm.cargoInfo = res
+        })
+      } else {
+        this.cargoInfo = {
+          name: '',
+          customerId: customerId,
+          categoryId: 0,
+          unitWeight: 0,
+          remark: ''
+        }
       }
       this.dialog = true
     },
 
-    selectCategory(val) {
-      this.cargoInfo.categoryId = val.id
-    },
     submit() {
       if (this.$refs.form.validate()) {
         let vm = this
 
-        this.cargoInfo.customerId = this.customerId
-        cargo.create(this.cargoInfo).then(res => {
-          if (res.status == 0) {
-            vm.$store.commit('alertSuccess', '添加货品成功')
-            vm.$emit('update')
-            vm.dialog = false
-          } else {
-            vm.$store.commit('alertError', res.errorMessage)
-          }
-        })
+        if (this.cargoId) {
+        } else {
+          cargo.create(this.cargoInfo).then(res => {
+            if (res.status == 0) {
+              vm.$store.commit('alertSuccess', '添加货品成功')
+              vm.$emit('update')
+              vm.dialog = false
+            } else {
+              vm.$store.commit('alertError', res.errorMessage)
+            }
+          })
+        }
       }
     }
   }

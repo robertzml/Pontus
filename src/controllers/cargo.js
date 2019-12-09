@@ -13,6 +13,11 @@ export default {
     return res.data
   },
 
+  async get(id) {
+    const res = await axios._get({ url: '/cargo/get', params: { id: id } })
+    return res.data
+  },
+
   async create(entity) {
     const res = await axios._post({ url: '/cargo/create', data: entity })
     return res.data

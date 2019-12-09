@@ -1,23 +1,23 @@
 <template>
-  <v-row>
+  <v-row dense>
     <v-col cols="12" class="pt-0">
       <v-card flat class="mx-auto">
         <v-card-text>
-          <p class="headline">货品管理</p>
-          <v-container>
-            <v-form ref="form" v-model="valid" lazy-validation>
-              <v-row>
-                <v-col cols="6">
-                  <customer-select :customer-id.sync="customerId"></customer-select>
-                </v-col>
-                <v-col cols="6" align-self="center">
-                  <v-btn color="success darken-1" :disabled="!valid" @click="submit">搜索</v-btn>
+          <p class="title mb-0 text--primary">
+            货品管理
+          </p>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-row>
+              <v-col cols="6">
+                <customer-select :customer-id.sync="customerId"></customer-select>
+              </v-col>
+              <v-col cols="6" align-self="center">
+                <v-btn color="success darken-1" :disabled="!valid" @click="submit">搜索</v-btn>
 
-                  <v-btn color="lime darken-4" :disabled="!valid" class="ml-2" @click="showCreate">添加货物</v-btn>
-                </v-col>
-              </v-row>
-            </v-form>
-          </v-container>
+                <v-btn color="lime darken-4" :disabled="!valid" class="ml-2" @click="showCreate">添加货物</v-btn>
+              </v-col>
+            </v-row>
+          </v-form>
         </v-card-text>
       </v-card>
     </v-col>
@@ -40,7 +40,7 @@
           </v-data-table>
         </v-card-text>
 
-        <cargo-edit ref="cargoEditMod"></cargo-edit>
+        <cargo-edit ref="cargoEditMod" @update="submit"></cargo-edit>
       </v-card>
     </v-col>
   </v-row>
@@ -61,15 +61,14 @@ export default {
   data: () => ({
     valid: true,
     customerId: 0,
-    selectedContract: { id: 0, name: '', number: '' },
     contractListData: [],
     cargoListData: [],
     headers: [
       { text: '货品名称', value: 'name' },
       { text: '客户编号', value: 'customerNumber' },
       { text: '客户名称', value: 'customerName' },
-      { text: '类别名称', value: 'categoryName' },
       { text: '类别代码', value: 'categoryNumber' },
+      { text: '类别名称', value: 'categoryName' },
       { text: '单位重量(kg)', value: 'unitWeight' },
       { text: '登记时间', value: 'registerTime' },
       { text: '操作', value: 'action', sortable: false }
@@ -78,8 +77,6 @@ export default {
   watch: {},
   methods: {
     init() {
-      this.customerId = 0
-      this.selectedContract = { id: 0, name: '', number: '' }
       this.$refs.form.resetValidation()
     },
 
@@ -93,7 +90,9 @@ export default {
     },
 
     showCreate() {
-      this.$refs.cargoEditMod.init(this.customerId)
+      if (this.$refs.form.validate()) {
+        this.$refs.cargoEditMod.init(this.customerId)
+      }
     },
 
     viewItem(val) {}

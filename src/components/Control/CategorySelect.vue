@@ -1,5 +1,5 @@
 <template>
-  <v-autocomplete label="请选择类别" prepend-icon="category" v-model="sCategoryId" :filter="customFilter" :items="categoryData" item-value="id" item-text="name" return-object :rules="categoryRules" @change="selectItem">
+  <v-autocomplete label="请选择类别" prepend-icon="category" v-model="selectedCategory" :filter="customFilter" :items="categoryData" item-value="id" clearable return-object :rules="categoryRules" @change="selectItem">
     <template v-slot:selection="data">
       {{ data.item.number }} - {{ data.item.name }}
     </template>
@@ -24,10 +24,18 @@ export default {
   },
   data: () => ({
     categoryData: [],
-    sCategoryId: null,
-    selectCategory: null,
+    selectedCategory: null,
     categoryRules: [v => (!!v && v.id != 0) || '请选择类别']
   }),
+  watch: {
+    categoryId: function() {
+      if (this.categoryId) {
+        this.selectedCategory = this.categoryData.find(r => r.id == this.categoryId)
+      } else {
+        this.selectedCategory = null
+      }
+    }
+  },
   methods: {
     customFilter(item, queryText) {
       const textOne = item.name
@@ -39,13 +47,9 @@ export default {
 
     selectItem(val) {
       if (val == null || val == undefined) {
-        this.selectCategory = null
         this.$emit('update:categoryId', 0)
-        this.$emit('change', null)
       } else {
-        this.selectCategory = val
         this.$emit('update:categoryId', val.id)
-        this.$emit('change', this.selectCategory)
       }
     }
   },
@@ -53,7 +57,6 @@ export default {
     let vm = this
     category.getList().then(res => {
       vm.categoryData = res
-      vm.sCategoryId = vm.categoryId
     })
   }
 }
