@@ -6,27 +6,25 @@
       </v-card-title>
       <v-divider></v-divider>
       <v-card-text>
-        <v-container grid-list-md>
-          <v-form ref="form" v-model="valid" lazy-validation>
-            <v-layout wrap>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="名称*" v-model="warehouseInfo.name" :rules="nameRules" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="编号*" v-model="warehouseInfo.number" :rules="numberRules" counter="3" hint="格式：A01" persistent-hint required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-select :items="this.$dict.warehouseType" label="类型*" v-model="warehouseInfo.type" required></v-select>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-text-field label="容量" v-model="warehouseInfo.capacity"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-text-field label="备注" v-model="warehouseInfo.remark"></v-text-field>
-              </v-flex>
-            </v-layout>
-          </v-form>
-        </v-container>
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-row dense>
+            <v-col cols="4" md="4" sm="6">
+              <v-text-field label="名称*" v-model="warehouseInfo.name" :rules="nameRules" required></v-text-field>
+            </v-col>
+            <v-col cols="4" md="4" sm="6">
+              <v-text-field label="编号*" v-model="warehouseInfo.number" :rules="numberRules" counter="3" hint="格式：A01" persistent-hint required></v-text-field>
+            </v-col>
+            <v-col cols="4" md="4" sm="6">
+              <v-select :items="this.$dict.warehouseType" label="类型*" v-model="warehouseInfo.type" required></v-select>
+            </v-col>
+            <v-col cols="6" md="6" sm="6">
+              <v-text-field label="容量" v-model="warehouseInfo.capacity"></v-text-field>
+            </v-col>
+            <v-col cols="6" md="6" sm="6">
+              <v-text-field label="备注" v-model="warehouseInfo.remark"></v-text-field>
+            </v-col>
+          </v-row>
+        </v-form>
       </v-card-text>
 
       <v-card-actions>

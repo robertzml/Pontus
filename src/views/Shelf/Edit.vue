@@ -6,39 +6,37 @@
       </v-card-title>
       <v-divider></v-divider>
       <v-card-text>
-        <v-container grid-list-md>
-          <v-form ref="form" v-model="valid" lazy-validation>
-            <v-layout wrap>
-              <v-flex xs12 sm6 md4>
-                <v-select v-model="selectWarehouse" :items="warehouseList" item-text="name" item-value="id" :rules="warehouseRules" label="所属仓库" :hint="`${selectWarehouse.name}, ${selectWarehouse.number}`" return-object persistent-hint required></v-select>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="编号*" v-model="shelfInfo.number" :rules="numberRules" hint="2位：01" counter="2" persistent-hint required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-select :items="this.$dict.shelfType" label="类型*" v-model="shelfInfo.type" required></v-select>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-text-field label="入口数" v-model="shelfInfo.entrance" type="number" :rules="digitRules"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-text-field label="入口编号" v-model="shelfInfo.entranceNumber" hint="每个入口一位，用-连接，如：X或 X-Y" persistent-hint></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="排数" v-model="shelfInfo.row" type="number" :rules="digitRules"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="层数" v-model="shelfInfo.layer" type="number" :rules="digitRules"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="进数" v-model="shelfInfo.depth" type="number" :rules="digitRules"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md6>
-                <v-text-field label="备注" v-model="shelfInfo.remark"></v-text-field>
-              </v-flex>
-            </v-layout>
-          </v-form>
-        </v-container>
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-row dense>
+            <v-col cols="4" md="4" sm="6">
+              <v-text-field label="所属仓库" v-model="warehouseInfo.name" readonly></v-text-field>
+            </v-col>
+            <v-col cols="4" md="4" sm="6">
+              <v-text-field label="编号*" v-model="shelfInfo.number" :rules="numberRules" hint="2位：01" counter="2" persistent-hint required></v-text-field>
+            </v-col>
+            <v-col cols="4" md="4" sm="6">
+              <v-select :items="this.$dict.shelfType" label="类型*" v-model="shelfInfo.type" required></v-select>
+            </v-col>
+            <v-col cols="6" md="6" sm="6">
+              <v-text-field label="入口数" v-model="shelfInfo.entrance" type="number" :rules="digitRules"></v-text-field>
+            </v-col>
+            <v-col cols="6" md="6" sm="6">
+              <v-text-field label="入口编号" v-model="shelfInfo.entranceNumber" hint="每个入口一位，用-连接，如：X或 X-Y" persistent-hint></v-text-field>
+            </v-col>
+            <v-col cols="4" md="4" sm="6">
+              <v-text-field label="排数" v-model="shelfInfo.row" type="number" :rules="digitRules"></v-text-field>
+            </v-col>
+            <v-col cols="4" md="4" sm="6">
+              <v-text-field label="层数" v-model="shelfInfo.layer" type="number" :rules="digitRules"></v-text-field>
+            </v-col>
+            <v-col cols="4" md="4" sm="6">
+              <v-text-field label="进数" v-model="shelfInfo.depth" type="number" :rules="digitRules"></v-text-field>
+            </v-col>
+            <v-col cols="4" md="4" sm="6">
+              <v-text-field label="备注" v-model="shelfInfo.remark"></v-text-field>
+            </v-col>
+          </v-row>
+        </v-form>
       </v-card-text>
 
       <v-card-actions>
@@ -60,6 +58,9 @@ export default {
     dialog: false,
     valid: true,
     warehouseId: 0,
+    warehouseInfo: {
+      name: ''
+    },
     shelfId: 0,
     shelfInfo: {
       warehouseId: 0,
@@ -72,13 +73,6 @@ export default {
       depth: 0,
       remark: ''
     },
-    warehouseList: [],
-    selectWarehouse: {
-      id: 0,
-      name: '',
-      number: ''
-    },
-    warehouseRules: [v => (v && v.number != '') || '请选择仓库'],
     numberRules: [v => (!!v && v.length <= 2) || '请输入编号，长度2位'],
     digitRules: [v => (v != null && /^\d+/.test(v)) || '请输入数字']
   }),
@@ -88,14 +82,13 @@ export default {
       this.shelfId = shelfId
 
       let vm = this
-      warehouse.getList().then(res => {
-        vm.warehouseList = res
-        vm.selectWarehouse = vm.warehouseList.find(r => r.id == warehouseId)
+      warehouse.get(warehouseId).then(res => {
+        vm.warehouseInfo = res
       })
 
       if (shelfId == 0) {
         this.shelfInfo = {
-          warehouseId: 0,
+          warehouseId: warehouseId,
           number: '',
           type: 1,
           entrance: 1,
@@ -118,7 +111,6 @@ export default {
     submit: function() {
       if (this.$refs.form.validate()) {
         let vm = this
-        this.shelfInfo.warehouseId = this.warehouseId
         if (this.shelfId == 0) {
           shelf.create(this.shelfInfo).then(res => {
             if (res.status == 0) {

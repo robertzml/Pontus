@@ -1,48 +1,54 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12 md12>
-      <v-card class="mx-auto">
-        <v-data-table :headers="headers" :items="shelfListData" :items-per-page="10">
-          <template v-slot:top>
-            <v-toolbar flat>
-              <v-toolbar-title>货架列表</v-toolbar-title>
-              <v-divider class="mx-4" inset vertical></v-divider>
-              <div class="flex-grow-1"></div>
-              <v-btn small="" color="primary" class="mb-2" @click="createItem">
-                添加货架
+  <v-container fluid class="pa-0">
+    <v-row>
+      <v-col cols="12">
+        <v-card class="mx-auto">
+          <v-data-table :headers="headers" :items="shelfListData" :items-per-page="10">
+            <template v-slot:top>
+              <v-toolbar flat>
+                <v-toolbar-title>货架列表</v-toolbar-title>
+                <v-divider class="mx-4" inset vertical></v-divider>
+                <div class="flex-grow-1"></div>
+                <v-btn small="" color="primary" class="mb-2" @click="createItem">
+                  添加货架
+                </v-btn>
+              </v-toolbar>
+            </template>
+            <template v-slot:item.type="{ item }">
+              {{ item.type | shelfType }}
+            </template>
+            <template v-slot:item.action="{ item }">
+              <v-btn small color="success" @click="viewItem(item)" class="mr-2">
+                <v-icon left dark>pageview</v-icon>
+                查看
               </v-btn>
-            </v-toolbar>
-          </template>
-          <template v-slot:item.type="{ item }">
-            {{ item.type | shelfType }}
-          </template>
-          <template v-slot:item.action="{ item }">
-            <v-btn small color="success" @click="viewItem(item)" class="mr-2">
-              <v-icon left dark>pageview</v-icon>
-              查看
-            </v-btn>
-            <v-btn small color="warning" @click="editItem(item)">
-              <v-icon left dark>edit</v-icon>
-              编辑
-            </v-btn>
-          </template>
-        </v-data-table>
-      </v-card>
-    </v-flex>
+              <v-btn small color="warning" @click="editItem(item)">
+                <v-icon left dark>edit</v-icon>
+                编辑
+              </v-btn>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-col>
 
-    <shelf-edit ref="shelfEditMod" @update="loadList"></shelf-edit>
+      <v-col cols="12">
+        <shelf-edit ref="shelfEditMod" @update="loadList"></shelf-edit>
+      </v-col>
 
-    <v-dialog v-model="dialog" eager max-width="800px">
-      <shelf-details ref="shelfDetailsMod"></shelf-details>
+      <v-col cols="12">
+        <v-dialog v-model="dialog" eager max-width="800px">
+          <shelf-details ref="shelfDetailsMod"></shelf-details>
 
-      <v-card tile>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-grey lighten-3" text @click="dialog = false">关闭</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-layout>
+          <v-card tile>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue-grey lighten-3" text @click="dialog = false">关闭</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

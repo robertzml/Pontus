@@ -1,6 +1,6 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12>
+  <v-row dense>
+    <v-col cols="12">
       <v-tabs v-model="tab" grow>
         <v-tab>图形视图</v-tab>
         <v-tab>
@@ -66,8 +66,8 @@
           </v-card>
         </v-tab-item>
       </v-tabs-items>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

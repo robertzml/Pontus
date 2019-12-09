@@ -1,6 +1,6 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12 md12>
+  <v-row dense>
+    <v-col cols="12">
       <v-toolbar dense>
         <v-toolbar-title>仓库管理</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -11,9 +11,9 @@
           <v-btn v-if="window != 'shelfDetails'" text @click.stop="showCreate">添加仓库</v-btn>
         </v-toolbar-items>
       </v-toolbar>
-    </v-flex>
+    </v-col>
 
-    <v-flex xs12 md12>
+    <v-col cols="12">
       <v-window v-model="window">
         <v-window-item value="list" :eager="true">
           <warehouse-list ref="listMod" :show-window="showWindow"></warehouse-list>
@@ -22,10 +22,12 @@
           <warehouse-details ref="detailsMod" :show-window="showWindow"></warehouse-details>
         </v-window-item>
       </v-window>
-    </v-flex>
+    </v-col>
 
-    <warehouse-edit ref="warehouseEditMod" @update="refresh"></warehouse-edit>
-  </v-layout>
+    <v-col cols="12">
+      <warehouse-edit ref="warehouseEditMod" @update="refresh"></warehouse-edit>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
