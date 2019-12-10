@@ -1,6 +1,6 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12 md12>
+  <v-row dense>
+    <v-col cols="12">
       <v-toolbar dense>
         <v-toolbar-title>仓位管理</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -8,9 +8,9 @@
         <v-toolbar-items>
         </v-toolbar-items>
       </v-toolbar>
-    </v-flex>
+    </v-col>
 
-    <v-flex xs3 md3>
+    <v-col cols="3">
       <v-list min-height="292px">
         <v-subheader>仓库选择</v-subheader>
         <v-list-item-group v-model="sWarehouse" mandatory>
@@ -24,9 +24,9 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
-    </v-flex>
+    </v-col>
 
-    <v-flex xs9 md9>
+    <v-col cols="9">
       <v-container class="pa-0" fluid style="max-height:310px;overflow-y:auto;overflow-x:hidden;">
         <v-row>
           <v-col v-for="item in shelfListData" :key="item.id" :value="item" cols="12" sm="6" md="4" class="pt-0">
@@ -50,10 +50,12 @@
         </v-row>
 
       </v-container>
-    </v-flex>
+    </v-col>
 
-    <position-list v-show="sShelf != null" ref="listMod"></position-list>
-  </v-layout>
+    <v-col cols="12">
+      <position-list v-show="sShelf != null" ref="listMod"></position-list>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

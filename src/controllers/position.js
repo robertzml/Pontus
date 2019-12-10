@@ -11,6 +11,11 @@ export default {
     return res.data
   },
 
+  async getById(id) {
+    const res = await axios._get({ url: '/position/get', params: { id: id } })
+    return res.data
+  },
+
   async getList({ shelfId, row }) {
     const res = await axios._get({ url: '/position/list', params: { shelfId: shelfId, row: row } })
     return res.data
@@ -18,6 +23,11 @@ export default {
 
   async count(shelfId) {
     const res = await axios._get({ url: '/position/count', params: { shelfId: shelfId } })
+    return res.data
+  },
+
+  async update(entity) {
+    const res = await axios._post({ url: '/position/update', data: entity })
     return res.data
   },
 

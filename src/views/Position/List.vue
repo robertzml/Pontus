@@ -1,58 +1,55 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12 md12>
-      <v-card class="mx-auto">
-        <v-card-title class="orange">
-          仓位信息
-          <v-spacer></v-spacer>
+  <div>
+    <v-card class="mx-auto">
+      <v-card-title class="orange">
+        仓位信息
+        <v-spacer></v-spacer>
+        <v-btn text color="blue-grey lighten-3" v-if="positionInfo != null" @click="showEdit">编辑仓位</v-btn>
+        <v-btn text color="blue-grey lighten-4" v-if="shelfInfo.type == 2" @click="showSheet">生成仓位</v-btn>
+      </v-card-title>
 
-          <v-btn text color="blue-grey lighten-4" v-if="shelfInfo.type == 2" @click="showSheet">生成仓位</v-btn>
-        </v-card-title>
-
-        <v-flex md12 class="pa-2">
-          <div class="d-md-block my-2">
-            货架号：{{ shelfInfo.number }}&nbsp;&nbsp;&nbsp;排数： {{ shelfInfo.row }}&nbsp;&nbsp;&nbsp;
-            层数：{{ shelfInfo.layer }}&nbsp;&nbsp;&nbsp;进数：{{ shelfInfo.depth }}
+      <v-card-text>
+        <div class="d-md-block my-2">
+          货架号：{{ shelfInfo.number }}&nbsp;&nbsp;&nbsp;排数： {{ shelfInfo.row }}&nbsp;&nbsp;&nbsp;
+          层数：{{ shelfInfo.layer }}&nbsp;&nbsp;&nbsp;进数：{{ shelfInfo.depth }}
+        </div>
+        <div class="d-flex flex-row" v-if="positionCount > 0">
+          <div class="mr-1 align-self-center">
+            <v-icon>arrow_upward</v-icon> <br />
+            <span class="ml-1">层</span> <br />
+            <v-icon>arrow_downward</v-icon>
           </div>
-          <div class="d-flex flex-row" v-if="positionCount > 0">
-            <div class="mr-1 align-self-center">
-              <v-icon>arrow_upward</v-icon> <br />
-              <span class="ml-1">层</span> <br />
-              <v-icon>arrow_downward</v-icon>
+          <div>
+            <div class="d-flex justify-center">
+              <v-icon>arrow_back</v-icon>
+              <span class="mb-1">排</span>
+              <v-icon>arrow_forward</v-icon>
             </div>
-            <div>
-              <div class="d-flex justify-center">
-                <v-icon>arrow_back</v-icon>
-                <span class="mb-1">排</span>
-                <v-icon>arrow_forward</v-icon>
-              </div>
-              <div class="d-flex flex-wrap" v-for="layer in shelfInfo.layer" :key="layer">
-                <v-card v-for="row in shelfInfo.row" :key="row" class="pa-2" outlined tile @click.stop="selectRowLayer(row, shelfInfo.layer - layer + 1)">
-                  {{ row.toString().padStart(2, '0') }} - {{ shelfInfo.layer - layer + 1 }}
-                </v-card>
-              </div>
+            <div class="d-flex flex-wrap" v-for="layer in shelfInfo.layer" :key="layer">
+              <v-card v-for="row in shelfInfo.row" :key="row" class="pa-2" outlined tile @click.stop="selectRowLayer(row, shelfInfo.layer - layer + 1)">
+                {{ row.toString().padStart(2, '0') }} - {{ shelfInfo.layer - layer + 1 }}
+              </v-card>
             </div>
           </div>
+        </div>
 
-          <div v-show="sRowLayer">
-            <div class="d-flex flex-column mt-4 pl-7">
-              <div class="d-flex mb-2">
-                {{ positionTitle }}
-              </div>
-              <div class="d-flex flex-wrap">
-                <v-card v-for="depth in shelfInfo.depth" :key="depth" class="pa-2" outlined tile @click.stop="selectPosition(depth)">
-                  {{ depth.toString().padStart(2, '0') }}
-                </v-card>
-              </div>
-              <div class="d-flex my-4">
-                仓位编号：{{ positionInfo.number }}&nbsp;&nbsp;&nbsp; 副编号：{{ positionInfo.viceNumber }}
-              </div>
+        <div v-show="sRowLayer">
+          <div class="d-flex flex-column mt-4 pl-7">
+            <div class="d-flex mb-2">
+              {{ positionTitle }}
+            </div>
+            <div class="d-flex flex-wrap">
+              <v-card v-for="depth in shelfInfo.depth" :key="depth" class="pa-2" outlined tile @click.stop="selectPosition(depth)">
+                {{ depth.toString().padStart(2, '0') }}
+              </v-card>
+            </div>
+            <div class="d-flex my-4">
+              仓位编号：{{ positionInfo.number }}&nbsp;&nbsp;&nbsp; 副编号：{{ positionInfo.viceNumber }}
             </div>
           </div>
-        </v-flex>
-
-      </v-card>
-    </v-flex>
+        </div>
+      </v-card-text>
+    </v-card>
 
     <v-bottom-sheet v-model="sheet" persistent>
       <v-sheet class="text-center" height="150px">
@@ -70,15 +67,21 @@
         </div>
       </v-sheet>
     </v-bottom-sheet>
-  </v-layout>
+
+    <position-edit ref="positionEditMod"></position-edit>
+  </div>
 </template>
 
 <script>
 import shelf from '@/controllers/shelf'
 import position from '@/controllers/position'
+import PositionEdit from './Edit'
 
 export default {
   name: 'PositionList',
+  components: {
+    PositionEdit
+  },
   data: () => ({
     sheet: false,
     loading: false,
@@ -146,6 +149,14 @@ export default {
       position.get({ shelfId: this.shelfInfo.id, row: this.sRow, layer: this.sLayer, depth: depth }).then(res => {
         vm.positionInfo = res
       })
+    },
+
+    showEdit() {
+      if (JSON.stringify(this.positionInfo) == '{}') {
+        return
+      }
+
+      this.$refs.positionEditMod.init(this.positionInfo.id)
     }
   }
 }

@@ -49,7 +49,6 @@
 <script>
 import CustomerSelect from '@/components/Control/CustomerSelect'
 import CargoEdit from './Edit'
-import contract from '@/controllers/contract'
 import cargo from '@/controllers/cargo'
 
 export default {
@@ -95,7 +94,9 @@ export default {
       }
     },
 
-    viewItem(val) {}
+    viewItem(val) {
+      console.log(val)
+    }
   },
   mounted: function() {
     this.init()
