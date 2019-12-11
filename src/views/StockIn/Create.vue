@@ -2,38 +2,63 @@
   <v-dialog v-model="dialog" persistent eager max-width="800px">
     <v-card>
       <v-card-title>
-        仓位库入库
+        新建入库单
       </v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
-          <v-container fluid>
-            <v-row>
-              <v-col cols="6" md="6" sm="6">
-                <v-menu v-model="stockInTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
-                  <template v-slot:activator="{ on }">
-                    <v-text-field v-model="stockInInfo.inTime" label="入库时间" prepend-icon="event" readonly v-on="on"></v-text-field>
-                  </template>
-                  <v-date-picker v-model="stockInInfo.inTime" :day-format="$util.pickerDayFormat" @input="stockInTimeMenu = false"></v-date-picker>
-                </v-menu>
-              </v-col>
+          <v-row dense>
+            <v-col cols="6" md="6" sm="6">
+              <v-menu
+                v-model="stockInTimeMenu"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    v-model="stockInInfo.inTime"
+                    label="入库时间"
+                    prepend-icon="event"
+                    readonly
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="stockInInfo.inTime"
+                  :day-format="$util.pickerDayFormat"
+                  @input="stockInTimeMenu = false"
+                ></v-date-picker>
+              </v-menu>
+            </v-col>
 
-              <v-col cols="6" md="6" sm="6">
-                <v-select :items="$dict.stockInType" label="入库类型*" v-model="stockInInfo.type"></v-select>
-              </v-col>
+            <v-col cols="6" md="6" sm="6">
+              <v-select :items="$dict.stockInType" label="入库类型*" v-model="stockInInfo.type"></v-select>
+            </v-col>
 
-              <v-col cols="6" md="6" sm="6">
-                <customer-select :customer-id.sync="stockInInfo.customerId"></customer-select>
-              </v-col>
+            <v-col cols="6" md="6" sm="6">
+              <customer-select :customer-id.sync="stockInInfo.customerId"></customer-select>
+            </v-col>
 
-              <v-col cols="12" md="6" sm="6">
-                <v-select :items="contractListData" label="选择合同*" :rules="contractRules" :hint="`${selectedContract.number}`" item-text="name" item-value="id" v-model="selectedContract" persistent-hint return-object></v-select>
-              </v-col>
+            <v-col cols="12" md="6" sm="6">
+              <v-select
+                :items="contractListData"
+                label="选择合同*"
+                :rules="contractRules"
+                :hint="`${selectedContract.number}`"
+                item-text="name"
+                item-value="id"
+                v-model="selectedContract"
+                persistent-hint
+                return-object
+              ></v-select>
+            </v-col>
 
-              <v-col cols="12" md="12" sm="12">
-                <v-textarea label="备注" v-model="stockInInfo.remark" rows="1" auto-grow></v-textarea>
-              </v-col>
-            </v-row>
-          </v-container>
+            <v-col cols="12" md="12" sm="12">
+              <v-text-field label="备注" v-model="stockInInfo.remark"></v-text-field>
+            </v-col>
+          </v-row>
         </v-form>
       </v-card-text>
 
@@ -55,12 +80,6 @@ export default {
   name: 'StockInCreate',
   components: {
     CustomerSelect
-  },
-  props: {
-    showWindow: {
-      type: Function,
-      default: null
-    }
   },
   data: () => ({
     dialog: false,
@@ -105,6 +124,10 @@ export default {
 
     loadContract(customerId) {
       this.selectedContract = { number: '' }
+      if (customerId == 0) {
+        this.contractListData = []
+        return
+      }
       let vm = this
       contract.getList(customerId).then(res => {
         vm.contractListData = res

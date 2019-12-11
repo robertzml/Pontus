@@ -1,16 +1,5 @@
 <template>
-  <v-autocomplete
-    label="请选择货品"
-    prepend-icon="category"
-    v-model="sCargoId"
-    :filter="customFilter"
-    :items="cargoData"
-    item-value="id"
-    item-text="name"
-    return-object
-    :rules="cargoRules"
-    @change="selectItem"
-  >
+  <v-autocomplete label="请选择货品" prepend-icon="category" v-model="selectedCargo" :filter="customFilter" :items="cargoData" item-value="id" item-text="name" return-object clearable :rules="cargoRules" @change="selectItem">
     <template v-slot:selection="data">
       {{ data.item.name }}
     </template>
@@ -39,10 +28,18 @@ export default {
   },
   data: () => ({
     cargoData: [],
-    sCargoId: null,
-    selectCargo: null,
+    selectedCargo: null,
     cargoRules: [v => (!!v && v.id != 0) || '请选择类别']
   }),
+  watch: {
+    cargoId: function() {
+      if (this.cargoId) {
+        this.selectedCargo = this.cargoData.find(r => r.id == this.cargoId)
+      } else {
+        this.selectedCargo = null
+      }
+    }
+  },
   methods: {
     customFilter(item, queryText) {
       const textOne = item.name
@@ -54,13 +51,9 @@ export default {
 
     selectItem(val) {
       if (val == null || val == undefined) {
-        this.selectCargo = null
         this.$emit('update:cargoId', '')
-        this.$emit('change', null)
       } else {
-        this.selectCargo = val
         this.$emit('update:cargoId', val.id)
-        this.$emit('change', this.selectCargo)
       }
     }
   },

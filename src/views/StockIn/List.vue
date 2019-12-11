@@ -1,20 +1,16 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12 md12>
-      <v-card class="mx-auto">
-        <v-card-title class="orange">
-          入库列表
-        </v-card-title>
-        <v-card-text class="px-0">
-          <v-treeview :items="monthTime" :load-children="fetchStockIn" @update:active="showActive" :active.sync="active" :open.sync="open" activatable open-on-click transition>
-            <template v-slot:prepend="{ item, active }">
-              <v-icon v-if="!item.children">markunread</v-icon>
-            </template>
-          </v-treeview>
-        </v-card-text>
-      </v-card>
-    </v-flex>
-  </v-layout>
+  <v-card class="mx-auto">
+    <v-card-title class="orange">
+      入库列表
+    </v-card-title>
+    <v-card-text class="px-0">
+      <v-treeview :items="monthTime" :load-children="fetchStockIn" @update:active="showActive" :active.sync="active" :open.sync="open" activatable open-on-click transition>
+        <template v-slot:prepend="{ item, active }">
+          <v-icon v-if="!item.children">markunread</v-icon>
+        </template>
+      </v-treeview>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -64,3 +60,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.list-menu {
+  height: 100%;
+}
+</style>

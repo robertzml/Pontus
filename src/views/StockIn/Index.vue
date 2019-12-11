@@ -1,28 +1,28 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12 md12>
+  <v-row dense>
+    <v-col cols="12">
       <v-toolbar dense>
         <v-toolbar-title>货品入库</v-toolbar-title>
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
           <v-btn v-if="window != 'details'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
-          <v-btn text @click.stop="showCreate">货品入库</v-btn>
+          <v-btn text @click.stop="showCreate">新建入库单</v-btn>
           <v-btn text @click.stop="refresh">刷新</v-btn>
         </v-toolbar-items>
       </v-toolbar>
-    </v-flex>
+    </v-col>
 
-    <v-flex xs3 md3>
+    <v-col cols="3">
       <stock-in-list ref="listMod" @activate="showDetails"></stock-in-list>
-    </v-flex>
+    </v-col>
 
-    <v-flex xs9 md9>
+    <v-col cols="9">
       <v-window v-model="window">
         <v-window-item value="details" eager>
           <v-expansion-panels v-model="panel" multiple>
             <v-expansion-panel>
-              <v-expansion-panel-header ripple>入库信息</v-expansion-panel-header>
+              <v-expansion-panel-header ripple>入库单信息</v-expansion-panel-header>
               <v-expansion-panel-content eager>
                 <stock-in-details ref="detailsMod" :show-title="false" @updateTask="updateTask"></stock-in-details>
               </v-expansion-panel-content>
@@ -41,10 +41,12 @@
           <stock-in-task-details ref="taskDetailsMod"></stock-in-task-details>
         </v-window-item>
       </v-window>
-    </v-flex>
+    </v-col>
 
-    <stock-in-create ref="stockInCreateMod" @close="closeCreate"></stock-in-create>
-  </v-layout>
+    <v-col cols="12">
+      <stock-in-create ref="stockInCreateMod" @close="closeCreate"></stock-in-create>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
