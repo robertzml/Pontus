@@ -6,7 +6,8 @@
     <template v-slot:item="data">
       <v-list-item-content>
         <v-list-item-title v-html="data.item.name"></v-list-item-title>
-        <v-list-item-subtitle v-html="data.item.categoryName"></v-list-item-subtitle>
+        <v-list-item-subtitle>类别：{{data.item.categoryName}}</v-list-item-subtitle>
+        <v-list-item-subtitle>客户：{{data.item.customerName}}</v-list-item-subtitle>
       </v-list-item-content>
     </template>
   </v-autocomplete>
@@ -38,6 +39,12 @@ export default {
       } else {
         this.selectedCargo = null
       }
+    },
+    customerNumber: function() {
+      let vm = this
+      cargo.getListByNumber(this.customerNumber).then(res => {
+        vm.cargoData = res
+      })
     }
   },
   methods: {
@@ -58,11 +65,12 @@ export default {
     }
   },
   mounted: function() {
+    /*
     let vm = this
     cargo.getListByNumber(this.customerNumber).then(res => {
-      vm.cargoData = res
-      vm.sCargoId = vm.cargoId
+      vm.cargoData = res     
     })
+    */
   }
 }
 </script>

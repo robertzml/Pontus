@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" persistent eager max-width="800px">
+  <v-dialog v-model="dialog" persistent max-width="800px">
     <v-card>
       <v-card-title class="cyan">
         入库任务单
@@ -8,11 +8,8 @@
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-container fluid>
             <v-row>
-              <v-col cols="6" md="6" sm="6">
-                <category-select :category-id.sync="categoryId" @change="selectCategory"></category-select>
-              </v-col>
-              <v-col cols="6" md="6" sm="6">
-                <v-select v-model="selectWarehouse" :items="warehouseList" item-text="name" item-value="id" :rules="warehouseRules" label="所属仓库" :hint="`${selectWarehouse.name}, ${selectWarehouse.number}`" return-object persistent-hint required></v-select>
+              <v-col cols="12" md="12" sm="12">
+                <cargo-select :cargo-id.sync="taskInfo.cargoId" :customer-number="stockInInfo.customerNumber"></cargo-select>
               </v-col>
 
               <v-col cols="6" md="4" sm="6">
@@ -35,10 +32,7 @@
                 <v-text-field label="保质期" v-model="taskInfo.durability" suffix="月"></v-text-field>
               </v-col>
 
-              <v-col cols="6" md="4" sm="6">
-                <v-text-field label="托盘码*" v-model="taskInfo.trayCode" :rules="trayCodeRules"></v-text-field>
-              </v-col>
-              <v-col cols="6" md="4" sm="6">
+              <v-col cols="12" md="12" sm="12">
                 <v-text-field label="备注" v-model="taskInfo.remark"></v-text-field>
               </v-col>
             </v-row>
@@ -58,38 +52,30 @@
 <script>
 import stockIn from '@/controllers/stockIn'
 import warehouse from '@/controllers/warehouse'
-import CategorySelect from '@/components/Control/CategorySelect'
+import CargoSelect from '@/components/Control/CargoSelect'
 
 export default {
   name: 'StockInEditTask',
   components: {
-    CategorySelect
+    CargoSelect
   },
   data: () => ({
     dialog: false,
     valid: false,
     stockInId: '',
-    stockInInfo: {},
-    categoryId: 0,
+    stockInInfo: {
+      customerNumber: ''
+    },
     taskInfo: {
       stockInId: '',
-      trayCode: '',
-      categoryId: 0,
-      categoryName: '',
-      specification: '',
+      cargoId: '',
       inCount: 0,
       unitWeight: 0.0,
       inWeight: 0.0,
+      specification: '',
       originPlace: '',
       durability: '',
-      warehouseId: 0,
       remark: ''
-    },
-    warehouseList: [],
-    selectWarehouse: {
-      id: 0,
-      name: '',
-      number: ''
     },
     trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
     warehouseRules: [v => (v && v.number != '') || '请选择仓库']
@@ -106,52 +92,30 @@ export default {
       this.clearTask()
       this.loadStockIn()
       this.dialog = true
-      this.$refs.form.resetValidation()
+      // this.$refs.form.resetValidation()
     },
 
     loadStockIn() {
       let vm = this
       stockIn.get(this.stockInId).then(res => {
         vm.stockInInfo = res
-
-        vm.loadWarehouse(vm.stockInInfo.type)
-      })
-    },
-
-    /**
-     * 载入仓库列表
-     * type: 仓库类型
-     */
-    loadWarehouse(type) {
-      let vm = this
-      warehouse.getList(type).then(res => {
-        vm.warehouseList = res
       })
     },
 
     clearTask() {
-      this.categoryId = 0
       this.taskInfo = {
         stockInId: '',
-        trayCode: '',
-        categoryId: 0,
-        categoryName: '',
+        cargoId: '',
         inCount: 0,
         unitWeight: 0.0,
         inWeight: 0.0,
         specification: '',
         originPlace: '',
         durability: '',
-        warehouseId: 0,
         remark: '',
         userId: 0,
         userName: ''
       }
-    },
-
-    selectCategory(val) {
-      this.taskInfo.categoryId = val.id
-      this.taskInfo.categoryName = val.name
     },
 
     addTask() {
