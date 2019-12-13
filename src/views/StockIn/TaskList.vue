@@ -19,7 +19,7 @@ export default {
   data: () => ({
     stockInId: '',
     headers: [
-      { text: '托盘码', value: 'trayCode', align: 'left' },
+      { text: '货品名称', value: 'cargoName' },
       { text: '类别名称', value: 'categoryName' },
       { text: '入库数量', value: 'inCount' },
       { text: '单位重量(kg)', value: 'unitWeight' },
@@ -28,7 +28,6 @@ export default {
       { text: '产地', value: 'originPlace' },
       { text: '保质期(月)', value: 'durability' },
       { text: '备注', value: 'remark' },
-      { text: '状态', value: 'status' },
       { text: '操作', value: 'action', sortable: false }
     ],
     taskInfoList: []

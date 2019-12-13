@@ -9,14 +9,14 @@
           <v-container fluid>
             <v-row>
               <v-col cols="12" md="12" sm="12">
-                <cargo-select :cargo-id.sync="taskInfo.cargoId" :customer-number="stockInInfo.customerNumber"></cargo-select>
+                <cargo-select ref="cargoSelect" :cargo-id.sync="taskInfo.cargoId" :customer-number="stockInInfo.customerNumber" @change="selectCargo"></cargo-select>
               </v-col>
 
               <v-col cols="6" md="4" sm="6">
                 <v-text-field label="入库数量*" v-model="taskInfo.inCount"></v-text-field>
               </v-col>
               <v-col cols="6" md="4" sm="6">
-                <v-text-field label="单位重量*" v-model="taskInfo.unitWeight" suffix="千克"></v-text-field>
+                <v-text-field label="单位重量*" v-model="unitWeight" suffix="千克"></v-text-field>
               </v-col>
               <v-col cols="6" md="4" sm="6">
                 <v-text-field label="总重量*" v-model="totalWeight" suffix="吨"></v-text-field>
@@ -51,7 +51,6 @@
 
 <script>
 import stockIn from '@/controllers/stockIn'
-import warehouse from '@/controllers/warehouse'
 import CargoSelect from '@/components/Control/CargoSelect'
 
 export default {
@@ -77,19 +76,20 @@ export default {
       durability: '',
       remark: ''
     },
+    unitWeight: 0.0,
     trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
     warehouseRules: [v => (v && v.number != '') || '请选择仓库']
   }),
   computed: {
     totalWeight: function() {
-      return (this.taskInfo.inCount * this.taskInfo.unitWeight) / 1000
+      return (this.taskInfo.inCount * this.unitWeight) / 1000
     }
   },
   methods: {
     init(stockInId) {
       this.stockInId = stockInId
 
-      this.clearTask()
+      // this.clearTask()
       this.loadStockIn()
       this.dialog = true
       // this.$refs.form.resetValidation()
@@ -118,13 +118,21 @@ export default {
       }
     },
 
+    selectCargo(val) {
+      if (val == null) {
+        this.unitWeight = 0
+      } else {
+        this.unitWeight = val.unitWeight
+      }
+    },
+
     addTask() {
       if (this.$refs.form.validate()) {
         let vm = this
 
-        this.taskInfo.stockInId = this.stockInId
-        this.taskInfo.warehouseId = this.selectWarehouse.id
+        this.taskInfo.unitWeight = this.unitWeight
         this.taskInfo.inWeight = this.totalWeight
+        this.taskInfo.stockInId = this.stockInId
         this.taskInfo.userId = this.$store.state.user.id
         this.taskInfo.userName = this.$store.state.user.name
 

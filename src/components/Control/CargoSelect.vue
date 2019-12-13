@@ -59,8 +59,10 @@ export default {
     selectItem(val) {
       if (val == null || val == undefined) {
         this.$emit('update:cargoId', '')
+        this.$emit('change', null)
       } else {
         this.$emit('update:cargoId', val.id)
+        this.$emit('change', this.selectedCargo)
       }
     }
   },
