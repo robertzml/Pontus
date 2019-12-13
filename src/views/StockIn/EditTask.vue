@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import CargoSelect from '@/components/Control/CargoSelect'
 
@@ -61,7 +62,6 @@ export default {
   data: () => ({
     dialog: false,
     valid: false,
-    stockInId: '',
     stockInInfo: {
       customerNumber: ''
     },
@@ -80,19 +80,21 @@ export default {
     trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
     warehouseRules: [v => (v && v.number != '') || '请选择仓库']
   }),
-  computed: {
+  computed: mapState({
+    stockInId: state => state.stockIn.stockInId,
+
     totalWeight: function() {
       return (this.taskInfo.inCount * this.unitWeight) / 1000
     }
-  },
+  }),
   methods: {
-    init(stockInId) {
-      this.stockInId = stockInId
-
+    init() {
       // this.clearTask()
       this.loadStockIn()
       this.dialog = true
-      // this.$refs.form.resetValidation()
+      this.$nextTick(() => {
+        this.$refs.form.resetValidation()
+      })
     },
 
     loadStockIn() {

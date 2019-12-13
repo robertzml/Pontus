@@ -19,18 +19,7 @@
                 <v-text-field :value="$util.stockInType(info.type)" label="入库类型" readonly></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
-                <v-text-field
-                  :value="`${info.warehouseNumber} - ${info.warehouseName}`"
-                  label="仓库"
-                  readonly
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs6 md3>
-                <v-text-field
-                  :value="`${info.categoryNumber} - ${info.categoryName}`"
-                  label="货品类别"
-                  readonly
-                ></v-text-field>
+                <v-text-field :value="`${info.categoryNumber} - ${info.categoryName}`" label="货品类别" readonly></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
                 <v-text-field v-model="info.inCount" label="入库数量" readonly></v-text-field>
@@ -51,31 +40,13 @@
                 <v-text-field v-model="info.durability" label="保质期" suffix="月" readonly></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
-                <v-text-field v-model="info.positionNumber" label="仓位编码" readonly></v-text-field>
-              </v-flex>
-              <v-flex xs6 md3>
                 <v-text-field v-model="info.taskCode" label="任务码" readonly></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
-                <v-text-field v-model="info.trayCode" label="托盘码" readonly></v-text-field>
+                <v-text-field v-model="info.userName" label="创建人" readonly></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
-                <v-text-field v-model="info.shelfCode" label="货架码" readonly></v-text-field>
-              </v-flex>
-              <v-flex xs6 md3>
-                <v-text-field v-model="info.userName" label="清点人" readonly></v-text-field>
-              </v-flex>
-              <v-flex xs6 md3>
-                <v-text-field :value="$util.displayDateTime(info.createTime)" label="清点时间" readonly></v-text-field>
-              </v-flex>
-              <v-flex xs6 md3>
-                <v-text-field v-model="info.receiveUserName" label="接单人" readonly></v-text-field>
-              </v-flex>
-              <v-flex xs6 md3>
-                <v-text-field :value="$util.displayDateTime(info.receiveTime)" label="接单时间" readonly></v-text-field>
-              </v-flex>
-              <v-flex xs6 md3>
-                <v-text-field :value="$util.displayDateTime(info.enterTime)" label="上架时间" readonly></v-text-field>
+                <v-text-field :value="$util.displayDateTime(info.createTime)" label="创建时间" readonly></v-text-field>
               </v-flex>
               <v-flex xs6 md3>
                 <v-text-field :value="$util.displayDateTime(info.finishTime)" label="完成时间" readonly></v-text-field>
@@ -102,6 +73,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations, mapActions } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import StockInFinishTask from './FinishTask'
 
@@ -112,8 +84,11 @@ export default {
     StockInFinishTask
   },
   data: () => ({
-    taskId: '',
-    info: {}
+    taskId: ''
+    // info: {}
+  }),
+  computed: mapState({
+    info: state => state.stockIn.stockInTaskInfo
   }),
   methods: {
     init(id) {

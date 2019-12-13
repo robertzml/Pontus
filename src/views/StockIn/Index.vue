@@ -20,7 +20,7 @@
     <v-col cols="9">
       <v-window v-model="window">
         <v-window-item value="details" eager>
-          <stock-in-details ref="detailsMod" :show-title="false" @updateTask="updateTask"></stock-in-details>
+          <stock-in-details ref="detailsMod" :show-title="false"></stock-in-details>
         </v-window-item>
 
         <v-window-item value="taskDetails" eager>
@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations, mapActions } from 'vuex'
 import StockInTreeList from './TreeList'
 import StockInCreate from './Create'
 import StockInDetails from './Details'
@@ -50,18 +51,22 @@ export default {
     StockInTaskDetails
   },
   data: () => ({
-    window: 'details',
     currentStockInId: ''
   }),
+  computed: mapState({
+    window: state => state.stockIn.stockInWindow
+  }),
   methods: {
+    ...mapActions({
+      stockInShowDetails: 'stockIn/showDetails',
+      stockInShowTaskDetails: 'stockIn/showTaskDetals'
+    }),
+
     // 切换视图
     showWindow: function(window, id) {
       this.window = window
       switch (window) {
         case 'details':
-          //this.currentStockInId = id
-          //this.$refs.detailsMod.init(id)
-          //this.$refs.taskListMod.init(id)
           break
         case 'taskDetails':
           this.$refs.taskDetailsMod.init(id)
@@ -75,7 +80,8 @@ export default {
 
     // 显示入库信息
     showDetails() {
-      this.showWindow('details')
+      // this.showWindow('details')
+      this.stockInShowDetails()
     },
 
     // 返回入库列表
@@ -90,7 +96,6 @@ export default {
 
     // 显示货品入库
     showCreate() {
-      // this.showWindow('create')
       this.$refs.stockInCreateMod.init(0)
     },
 
@@ -104,11 +109,7 @@ export default {
         this.$refs.listMod.init()
       }
 
-      this.showWindow('details', val)
-    },
-
-    updateTask() {
-      this.$refs.taskListMod.init(this.currentStockInId)
+      this.showWindow('details')
     }
   }
 }
