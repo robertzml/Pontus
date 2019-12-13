@@ -15,15 +15,18 @@
 
 <script>
 import stockIn from '@/controllers/stockIn'
+import { mapMutations } from 'vuex'
 
 export default {
-  name: 'StockInList',
+  name: 'StockInTreeList',
   data: () => ({
     monthTime: [],
     active: [],
     open: []
   }),
   methods: {
+    ...mapMutations({ setId: 'stockIn/setId' }),
+
     init() {
       this.loadMonthTime()
     },
@@ -49,9 +52,11 @@ export default {
       })
     },
 
+    // 选择入库单
     showActive(item) {
       if (item.length > 0) {
-        this.$emit('activate', item[0])
+        this.setId(item[0])
+        this.$emit('activate')
       }
     }
   },

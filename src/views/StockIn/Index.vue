@@ -14,27 +14,13 @@
     </v-col>
 
     <v-col cols="3">
-      <stock-in-list ref="listMod" @activate="showDetails"></stock-in-list>
+      <stock-in-tree-list ref="listMod" @activate="showDetails"></stock-in-tree-list>
     </v-col>
 
     <v-col cols="9">
       <v-window v-model="window">
         <v-window-item value="details" eager>
-          <v-expansion-panels v-model="panel" multiple>
-            <v-expansion-panel>
-              <v-expansion-panel-header ripple>入库单信息</v-expansion-panel-header>
-              <v-expansion-panel-content eager>
-                <stock-in-details ref="detailsMod" :show-title="false" @updateTask="updateTask"></stock-in-details>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-
-            <v-expansion-panel>
-              <v-expansion-panel-header ripple>入库任务</v-expansion-panel-header>
-              <v-expansion-panel-content eager>
-                <stock-in-task-list ref="taskListMod" @showDetails="toTaskDetails"></stock-in-task-list>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
+          <stock-in-details ref="detailsMod" :show-title="false" @updateTask="updateTask"></stock-in-details>
         </v-window-item>
 
         <v-window-item value="taskDetails" eager>
@@ -50,24 +36,21 @@
 </template>
 
 <script>
-import StockInList from './List'
+import StockInTreeList from './TreeList'
 import StockInCreate from './Create'
 import StockInDetails from './Details'
-import StockInTaskList from './TaskList'
 import StockInTaskDetails from './TaskDetails'
 
 export default {
   name: 'StockInIndex',
   components: {
-    StockInList,
+    StockInTreeList,
     StockInCreate,
     StockInDetails,
-    StockInTaskList,
     StockInTaskDetails
   },
   data: () => ({
     window: 'details',
-    panel: [0],
     currentStockInId: ''
   }),
   methods: {
@@ -76,9 +59,9 @@ export default {
       this.window = window
       switch (window) {
         case 'details':
-          this.currentStockInId = id
-          this.$refs.detailsMod.init(id)
-          this.$refs.taskListMod.init(id)
+          //this.currentStockInId = id
+          //this.$refs.detailsMod.init(id)
+          //this.$refs.taskListMod.init(id)
           break
         case 'taskDetails':
           this.$refs.taskDetailsMod.init(id)
@@ -91,8 +74,8 @@ export default {
     },
 
     // 显示入库信息
-    showDetails(val) {
-      this.showWindow('details', val)
+    showDetails() {
+      this.showWindow('details')
     },
 
     // 返回入库列表
