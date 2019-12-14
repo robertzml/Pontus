@@ -14,7 +14,7 @@
     </v-col>
 
     <v-col cols="3">
-      <stock-in-tree-list ref="listMod" @activate="showDetails"></stock-in-tree-list>
+      <stock-in-tree-list ref="listMod"></stock-in-tree-list>
     </v-col>
 
     <v-col cols="9">
@@ -50,9 +50,7 @@ export default {
     StockInDetails,
     StockInTaskDetails
   },
-  data: () => ({
-    currentStockInId: ''
-  }),
+  data: () => ({}),
   computed: mapState({
     window: state => state.stockIn.stockInWindow
   }),
@@ -62,36 +60,15 @@ export default {
       stockInShowTaskDetails: 'stockIn/showTaskDetals'
     }),
 
-    // 切换视图
-    showWindow: function(window, id) {
-      this.window = window
-      switch (window) {
-        case 'details':
-          break
-        case 'taskDetails':
-          this.$refs.taskDetailsMod.init(id)
-          break
-      }
-    },
+    ...mapMutations({ setId: 'stockIn/setId' }),
 
     refresh() {
       this.$refs.listMod.init()
     },
 
-    // 显示入库信息
-    showDetails() {
-      // this.showWindow('details')
-      this.stockInShowDetails()
-    },
-
     // 返回入库列表
     toList() {
-      this.showWindow('details', this.currentStockInId)
-    },
-
-    // 显示入库任务信息
-    toTaskDetails(val) {
-      this.showWindow('taskDetails', val)
+      this.stockInShowDetails()
     },
 
     // 显示货品入库
@@ -109,7 +86,8 @@ export default {
         this.$refs.listMod.init()
       }
 
-      this.showWindow('details')
+      this.setId(val)
+      this.stockInShowDetails()
     }
   }
 }

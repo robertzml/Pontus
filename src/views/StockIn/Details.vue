@@ -173,6 +173,11 @@ export default {
       this.showTaskDetails()
     }
   },
-  mounted: function() {}
+  mounted: function() {
+    if (this.stockInId) {
+      this.loadInfo()
+      this.loadTaskList()
+    }
+  }
 }
 </script>

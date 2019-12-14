@@ -15,7 +15,7 @@
 
 <script>
 import stockIn from '@/controllers/stockIn'
-import { mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'StockInTreeList',
@@ -24,8 +24,15 @@ export default {
     active: [],
     open: []
   }),
+  computed: mapState({
+    stockInId: state => state.stockIn.stockInId
+  }),
   methods: {
     ...mapMutations({ setId: 'stockIn/setId' }),
+
+    ...mapActions({
+      stockInShowDetails: 'stockIn/showDetails'
+    }),
 
     init() {
       this.loadMonthTime()
@@ -56,7 +63,7 @@ export default {
     showActive(item) {
       if (item.length > 0) {
         this.setId(item[0])
-        this.$emit('activate')
+        this.stockInShowDetails()
       }
     }
   },
