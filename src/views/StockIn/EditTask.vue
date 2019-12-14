@@ -77,7 +77,6 @@ export default {
       remark: ''
     },
     unitWeight: 0.0,
-    trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
     warehouseRules: [v => (v && v.number != '') || '请选择仓库']
   }),
   computed: mapState({

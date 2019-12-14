@@ -1,5 +1,4 @@
 <template>
-
   <v-card flat class="mx-auto">
     <v-card-title class="cyan">
       入库任务信息
@@ -64,23 +63,26 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-btn color="primary" v-if="this.info.status == 72" @click.stop="receive">任务接单</v-btn>
+      <v-btn color="primary" v-if="this.info.status == 71" @click.stop="setCarryIn">任务下发</v-btn>
       <v-btn color="indigo" v-if="this.info.status == 74" @click.stop="showFinish">入库确认</v-btn>
     </v-card-actions>
 
     <stock-in-finish-task ref="finishMod"></stock-in-finish-task>
+    <carry-in-create ref="carryInMod" :stock-in-task="info"></carry-in-create>
   </v-card>
 </template>
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import stockIn from '@/controllers/stockIn'
+import CarryInCreate from '../CarryIn/Create'
 import StockInFinishTask from './FinishTask'
 
 export default {
   name: 'StockInTaskDetails',
   props: {},
   components: {
+    CarryInCreate,
     StockInFinishTask
   },
   data: () => ({
@@ -95,6 +97,10 @@ export default {
       stockIn.getTask(this.taskId).then(res => {
         vm.info = res
       })
+    },
+
+    setCarryIn() {
+      this.$refs.carryInMod.show()
     },
 
     receive() {
