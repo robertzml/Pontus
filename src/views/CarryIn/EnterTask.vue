@@ -8,21 +8,9 @@
       <v-row>
         <v-col cols="12">
           <v-form ref="form" v-model="valid" lazy-validation>
-            <v-text-field
-              label="托盘码"
-              prepend-icon="power_input"
-              autocomplete="off"
-              v-model="trayCode"
-              readonly
-            ></v-text-field>
+            <v-text-field label="托盘码" prepend-icon="power_input" autocomplete="off" v-model="trayCode" readonly></v-text-field>
 
-            <v-text-field
-              label="货架码"
-              prepend-icon="border_all"
-              v-model="shelfCode"
-              :rules="shelfCodeRules"
-              autofocus
-            ></v-text-field>
+            <v-text-field label="货架码" prepend-icon="border_all" v-model="shelfCode" :rules="shelfCodeRules" autofocus></v-text-field>
 
             <v-btn color="success" class="mt-4 ml-8" large :disabled="taskList.length == 0 || !valid" @click="enter">
               货 物 上 架
@@ -52,8 +40,8 @@
 
                     <v-list dense>
                       <v-list-item>
-                        <v-list-item-content>类别编码:</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.categoryNumber }}</v-list-item-content>
+                        <v-list-item-content>客户名称:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.customerName }}</v-list-item-content>
                       </v-list-item>
 
                       <v-list-item>
@@ -62,18 +50,18 @@
                       </v-list-item>
 
                       <v-list-item>
-                        <v-list-item-content>入库数量:</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.inCount }}</v-list-item-content>
+                        <v-list-item-content>货品名称:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.cargoName }}</v-list-item-content>
                       </v-list-item>
 
                       <v-list-item>
-                        <v-list-item-content>单位重量(kg):</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.unitWeight }}</v-list-item-content>
+                        <v-list-item-content>搬运数量:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.moveCount }}</v-list-item-content>
                       </v-list-item>
 
                       <v-list-item>
-                        <v-list-item-content>入库重量(t):</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.inWeight }}</v-list-item-content>
+                        <v-list-item-content>搬运重量(t):</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.moveWeight }}</v-list-item-content>
                       </v-list-item>
 
                       <v-list-item>
@@ -93,9 +81,7 @@
 
                       <v-list-item>
                         <v-list-item-content>创建时间:</v-list-item-content>
-                        <v-list-item-content class="align-end">{{
-                          item.createTime | displayDateTime
-                        }}</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.createTime | displayDateTime }}</v-list-item-content>
                       </v-list-item>
                     </v-list>
                   </v-card>
@@ -110,10 +96,10 @@
 </template>
 
 <script>
-import stockIn from '@/controllers/stockIn'
+import carryIn from '@/controllers/carryIn'
 
 export default {
-  name: 'StockInEnterTask',
+  name: 'CarryInEnterTask',
   data: () => ({
     valid: false,
     trayCode: '',
@@ -126,7 +112,7 @@ export default {
       let userId = this.$store.state.user.id
 
       let vm = this
-      stockIn.findCurrentReceive(userId).then(res => {
+      carryIn.findCurrentReceive(userId).then(res => {
         vm.taskList = res
         if (vm.taskList.length > 0) {
           vm.trayCode = vm.taskList[0].trayCode
@@ -138,7 +124,7 @@ export default {
       if (this.$refs.form.validate()) {
         let vm = this
         let req = { trayCode: this.trayCode, shelfCode: this.shelfCode, userId: this.$store.state.user.id }
-        stockIn.enterTask(req).then(res => {
+        carryIn.enterTask(req).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '入库上架成功')
             this.$router.push({ name: 'home' })

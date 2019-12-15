@@ -71,7 +71,7 @@
 
     <carry-in-list :item-list="carryInTaskList"></carry-in-list>
     <stock-in-finish-task ref="finishMod"></stock-in-finish-task>
-    <carry-in-create ref="carryInMod" :stock-in-task="info"></carry-in-create>
+    <carry-in-create ref="carryInMod" :stock-in-task="info" @update="loadCarryInTask"></carry-in-create>
   </v-sheet>
 </template>
 
@@ -124,23 +124,6 @@ export default {
 
     setCarryIn() {
       this.$refs.carryInMod.show()
-    },
-
-    receive() {
-      let vm = this
-
-      this.info.receiveUserId = this.$store.state.user.id
-      this.info.receiveUserName = this.$store.state.user.name
-      this.info.status = 73
-
-      stockIn.handleTask(this.info).then(res => {
-        if (res.status == 0) {
-          vm.$store.commit('alertSuccess', '任务接单成功')
-          vm.getInfo()
-        } else {
-          vm.$store.commit('alertError', res.errorMessage)
-        }
-      })
     },
 
     showFinish() {

@@ -4,31 +4,30 @@
       入库接单
     </v-card-title>
 
-    <v-card-text>
-      <v-row>
-        <v-col cols="12">
-          <v-form ref="form" v-model="valid" lazy-validation>
-            <v-text-field
-              label="托盘码"
-              autofocus
-              prepend-icon="power_input"
-              :counter="6"
-              autocomplete="off"
-              v-model="trayCode"
-              :rules="trayCodeRules"
-              @input="changeText"
-            ></v-text-field>
-            <v-btn color="primary" class="mt-4" large :disabled="!valid" @click="search">
-              托 盘 搜 索
-            </v-btn>
+    <v-card-text class="mb-0 pb-1">
+      <v-form ref="form" v-model="valid" lazy-validation>
+        <v-container fluid class="py-0">
+          <v-row dense>
+            <v-col cols="10">
+              <v-text-field label="托盘码" autofocus prepend-icon="power_input" :counter="6" autocomplete="off" v-model="trayCode" :rules="trayCodeRules" @input="changeText" @keyup.enter="search"></v-text-field>
+            </v-col>
+            <v-col cols="2">
+              <v-text-field v-show="false"></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-form>
 
-            <v-btn color="success" class="mt-4 ml-8" large :disabled="taskList.length == 0 || !valid" @click="receive">
-              入 库 接 单
-            </v-btn>
-          </v-form>
-        </v-col>
-      </v-row>
     </v-card-text>
+
+    <v-card-actions>
+      <v-btn color="primary" class="ml-4" large :disabled="!valid" @click="search">
+        托 盘 搜 索
+      </v-btn>
+      <v-btn color="success" class="ml-8" large :disabled="taskList.length == 0 || !valid" @click="receive">
+        入 库 接 单
+      </v-btn>
+    </v-card-actions>
 
     <v-card-text class="pt-0">
       <v-row>
@@ -50,8 +49,8 @@
 
                     <v-list dense>
                       <v-list-item>
-                        <v-list-item-content>类别编码:</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.categoryNumber }}</v-list-item-content>
+                        <v-list-item-content>客户名称:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.customerName }}</v-list-item-content>
                       </v-list-item>
 
                       <v-list-item>
@@ -60,18 +59,18 @@
                       </v-list-item>
 
                       <v-list-item>
-                        <v-list-item-content>入库数量:</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.inCount }}</v-list-item-content>
+                        <v-list-item-content>货品名称:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.cargoName }}</v-list-item-content>
                       </v-list-item>
 
                       <v-list-item>
-                        <v-list-item-content>单位重量(kg):</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.unitWeight }}</v-list-item-content>
+                        <v-list-item-content>搬运数量:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.moveCount }}</v-list-item-content>
                       </v-list-item>
 
                       <v-list-item>
-                        <v-list-item-content>入库重量(t):</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.inWeight }}</v-list-item-content>
+                        <v-list-item-content>搬运重量(t):</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.moveWeight }}</v-list-item-content>
                       </v-list-item>
 
                       <v-list-item>
@@ -91,9 +90,7 @@
 
                       <v-list-item>
                         <v-list-item-content>创建时间:</v-list-item-content>
-                        <v-list-item-content class="align-end">{{
-                          item.createTime | displayDateTime
-                        }}</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.createTime | displayDateTime }}</v-list-item-content>
                       </v-list-item>
                     </v-list>
                   </v-card>
@@ -108,15 +105,16 @@
 </template>
 
 <script>
-import stockIn from '@/controllers/stockIn'
+import carryIn from '@/controllers/carryIn'
 
 export default {
-  name: 'StockInReceiveTask',
+  name: 'CarryInReceiveTask',
   data: () => ({
     valid: false,
     trayCode: '',
     trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
-    taskList: []
+    taskList: [],
+    moveCount: 0
   }),
   methods: {
     init() {
@@ -131,7 +129,7 @@ export default {
       if (this.$refs.form.validate()) {
         let vm = this
 
-        stockIn.findTask(this.trayCode).then(res => {
+        carryIn.listByTray(this.trayCode).then(res => {
           vm.taskList = res
         })
       }
@@ -143,10 +141,10 @@ export default {
 
       let vm = this
       let req = { trayCode: this.trayCode, userId: this.$store.state.user.id }
-      stockIn.receiveTask(req).then(res => {
+      carryIn.receiveTask(req).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '入库接单成功')
-          this.$router.push({ name: 'stockinEnterTask' })
+          this.$router.push({ name: 'carryInEnterTask' })
         } else {
           vm.$store.commit('alertError', res.errorMessage)
         }

@@ -36,6 +36,11 @@ export default new Router({
       component: () => import('./views/Category/Index.vue')
     },
     {
+      path: '/cargo',
+      name: 'cargo',
+      component: () => import('./views/Cargo/Index.vue')
+    },
+    {
       path: '/warehouse',
       name: 'warehouse',
       component: () => import('./views/Warehouse/Index.vue')
@@ -51,25 +56,25 @@ export default new Router({
       component: () => import('./views/StockIn/Index.vue')
     },
     {
-      path: '/stockinreceivetask',
-      name: 'stockinReceiveTask',
-      component: () => import('./views/StockIn/ReceiveTask.vue')
+      // 入库接单
+      // 叉车工操作
+      path: '/carryinreceivetask',
+      name: 'carryInReceiveTask',
+      component: () => import('./views/CarryIn/ReceiveTask.vue')
     },
     {
-      path: '/stockinentertask',
-      name: 'stockinEnterTask',
-      component: () => import('./views/StockIn/EnterTask.vue')
+      // 入库上架
+      // 叉车工操作
+      path: '/carryinentertask',
+      name: 'carryInEnterTask',
+      component: () => import('./views/CarryIn/EnterTask.vue')
     },
     {
       path: '/stockout',
       name: 'stockout',
       component: () => import('./views/StockOut/Index.vue')
     },
-    {
-      path: '/cargo',
-      name: 'cargo',
-      component: () => import('./views/Cargo/Index.vue')
-    },
+
     {
       path: '/store',
       name: 'store',
