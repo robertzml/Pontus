@@ -1,6 +1,6 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12 md12>
+  <v-row dense>
+    <v-col cols="12">
       <v-toolbar dense>
         <v-toolbar-title>仓库库存</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -14,9 +14,9 @@
           <v-btn text @click.stop="refresh">刷新</v-btn>
         </v-toolbar-items>
       </v-toolbar>
-    </v-flex>
+    </v-col>
 
-    <v-flex xs12 md12>
+    <v-col cols="12">
       <v-sheet class="d-flex flex-row">
         <div class="d-flex ml-4 mr-8 align-center">
           <span>货架</span>
@@ -45,9 +45,9 @@
           </v-chip>
         </v-chip-group>
       </v-sheet>
-    </v-flex>
+    </v-col>
 
-    <v-flex xs12 md12>
+    <v-col cols="12">
       <v-sheet class="d-flex flex-row">
         <div class="d-flex ml-4 mr-8 align-center">
           <span>排</span>
@@ -59,44 +59,46 @@
           </v-chip>
         </v-chip-group>
       </v-sheet>
-    </v-flex>
+    </v-col>
 
-    <div v-if="sRow != undefined && sRow != 0">
-      <v-container fluid class="pa-1">
-        <v-row dense>
-          <v-col cols="6">
-            <v-sheet class="d-flex flex-column">
-              <div class="d-flex justify-center">
-                <span class="mb-1">仓位情况</span>
-              </div>
-              <div>
-                <v-container fluid>
-                  <v-row v-for="depth in maxDepth" :key="depth" no-gutters>
-                    <v-col v-for="layer in maxLayer" :key="layer" cols="2">
-                      <v-card outlined tile :color="positionDim[layer - 1][depth - 1].isEmpty ? '' : 'primary'">
-                        <v-card-text class="my-0 py-0 px-1 text-center align-center caption">
-                          {{ positionDim[layer - 1][depth - 1].number }}
-                          <v-btn text x-small color="lime" @click="viewDetails(layer, depth)">
-                            View
-                          </v-btn>
-                          <v-btn text x-small color="orange">
-                            More
-                          </v-btn>
-                        </v-card-text>
-                      </v-card>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </div>
-            </v-sheet>
-          </v-col>
-          <v-col cols="6">
-            <store-details ref="detailsMod" class="sticky-card"></store-details>
-          </v-col>
-        </v-row>
-      </v-container>
-    </div>
-  </v-layout>
+    <v-col cols="12">
+      <div v-if="sRow != undefined && sRow != 0">
+        <v-container fluid class="pa-1">
+          <v-row dense>
+            <v-col cols="6">
+              <v-sheet class="d-flex flex-column">
+                <div class="d-flex justify-center">
+                  <span class="mb-1">仓位情况</span>
+                </div>
+                <div>
+                  <v-container fluid>
+                    <v-row v-for="depth in maxDepth" :key="depth" no-gutters>
+                      <v-col v-for="layer in maxLayer" :key="layer" cols="2">
+                        <v-card outlined tile :color="positionColor(positionDim[layer - 1][depth - 1])">
+                          <v-card-text class="my-0 py-0 px-1 text-center align-center caption">
+                            {{ positionDim[layer - 1][depth - 1].number }}
+                            <v-btn text x-small color="lime" @click="viewDetails(layer, depth)">
+                              View
+                            </v-btn>
+                            <v-btn text x-small color="orange">
+                              More
+                            </v-btn>
+                          </v-card-text>
+                        </v-card>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </div>
+              </v-sheet>
+            </v-col>
+            <v-col cols="6">
+              <store-details ref="detailsMod" class="sticky-card"></store-details>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -111,7 +113,6 @@ export default {
     StoreDetails
   },
   data: () => ({
-    window: 'list',
     warehouseListData: [],
     shelfListData: [],
     positionListData: [],
@@ -171,17 +172,6 @@ export default {
       this.loadWarehouse()
     },
 
-    // 切换视图
-    showWindow: function(window) {
-      this.window = window
-      switch (window) {
-        case 'list':
-          break
-        case 'details':
-          break
-      }
-    },
-
     loadWarehouse() {
       let vm = this
       warehouse.getList().then(res => {
@@ -189,6 +179,7 @@ export default {
       })
     },
 
+    // 菜单栏选择仓库，载入货架列表
     selectWarehouse(val) {
       let vm = this
       shelf.getList(val.id).then(res => {
@@ -211,6 +202,19 @@ export default {
     viewDetails(layer, depth) {
       this.window = 'details'
       this.$refs.detailsMod.init(this.sShelfId, this.sRow, layer, depth)
+    },
+
+    // 根据状态显示仓位颜色
+    positionColor(pos) {
+      if (pos.status == 2) {
+        return 'grey darken-4'
+      } else {
+        if (pos.isEmpty) {
+          return ''
+        } else {
+          return 'primary'
+        }
+      }
     },
 
     refresh() {}
