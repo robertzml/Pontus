@@ -22,6 +22,9 @@
             <v-col cols="1">
               <v-text-field v-model="positionInfo.depth" label="进" hide-details readonly></v-text-field>
             </v-col>
+            <v-col cols="2">
+              <v-text-field :value="$util.displayStatus(positionInfo.status)" label="状态" readonly></v-text-field>
+            </v-col>
           </v-row>
         </v-container>
       </v-form>
@@ -99,38 +102,26 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import position from '@/controllers/position'
 import store from '@/controllers/store'
 
 export default {
   name: 'StoreDetails',
   data: () => ({
-    shelfId: 0,
-    row: 0,
-    layer: 0,
-    depth: 0,
-    positionInfo: {},
     storeInfo: []
   }),
+  computed: {
+    ...mapState({
+      positionInfo: state => state.store.positionInfo
+    })
+  },
+  watch: {
+    positionInfo: function() {
+      this.loadStore()
+    }
+  },
   methods: {
-    init(shelfId, row, layer, depth) {
-      this.shelfId = shelfId
-      this.row = row
-      this.layer = layer
-      this.depth = depth
-
-      this.loadPosition()
-    },
-
-    loadPosition() {
-      let vm = this
-      position.get({ shelfId: this.shelfId, row: this.row, layer: this.layer, depth: this.depth }).then(res => {
-        vm.positionInfo = res
-
-        vm.loadStore()
-      })
-    },
-
     loadStore() {
       let vm = this
       store.findStoreIn(this.positionInfo.id).then(res => {

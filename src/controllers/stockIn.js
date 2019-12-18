@@ -39,11 +39,5 @@ export default {
   async addTask(entity) {
     const res = await axios._post({ url: '/stockIn/addTask', data: entity })
     return res.data
-  },
-
-  // 任务确认
-  async finishTask(entity) {
-    const res = await axios._post({ url: '/stockIn/finishTask', data: entity })
-    return res.data
   }
 }

@@ -51,5 +51,14 @@ export default {
   async enterTask(entity) {
     const res = await axios._post({ url: '/carryInTask/enterTask', data: entity })
     return res.data
+  },
+
+  /**
+   * 任务确认
+   * @param {任务数据} entity
+   */
+  async finishTask(entity) {
+    const res = await axios._post({ url: '/carryInTask/finishTask', data: entity })
+    return res.data
   }
 }

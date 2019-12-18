@@ -5,6 +5,7 @@ import getters from './getters'
 import mutations from './mutations'
 import actions from './actions'
 import stockIn from './modules/stockIn'
+import store from './modules/store'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
   mutations,
   actions,
   modules: {
-    stockIn
+    stockIn,
+    store
   }
 })

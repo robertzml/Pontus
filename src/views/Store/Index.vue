@@ -7,9 +7,7 @@
 
         <v-toolbar-items>
           <v-select :items="warehouseListData" item-value="id" item-text="name" solo return-object label="仓库选择" @change="selectWarehouse" style="width:200px;">
-            <template v-slot:selection="{ item, index }">
-              {{ item.number }} - {{ item.name }}
-            </template>
+            <template v-slot:selection="{ item }"> {{ item.number }} - {{ item.name }} </template>
           </v-select>
           <v-btn text @click.stop="refresh">刷新</v-btn>
         </v-toolbar-items>
@@ -24,13 +22,13 @@
 
         <v-chip-group active-class="primary--text" v-model="sShelfId" class="d-flex justify-space-between">
           <v-chip v-for="shelf in shelfListData" :key="shelf.id" :value="shelf.id">
-            <template v-if="shelf.type==1">
+            <template v-if="shelf.type == 1">
               <v-avatar left>
                 <v-icon>home</v-icon>
               </v-avatar>
               {{ shelf.number }} 号货架
             </template>
-            <template v-else-if="shelf.type==2">
+            <template v-else-if="shelf.type == 2">
               <v-avatar left>
                 <v-icon>storage</v-icon>
               </v-avatar>
@@ -102,6 +100,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 import warehouse from '@/controllers/warehouse'
 import shelf from '@/controllers/shelf'
 import position from '@/controllers/position'
@@ -165,9 +164,15 @@ export default {
       }
 
       return arr
-    }
+    },
+
+    ...mapState({
+      positionInfo: state => state.store.positionInfo
+    })
   },
   methods: {
+    ...mapMutations({ setPosition: 'store/setPosition' }),
+
     init() {
       this.loadWarehouse()
     },
@@ -199,21 +204,22 @@ export default {
       return pos
     },
 
+    // 查看仓位详情
     viewDetails(layer, depth) {
-      this.window = 'details'
-      this.$refs.detailsMod.init(this.sShelfId, this.sRow, layer, depth)
+      let vm = this
+      position.get({ shelfId: this.sShelfId, row: this.sRow, layer: layer, depth: depth }).then(res => {
+        vm.setPosition(res)
+      })
     },
 
     // 根据状态显示仓位颜色
     positionColor(pos) {
       if (pos.status == 2) {
         return 'grey darken-4'
+      } else if (pos.status == 31) {
+        return ''
       } else {
-        if (pos.isEmpty) {
-          return ''
-        } else {
-          return 'primary'
-        }
+        return 'primary'
       }
     },
 

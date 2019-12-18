@@ -48,7 +48,6 @@
   </v-dialog>
 </template>
 
-
 <script>
 import position from '@/controllers/position'
 
@@ -70,7 +69,7 @@ export default {
       status: 0
     },
     positionStatus: [
-      { value: 0, text: '可用' },
+      { value: 31, text: '可用' },
       { value: 2, text: '禁用' }
     ]
   }),
