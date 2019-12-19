@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 export default {
   name: 'CarryInList',
   props: {
@@ -32,11 +34,18 @@ export default {
       { text: '托盘码', value: 'trayCode' },
       { text: '搬运数量', value: 'moveCount' },
       { text: '搬运重量(t)', value: 'moveWeight' },
-      { text: '货架码', value: 'shelfCode' },
+      { text: '仓位码', value: 'positionNumber' },
       { text: '接单人', value: 'receiveUserName' },
       { text: '状态', value: 'status' },
       { text: '操作', value: 'action', sortable: false }
     ]
-  })
+  }),
+  methods: {
+    ...mapMutations({ showTaskDrawer: 'stockIn/showTaskDrawer' }),
+
+    viewItem(item) {
+      this.showTaskDrawer(item)
+    }
+  }
 }
 </script>

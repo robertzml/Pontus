@@ -103,7 +103,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import position from '@/controllers/position'
 import store from '@/controllers/store'
 
 export default {

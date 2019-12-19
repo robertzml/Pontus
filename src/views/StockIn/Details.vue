@@ -69,7 +69,7 @@
       </v-expansion-panel>
 
       <v-expansion-panel>
-        <v-expansion-panel-header ripple>入库任务</v-expansion-panel-header>
+        <v-expansion-panel-header ripple>入库货物</v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="headers" :items="taskInfoList" hide-default-footer disable-pagination>
             <template v-slot:item.status="{ item }">

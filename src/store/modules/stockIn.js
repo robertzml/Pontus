@@ -6,11 +6,17 @@ export default {
     // 货品入库显示页面
     stockInWindow: 'details',
 
+    // 显示入库任务页面侧边
+    showTaskDrawer: false,
+
     // 当前入库单ID
     stockInId: '',
 
     // 当前查看入库任务信息
-    stockInTaskInfo: {}
+    stockInTaskInfo: {},
+
+    // 当前查看搬运任务信息
+    carryInTaskInfo: {}
   },
 
   actions: {
@@ -28,6 +34,17 @@ export default {
   mutations: {
     setWindow: (state, window) => {
       state.stockInWindow = window
+    },
+
+    // 设置入库任务侧边显示 搬运任务
+    showTaskDrawer: (state, payload) => {
+      state.showTaskDrawer = true
+      state.carryInTaskInfo = payload
+    },
+
+    // 设置入库任务侧边关闭
+    closeTaskDrawer: state => {
+      state.showTaskDrawer = false
     },
 
     // 设置入库单ID
