@@ -62,7 +62,8 @@
             </v-form>
 
             <v-card-actions>
-              <v-btn color="primary darken-1" :disabled="info.status != 71" @click="showAddTask">添加任务</v-btn>
+              <v-btn color="primary darken-1" :disabled="info.status != 71" @click="showAddTask">添加货物</v-btn>
+              <v-btn color="deep-orange darken-3" v-if="info.status == 71" @click.stop="showFinish">入库单确认</v-btn>
             </v-card-actions>
           </v-card>
         </v-expansion-panel-content>
@@ -86,6 +87,18 @@
     </v-expansion-panels>
 
     <stock-in-edit-task ref="editTaskMod" @update="updateTask"></stock-in-edit-task>
+
+    <v-dialog v-model="finishDialog" persistent max-width="300">
+      <v-card>
+        <v-card-title class="headline">入库单确认</v-card-title>
+        <v-card-text>是否确认该入库单已经入库完成？请确认所有入库货物已经上架，确认后无法再增加货物。</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue-grey lighten-3" text @click="finishDialog = false">取消</v-btn>
+          <v-btn color="green darken-1" text @click="finish()">确定</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -109,6 +122,7 @@ export default {
   },
   data: () => ({
     panel: [0],
+    finishDialog: false,
     info: {},
     headers: [
       { text: '货品名称', value: 'cargoName' },
@@ -119,7 +133,7 @@ export default {
       { text: '规格', value: 'specification' },
       { text: '产地', value: 'originPlace' },
       { text: '保质期(月)', value: 'durability' },
-      { text: '备注', value: 'remark' },
+      { text: '状态', value: 'status' },
       { text: '操作', value: 'action', sortable: false }
     ],
     taskInfoList: []
@@ -141,6 +155,7 @@ export default {
       showTaskDetails: 'stockIn/showTaskDetals'
     }),
 
+    // 载入入库单信息
     loadInfo() {
       let vm = this
       stockIn.get(this.stockInId).then(res => {
@@ -161,9 +176,7 @@ export default {
       }
     },
 
-    /**
-     * 完成编辑入库任务
-     */
+    // 完成编辑入库任务
     updateTask() {
       this.loadTaskList()
     },
@@ -171,6 +184,25 @@ export default {
     viewTaskItem(val) {
       this.setTaskInfo(val)
       this.showTaskDetails()
+    },
+
+    showFinish() {
+      this.finishDialog = true
+    },
+
+    // 确认入库单完成
+    finish() {
+      let vm = this
+
+      stockIn.confirm({ id: this.info.id }).then(res => {
+        if (res.status == 0) {
+          vm.$store.commit('alertSuccess', '入库单已确认')
+          vm.loadInfo()
+          vm.finishDialog = false
+        } else {
+          vm.$store.commit('alertError', res.errorMessage)
+        }
+      })
     }
   },
   mounted: function() {

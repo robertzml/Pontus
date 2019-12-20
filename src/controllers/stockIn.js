@@ -23,6 +23,12 @@ export default {
     return res.data
   },
 
+  // 确认入库单
+  async confirm(data) {
+    const res = await axios._postqs({ url: '/stockIn/confirm', params: data })
+    return res.data
+  },
+
   // 入库任务列表
   async getTaskList(stockInId) {
     const res = await axios._get({ url: '/stockIn/taskList', params: { stockInId: stockInId } })
