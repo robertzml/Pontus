@@ -53,6 +53,12 @@ export default {
     { text: '仓位库入库', value: 2 }
   ],
 
+  /** 出库类型 */
+  stockOutType: [
+    { text: '普通库出库', value: 1 },
+    { text: '仓位库出库', value: 2 }
+  ],
+
   /** 用户组 */
   userGroup: [
     { text: '超级管理员', value: 1 },

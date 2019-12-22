@@ -2,13 +2,13 @@
   <v-dialog v-model="dialog" persistent eager max-width="800px">
     <v-card>
       <v-card-title>
-        仓位库出库
+        新建出库单
       </v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-container fluid>
             <v-row>
-              <v-col cols="6" md="4" sm="6">
+              <v-col cols="6" md="6" sm="6">
                 <v-menu v-model="stockOutTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                   <template v-slot:activator="{ on }">
                     <v-text-field v-model="stockOutInfo.outTime" label="出库时间" prepend-icon="event" readonly v-on="on"></v-text-field>
@@ -17,16 +17,20 @@
                 </v-menu>
               </v-col>
 
-              <v-col cols="6" md="4" sm="6">
+              <v-col cols="6" md="6" sm="6">
+                <v-select :items="$dict.stockOutType" label="入库类型*" v-model="stockOutInfo.type"></v-select>
+              </v-col>
+
+              <v-col cols="6" md="6" sm="6">
                 <customer-select :customer-id.sync="stockOutInfo.customerId"></customer-select>
               </v-col>
 
-              <v-col cols="6" md="4" sm="6">
+              <v-col cols="6" md="6" sm="6">
                 <v-select :items="contractListData" label="选择合同*" :rules="contractRules" :hint="`${selectedContract.number}`" item-text="name" item-value="id" v-model="selectedContract" persistent-hint return-object></v-select>
               </v-col>
 
               <v-col cols="12" md="12" sm="12">
-                <v-textarea label="备注" v-model="stockOutInfo.remark" rows="1" auto-grow></v-textarea>
+                <v-text-field label="备注" v-model="stockOutInfo.remark"></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -95,6 +99,11 @@ export default {
 
     loadContract(customerId) {
       this.selectedContract = { number: '' }
+      if (customerId == 0) {
+        this.contractListData = []
+        return
+      }
+
       let vm = this
       contract.getList(customerId).then(res => {
         vm.contractListData = res

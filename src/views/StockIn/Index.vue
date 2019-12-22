@@ -20,7 +20,7 @@
     <v-col cols="9">
       <v-window v-model="window">
         <v-window-item value="details" eager>
-          <stock-in-details ref="detailsMod" :show-title="false"></stock-in-details>
+          <stock-in-details></stock-in-details>
         </v-window-item>
 
         <v-window-item value="taskDetails" eager>

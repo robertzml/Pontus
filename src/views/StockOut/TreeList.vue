@@ -19,15 +19,25 @@
 
 <script>
 import stockOut from '@/controllers/stockOut'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
-  name: 'StockOutList',
+  name: 'StockOutTreeList',
   data: () => ({
     monthTime: [],
     active: [],
     open: []
   }),
+  computed: mapState({
+    stockOutId: state => state.stockOut.stockOutId
+  }),
   methods: {
+    ...mapMutations({ setId: 'stockOut/setStockOutId' }),
+
+    ...mapActions({
+      stockOutShowDetails: 'stockOut/showDetails'
+    }),
+
     init() {
       this.loadMonthTime()
     },
@@ -55,7 +65,8 @@ export default {
 
     showActive(item) {
       if (item.length > 0) {
-        this.$emit('activate', item[0])
+        this.setId(item[0])
+        this.stockOutShowDetails()
       }
     }
   },

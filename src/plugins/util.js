@@ -49,6 +49,7 @@ export default {
     }
   },
 
+  // 日期选择器格式
   pickerDayFormat: val => {
     if (val != null || val != undefined) {
       let date = new Date(val)
@@ -120,6 +121,16 @@ export default {
   // 入库类型
   stockInType: type => {
     let st = dict.stockInType.find(r => r.value == type)
+    if (st != undefined) {
+      return st.text
+    } else {
+      return ''
+    }
+  },
+
+  // 出库类型
+  stockOutType: type => {
+    let st = dict.stockOutType.find(r => r.value == type)
     if (st != undefined) {
       return st.text
     } else {

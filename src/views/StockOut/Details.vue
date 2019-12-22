@@ -2,22 +2,22 @@
   <div>
     <v-expansion-panels v-model="panel" multiple>
       <v-expansion-panel>
-        <v-expansion-panel-header ripple>入库单信息</v-expansion-panel-header>
+        <v-expansion-panel-header ripple>出库单信息</v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-card flat class="mx-auto">
             <v-form>
               <v-row dense>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field :value="$util.displayDate(info.inTime)" label="入库时间" readonly></v-text-field>
+                  <v-text-field :value="$util.displayDate(info.outTime)" label="出库时间" readonly></v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field v-model="info.monthTime" label="入库月份" readonly></v-text-field>
+                  <v-text-field v-model="info.monthTime" label="出库月份" readonly></v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
                   <v-text-field v-model="info.flowNumber" label="流水单号" readonly></v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field :value="$util.stockInType(info.type)" label="入库类型" readonly></v-text-field>
+                  <v-text-field :value="$util.stockOutType(info.type)" label="出库类型" readonly></v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
                   <v-text-field v-model="info.customerNumber" label="客户编号" readonly></v-text-field>
@@ -62,15 +62,15 @@
             </v-form>
 
             <v-card-actions>
-              <v-btn color="primary darken-1" :disabled="info.status != 71" @click="showAddTask">添加货物</v-btn>
-              <v-btn color="deep-orange darken-3" v-if="info.status == 71" @click.stop="showFinish">入库单确认</v-btn>
+              <v-btn color="primary darken-1" :disabled="info.status != 81" @click="showAddTask">添加货物</v-btn>
+              <v-btn color="deep-orange darken-3" v-if="info.status == 81" @click.stop="showFinish">出库单确认</v-btn>
             </v-card-actions>
           </v-card>
         </v-expansion-panel-content>
       </v-expansion-panel>
 
       <v-expansion-panel>
-        <v-expansion-panel-header ripple>入库货物</v-expansion-panel-header>
+        <v-expansion-panel-header ripple>出库货物</v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="headers" :items="taskInfoList" hide-default-footer disable-pagination>
             <template v-slot:item.status="{ item }">
@@ -104,14 +104,12 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
-import stockIn from '@/controllers/stockIn'
-import StockInEditTask from './EditTask'
+import stockOut from '@/controllers/stockOut'
 import VueBarcode from 'vue-barcode'
 
 export default {
-  name: 'StockInDetails',
+  name: 'StockOutDetails',
   components: {
-    StockInEditTask,
     VueBarcode
   },
   data: () => ({
@@ -133,10 +131,10 @@ export default {
     taskInfoList: []
   }),
   computed: mapState({
-    stockInId: state => state.stockIn.stockInId
+    stockOutId: state => state.stockOut.stockOutId
   }),
   watch: {
-    stockInId: function(val) {
+    stockOutId: function(val) {
       if (val) {
         this.loadInfo()
         this.loadTaskList()
@@ -144,28 +142,28 @@ export default {
     }
   },
   methods: {
-    ...mapMutations({ setTaskInfo: 'stockIn/setTaskInfo' }),
+    ...mapMutations({ setTaskInfo: 'stockOut/setTaskInfo' }),
     ...mapActions({
-      showTaskDetails: 'stockIn/showTaskDetals'
+      showTaskDetails: 'stockOut/showTaskDetals'
     }),
 
     // 载入入库单信息
     loadInfo() {
       let vm = this
-      stockIn.get(this.stockInId).then(res => {
+      stockOut.get(this.stockOutId).then(res => {
         vm.info = res
       })
     },
 
     loadTaskList() {
       let vm = this
-      stockIn.getTaskList(this.stockInId).then(res => {
+      stockOut.getTaskList(this.stockOutId).then(res => {
         vm.taskInfoList = res
       })
     },
 
     showAddTask() {
-      if (this.stockInId != 0) {
+      if (this.stockOutId != 0) {
         this.$refs.editTaskMod.init()
       }
     },
@@ -188,7 +186,7 @@ export default {
     finish() {
       let vm = this
 
-      stockIn.confirm({ id: this.info.id }).then(res => {
+      stockOut.confirm({ id: this.info.id }).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '入库单已确认')
           vm.loadInfo()
@@ -200,7 +198,7 @@ export default {
     }
   },
   mounted: function() {
-    if (this.stockInId) {
+    if (this.stockOutId) {
       this.loadInfo()
       this.loadTaskList()
     }
