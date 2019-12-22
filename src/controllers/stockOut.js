@@ -27,5 +27,11 @@ export default {
   async getTaskList(stockOutId) {
     const res = await axios._get({ url: '/stockOut/taskList', params: { stockOutId: stockOutId } })
     return res.data
+  },
+
+  // 添加出库任务
+  async addTask(entity) {
+    const res = await axios._post({ url: '/stockOut/addTask', data: entity })
+    return res.data
   }
 }
