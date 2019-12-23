@@ -86,8 +86,6 @@
       </v-expansion-panel>
     </v-expansion-panels>
 
-    <stock-in-edit-task ref="editTaskMod" @update="updateTask"></stock-in-edit-task>
-
     <v-dialog v-model="finishDialog" persistent max-width="300">
       <v-card>
         <v-card-title class="headline">入库单确认</v-card-title>
@@ -115,7 +113,6 @@ export default {
   data: () => ({
     panel: [0],
     finishDialog: false,
-    info: {},
     headers: [
       { text: '货品名称', value: 'cargoName' },
       { text: '类别名称', value: 'categoryName' },
@@ -131,7 +128,8 @@ export default {
     taskInfoList: []
   }),
   computed: mapState({
-    stockOutId: state => state.stockOut.stockOutId
+    stockOutId: state => state.stockOut.stockOutId,
+    info: state => state.stockOut.stockOutInfo
   }),
   watch: {
     stockOutId: function(val) {
@@ -142,16 +140,20 @@ export default {
     }
   },
   methods: {
-    ...mapMutations({ setTaskInfo: 'stockOut/setTaskInfo' }),
+    ...mapMutations({
+      setStockOutInfo: 'stockOut/setStockOutInfo',
+      setTaskInfo: 'stockOut/setTaskInfo'
+    }),
     ...mapActions({
-      showTaskDetails: 'stockOut/showTaskDetals'
+      showTaskDetails: 'stockOut/showTaskDetals',
+      showEditTask: 'stockOut/showEditTask'
     }),
 
     // 载入入库单信息
     loadInfo() {
       let vm = this
       stockOut.get(this.stockOutId).then(res => {
-        vm.info = res
+        vm.setStockOutInfo(res)
       })
     },
 
@@ -164,7 +166,7 @@ export default {
 
     showAddTask() {
       if (this.stockOutId != 0) {
-        this.$refs.editTaskMod.init()
+        this.showEditTask()
       }
     },
 

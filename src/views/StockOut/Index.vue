@@ -24,41 +24,69 @@
         </v-window-item>
 
         <v-window-item value="taskDetails" eager> </v-window-item>
+
+        <v-window-item value="editTask" eager>
+          <stock-out-edit-task></stock-out-edit-task>
+        </v-window-item>
       </v-window>
     </v-col>
 
     <v-col cols="12">
-      <stock-out-create ref="stockOutCreateMod"></stock-out-create>
+      <stock-out-create ref="stockOutCreateMod" @close="closeCreate"></stock-out-create>
     </v-col>
   </v-row>
 </template>
 
 <script>
+import { mapState, mapMutations, mapActions } from 'vuex'
 import StockOutTreeList from './TreeList'
 import StockOutCreate from './Create'
 import StockOutDetails from './Details'
+import StockOutEditTask from './EditTask'
 
 export default {
   name: 'StockOutIndex',
   components: {
     StockOutTreeList,
     StockOutCreate,
-    StockOutDetails
+    StockOutDetails,
+    StockOutEditTask
   },
-  data: () => ({
-    window: 'details'
+  computed: mapState({
+    window: state => state.stockOut.stockOutWindow
   }),
+  data: () => ({}),
   methods: {
+    ...mapActions({
+      stockOutShowDetails: 'stockOut/showDetails'
+    }),
+
+    ...mapMutations({ setStockOutId: 'stockOut/setStockOutId' }),
+
     // 进入货品出库
     showCreate() {
       this.$refs.stockOutCreateMod.init()
     },
 
-    toList() {},
+    toList() {
+      this.stockOutShowDetails()
+    },
 
     refresh() {},
 
-    closeCreate() {}
+    /**
+     * 关闭添加出库
+     * val: 出库id
+     * update: 是否新增
+     *  */
+    closeCreate(val, update) {
+      if (update) {
+        this.$refs.listMod.init()
+      }
+
+      this.setStockOutId(val)
+      this.stockOutShowDetails()
+    }
   }
 }
 </script>

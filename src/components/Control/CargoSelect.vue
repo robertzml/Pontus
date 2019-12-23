@@ -6,29 +6,26 @@
     <template v-slot:item="data">
       <v-list-item-content>
         <v-list-item-title v-html="data.item.name"></v-list-item-title>
-        <v-list-item-subtitle>类别：{{data.item.categoryName}}</v-list-item-subtitle>
-        <v-list-item-subtitle>客户：{{data.item.customerName}}</v-list-item-subtitle>
+        <v-list-item-subtitle>类别：{{ data.item.categoryName }}</v-list-item-subtitle>
+        <v-list-item-subtitle>客户：{{ data.item.customerName }}</v-list-item-subtitle>
       </v-list-item-content>
     </template>
   </v-autocomplete>
 </template>
 
 <script>
-import cargo from '@/controllers/cargo'
-
 export default {
   name: 'CargoSelect',
   props: {
-    customerNumber: {
-      type: String,
-      required: true
-    },
     cargoId: {
       type: String
+    },
+    cargoData: {
+      type: Array,
+      required: true
     }
   },
   data: () => ({
-    cargoData: [],
     selectedCargo: null,
     cargoRules: [v => (!!v && v.id != 0) || '请选择类别']
   }),
@@ -39,12 +36,6 @@ export default {
       } else {
         this.selectedCargo = null
       }
-    },
-    customerNumber: function() {
-      let vm = this
-      cargo.getListByNumber(this.customerNumber).then(res => {
-        vm.cargoData = res
-      })
     }
   },
   methods: {
@@ -66,13 +57,6 @@ export default {
       }
     }
   },
-  mounted: function() {
-    /*
-    let vm = this
-    cargo.getListByNumber(this.customerNumber).then(res => {
-      vm.cargoData = res     
-    })
-    */
-  }
+  mounted: function() {}
 }
 </script>

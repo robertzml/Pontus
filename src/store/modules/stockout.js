@@ -8,7 +8,10 @@ export default {
     stockOutWindow: 'details',
 
     // 当前出库单ID
-    stockOutId: ''
+    stockOutId: '',
+
+    // 当前出库单视图对象
+    stockOutInfo: ''
   },
 
   actions: {
@@ -20,6 +23,11 @@ export default {
     // 显示出库任务信息页面
     showTaskDetals({ commit }) {
       commit('setWindow', 'taskDetails')
+    },
+
+    // 显示编辑出库任务页面
+    showEditTask({ commit }) {
+      commit('setWindow', 'editTask')
     }
   },
 
@@ -31,6 +39,12 @@ export default {
     // 设置出库单ID
     setStockOutId: (state, id) => {
       state.stockOutId = id
+    },
+
+    // 设置出库单对象
+    setStockOutInfo: (state, val) => {
+      state.stockOutInfo = val
+      state.stockOutId = val.id
     }
   }
 }
