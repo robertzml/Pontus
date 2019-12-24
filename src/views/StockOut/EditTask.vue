@@ -13,7 +13,73 @@
               <v-btn class="primary mt-2" @click="searchStore">搜索库存</v-btn>
             </v-col>
           </v-row>
-          <v-row dense> </v-row>
+          <v-row dense>
+            <v-col v-for="warehouseId in warehouses" :key="warehouseId" cols="3">
+              <v-card>
+                <v-list-item three-line>
+                  <v-list-item-content>
+                    <v-list-item-title>{{ warehouseInfo(warehouseId).warehouseName }}</v-list-item-title>
+                    <v-list-item-subtitle> 托盘数量：{{ warehouseInfo(warehouseId).trayCount }} </v-list-item-subtitle>
+                    <v-list-item-subtitle>
+                      在库总数量：{{ warehouseInfo(warehouseId).totalCount }}
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle>
+                      在库总重量：{{ warehouseInfo(warehouseId).totalWeight }} 吨
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                  <v-list-item-action>
+                    <v-btn text color="primary" @click="selectWarehouse(warehouseId)">
+                      选择
+                    </v-btn>
+                  </v-list-item-action>
+                </v-list-item>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-row dense>
+            <v-col cols="12">
+              <v-sheet class="d-flex flex-row">
+                <div class="d-flex ml-4 mr-8 align-center">
+                  <span>货架</span>
+                </div>
+
+                <v-chip-group active-class="primary--text" v-model="sShelfId" class="d-flex justify-space-between">
+                  <v-chip v-for="shelf in shelfListData" :key="shelf.id" :value="shelf.id" @click="selectShelf(shelf.id)">
+                    <template v-if="shelf.type == 1">
+                      <v-avatar left>
+                        <v-icon>home</v-icon>
+                      </v-avatar>
+                      {{ shelf.number }} 号货架
+                    </template>
+                    <template v-else-if="shelf.type == 2">
+                      <v-avatar left>
+                        <v-icon>storage</v-icon>
+                      </v-avatar>
+                      {{ shelf.number }} 号货架
+                    </template>
+                    <template v-else>
+                      <v-avatar left>
+                        <v-icon>cloud</v-icon>
+                      </v-avatar>
+                      {{ shelf.number }} 号货架
+                    </template>
+                  </v-chip>
+                </v-chip-group>
+              </v-sheet>
+            </v-col>
+            <v-col cols="12">
+              <v-sheet class="d-flex flex-row">
+                <div class="d-flex ml-4 mr-8 align-center">
+                  <span>排</span>
+                </div>
+                <v-chip-group active-class="amber--text" v-model="sRow" class="d-flex justify-space-between">
+                  <v-chip label v-for="row in rowListData" :key="row" :value="row">
+                    {{ row }}
+                  </v-chip>
+                </v-chip-group>
+              </v-sheet>
+            </v-col>
+          </v-row>
         </v-container>
       </v-card-text>
     </v-form>
@@ -36,19 +102,11 @@ export default {
     valid: true,
     cargoId: '',
     cargoListData: [],
-    storeHeaders: [
-      { text: '分类编码', value: 'categoryNumber' },
-      { text: '分类名称', value: 'categoryName' },
-      { text: '仓位码', value: 'positionNumber' },
-      { text: '托盘码', value: 'trayCode' },
-      { text: '货品总数量', value: 'totalCount' },
-      { text: '在库数量', value: 'storeCount' },
-      { text: '货品总重量(吨)', value: 'totalWeight' },
-      { text: '在库重量(吨)', value: 'storeWeight' },
-      { text: '入库时间', value: 'inTime' },
-      { text: '操作', value: 'action', sortable: false }
-    ],
     storeListData: [],
+    shelfListData: [],
+    rowListData: [],
+    sShelfId: 0,
+    sRow: 0,
     digitRules: [v => (v != null && /^\d+/.test(v)) || '请输入数字'],
     taskHeaders: [
       { text: '托盘码', value: 'trayCode', align: 'left' },
@@ -64,6 +122,7 @@ export default {
     ],
     taskInfoList: []
   }),
+  watch: {},
   computed: {
     ...mapState({
       stockOutId: state => state.stockOut.stockOutId,
@@ -76,11 +135,6 @@ export default {
     }
   },
   methods: {
-    init: function() {
-      this.loadCargoData()
-      this.$refs.form.resetValidation()
-    },
-
     loadCargoData() {
       if (this.stockOutInfo) {
         let vm = this
@@ -100,6 +154,54 @@ export default {
       store.findByStockOut({ stockOutId: this.stockOutInfo.id, cargoId: this.cargoId }).then(res => {
         vm.storeListData = res
       })
+    },
+
+    // 生成仓库选择信息
+    warehouseInfo: function(id) {
+      let s = this.storeListData.find(r => r.warehouseId == id)
+
+      let sum = this.storeListData.reduce(
+        (acc, cur) => {
+          if (cur.warehouseId == id) {
+            acc.trayCount++
+            acc.totalCount += cur.storeCount
+            acc.totalWeight += cur.storeWeight
+          }
+
+          return acc
+        },
+        { trayCount: 0, totalCount: 0, totalWeight: 0 }
+      )
+
+      let info = {
+        warehouseId: id,
+        warehouseName: s.warehouseName,
+        trayCount: sum.trayCount,
+        totalCount: sum.totalCount,
+        totalWeight: sum.totalWeight
+      }
+
+      return info
+    },
+
+    // 选择仓库
+    selectWarehouse(id) {
+      let shelfs = this.storeListData.filter(r => r.warehouseId == id).map(r => r.shelfId)
+      let sids = [...new Set(shelfs)]
+
+      this.shelfListData = sids.map(r => {
+        return {
+          id: r,
+          type: this.storeListData.find(s => s.shelfId == r).shelfType,
+          number: this.storeListData.find(s => s.shelfId == r).shelfNumber
+        }
+      })
+    },
+
+    // 选择货架
+    selectShelf(id) {
+      let rows = this.storeListData.filter(r => r.shelfId == id).map(r => r.row)
+      this.rowListData = [...new Set(rows)]
     },
 
     addStockOut(item) {
@@ -139,7 +241,8 @@ export default {
   },
   mounted: function() {
     console.log('stock out edit task mounted')
-    this.init()
+    this.loadCargoData()
+    this.$refs.form.resetValidation()
   }
 }
 </script>
