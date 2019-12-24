@@ -6,7 +6,7 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-btn v-if="window != 'details'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
+          <v-btn v-if="tab != 'StockOutDetails'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
           <v-btn text @click.stop="showCreate">货品出库</v-btn>
           <v-btn text @click.stop="refresh">刷新</v-btn>
         </v-toolbar-items>
@@ -18,17 +18,9 @@
     </v-col>
 
     <v-col cols="9">
-      <v-window v-model="window">
-        <v-window-item value="details" eager>
-          <stock-out-details></stock-out-details>
-        </v-window-item>
-
-        <v-window-item value="taskDetails" eager> </v-window-item>
-
-        <v-window-item value="editTask" eager>
-          <stock-out-edit-task></stock-out-edit-task>
-        </v-window-item>
-      </v-window>
+      <v-slide-x-transition leave-absolute>
+        <component v-bind:is="tab"></component>
+      </v-slide-x-transition>
     </v-col>
 
     <v-col cols="12">
@@ -53,7 +45,7 @@ export default {
     StockOutEditTask
   },
   computed: mapState({
-    window: state => state.stockOut.stockOutWindow
+    tab: state => state.stockOut.tab
   }),
   data: () => ({}),
   methods: {

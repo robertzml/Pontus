@@ -5,7 +5,7 @@ export default {
 
   state: {
     // 货品出库显示页面
-    stockOutWindow: 'details',
+    tab: 'StockOutDetails',
 
     // 当前出库单ID
     stockOutId: '',
@@ -17,23 +17,24 @@ export default {
   actions: {
     // 显示出库单信息页面
     showDetails({ commit }) {
-      commit('setWindow', 'details')
+      commit('setTab', 'StockOutDetails')
     },
 
     // 显示出库任务信息页面
     showTaskDetals({ commit }) {
-      commit('setWindow', 'taskDetails')
+      commit('setTab', 'taskDetails')
     },
 
     // 显示编辑出库任务页面
     showEditTask({ commit }) {
-      commit('setWindow', 'editTask')
+      // commit('setWindow', 'editTask')
+      commit('setTab', 'StockOutEditTask')
     }
   },
 
   mutations: {
-    setWindow: (state, window) => {
-      state.stockOutWindow = window
+    setTab: (state, tab) => {
+      state.tab = tab
     },
 
     // 设置出库单ID

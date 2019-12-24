@@ -4,7 +4,7 @@
       <v-card-text class="py-2">
         <div class="title text--primary">货品选择</div>
 
-        <v-container fluid>
+        <v-container fluid class="px-0">
           <v-row dense>
             <v-col cols="6">
               <cargo-select ref="cargoSelect" :cargo-id.sync="cargoId" :cargo-data="cargoListData"></cargo-select>
@@ -13,6 +13,7 @@
               <v-btn class="primary mt-2" @click="searchStore">搜索库存</v-btn>
             </v-col>
           </v-row>
+          <v-row dense> </v-row>
         </v-container>
       </v-card-text>
     </v-form>
@@ -63,13 +64,15 @@ export default {
     ],
     taskInfoList: []
   }),
-  computed: mapState({
-    stockOutId: state => state.stockOut.stockOutId,
-    stockOutInfo: state => state.stockOut.stockOutInfo
-  }),
-  watch: {
-    stockOutId: function() {
-      this.loadCargoData()
+  computed: {
+    ...mapState({
+      stockOutId: state => state.stockOut.stockOutId,
+      stockOutInfo: state => state.stockOut.stockOutInfo
+    }),
+
+    warehouses: function() {
+      let ids = this.storeListData.map(r => r.warehouseId)
+      return [...new Set(ids)]
     }
   },
   methods: {
@@ -87,13 +90,14 @@ export default {
       }
     },
 
+    // 搜索货品在库库存
     searchStore() {
       if (this.cargoId == '') {
         return
       }
 
       let vm = this
-      store.findByCargo({ contractId: this.stockOutInfo.contractId, cargoId: this.cargoId }).then(res => {
+      store.findByStockOut({ stockOutId: this.stockOutInfo.id, cargoId: this.cargoId }).then(res => {
         vm.storeListData = res
       })
     },
@@ -134,6 +138,7 @@ export default {
     }
   },
   mounted: function() {
+    console.log('stock out edit task mounted')
     this.init()
   }
 }
