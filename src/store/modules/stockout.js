@@ -22,13 +22,7 @@ export default {
 
     // 显示出库任务信息页面
     showTaskDetals({ commit }) {
-      commit('setTab', 'taskDetails')
-    },
-
-    // 显示编辑出库任务页面
-    showEditTask({ commit }) {
-      // commit('setWindow', 'editTask')
-      commit('setTab', 'StockOutEditTask')
+      commit('setTab', 'TaskDetails')
     }
   },
 

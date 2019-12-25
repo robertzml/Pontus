@@ -34,15 +34,13 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 import StockOutTreeList from './TreeList'
 import StockOutCreate from './Create'
 import StockOutDetails from './Details'
-import StockOutEditTask from './EditTask'
 
 export default {
   name: 'StockOutIndex',
   components: {
     StockOutTreeList,
     StockOutCreate,
-    StockOutDetails,
-    StockOutEditTask
+    StockOutDetails
   },
   computed: mapState({
     tab: state => state.stockOut.tab

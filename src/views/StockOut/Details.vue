@@ -86,6 +86,8 @@
       </v-expansion-panel>
     </v-expansion-panels>
 
+    <stock-out-edit-task ref="editTaskMod" @update="updateTask"></stock-out-edit-task>
+
     <v-dialog v-model="finishDialog" persistent max-width="300">
       <v-card>
         <v-card-title class="headline">入库单确认</v-card-title>
@@ -103,11 +105,13 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import stockOut from '@/controllers/stockOut'
+import StockOutEditTask from './EditTask'
 import VueBarcode from 'vue-barcode'
 
 export default {
   name: 'StockOutDetails',
   components: {
+    StockOutEditTask,
     VueBarcode
   },
   data: () => ({
@@ -166,11 +170,11 @@ export default {
 
     showAddTask() {
       if (this.stockOutId != 0) {
-        this.showEditTask()
+        this.$refs.editTaskMod.init()
       }
     },
 
-    // 完成编辑入库任务
+    // 完成编辑出库任务
     updateTask() {
       this.loadTaskList()
     },

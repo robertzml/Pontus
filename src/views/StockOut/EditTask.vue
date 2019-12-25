@@ -1,89 +1,53 @@
 <template>
-  <v-card>
-    <v-form ref="form" v-model="valid" lazy-validation>
-      <v-card-text class="py-2">
-        <div class="title text--primary">货品选择</div>
+  <v-dialog v-model="dialog" persistent max-width="800px">
+    <v-card>
+      <v-card-title class="cyan">
+        出库任务单
+      </v-card-title>
 
-        <v-container fluid class="px-0">
-          <v-row dense>
-            <v-col cols="6">
-              <cargo-select ref="cargoSelect" :cargo-id.sync="cargoId" :cargo-data="cargoListData"></cargo-select>
-            </v-col>
-            <v-col cols="6">
-              <v-btn class="primary mt-2" @click="searchStore">搜索库存</v-btn>
-            </v-col>
-          </v-row>
-          <v-row dense>
-            <v-col v-for="warehouseId in warehouses" :key="warehouseId" cols="3">
-              <v-card>
-                <v-list-item three-line>
-                  <v-list-item-content>
-                    <v-list-item-title>{{ warehouseInfo(warehouseId).warehouseName }}</v-list-item-title>
-                    <v-list-item-subtitle> 托盘数量：{{ warehouseInfo(warehouseId).trayCount }} </v-list-item-subtitle>
-                    <v-list-item-subtitle>
-                      在库总数量：{{ warehouseInfo(warehouseId).totalCount }}
-                    </v-list-item-subtitle>
-                    <v-list-item-subtitle>
-                      在库总重量：{{ warehouseInfo(warehouseId).totalWeight }} 吨
-                    </v-list-item-subtitle>
-                  </v-list-item-content>
-                  <v-list-item-action>
-                    <v-btn text color="primary" @click="selectWarehouse(warehouseId)">
-                      选择
-                    </v-btn>
-                  </v-list-item-action>
-                </v-list-item>
-              </v-card>
-            </v-col>
-          </v-row>
-          <v-row dense>
-            <v-col cols="12">
-              <v-sheet class="d-flex flex-row">
-                <div class="d-flex ml-4 mr-8 align-center">
-                  <span>货架</span>
-                </div>
+      <v-card-text>
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-container fluid>
+            <v-row dense>
+              <v-col cols="6">
+                <cargo-select ref="cargoSelect" :cargo-id.sync="cargoId" :cargo-data="cargoListData"></cargo-select>
+              </v-col>
+              <v-col cols="6">
+                <v-card>
+                  <v-list-item three-line>
+                    <v-list-item-content>
+                      <v-list-item-title>托盘数量：{{ cargoStoreInfo.trayCount }}</v-list-item-title>
+                      <v-list-item-subtitle> 在库总数量：{{ cargoStoreInfo.totalCount }} </v-list-item-subtitle>
+                      <v-list-item-subtitle> 在库总重量：{{ cargoStoreInfo.totalWeight }} 吨 </v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-card>
+              </v-col>
 
-                <v-chip-group active-class="primary--text" v-model="sShelfId" class="d-flex justify-space-between">
-                  <v-chip v-for="shelf in shelfListData" :key="shelf.id" :value="shelf.id" @click="selectShelf(shelf.id)">
-                    <template v-if="shelf.type == 1">
-                      <v-avatar left>
-                        <v-icon>home</v-icon>
-                      </v-avatar>
-                      {{ shelf.number }} 号货架
-                    </template>
-                    <template v-else-if="shelf.type == 2">
-                      <v-avatar left>
-                        <v-icon>storage</v-icon>
-                      </v-avatar>
-                      {{ shelf.number }} 号货架
-                    </template>
-                    <template v-else>
-                      <v-avatar left>
-                        <v-icon>cloud</v-icon>
-                      </v-avatar>
-                      {{ shelf.number }} 号货架
-                    </template>
-                  </v-chip>
-                </v-chip-group>
-              </v-sheet>
-            </v-col>
-            <v-col cols="12">
-              <v-sheet class="d-flex flex-row">
-                <div class="d-flex ml-4 mr-8 align-center">
-                  <span>排</span>
-                </div>
-                <v-chip-group active-class="amber--text" v-model="sRow" class="d-flex justify-space-between">
-                  <v-chip label v-for="row in rowListData" :key="row" :value="row">
-                    {{ row }}
-                  </v-chip>
-                </v-chip-group>
-              </v-sheet>
-            </v-col>
-          </v-row>
-        </v-container>
+              <v-col cols="4" md="4">
+                <v-text-field label="出库数量*" v-model="taskInfo.outCount" :rules="digitRules"></v-text-field>
+              </v-col>
+              <v-col cols="4" md="4">
+                <v-text-field label="单位重量" v-model="unitWeight" readonly suffix="千克"></v-text-field>
+              </v-col>
+              <v-col cols="4" md="4">
+                <v-text-field label="出库重量*" v-model="totalWeight" suffix="吨"></v-text-field>
+              </v-col>
+              <v-col cols="12" md="12" sm="12">
+                <v-text-field label="备注" v-model="taskInfo.remark"></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
       </v-card-text>
-    </v-form>
-  </v-card>
+
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue-grey lighten-3" text @click="dialog = false">取消</v-btn>
+        <v-btn color="success darken-1" :disabled="!valid" @click="addTask">添加</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -99,42 +63,76 @@ export default {
     CargoSelect
   },
   data: () => ({
+    dialog: false,
     valid: true,
     cargoId: '',
+    unitWeight: 0.0,
     cargoListData: [],
     storeListData: [],
-    shelfListData: [],
-    rowListData: [],
-    sShelfId: 0,
-    sRow: 0,
-    digitRules: [v => (v != null && /^\d+/.test(v)) || '请输入数字'],
-    taskHeaders: [
-      { text: '托盘码', value: 'trayCode', align: 'left' },
-      { text: '类别名称', value: 'categoryName' },
-      { text: '在库数量', value: 'storeCount' },
-      { text: '出库数量', value: 'outCount' },
-      { text: '单位重量(kg)', value: 'unitWeight' },
-      { text: '总重量(t)', value: 'storeWeight' },
-      { text: '规格', value: 'specification' },
-      { text: '产地', value: 'originPlace' },
-      { text: '保质期(月)', value: 'durability' },
-      { text: '备注', value: 'remark' }
-    ],
-    taskInfoList: []
+    digitRules: [v => (v != null && /^\d+$/.test(v)) || '请输入数字'],
+    taskInfo: {
+      stockOutId: '',
+      cargoId: '',
+      storeCount: 0,
+      outCount: 0,
+      storeWeight: 0.0,
+      outWeight: 0.0,
+      remark: ''
+    }
   }),
-  watch: {},
+  watch: {
+    cargoId: function(val) {
+      this.searchStore()
+      var find = this.cargoListData.find(r => r.id == val)
+      if (find != undefined) {
+        this.unitWeight = find.unitWeight
+      } else {
+        this.unitWeight = 0.0
+      }
+    }
+  },
   computed: {
     ...mapState({
       stockOutId: state => state.stockOut.stockOutId,
       stockOutInfo: state => state.stockOut.stockOutInfo
     }),
 
-    warehouses: function() {
-      let ids = this.storeListData.map(r => r.warehouseId)
-      return [...new Set(ids)]
+    // 货品库存信息
+    cargoStoreInfo: function() {
+      let sum = this.storeListData.reduce(
+        (acc, cur) => {
+          acc.trayCount++
+          acc.totalCount += cur.storeCount
+          acc.totalWeight += cur.storeWeight
+
+          return acc
+        },
+        { trayCount: 0, totalCount: 0, totalWeight: 0 }
+      )
+
+      let info = {
+        trayCount: sum.trayCount,
+        totalCount: sum.totalCount,
+        totalWeight: sum.totalWeight
+      }
+
+      return info
+    },
+
+    totalWeight: function() {
+      return (this.taskInfo.outCount * this.unitWeight) / 1000
     }
   },
   methods: {
+    init() {
+      this.dialog = true
+      this.loadCargoData()
+
+      this.$nextTick(() => {
+        this.$refs.form.resetValidation()
+      })
+    },
+
     loadCargoData() {
       if (this.stockOutInfo) {
         let vm = this
@@ -147,6 +145,7 @@ export default {
     // 搜索货品在库库存
     searchStore() {
       if (this.cargoId == '') {
+        this.storeListData = []
         return
       }
 
@@ -156,93 +155,27 @@ export default {
       })
     },
 
-    // 生成仓库选择信息
-    warehouseInfo: function(id) {
-      let s = this.storeListData.find(r => r.warehouseId == id)
-
-      let sum = this.storeListData.reduce(
-        (acc, cur) => {
-          if (cur.warehouseId == id) {
-            acc.trayCount++
-            acc.totalCount += cur.storeCount
-            acc.totalWeight += cur.storeWeight
-          }
-
-          return acc
-        },
-        { trayCount: 0, totalCount: 0, totalWeight: 0 }
-      )
-
-      let info = {
-        warehouseId: id,
-        warehouseName: s.warehouseName,
-        trayCount: sum.trayCount,
-        totalCount: sum.totalCount,
-        totalWeight: sum.totalWeight
-      }
-
-      return info
-    },
-
-    // 选择仓库
-    selectWarehouse(id) {
-      let shelfs = this.storeListData.filter(r => r.warehouseId == id).map(r => r.shelfId)
-      let sids = [...new Set(shelfs)]
-
-      this.shelfListData = sids.map(r => {
-        return {
-          id: r,
-          type: this.storeListData.find(s => s.shelfId == r).shelfType,
-          number: this.storeListData.find(s => s.shelfId == r).shelfNumber
-        }
-      })
-    },
-
-    // 选择货架
-    selectShelf(id) {
-      let rows = this.storeListData.filter(r => r.shelfId == id).map(r => r.row)
-      this.rowListData = [...new Set(rows)]
-    },
-
-    addStockOut(item) {
-      let task = {
-        storeId: item.id,
-        trayCode: item.trayCode,
-        categoryName: item.categoryName,
-        storeCount: item.storeCount,
-        outCout: 0,
-        unitWeight: item.unitWeight,
-        storeWeight: item.storeWeight,
-        specification: item.specification,
-        originPlace: item.originPlace,
-        durability: item.durability,
-        remark: ''
-      }
-      this.taskInfoList.push(task)
-    },
-
-    taskSave() {},
-    taskCancel() {},
-    taskOpen() {},
-    taskClose() {
-      console.log('Dialog closed')
-    },
-
-    submit() {
+    addTask() {
       if (this.$refs.form.validate()) {
-        if (this.taskInfoList.length == 0) {
-          this.$store.commit('alertError', '请选择出库货品')
-          return
-        }
+        let vm = this
 
-        stockOut.create(this.stockOutInfo, this.taskInfoList).then(res => {})
+        this.taskInfo.stockOutId = this.stockOutId
+        this.taskInfo.cargoId = this.cargoId
+        this.taskInfo.outWeight = this.totalWeight
+        this.taskInfo.userId = this.$store.state.user.id
+        this.taskInfo.userName = this.$store.state.user.name
+
+        stockOut.addTask(this.taskInfo).then(res => {
+          if (res.status == 0) {
+            vm.$store.commit('alertSuccess', '添加任务成功')
+            vm.$emit('update')
+            vm.dialog = false
+          } else {
+            vm.$store.commit('alertError', res.errorMessage)
+          }
+        })
       }
     }
-  },
-  mounted: function() {
-    console.log('stock out edit task mounted')
-    this.loadCargoData()
-    this.$refs.form.resetValidation()
   }
 }
 </script>
