@@ -6,6 +6,12 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
+          <v-menu v-model="outTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
+            <template v-slot:activator="{ on }">
+              <v-text-field v-model="outTime" label="出库时间" prefix="出库时间" single-line hide-details solo flat readonly v-on="on"></v-text-field>
+            </template>
+            <v-date-picker v-model="outTime" :day-format="$util.pickerDayFormat" @input="outTimeMenu = false"></v-date-picker>
+          </v-menu>
           <v-btn v-if="tab != 'StockOutDetails'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
           <v-btn text @click.stop="showCreate">货品出库</v-btn>
           <v-btn text @click.stop="refresh">刷新</v-btn>
@@ -45,7 +51,10 @@ export default {
   computed: mapState({
     tab: state => state.stockOut.tab
   }),
-  data: () => ({}),
+  data: () => ({
+    outTimeMenu: false,
+    outTime: new Date().toISOString().substr(0, 10)
+  }),
   methods: {
     ...mapActions({
       stockOutShowDetails: 'stockOut/showDetails'

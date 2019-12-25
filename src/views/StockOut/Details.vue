@@ -120,12 +120,11 @@ export default {
     headers: [
       { text: '货品名称', value: 'cargoName' },
       { text: '类别名称', value: 'categoryName' },
-      { text: '入库数量', value: 'inCount' },
+      { text: '在库数量', value: 'storeCount' },
+      { text: '出库数量', value: 'outCount' },
       { text: '单位重量(kg)', value: 'unitWeight' },
-      { text: '总重量(t)', value: 'inWeight' },
-      { text: '规格', value: 'specification' },
-      { text: '产地', value: 'originPlace' },
-      { text: '保质期(月)', value: 'durability' },
+      { text: '在库重量(t)', value: 'storeWeight' },
+      { text: '出库重量(t)', value: 'outWeight' },
       { text: '状态', value: 'status' },
       { text: '操作', value: 'action', sortable: false }
     ],
@@ -149,8 +148,7 @@ export default {
       setTaskInfo: 'stockOut/setTaskInfo'
     }),
     ...mapActions({
-      showTaskDetails: 'stockOut/showTaskDetals',
-      showEditTask: 'stockOut/showEditTask'
+      showTaskDetails: 'stockOut/showTaskDetals'
     }),
 
     // 载入入库单信息
