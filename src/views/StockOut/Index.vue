@@ -40,13 +40,15 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 import StockOutList from './List'
 import StockOutCreate from './Create'
 import StockOutDetails from './Details'
+import StockOutTaskDetails from './TaskDetails'
 
 export default {
   name: 'StockOutIndex',
   components: {
     StockOutList,
     StockOutCreate,
-    StockOutDetails
+    StockOutDetails,
+    StockOutTaskDetails
   },
   computed: {
     ...mapState({

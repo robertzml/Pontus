@@ -2,7 +2,7 @@
   <v-card class="mx-auto">
     <v-list shaped>
       <v-subheader class="subtitle-1 teal--text text--lighten-2">出库单列表</v-subheader>
-      <v-list-item-group v-model="model" color="primary">
+      <v-list-item-group v-model="model" color="primary" mandatory>
         <v-list-item v-for="item in stockOutList" :key="item.id" :value="item.id">
           <v-list-item-content>
             <v-list-item-title v-text="item.flowNumber"></v-list-item-title>

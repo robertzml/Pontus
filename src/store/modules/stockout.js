@@ -7,6 +7,9 @@ export default {
     // 货品出库显示页面
     tab: 'StockOutDetails',
 
+    // 搬运出库显示状态
+    carryOutDialog: false,
+
     // 当前出库日期
     outTime: new Date().toISOString().substr(0, 10),
 
@@ -14,7 +17,10 @@ export default {
     stockOutId: '',
 
     // 当前出库单视图对象
-    stockOutInfo: {}
+    stockOutInfo: {},
+
+    // 当前出库任务对象
+    stockOutTaskInfo: {}
   },
 
   actions: {
@@ -25,13 +31,17 @@ export default {
 
     // 显示出库任务信息页面
     showTaskDetals({ commit }) {
-      commit('setTab', 'TaskDetails')
+      commit('setTab', 'StockOutTaskDetails')
     }
   },
 
   mutations: {
     setTab: (state, tab) => {
       state.tab = tab
+    },
+
+    setCarryOutDialog: (state, val) => {
+      state.carryOutDialog = val
     },
 
     // 设置当前出库日期
@@ -47,6 +57,11 @@ export default {
     // 设置出库单对象
     setStockOutInfo: (state, val) => {
       state.stockOutInfo = val
+    },
+
+    // 设置入库任务
+    setTaskInfo: (state, payload) => {
+      state.stockOutTaskInfo = payload
     }
   }
 }

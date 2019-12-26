@@ -7,6 +7,7 @@
       <v-list-item-content>
         <v-list-item-title v-html="data.item.name"></v-list-item-title>
         <v-list-item-subtitle>类别：{{ data.item.categoryName }}</v-list-item-subtitle>
+        <v-list-item-subtitle>代码：{{ data.item.categoryNumber }}</v-list-item-subtitle>
         <v-list-item-subtitle>客户：{{ data.item.customerName }}</v-list-item-subtitle>
       </v-list-item-content>
     </template>
@@ -42,9 +43,10 @@ export default {
     customFilter(item, queryText) {
       const textOne = item.name
       const textTwo = item.categoryName
+      const textThree = item.categoryNumber
       const searchText = queryText
 
-      return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1
+      return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1 || textThree.indexOf(searchText) > -1
     },
 
     selectItem(val) {

@@ -1,5 +1,16 @@
 <template>
   <v-card>
+    <v-toolbar dark color="primary">
+      <v-btn icon dark @click="close">
+        <v-icon>close</v-icon>
+      </v-btn>
+      <v-toolbar-title>任务下发</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items>
+        <v-btn dark text @click="close">Save</v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
+
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-card-text class="py-2">
         <div class="title text--primary">货品选择</div>
@@ -87,14 +98,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import store from '@/controllers/store'
 import stockOut from '@/controllers/stockOut'
 import cargo from '@/controllers/cargo'
 import CargoSelect from '@/components/Control/CargoSelect'
 
 export default {
-  name: 'StockOutEditTask',
+  name: 'CarryOutCreate',
   components: {
     CargoSelect
   },
@@ -122,7 +133,14 @@ export default {
     ],
     taskInfoList: []
   }),
-  watch: {},
+  watch: {
+    carryOutDialog: function(val) {
+      if (val) {
+        this.loadCargoData()
+        this.$refs.form.resetValidation()
+      }
+    }
+  },
   computed: {
     ...mapState({
       stockOutId: state => state.stockOut.stockOutId,
@@ -132,9 +150,26 @@ export default {
     warehouses: function() {
       let ids = this.storeListData.map(r => r.warehouseId)
       return [...new Set(ids)]
+    },
+
+    carryOutDialog: {
+      get() {
+        return this.$store.state.stockOut.carryOutDialog
+      },
+      set(val) {
+        this.setCarryOutDialog(val)
+      }
     }
   },
   methods: {
+    ...mapMutations({
+      setCarryOutDialog: 'stockOut/setCarryOutDialog'
+    }),
+
+    close() {
+      this.setCarryOutDialog(false)
+    },
+
     loadCargoData() {
       if (this.stockOutInfo) {
         let vm = this
@@ -240,9 +275,7 @@ export default {
     }
   },
   mounted: function() {
-    console.log('stock out edit task mounted')
-    this.loadCargoData()
-    this.$refs.form.resetValidation()
+    console.log('carry out mounted')
   }
 }
 </script>
