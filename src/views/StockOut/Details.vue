@@ -56,7 +56,7 @@
                   <v-text-field label=" 备注" :value="info.remark" readonly> </v-text-field>
                 </v-col>
                 <v-col cols="6" md="6" sm="6">
-                  <vue-barcode v-if="stockOutId != 0" v-bind:value="info.flowNumber" :height="50" :font-size="10"></vue-barcode>
+                  <vue-barcode v-if="stockOutId" v-bind:value="info.flowNumber" :height="50" :font-size="10"></vue-barcode>
                 </v-col>
               </v-row>
             </v-form>
@@ -139,6 +139,9 @@ export default {
       if (val) {
         this.loadInfo()
         this.loadTaskList()
+      } else {
+        this.setStockOutInfo({})
+        this.taskInfoList = []
       }
     }
   },

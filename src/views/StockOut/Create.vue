@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" persistent eager max-width="800px">
+  <v-dialog v-model="dialog" persistent max-width="800px">
     <v-card>
       <v-card-title>
         新建出库单
@@ -94,7 +94,9 @@ export default {
         remark: ''
       }
       this.dialog = true
-      this.$refs.form.resetValidation()
+      this.$nextTick(() => {
+        this.$refs.form.resetValidation()
+      })
     },
 
     loadContract(customerId) {
@@ -131,6 +133,7 @@ export default {
         })
       }
     }
-  }
+  },
+  mounted: function() {}
 }
 </script>

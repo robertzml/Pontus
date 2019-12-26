@@ -13,6 +13,15 @@ export default {
     return res.data
   },
 
+  /**
+   * 按出库日期获取出库单
+   * @param {出库日期}} outTime
+   */
+  async getListByTime(outTime) {
+    const res = await axios._get({ url: '/stockOut/listByTime', params: { outTime: outTime } })
+    return res.data
+  },
+
   async get(id) {
     const res = await axios._get({ url: '/stockOut/get', params: { id: id } })
     return res.data
