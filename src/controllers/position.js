@@ -21,6 +21,12 @@ export default {
     return res.data
   },
 
+  // 获取一层的所有仓位
+  async getListInLayer({ shelfId, row, layer }) {
+    const res = await axios._get({ url: '/position/listInLayer', params: { shelfId: shelfId, row: row, layer: layer } })
+    return res.data
+  },
+
   async count(shelfId) {
     const res = await axios._get({ url: '/position/count', params: { shelfId: shelfId } })
     return res.data

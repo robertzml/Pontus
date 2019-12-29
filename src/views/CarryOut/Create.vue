@@ -13,14 +13,21 @@
 
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-card-text class="py-2">
-        <div class="title text--primary">货品选择</div>
-
         <v-container fluid class="px-0">
           <v-row dense>
-            <v-col cols="6">
-              <cargo-select ref="cargoSelect" :cargo-id.sync="cargoId" :cargo-data="cargoListData"></cargo-select>
+            <v-col cols="2" md="2" sm="4">
+              <v-text-field v-model="stockOutTaskInfo.cargoName" label="货品名称" hide-details readonly></v-text-field>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="2" md="2" sm="4">
+              <v-text-field :value="`${stockOutTaskInfo.categoryNumber} - ${stockOutTaskInfo.categoryName}`" label="货品类别" hide-details readonly></v-text-field>
+            </v-col>
+            <v-col cols="2" md="2" sm="4">
+              <v-text-field v-model="stockOutTaskInfo.outCount" label="出库数量" hide-details readonly></v-text-field>
+            </v-col>
+            <v-col cols="2" md="2" sm="4">
+              <v-text-field v-model="stockOutTaskInfo.outWeight" label="出库重量" suffix="吨" hide-details readonly></v-text-field>
+            </v-col>
+            <v-col cols="2">
               <v-btn class="primary mt-2" @click="searchStore">搜索库存</v-btn>
             </v-col>
           </v-row>
@@ -84,11 +91,85 @@
                   <span>排</span>
                 </div>
                 <v-chip-group active-class="amber--text" v-model="sRow" class="d-flex justify-space-between">
-                  <v-chip label v-for="row in rowListData" :key="row" :value="row">
+                  <v-chip label v-for="row in rowListData" :key="row" :value="row" @click="selectRow(row)">
                     {{ row }}
                   </v-chip>
                 </v-chip-group>
               </v-sheet>
+            </v-col>
+            <v-col cols="12">
+              <v-sheet class="d-flex flex-row">
+                <div class="d-flex ml-4 mr-8 align-center">
+                  <span>层</span>
+                </div>
+                <v-chip-group active-class="amber--text" v-model="sLayer" class="d-flex justify-space-between">
+                  <v-chip label v-for="layer in layerListData" :key="layer" :value="layer" @click="selectLayer(layer)">
+                    {{ layer }}
+                  </v-chip>
+                </v-chip-group>
+              </v-sheet>
+            </v-col>
+          </v-row>
+
+          <v-row dense>
+            <v-col cols="12">
+              <v-chip-group active-class="amber--text" column v-model="sPosition" class="d-flex justify-space-between">
+                <v-chip label v-for="pos in positionList" :key="pos.id" :value="pos.id" :disabled="isOutCargo(pos)" :color="positionColor(pos)" @click="selectPosition(pos)">
+                  {{ pos.number }}
+                </v-chip>
+              </v-chip-group>
+            </v-col>
+            <v-col cols="3">
+              <v-card>
+                <v-card-title class="py-1">
+                  <h5>{{ sStoreInfo.positionNumber }}</h5>
+                </v-card-title>
+                <v-divider></v-divider>
+                <v-list dense>
+                  <v-list-item>
+                    <v-list-item-content>货品名称:</v-list-item-content>
+                    <v-list-item-content class="align-end">{{ sStoreInfo.cargoName }}</v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>类别代码:</v-list-item-content>
+                    <v-list-item-content class="align-end">{{ sStoreInfo.categoryNumber }}</v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>类别名称:</v-list-item-content>
+                    <v-list-item-content class="align-end">{{ sStoreInfo.categoryName }}</v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>在库数量:</v-list-item-content>
+                    <v-list-item-content class="align-end">{{ sStoreInfo.storeCount }}</v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>在库重量:</v-list-item-content>
+                    <v-list-item-content class="align-end">{{ sStoreInfo.storeWeight }} 吨</v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>规格:</v-list-item-content>
+                    <v-list-item-content class="align-end">{{ sStoreInfo.specification }}</v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>产地:</v-list-item-content>
+                    <v-list-item-content class="align-end">{{ sStoreInfo.originPlace }}</v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>保质期:</v-list-item-content>
+                    <v-list-item-content class="align-end">{{ sStoreInfo.durability }}</v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-content>入库时间:</v-list-item-content>
+                    <v-list-item-content class="align-end">{{
+                      $util.displayDate(sStoreInfo.inTime)
+                    }}</v-list-item-content>
+                  </v-list-item>
+                </v-list>
+
+                <v-card-actions>
+                  <v-btn color="success darken-1" :disabled="!sStoreInfo" @click="addToCarryOut">添加出库</v-btn>
+                </v-card-actions>
+              </v-card>
             </v-col>
           </v-row>
         </v-container>
@@ -101,23 +182,22 @@
 import { mapState, mapMutations } from 'vuex'
 import store from '@/controllers/store'
 import stockOut from '@/controllers/stockOut'
-import cargo from '@/controllers/cargo'
-import CargoSelect from '@/components/Control/CargoSelect'
+import position from '@/controllers/position'
 
 export default {
   name: 'CarryOutCreate',
-  components: {
-    CargoSelect
-  },
   data: () => ({
     valid: true,
-    cargoId: '',
-    cargoListData: [],
     storeListData: [],
     shelfListData: [],
     rowListData: [],
+    layerListData: [],
+    positionList: [],
     sShelfId: 0,
     sRow: 0,
+    sLayer: 0,
+    sPosition: '',
+    sStoreInfo: {},
     digitRules: [v => (v != null && /^\d+/.test(v)) || '请输入数字'],
     taskHeaders: [
       { text: '托盘码', value: 'trayCode', align: 'left' },
@@ -136,15 +216,14 @@ export default {
   watch: {
     carryOutDialog: function(val) {
       if (val) {
-        this.loadCargoData()
         this.$refs.form.resetValidation()
       }
     }
   },
   computed: {
     ...mapState({
-      stockOutId: state => state.stockOut.stockOutId,
-      stockOutInfo: state => state.stockOut.stockOutInfo
+      stockOutInfo: state => state.stockOut.stockOutInfo,
+      stockOutTaskInfo: state => state.stockOut.stockOutTaskInfo
     }),
 
     warehouses: function() {
@@ -170,23 +249,10 @@ export default {
       this.setCarryOutDialog(false)
     },
 
-    loadCargoData() {
-      if (this.stockOutInfo) {
-        let vm = this
-        cargo.getList(this.stockOutInfo.customerId).then(res => {
-          vm.cargoListData = res
-        })
-      }
-    },
-
     // 搜索货品在库库存
     searchStore() {
-      if (this.cargoId == '') {
-        return
-      }
-
       let vm = this
-      store.findByStockOut({ stockOutId: this.stockOutInfo.id, cargoId: this.cargoId }).then(res => {
+      store.findByStockOut({ stockOutId: this.stockOutInfo.id, cargoId: this.stockOutTaskInfo.cargoId }).then(res => {
         vm.storeListData = res
       })
     },
@@ -239,6 +305,49 @@ export default {
       this.rowListData = [...new Set(rows)]
     },
 
+    // 选择排
+    selectRow(row) {
+      let layers = this.storeListData.filter(r => r.shelfId == this.sShelfId && r.row == row).map(r => r.layer)
+      this.layerListData = [...new Set(layers)]
+    },
+
+    // 选择层
+    selectLayer(layer) {
+      this.sLayer = layer
+      this.loadPoistions()
+    },
+
+    // 载入选中层的仓位
+    loadPoistions() {
+      let vm = this
+      position.getListInLayer({ shelfId: this.sShelfId, row: this.sRow, layer: this.sLayer }).then(res => {
+        vm.positionList = res
+      })
+    },
+
+    // 该仓位是否出库货物
+    isOutCargo(pos) {
+      let index = this.storeListData.findIndex(r => r.positionId == pos.id)
+      return index == -1
+    },
+
+    positionColor(pos) {
+      if (pos.status == 2) {
+        return 'grey darken-4'
+      } else if (pos.status == 31) {
+        return ''
+      } else {
+        return 'primary'
+      }
+    },
+
+    // 选择仓位
+    selectPosition(pos) {
+      this.sStoreInfo = this.storeListData.find(r => r.positionId == pos.id)
+    },
+
+    addToCarryOut() {},
+
     addStockOut(item) {
       let task = {
         storeId: item.id,
@@ -256,13 +365,6 @@ export default {
       this.taskInfoList.push(task)
     },
 
-    taskSave() {},
-    taskCancel() {},
-    taskOpen() {},
-    taskClose() {
-      console.log('Dialog closed')
-    },
-
     submit() {
       if (this.$refs.form.validate()) {
         if (this.taskInfoList.length == 0) {
@@ -274,8 +376,6 @@ export default {
       }
     }
   },
-  mounted: function() {
-    console.log('carry out mounted')
-  }
+  mounted: function() {}
 }
 </script>

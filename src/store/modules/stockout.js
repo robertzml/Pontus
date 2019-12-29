@@ -59,7 +59,7 @@ export default {
       state.stockOutInfo = val
     },
 
-    // 设置入库任务
+    // 设置出库任务
     setTaskInfo: (state, payload) => {
       state.stockOutTaskInfo = payload
     }
