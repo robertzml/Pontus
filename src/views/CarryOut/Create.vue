@@ -119,7 +119,7 @@
                 </v-chip>
               </v-chip-group>
             </v-col>
-            <v-col cols="3">
+            <v-col cols="3" v-if="sStoreInfo != null">
               <v-card>
                 <v-card-title class="py-1">
                   <h5>{{ sStoreInfo.positionNumber }}</h5>
@@ -171,6 +171,63 @@
                 </v-card-actions>
               </v-card>
             </v-col>
+            <v-col cols="9">
+              <v-data-table :headers="taskHeaders" :items="taskInfoList" hide-default-footer disable-pagination>
+                <template v-slot:item.action="{ item }">
+                  <v-btn small color="success" class="mr-2" @click="editItem(item)">
+                    编辑
+                  </v-btn>
+                  <v-btn small color="warning" @click="deleteItem(item)">删除</v-btn>
+                </template>
+              </v-data-table>
+
+              <v-dialog v-model="taskEditDialog" max-width="600px">
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">编辑</span>
+                  </v-card-title>
+
+                  <v-card-text>
+                    <v-container>
+                      <v-row dense>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field v-model="editedItem.trayCode" label="托盘码" readonly></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field v-model="editedItem.storeCount" label="在库数量" readonly></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field v-model="editedItem.moveCount" label="移出数量"></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field v-model="editedItem.unitWeight" label="单位重量(kg)" readonly></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field v-model="editedItem.storeWeight" label="在库重量(t)" readonly></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field v-model="editedItem.moveWeight" label="移出重量(t)"></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="6">
+                          <v-select v-model="editedItem.shelfCode" :items="editShelfCodes" label="货架码"></v-select>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="6">
+                          <v-text-field v-model="editedItem.remark" label="备注"></v-text-field>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card-text>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="closeEditItem">取消</v-btn>
+                    <v-btn color="blue darken-1" text @click="saveEditItem">保存</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
+              <v-btn color="green darken-1" @click="submit">提交出库</v-btn>
+            </v-col>
           </v-row>
         </v-container>
       </v-card-text>
@@ -181,8 +238,8 @@
 <script>
 import { mapState, mapMutations } from 'vuex'
 import store from '@/controllers/store'
-import stockOut from '@/controllers/stockOut'
 import position from '@/controllers/position'
+import carryOut from '@/controllers/carryOut'
 
 export default {
   name: 'CarryOutCreate',
@@ -197,21 +254,44 @@ export default {
     sRow: 0,
     sLayer: 0,
     sPosition: '',
-    sStoreInfo: {},
+    sPositionInfo: {},
+    sStoreInfo: null,
     digitRules: [v => (v != null && /^\d+/.test(v)) || '请输入数字'],
     taskHeaders: [
       { text: '托盘码', value: 'trayCode', align: 'left' },
-      { text: '类别名称', value: 'categoryName' },
       { text: '在库数量', value: 'storeCount' },
-      { text: '出库数量', value: 'outCount' },
+      { text: '出库数量', value: 'moveCount' },
       { text: '单位重量(kg)', value: 'unitWeight' },
-      { text: '总重量(t)', value: 'storeWeight' },
-      { text: '规格', value: 'specification' },
-      { text: '产地', value: 'originPlace' },
-      { text: '保质期(月)', value: 'durability' },
-      { text: '备注', value: 'remark' }
+      { text: '在库重量(t)', value: 'storeWeight' },
+      { text: '出库重量(t)', value: 'moveWeight' },
+      { text: '货架码', value: 'shelfCode' },
+      { text: '备注', value: 'remark' },
+      { text: '操作', value: 'action', sortable: false }
     ],
-    taskInfoList: []
+    taskInfoList: [],
+    taskEditDialog: false,
+    editedItem: {
+      trayCode: '',
+      shelfCode: '',
+      storeCount: 0,
+      moveCount: 0,
+      unitWeight: 0,
+      storeWeight: 0,
+      moveWeight: 0,
+      remark: ''
+    },
+    defaultItem: {
+      trayCode: '',
+      shelfCode: '',
+      storeCount: 0,
+      moveCount: 0,
+      unitWeight: 0,
+      storeWeight: 0,
+      moveWeight: 0,
+      remark: ''
+    },
+    editShelfCodes: [],
+    editedIndex: -1
   }),
   watch: {
     carryOutDialog: function(val) {
@@ -331,6 +411,7 @@ export default {
       return index == -1
     },
 
+    // 仓位颜色
     positionColor(pos) {
       if (pos.status == 2) {
         return 'grey darken-4'
@@ -344,35 +425,75 @@ export default {
     // 选择仓位
     selectPosition(pos) {
       this.sStoreInfo = this.storeListData.find(r => r.positionId == pos.id)
+      this.sPositionInfo = pos
     },
 
-    addToCarryOut() {},
+    // 添加到出库任务
+    addToCarryOut() {
+      if (this.sStoreInfo == null) {
+        return
+      }
 
-    addStockOut(item) {
       let task = {
-        storeId: item.id,
-        trayCode: item.trayCode,
-        categoryName: item.categoryName,
-        storeCount: item.storeCount,
-        outCout: 0,
-        unitWeight: item.unitWeight,
-        storeWeight: item.storeWeight,
-        specification: item.specification,
-        originPlace: item.originPlace,
-        durability: item.durability,
+        storeId: this.sStoreInfo.id,
+        stockOutTaskId: this.stockOutTaskInfo.id,
+        storeCount: this.sStoreInfo.storeCount,
+        moveCount: this.sStoreInfo.storeCount,
+        unitWeight: this.sStoreInfo.unitWeight,
+        storeWeight: this.sStoreInfo.storeWeight,
+        moveWeight: this.sStoreInfo.storeWeight,
+        trayCode: this.sStoreInfo.trayCode,
+        shelfCode: this.sPositionInfo.shelfCode,
+        positionId: this.sStoreInfo.positionId,
         remark: ''
       }
+
       this.taskInfoList.push(task)
     },
 
+    editItem(item) {
+      this.editedIndex = this.taskInfoList.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.editShelfCodes = [this.sPositionInfo.shelfCode, this.sPositionInfo.viceShelfCode]
+      this.taskEditDialog = true
+    },
+
+    deleteItem(item) {
+      const index = this.desserts.indexOf(item)
+      this.taskInfoList.splice(index, 1)
+    },
+
+    closeEditItem() {
+      this.taskEditDialog = false
+      setTimeout(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      }, 300)
+    },
+
+    saveEditItem() {
+      Object.assign(this.taskInfoList[this.editedIndex], this.editedItem)
+      this.taskEditDialog = false
+    },
+
+    // 提交出库搬运任务
     submit() {
       if (this.$refs.form.validate()) {
         if (this.taskInfoList.length == 0) {
-          this.$store.commit('alertError', '请选择出库货品')
+          this.$store.commit('alertError', '请选择出库仓位')
           return
         }
 
-        stockOut.create(this.stockOutInfo, this.taskInfoList).then(res => {})
+        let vm = this
+        carryOut.create(this.taskInfoList).then(res => {
+          if (res.status == 0) {
+            vm.$store.commit('alertSuccess', '添加出库成功')
+            // this.$emit('close', res.entity.id, true)
+            vm.setCarryOutDialog(false)
+          } else {
+            vm.$store.commit('alertError', res.errorMessage)
+          }
+        })
       }
     }
   },
