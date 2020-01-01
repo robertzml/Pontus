@@ -69,7 +69,7 @@
     </v-col>
 
     <v-col cols="12">
-      <carry-in-list :item-list="carryInTaskList"></carry-in-list>
+      <carry-out-list :item-list="carryOutTaskList"></carry-out-list>
     </v-col>
 
     <v-col cols="12">
@@ -82,20 +82,20 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import stockOut from '@/controllers/stockOut'
+import carryOut from '@/controllers/carryOut'
 import CarryOutCreate from '../CarryOut/Create'
-import CarryInList from '../CarryIn/List'
+import CarryOutList from '../CarryOut/List'
 
 export default {
   name: 'StockOutTaskDetails',
   props: {},
   components: {
     CarryOutCreate,
-    CarryInList
+    CarryOutList
   },
   data: () => ({
     finishDialog: false,
-    carryInTaskList: [],
+    carryOutTaskList: [],
     carryInTaskInfo: {}
   }),
   computed: {
@@ -125,9 +125,18 @@ export default {
       this.finishDialog = true
     },
 
+    loadCarryOutTask() {
+      let vm = this
+      carryOut.listByStockOutTask(this.info.id).then(res => {
+        vm.carryOutTaskList = res
+      })
+    },
+
     // 完成任务
     finishTask() {}
   },
-  mounted: function() {}
+  mounted: function() {
+    this.loadCarryOutTask()
+  }
 }
 </script>

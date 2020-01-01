@@ -60,7 +60,10 @@ export default {
       stockInShowTaskDetails: 'stockIn/showTaskDetals'
     }),
 
-    ...mapMutations({ setId: 'stockIn/setId' }),
+    ...mapMutations({
+      setId: 'stockIn/setId',
+      setStockInInfo: 'stockIn/setStockInInfo'
+    }),
 
     refresh() {
       this.$refs.listMod.init()
@@ -86,8 +89,8 @@ export default {
         this.$refs.listMod.init()
       }
 
-      this.setId(val)
-      this.stockInShowDetails()
+      //this.setId(val)
+      //this.stockInShowDetails()
     }
   }
 }

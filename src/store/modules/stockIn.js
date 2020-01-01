@@ -12,6 +12,9 @@ export default {
     // 当前入库单ID
     stockInId: '',
 
+    // 当前入库单视图对象
+    stockInInfo: {},
+
     // 当前查看入库任务信息
     stockInTaskInfo: {},
 
@@ -50,6 +53,11 @@ export default {
     // 设置入库单ID
     setId: (state, id) => {
       state.stockInId = id
+    },
+
+    // 设置入库单对象
+    setStockInInfo: (state, val) => {
+      state.stockInInfo = val
     },
 
     // 设置入库任务

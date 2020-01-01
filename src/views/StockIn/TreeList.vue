@@ -28,7 +28,10 @@ export default {
     stockInId: state => state.stockIn.stockInId
   }),
   methods: {
-    ...mapMutations({ setId: 'stockIn/setId' }),
+    ...mapMutations({
+      setId: 'stockIn/setId',
+      setStockInInfo: 'stockIn/setStockInInfo'
+    }),
 
     ...mapActions({
       stockInShowDetails: 'stockIn/showDetails'
@@ -63,6 +66,7 @@ export default {
     showActive(item) {
       if (item.length > 0) {
         this.setId(item[0])
+        this.setStockInInfo(item)
         this.stockInShowDetails()
       }
     }

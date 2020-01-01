@@ -117,7 +117,6 @@ export default {
   data: () => ({
     panel: [0],
     finishDialog: false,
-    info: {},
     headers: [
       { text: '货品名称', value: 'cargoName' },
       { text: '类别名称', value: 'categoryName' },
@@ -133,7 +132,8 @@ export default {
     taskInfoList: []
   }),
   computed: mapState({
-    stockInId: state => state.stockIn.stockInId
+    stockInId: state => state.stockIn.stockInId,
+    info: state => state.stockIn.stockInInfo
   }),
   watch: {
     stockInId: function(val) {
@@ -144,7 +144,10 @@ export default {
     }
   },
   methods: {
-    ...mapMutations({ setTaskInfo: 'stockIn/setTaskInfo' }),
+    ...mapMutations({
+      setTaskInfo: 'stockIn/setTaskInfo',
+      setStockInInfo: 'stockIn/setStockInInfo'
+    }),
     ...mapActions({
       showTaskDetails: 'stockIn/showTaskDetals'
     }),
@@ -153,7 +156,7 @@ export default {
     loadInfo() {
       let vm = this
       stockIn.get(this.stockInId).then(res => {
-        vm.info = res
+        vm.setStockInInfo(res)
       })
     },
 
@@ -201,7 +204,7 @@ export default {
   },
   mounted: function() {
     if (this.stockInId) {
-      this.loadInfo()
+      // this.loadInfo()
       this.loadTaskList()
     }
   }

@@ -9,7 +9,7 @@
           <v-container fluid>
             <v-row>
               <v-col cols="12" md="12" sm="12">
-                <cargo-select ref="cargoSelect" :cargo-id.sync="taskInfo.cargoId" :customer-number="stockInInfo.customerNumber" @change="selectCargo"></cargo-select>
+                <cargo-select ref="cargoSelect" :cargo-id.sync="cargoId" :cargo-data="cargoListData"></cargo-select>
               </v-col>
 
               <v-col cols="6" md="4" sm="6">
@@ -52,6 +52,7 @@
 <script>
 import { mapState } from 'vuex'
 import stockIn from '@/controllers/stockIn'
+import cargo from '@/controllers/cargo'
 import CargoSelect from '@/components/Control/CargoSelect'
 
 export default {
@@ -62,9 +63,9 @@ export default {
   data: () => ({
     dialog: false,
     valid: false,
-    stockInInfo: {
-      customerNumber: ''
-    },
+    cargoId: '',
+    unitWeight: 0.0,
+    cargoListData: [],
     taskInfo: {
       stockInId: '',
       cargoId: '',
@@ -76,31 +77,45 @@ export default {
       durability: '',
       remark: ''
     },
-    unitWeight: 0.0,
     warehouseRules: [v => (v && v.number != '') || '请选择仓库']
   }),
-  computed: mapState({
-    stockInId: state => state.stockIn.stockInId,
-
+  watch: {
+    cargoId: function(val) {
+      var find = this.cargoListData.find(r => r.id == val)
+      if (find != undefined) {
+        this.unitWeight = find.unitWeight
+      } else {
+        this.unitWeight = 0.0
+      }
+    }
+  },
+  computed: {
+    ...mapState({
+      stockInId: state => state.stockIn.stockInId,
+      stockInInfo: state => state.stockIn.stockInInfo
+    }),
     totalWeight: function() {
       return (this.taskInfo.inCount * this.unitWeight) / 1000
     }
-  }),
+  },
   methods: {
     init() {
       // this.clearTask()
-      this.loadStockIn()
       this.dialog = true
+      this.loadCargoData()
+
       this.$nextTick(() => {
         this.$refs.form.resetValidation()
       })
     },
 
-    loadStockIn() {
-      let vm = this
-      stockIn.get(this.stockInId).then(res => {
-        vm.stockInInfo = res
-      })
+    loadCargoData() {
+      if (this.stockInInfo) {
+        let vm = this
+        cargo.getList(this.stockInInfo.customerId).then(res => {
+          vm.cargoListData = res
+        })
+      }
     },
 
     clearTask() {
@@ -131,6 +146,7 @@ export default {
       if (this.$refs.form.validate()) {
         let vm = this
 
+        this.taskInfo.cargoId = this.cargoId
         this.taskInfo.unitWeight = this.unitWeight
         this.taskInfo.inWeight = this.totalWeight
         this.taskInfo.stockInId = this.stockInId
