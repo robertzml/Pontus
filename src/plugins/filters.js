@@ -43,6 +43,10 @@ const filters = Vue => {
   Vue.filter('shelfType', function(val) {
     return util.shelfType(val)
   })
+
+  Vue.filter('carryOutTaskType', function(val) {
+    return util.carryOutTaskType(val)
+  })
 }
 
 export default filters

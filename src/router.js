@@ -74,7 +74,20 @@ export default new Router({
       name: 'stockout',
       component: () => import('./views/StockOut/Index.vue')
     },
-
+    {
+      // 出库接单
+      // 叉车工操作
+      path: '/carryoutreceivetask',
+      name: 'carryOutReceiveTask',
+      component: () => import('./views/CarryOut/ReceiveTask.vue')
+    },
+    {
+      // 出库下架
+      // 叉车工操作
+      path: '/carryoutleaveetask',
+      name: 'carryOutLeaveTask',
+      component: () => import('./views/CarryOut/LeaveTask.vue')
+    },
     {
       path: '/store',
       name: 'store',

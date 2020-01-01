@@ -59,6 +59,12 @@ export default {
     { text: '仓位库出库', value: 2 }
   ],
 
+  /** 出库搬运类型 */
+  carryOutTaskType: [
+    { text: '出库搬运', value: 1 },
+    { text: '临时搬运', value: 2 }
+  ],
+
   /** 用户组 */
   userGroup: [
     { text: '超级管理员', value: 1 },

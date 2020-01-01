@@ -136,5 +136,15 @@ export default {
     } else {
       return ''
     }
+  },
+
+  // 搬运出库类型
+  carryOutTaskType: type => {
+    let ct = dict.carryOutTaskType.find(r => r.value == type)
+    if (ct != undefined) {
+      return ct.text
+    } else {
+      return ''
+    }
   }
 }
