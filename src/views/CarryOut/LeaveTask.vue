@@ -1,0 +1,168 @@
+<template>
+  <v-card class="mx-auto">
+    <v-card-title class="light-blue lighten-2">
+      出库下架
+    </v-card-title>
+
+    <v-card-text>
+      <v-row>
+        <v-col cols="12">
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-text-field label="任务码" prepend-icon="dns" v-model="taskCode" autocomplete="off" readonly></v-text-field>
+
+            <v-text-field
+              label="托盘码"
+              prepend-icon="power_input"
+              v-model="trayCode"
+              autocomplete="off"
+              :rules="trayCodeRules"
+              autofocus
+            ></v-text-field>
+
+            <v-text-field label="货架码" prepend-icon="border_all" v-model="shelfCode" :rules="shelfCodeRules"></v-text-field>
+
+            <v-btn color="success" class="mt-4 ml-8" large :disabled="taskList.length == 0 || !valid" @click="enter">
+              货 物 下 架
+            </v-btn>
+          </v-form>
+        </v-col>
+      </v-row>
+    </v-card-text>
+
+    <v-card-text class="pt-0">
+      <v-row>
+        <v-col cols="12">
+          <v-data-iterator :items="taskList" :disable-pagination="true" :hide-default-footer="true">
+            <template v-slot:header>
+              <v-toolbar color="indigo darken-5" dark flat>
+                <v-toolbar-title>货物情况</v-toolbar-title>
+              </v-toolbar>
+            </template>
+
+            <template v-slot:default="props">
+              <v-row>
+                <v-col v-for="item in props.items" :key="item.taskCode" cols="12" sm="12" md="6" lg="4">
+                  <v-card>
+                    <v-card-title class="subheading font-weight-bold">{{ item.taskCode }}</v-card-title>
+
+                    <v-divider></v-divider>
+
+                    <v-list dense>
+                      <v-list-item>
+                        <v-list-item-content>客户名称:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.customerName }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>类别名称:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.categoryName }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>货品名称:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.cargoName }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>搬运数量:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.moveCount }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>搬运重量(t):</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.moveWeight }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>货架码:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.shelfCode }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>托盘码:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.trayCode }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>仓位码:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.positionNumber }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>搬运类型:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.type | carryOutTaskType }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>创建时间:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.createTime | displayDateTime }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>接单时间:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.receiveTime | displayDateTime }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-content>状态:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.status | displayStatus }}</v-list-item-content>
+                      </v-list-item>
+                    </v-list>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </template>
+          </v-data-iterator>
+        </v-col>
+      </v-row>
+    </v-card-text>
+  </v-card>
+</template>
+
+<script>
+import carryOut from '@/controllers/carryOut'
+
+export default {
+  name: 'CarryOutLeaveTask',
+  data: () => ({
+    valid: false,
+    taskCode: '',
+    trayCode: '',
+    shelfCode: '',
+    taskList: [],
+    shelfCodeRules: [v => !!v || '请输入货架码', v => (v && v.length == 12) || '请输入正确货架码'],
+    trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入正确托盘码']
+  }),
+  methods: {
+    findCurrentReceive() {
+      let userId = this.$store.state.user.id
+
+      let vm = this
+      carryOut.findCurrentReceive(userId).then(res => {
+        vm.taskList = res
+        if (vm.taskList.length > 0) {
+          vm.taskCode = vm.taskList[0].taskCode
+        }
+      })
+    },
+
+    enter() {
+      if (this.$refs.form.validate()) {
+        let vm = this
+        let req = { taskCode: this.taskCode, trayCode: this.trayCode, shelfCode: this.shelfCode, userId: this.$store.state.user.id }
+        carryOut.leaveTask(req).then(res => {
+          if (res.status == 0) {
+            vm.$store.commit('alertSuccess', '出库下架成功')
+            this.$router.push({ name: 'home' })
+          } else {
+            vm.$store.commit('alertError', res.errorMessage)
+          }
+        })
+      }
+    }
+  },
+  mounted: function() {
+    this.findCurrentReceive()
+  }
+}
+</script>

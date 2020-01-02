@@ -23,5 +23,41 @@ export default {
   async listToDo() {
     const res = await axios._get({ url: '/carryOutTask/listToDo ' })
     return res.data
+  },
+
+  /**
+   * 获取用户当前接单任务
+   * @param {用户ID} userId
+   */
+  async findCurrentReceive(userId) {
+    const res = await axios._get({ url: '/carryOutTask/findCurrentReceive', params: { userId: userId } })
+    return res.data
+  },
+
+  /**
+   * 任务接单
+   * @param {任务数据} entity
+   */
+  async receiveTask(entity) {
+    const res = await axios._post({ url: '/carryOutTask/receiveTask', data: entity })
+    return res.data
+  },
+
+  /**
+   * 任务上架
+   * @param {任务数据} entity
+   */
+  async leaveTask(entity) {
+    const res = await axios._post({ url: '/carryOutTask/leaveTask', data: entity })
+    return res.data
+  },
+
+  /**
+   * 任务确认
+   * @param {任务数据} entity
+   */
+  async finishTask(entity) {
+    const res = await axios._post({ url: '/carryOutTask/finishTask', data: entity })
+    return res.data
   }
 }

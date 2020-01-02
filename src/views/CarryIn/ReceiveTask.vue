@@ -122,8 +122,7 @@ export default {
     valid: false,
     trayCode: '',
     trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
-    taskList: [],
-    moveCount: 0
+    taskList: []
   }),
   methods: {
     init() {

@@ -80,6 +80,11 @@
                       <v-list-item-content>创建时间:</v-list-item-content>
                       <v-list-item-content class="align-end">{{ taskInfo.createTime | displayDateTime }}</v-list-item-content>
                     </v-list-item>
+
+                    <v-list-item>
+                      <v-list-item-content>状态:</v-list-item-content>
+                      <v-list-item-content class="align-end">{{ taskInfo.status | displayStatus }}</v-list-item-content>
+                    </v-list-item>
                   </v-list>
                 </v-card>
               </v-col>
@@ -87,7 +92,7 @@
           </v-card-text>
 
           <v-card-actions>
-            <v-btn color="success" class="ml-8" large :disabled="taskList.length == 0 || !valid" @click="receive">
+            <v-btn color="success" class="ml-8" large :disabled="!taskInfo" @click="receive">
               出 库 接 单
             </v-btn>
           </v-card-actions>
@@ -103,12 +108,9 @@ import carryOut from '@/controllers/carryOut'
 export default {
   name: 'CarryOutReceiveTask',
   data: () => ({
-    valid: false,
+    valid: true,
     taskInfo: '',
     carryOutList: [],
-    trayCode: '',
-    trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
-    taskList: [],
     moveCount: 0
   }),
   watch: {
@@ -118,14 +120,10 @@ export default {
   },
   methods: {
     init() {
-      this.trayCode = ''
-      this.valid = false
-      this.taskList = []
+      this.taskInfo = ''
+      this.carryOutList = []
 
       this.loadTask()
-    },
-    changeText() {
-      this.taskList = []
     },
 
     loadTask() {
@@ -135,22 +133,17 @@ export default {
       })
     },
 
-    search() {
-      if (this.$refs.form.validate()) {
-        let vm = this
-      }
-    },
     receive() {
-      if (this.taskList.length == 0) {
+      if (!this.taskInfo) {
         return
       }
 
       let vm = this
-      let req = { trayCode: this.trayCode, userId: this.$store.state.user.id }
-      carryIn.receiveTask(req).then(res => {
+      let req = { taskCode: this.taskInfo.taskCode, userId: this.$store.state.user.id }
+      carryOut.receiveTask(req).then(res => {
         if (res.status == 0) {
-          vm.$store.commit('alertSuccess', '入库接单成功')
-          this.$router.push({ name: 'carryInEnterTask' })
+          vm.$store.commit('alertSuccess', '出库接单成功')
+          this.$router.push({ name: 'carryOutLeaveTask' })
         } else {
           vm.$store.commit('alertError', res.errorMessage)
         }

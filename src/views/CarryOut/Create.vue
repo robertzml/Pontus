@@ -19,7 +19,8 @@
               <v-text-field v-model="stockOutTaskInfo.cargoName" label="货品名称" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="2" md="2" sm="4">
-              <v-text-field :value="`${stockOutTaskInfo.categoryNumber} - ${stockOutTaskInfo.categoryName}`" label="货品类别" hide-details readonly></v-text-field>
+              <v-text-field :value="`${stockOutTaskInfo.categoryNumber} - ${stockOutTaskInfo.categoryName}`" label="货品类别" hide-details readonly>
+              </v-text-field>
             </v-col>
             <v-col cols="2" md="2" sm="4">
               <v-text-field v-model="stockOutTaskInfo.outCount" label="出库数量" hide-details readonly></v-text-field>
