@@ -8,10 +8,15 @@
               {{ item.heading }}
             </v-subheader>
           </v-col>
-          <v-col cols="6" class="text-center">
-          </v-col>
+          <v-col cols="6" class="text-center"> </v-col>
         </v-row>
-        <v-list-group v-else-if="item.children" :key="item.text" v-model="item.model" :prepend-icon="item.model ? item.icon : item['icon-alt']" append-icon="">
+        <v-list-group
+          v-else-if="item.children"
+          :key="item.text"
+          v-model="item.model"
+          :prepend-icon="item.model ? item.icon : item['icon-alt']"
+          append-icon=""
+        >
           <template v-slot:activator>
             <v-list-item>
               <v-list-item-content>

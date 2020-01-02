@@ -73,16 +73,12 @@
 
                     <v-list-item>
                       <v-list-item-content>搬运类型:</v-list-item-content>
-                      <v-list-item-content class="align-end">{{
-                        taskInfo.type | carryOutTaskType
-                      }}</v-list-item-content>
+                      <v-list-item-content class="align-end">{{ taskInfo.type | carryOutTaskType }}</v-list-item-content>
                     </v-list-item>
 
                     <v-list-item>
                       <v-list-item-content>创建时间:</v-list-item-content>
-                      <v-list-item-content class="align-end">{{
-                        taskInfo.createTime | displayDateTime
-                      }}</v-list-item-content>
+                      <v-list-item-content class="align-end">{{ taskInfo.createTime | displayDateTime }}</v-list-item-content>
                     </v-list-item>
                   </v-list>
                 </v-card>

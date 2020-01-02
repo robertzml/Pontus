@@ -10,7 +10,14 @@
             <v-form ref="form" v-model="valid" lazy-validation>
               <v-text-field label="用户名" prepend-icon="person" type="text" v-model="loginUser.userName" :rules="nameRules" required></v-text-field>
 
-              <v-text-field label="密码" prepend-icon="lock" type="password" v-model="loginUser.password" :rules="passwordRules" required></v-text-field>
+              <v-text-field
+                label="密码"
+                prepend-icon="lock"
+                type="password"
+                v-model="loginUser.password"
+                :rules="passwordRules"
+                required
+              ></v-text-field>
             </v-form>
           </v-card-text>
           <v-card-actions>

@@ -11,7 +11,17 @@
           <v-btn text @click.stop="refresh">刷新</v-btn>
           <v-menu v-model="outTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290">
             <template v-slot:activator="{ on }">
-              <v-text-field v-model="outTime" prefix="出库时间" style="width:200px;" single-line hide-details solo flat readonly v-on="on"></v-text-field>
+              <v-text-field
+                v-model="outTime"
+                prefix="出库时间"
+                style="width:200px;"
+                single-line
+                hide-details
+                solo
+                flat
+                readonly
+                v-on="on"
+              ></v-text-field>
             </template>
             <v-date-picker v-model="outTime" :day-format="$util.pickerDayFormat" @input="outTimeMenu = false"></v-date-picker>
           </v-menu>

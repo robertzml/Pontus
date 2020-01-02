@@ -5,8 +5,7 @@
         <v-toolbar-title>仓位管理</v-toolbar-title>
         <v-spacer></v-spacer>
 
-        <v-toolbar-items>
-        </v-toolbar-items>
+        <v-toolbar-items> </v-toolbar-items>
       </v-toolbar>
     </v-col>
 
@@ -45,10 +44,8 @@
                 </v-list-item-avatar>
               </v-list-item>
             </v-card>
-
           </v-col>
         </v-row>
-
       </v-container>
     </v-col>
 

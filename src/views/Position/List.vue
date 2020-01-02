@@ -10,8 +10,9 @@
 
       <v-card-text>
         <div class="d-md-block my-2">
-          货架号：{{ shelfInfo.number }}&nbsp;&nbsp;&nbsp;排数： {{ shelfInfo.row }}&nbsp;&nbsp;&nbsp;
-          层数：{{ shelfInfo.layer }}&nbsp;&nbsp;&nbsp;进数：{{ shelfInfo.depth }}
+          货架号：{{ shelfInfo.number }}&nbsp;&nbsp;&nbsp;排数： {{ shelfInfo.row }}&nbsp;&nbsp;&nbsp; 层数：{{
+            shelfInfo.layer
+          }}&nbsp;&nbsp;&nbsp;进数：{{ shelfInfo.depth }}
         </div>
         <div class="d-flex flex-row" v-if="positionCount > 0">
           <div class="mr-1 align-self-center">
@@ -26,7 +27,14 @@
               <v-icon>arrow_forward</v-icon>
             </div>
             <div class="d-flex flex-wrap" v-for="layer in shelfInfo.layer" :key="layer">
-              <v-card v-for="row in shelfInfo.row" :key="row" class="pa-2" outlined tile @click.stop="selectRowLayer(row, shelfInfo.layer - layer + 1)">
+              <v-card
+                v-for="row in shelfInfo.row"
+                :key="row"
+                class="pa-2"
+                outlined
+                tile
+                @click.stop="selectRowLayer(row, shelfInfo.layer - layer + 1)"
+              >
                 {{ row.toString().padStart(2, '0') }} - {{ shelfInfo.layer - layer + 1 }}
               </v-card>
             </div>
@@ -43,9 +51,7 @@
                 {{ depth.toString().padStart(2, '0') }}
               </v-card>
             </div>
-            <div class="d-flex my-4">
-              仓位编号：{{ positionInfo.number }}&nbsp;&nbsp;&nbsp; 副编号：{{ positionInfo.viceNumber }}
-            </div>
+            <div class="d-flex my-4">仓位编号：{{ positionInfo.number }}&nbsp;&nbsp;&nbsp; 副编号：{{ positionInfo.viceNumber }}</div>
           </div>
         </div>
       </v-card-text>
@@ -53,17 +59,12 @@
 
     <v-bottom-sheet v-model="sheet" persistent>
       <v-sheet class="text-center" height="150px">
-        <v-progress-linear color="light-green" height="10" :indeterminate="loading" striped>
-        </v-progress-linear>
+        <v-progress-linear color="light-green" height="10" :indeterminate="loading" striped> </v-progress-linear>
         <v-btn class="mt-6 mr-4" outlined color="red" @click.stop="startGenerate">开始生成</v-btn>
         <v-btn class="mt-6" text color="primary" @click="sheet = !sheet">关闭</v-btn>
         <div class="mt-2">
-          <p>
-            货架号：{{ shelfInfo.number }} 货架排数： {{ shelfInfo.row }} 货架层数：{{ shelfInfo.layer }} 货架进数：{{ shelfInfo.depth }}
-          </p>
-          <p>
-            已有仓位数量：{{ positionCount }}
-          </p>
+          <p>货架号：{{ shelfInfo.number }} 货架排数： {{ shelfInfo.row }} 货架层数：{{ shelfInfo.layer }} 货架进数：{{ shelfInfo.depth }}</p>
+          <p>已有仓位数量：{{ positionCount }}</p>
         </div>
       </v-sheet>
     </v-bottom-sheet>

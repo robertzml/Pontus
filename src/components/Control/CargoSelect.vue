@@ -1,5 +1,17 @@
 <template>
-  <v-autocomplete label="请选择货品" prepend-icon="category" v-model="selectedCargo" :filter="customFilter" :items="cargoData" item-value="id" item-text="name" return-object clearable :rules="cargoRules" @change="selectItem">
+  <v-autocomplete
+    label="请选择货品"
+    prepend-icon="category"
+    v-model="selectedCargo"
+    :filter="customFilter"
+    :items="cargoData"
+    item-value="id"
+    item-text="name"
+    return-object
+    clearable
+    :rules="cargoRules"
+    @change="selectItem"
+  >
     <template v-slot:selection="data">
       {{ data.item.name }}
     </template>

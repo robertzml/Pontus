@@ -12,7 +12,15 @@
               <v-text-field label="名称*" v-model="warehouseInfo.name" :rules="nameRules" required></v-text-field>
             </v-col>
             <v-col cols="4" md="4" sm="6">
-              <v-text-field label="编号*" v-model="warehouseInfo.number" :rules="numberRules" counter="3" hint="格式：A01" persistent-hint required></v-text-field>
+              <v-text-field
+                label="编号*"
+                v-model="warehouseInfo.number"
+                :rules="numberRules"
+                counter="3"
+                hint="格式：A01"
+                persistent-hint
+                required
+              ></v-text-field>
             </v-col>
             <v-col cols="4" md="4" sm="6">
               <v-select :items="this.$dict.warehouseType" label="类型*" v-model="warehouseInfo.type" required></v-select>

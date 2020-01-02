@@ -6,8 +6,7 @@
           <v-card-title class="orange">
             合同列表
             <v-spacer></v-spacer>
-            <v-text-field v-model="search" append-icon="search" label="搜索" single-line hide-details>
-            </v-text-field>
+            <v-text-field v-model="search" append-icon="search" label="搜索" single-line hide-details> </v-text-field>
           </v-card-title>
           <v-card-text class="px-0">
             <v-data-table :headers="headers" :items="contractListData" :search="search" :items-per-page="10">

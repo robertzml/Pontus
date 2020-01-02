@@ -18,7 +18,13 @@
               <v-select label="字段名" v-model="sequenceInfo.fieldName" :items="fieldItems"></v-select>
             </v-col>
             <v-col col="6" md="6" sm="6">
-              <v-text-field label="格式" v-model="sequenceInfo.format" :rules="formatRules" hint="序列号占位符是0，日期占位符是1" persistent-hint></v-text-field>
+              <v-text-field
+                label="格式"
+                v-model="sequenceInfo.format"
+                :rules="formatRules"
+                hint="序列号占位符是0，日期占位符是1"
+                persistent-hint
+              ></v-text-field>
             </v-col>
             <v-col col="2" md="2" sm="6">
               <v-checkbox label="使用日期" v-model="sequenceInfo.includeDate"></v-checkbox>

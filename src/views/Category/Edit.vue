@@ -18,11 +18,28 @@
               <v-text-field label="级别" v-model="categoryInfo.hierarchy" :rules="hierarchyRules" :readonly="categoryId != 0"></v-text-field>
             </v-col>
             <v-col cols="12" md="12" sm="12">
-              <v-select :items="firstClass" v-model="firstId" item-text="name" item-value="id" label="一级分类" :rules="firstRules" v-if="categoryInfo.hierarchy > 1 && categoryId == 0" @input="selectFirst">
+              <v-select
+                :items="firstClass"
+                v-model="firstId"
+                item-text="name"
+                item-value="id"
+                label="一级分类"
+                :rules="firstRules"
+                v-if="categoryInfo.hierarchy > 1 && categoryId == 0"
+                @input="selectFirst"
+              >
               </v-select>
             </v-col>
             <v-col cols="12" md="12" sm="12">
-              <v-select :items="secondClass" v-model="secondId" item-text="name" item-value="id" label="二级分类" :rules="secondRules" v-if="categoryInfo.hierarchy > 2 && categoryId == 0">
+              <v-select
+                :items="secondClass"
+                v-model="secondId"
+                item-text="name"
+                item-value="id"
+                label="二级分类"
+                :rules="secondRules"
+                v-if="categoryInfo.hierarchy > 2 && categoryId == 0"
+              >
               </v-select>
             </v-col>
             <v-col cols="12" md="12" sm="12">

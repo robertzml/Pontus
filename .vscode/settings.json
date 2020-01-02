@@ -1,19 +1,5 @@
 {
-  "editor.formatOnSave": true,
-  "vetur.format.defaultFormatter.html": "js-beautify-html",
-  "vetur.format.defaultFormatterOptions": {
-    "js-beautify-html": {
-      "wrap_attributes": "auto",
-      "singleQuote": true
-    },
-    "prettyhtml": {
-      "printWidth": 120,
-      "singleQuote": true,
-      "wrapAttributes": false,
-      "sortAttributes": false
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
     }
-  },
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  }
 }

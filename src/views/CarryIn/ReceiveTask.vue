@@ -9,7 +9,17 @@
         <v-container fluid class="py-0">
           <v-row dense>
             <v-col cols="10">
-              <v-text-field label="托盘码" autofocus prepend-icon="power_input" :counter="6" autocomplete="off" v-model="trayCode" :rules="trayCodeRules" @input="changeText" @keyup.enter="search"></v-text-field>
+              <v-text-field
+                label="托盘码"
+                autofocus
+                prepend-icon="power_input"
+                :counter="6"
+                autocomplete="off"
+                v-model="trayCode"
+                :rules="trayCodeRules"
+                @input="changeText"
+                @keyup.enter="search"
+              ></v-text-field>
             </v-col>
             <v-col cols="2">
               <v-text-field v-show="false"></v-text-field>
@@ -17,7 +27,6 @@
           </v-row>
         </v-container>
       </v-form>
-
     </v-card-text>
 
     <v-card-actions>

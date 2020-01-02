@@ -6,9 +6,9 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-btn v-if="window=='details'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
+          <v-btn v-if="window == 'details'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
           <v-btn text @click.stop="refresh">刷新</v-btn>
-          <v-btn v-if="window=='details'" text @click.stop="showEdit">编辑合同</v-btn>
+          <v-btn v-if="window == 'details'" text @click.stop="showEdit">编辑合同</v-btn>
           <v-btn text @click.stop="showCreate">添加合同</v-btn>
         </v-toolbar-items>
       </v-toolbar>

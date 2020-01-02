@@ -17,19 +17,9 @@
                 min-width="290px"
               >
                 <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="stockInInfo.inTime"
-                    label="入库时间"
-                    prepend-icon="event"
-                    readonly
-                    v-on="on"
-                  ></v-text-field>
+                  <v-text-field v-model="stockInInfo.inTime" label="入库时间" prepend-icon="event" readonly v-on="on"></v-text-field>
                 </template>
-                <v-date-picker
-                  v-model="stockInInfo.inTime"
-                  :day-format="$util.pickerDayFormat"
-                  @input="stockInTimeMenu = false"
-                ></v-date-picker>
+                <v-date-picker v-model="stockInInfo.inTime" :day-format="$util.pickerDayFormat" @input="stockInTimeMenu = false"></v-date-picker>
               </v-menu>
             </v-col>
 

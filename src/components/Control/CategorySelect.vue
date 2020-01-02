@@ -1,8 +1,17 @@
 <template>
-  <v-autocomplete label="请选择类别" prepend-icon="category" v-model="selectedCategory" :filter="customFilter" :items="categoryData" item-value="id" clearable return-object :rules="categoryRules" @change="selectItem">
-    <template v-slot:selection="data">
-      {{ data.item.number }} - {{ data.item.name }}
-    </template>
+  <v-autocomplete
+    label="请选择类别"
+    prepend-icon="category"
+    v-model="selectedCategory"
+    :filter="customFilter"
+    :items="categoryData"
+    item-value="id"
+    clearable
+    return-object
+    :rules="categoryRules"
+    @change="selectItem"
+  >
+    <template v-slot:selection="data"> {{ data.item.number }} - {{ data.item.name }} </template>
     <template v-slot:item="data">
       <v-list-item-content>
         <v-list-item-title v-html="data.item.name"></v-list-item-title>

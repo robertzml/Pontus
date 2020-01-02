@@ -6,7 +6,16 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-select :items="warehouseListData" item-value="id" item-text="name" solo return-object label="仓库选择" @change="selectWarehouse" style="width:200px;">
+          <v-select
+            :items="warehouseListData"
+            item-value="id"
+            item-text="name"
+            solo
+            return-object
+            label="仓库选择"
+            @change="selectWarehouse"
+            style="width:200px;"
+          >
             <template v-slot:selection="{ item }"> {{ item.number }} - {{ item.name }} </template>
           </v-select>
           <v-btn text @click.stop="refresh">刷新</v-btn>

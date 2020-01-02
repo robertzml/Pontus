@@ -45,8 +45,7 @@
             <v-card-title class="orange">
               仓库列表
               <v-spacer></v-spacer>
-              <v-text-field v-model="search" append-icon="search" label="搜索" single-line hide-details>
-              </v-text-field>
+              <v-text-field v-model="search" append-icon="search" label="搜索" single-line hide-details> </v-text-field>
             </v-card-title>
 
             <v-data-table :headers="headers" :items="warehouseListData" :search="search" :items-per-page="10">

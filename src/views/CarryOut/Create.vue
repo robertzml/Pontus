@@ -38,12 +38,8 @@
                   <v-list-item-content>
                     <v-list-item-title>{{ warehouseInfo(warehouseId).warehouseName }}</v-list-item-title>
                     <v-list-item-subtitle> 托盘数量：{{ warehouseInfo(warehouseId).trayCount }} </v-list-item-subtitle>
-                    <v-list-item-subtitle>
-                      在库总数量：{{ warehouseInfo(warehouseId).totalCount }}
-                    </v-list-item-subtitle>
-                    <v-list-item-subtitle>
-                      在库总重量：{{ warehouseInfo(warehouseId).totalWeight }} 吨
-                    </v-list-item-subtitle>
+                    <v-list-item-subtitle> 在库总数量：{{ warehouseInfo(warehouseId).totalCount }} </v-list-item-subtitle>
+                    <v-list-item-subtitle> 在库总重量：{{ warehouseInfo(warehouseId).totalWeight }} 吨 </v-list-item-subtitle>
                   </v-list-item-content>
                   <v-list-item-action>
                     <v-btn text color="primary" @click="selectWarehouse(warehouseId)">
@@ -160,9 +156,7 @@
                   </v-list-item>
                   <v-list-item>
                     <v-list-item-content>入库时间:</v-list-item-content>
-                    <v-list-item-content class="align-end">{{
-                      $util.displayDate(sStoreInfo.inTime)
-                    }}</v-list-item-content>
+                    <v-list-item-content class="align-end">{{ $util.displayDate(sStoreInfo.inTime) }}</v-list-item-content>
                   </v-list-item>
                 </v-list>
 

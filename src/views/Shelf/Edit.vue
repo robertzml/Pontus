@@ -12,7 +12,15 @@
               <v-text-field label="所属仓库" v-model="warehouseInfo.name" readonly></v-text-field>
             </v-col>
             <v-col cols="4" md="4" sm="6">
-              <v-text-field label="编号*" v-model="shelfInfo.number" :rules="numberRules" hint="2位：01" counter="2" persistent-hint required></v-text-field>
+              <v-text-field
+                label="编号*"
+                v-model="shelfInfo.number"
+                :rules="numberRules"
+                hint="2位：01"
+                counter="2"
+                persistent-hint
+                required
+              ></v-text-field>
             </v-col>
             <v-col cols="4" md="4" sm="6">
               <v-select :items="this.$dict.shelfType" label="类型*" v-model="shelfInfo.type" required></v-select>
@@ -21,7 +29,12 @@
               <v-text-field label="入口数" v-model="shelfInfo.entrance" type="number" :rules="digitRules"></v-text-field>
             </v-col>
             <v-col cols="6" md="6" sm="6">
-              <v-text-field label="入口编号" v-model="shelfInfo.entranceNumber" hint="每个入口一位，用-连接，如：X或 X-Y" persistent-hint></v-text-field>
+              <v-text-field
+                label="入口编号"
+                v-model="shelfInfo.entranceNumber"
+                hint="每个入口一位，用-连接，如：X或 X-Y"
+                persistent-hint
+              ></v-text-field>
             </v-col>
             <v-col cols="4" md="4" sm="6">
               <v-text-field label="排数" v-model="shelfInfo.row" type="number" :rules="digitRules"></v-text-field>

@@ -4,7 +4,16 @@
       入库列表
     </v-card-title>
     <v-card-text class="px-0">
-      <v-treeview :items="monthTime" :load-children="fetchStockIn" @update:active="showActive" :active.sync="active" :open.sync="open" activatable open-on-click transition>
+      <v-treeview
+        :items="monthTime"
+        :load-children="fetchStockIn"
+        @update:active="showActive"
+        :active.sync="active"
+        :open.sync="open"
+        activatable
+        open-on-click
+        transition
+      >
         <template v-slot:prepend="{ item, active }">
           <v-icon v-if="!item.children">markunread</v-icon>
         </template>
