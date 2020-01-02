@@ -90,8 +90,8 @@
 
     <v-dialog v-model="finishDialog" persistent max-width="300">
       <v-card>
-        <v-card-title class="headline">入库单确认</v-card-title>
-        <v-card-text>是否确认该入库单已经入库完成？请确认所有入库货物已经上架，确认后无法再增加货物。</v-card-text>
+        <v-card-title class="headline">出库单确认</v-card-title>
+        <v-card-text>是否确认该出库单已经出库完成？请确认所有出库货物已经下架，确认后无法再增加货物。</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue-grey lighten-3" text @click="finishDialog = false">取消</v-btn>
@@ -195,7 +195,7 @@ export default {
 
       stockOut.confirm({ id: this.info.id }).then(res => {
         if (res.status == 0) {
-          vm.$store.commit('alertSuccess', '入库单已确认')
+          vm.$store.commit('alertSuccess', '出库单已确认')
           vm.loadInfo()
           vm.finishDialog = false
         } else {

@@ -41,10 +41,10 @@ export default {
     ]
   }),
   methods: {
-    ...mapMutations({}),
+    ...mapMutations({ showTaskDrawer: 'stockOut/showTaskDrawer' }),
 
     viewItem(item) {
-      //this.showTaskDrawer(item)
+      this.showTaskDrawer(item)
     }
   }
 }

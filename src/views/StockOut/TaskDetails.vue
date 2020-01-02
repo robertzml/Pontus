@@ -76,27 +76,45 @@
       <v-dialog v-model="carryOutDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
         <carry-out-create></carry-out-create>
       </v-dialog>
+
+      <v-navigation-drawer v-model="drawer" fixed temporary right width="420">
+        <carry-out-details></carry-out-details>
+      </v-navigation-drawer>
+
+      <v-dialog v-model="finishDialog" persistent max-width="300">
+        <v-card>
+          <v-card-title class="headline">出库货物确认</v-card-title>
+          <v-card-text>是否确认该货物已经出库完成？请确认所有搬运任务已经下架，确认后无法再下发任务。</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue-grey lighten-3" text @click="finishDialog = false">取消</v-btn>
+            <v-btn color="green darken-1" text @click="finishTask()">确定</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-col>
   </v-row>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex'
+import stockOut from '@/controllers/stockOut'
 import carryOut from '@/controllers/carryOut'
 import CarryOutCreate from '../CarryOut/Create'
 import CarryOutList from '../CarryOut/List'
+import CarryOutDetails from '../CarryOut/Details'
 
 export default {
   name: 'StockOutTaskDetails',
   props: {},
   components: {
     CarryOutCreate,
-    CarryOutList
+    CarryOutList,
+    CarryOutDetails
   },
   data: () => ({
     finishDialog: false,
-    carryOutTaskList: [],
-    carryInTaskInfo: {}
+    carryOutTaskList: []
   }),
   computed: {
     ...mapState({
@@ -108,6 +126,14 @@ export default {
       },
       set(val) {
         this.setCarryOutDialog(val)
+      }
+    },
+    drawer: {
+      get() {
+        return this.$store.state.stockOut.showTaskDrawer
+      },
+      set(val) {
+        this.$store.state.stockOut.showTaskDrawer = val
       }
     }
   },
@@ -133,7 +159,19 @@ export default {
     },
 
     // 完成任务
-    finishTask() {}
+    finishTask() {
+      let vm = this
+
+      stockOut.finishTask({ taskId: this.info.id }).then(res => {
+        if (res.status == 0) {
+          vm.$store.commit('alertSuccess', '确认任务成功')
+          vm.$emit('update')
+          vm.finishDialog = false
+        } else {
+          vm.$store.commit('alertError', res.errorMessage)
+        }
+      })
+    }
   },
   mounted: function() {
     this.loadCarryOutTask()

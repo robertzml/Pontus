@@ -32,6 +32,12 @@ export default {
     return res.data
   },
 
+  // 确认出库单
+  async confirm(data) {
+    const res = await axios._postqs({ url: '/stockOut/confirm', params: data })
+    return res.data
+  },
+
   // 出库任务列表
   async getTaskList(stockOutId) {
     const res = await axios._get({ url: '/stockOut/taskList', params: { stockOutId: stockOutId } })
@@ -41,6 +47,12 @@ export default {
   // 添加出库任务
   async addTask(entity) {
     const res = await axios._post({ url: '/stockOut/addTask', data: entity })
+    return res.data
+  },
+
+  // 确认出库任务
+  async finishTask(data) {
+    const res = await axios._postqs({ url: '/stockOut/finishTask', params: data })
     return res.data
   }
 }
