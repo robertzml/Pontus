@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { mapMutations, mapActions } from 'vuex'
 import customer from '@/controllers/customer'
 
 export default {
@@ -48,6 +49,12 @@ export default {
     ]
   }),
   methods: {
+    ...mapActions({
+      showDetails: 'customer/showDetails'
+    }),
+    ...mapMutations({
+      setCustomerInfo: 'customer/setCustomerInfo'
+    }),
     loadList() {
       let vm = this
       customer.getList().then(res => {
@@ -55,7 +62,8 @@ export default {
       })
     },
     viewItem(item) {
-      this.$emit('toDetails', item.id)
+      this.setCustomerInfo(item)
+      this.showDetails()
     }
   },
   mounted: function() {

@@ -6,23 +6,18 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-btn v-if="window == 'details'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
-          <v-btn v-if="window == 'list'" text @click.stop="refresh">刷新</v-btn>
-          <v-btn v-if="window == 'details'" text @click.stop="showEdit">编辑客户</v-btn>
+          <v-btn v-if="tab == 'CustomerDetails'" text color="amber accent-4" @click.stop="showList">返回</v-btn>
+          <v-btn text @click.stop="refresh">刷新</v-btn>
+          <v-btn v-if="tab == 'CustomerDetails'" text @click.stop="showEdit">编辑客户</v-btn>
           <v-btn text @click.stop="showCreate">添加客户</v-btn>
         </v-toolbar-items>
       </v-toolbar>
     </v-col>
 
     <v-col cols="12">
-      <v-window v-model="window">
-        <v-window-item value="list" :eager="true">
-          <customer-list ref="listMod" @toDetails="toDetails"></customer-list>
-        </v-window-item>
-        <v-window-item value="details" :eager="true">
-          <customer-details ref="detailsMod"></customer-details>
-        </v-window-item>
-      </v-window>
+      <v-slide-x-transition leave-absolute>
+        <component v-bind:is="tab"></component>
+      </v-slide-x-transition>
     </v-col>
 
     <v-col cols="12">
@@ -32,6 +27,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 import CustomerList from './List'
 import CustomerDetails from './Details'
 import CustomerEdit from './Edit'
@@ -43,35 +39,36 @@ export default {
     CustomerDetails,
     CustomerEdit
   },
-  data: () => ({
-    window: 'list',
-    currentCustomerId: 0
-  }),
+  data: () => ({}),
+  computed: {
+    ...mapState({
+      tab: state => state.customer.tab,
+      customerInfo: state => state.customer.customerInfo
+    })
+  },
   methods: {
-    toDetails(id) {
-      this.window = 'details'
-      this.currentCustomerId = id
-      this.$refs.detailsMod.getInfo(id)
-    },
-    toList() {
-      this.window = 'list'
-      this.currentCustomerId = 0
-    },
+    ...mapActions({
+      showList: 'customer/showList',
+      refreshCustomer: 'customer/refreshCustomer'
+    }),
+
     showCreate() {
       this.$refs.customerEditMod.init(0)
     },
     showEdit() {
-      this.$refs.customerEditMod.init(this.currentCustomerId)
+      this.$refs.customerEditMod.init(this.customerInfo.id)
     },
 
     refresh() {
-      if (this.currentCustomerId != 0) {
-        this.$refs.detailsMod.getInfo(this.currentCustomerId)
+      if (this.tab == 'CustomerDetails') {
+        this.refreshCustomer()
       } else {
         this.$refs.listMod.loadList()
       }
     }
   },
-  mounted: function() {}
+  mounted: function() {
+    this.showList()
+  }
 }
 </script>

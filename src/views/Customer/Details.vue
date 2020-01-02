@@ -55,13 +55,15 @@
 
 <script>
 import customer from '@/controllers/customer'
-import { mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'CustomerDetails',
   data: () => ({
-    customerId: 0,
-    info: {}
+    customerId: 0
+  }),
+  computed: mapState({
+    info: state => state.customer.customerInfo
   }),
   methods: {
     ...mapMutations(['alertInfo', 'alertError']),
