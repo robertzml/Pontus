@@ -9,7 +9,7 @@
           <v-btn v-if="tab == 'CustomerDetails'" text color="amber accent-4" @click.stop="showList">返回</v-btn>
           <v-btn text @click.stop="refresh">刷新</v-btn>
           <v-btn v-if="tab == 'CustomerDetails'" text @click.stop="showEdit">编辑客户</v-btn>
-          <v-btn text @click.stop="showCreate">添加客户</v-btn>
+          <v-btn v-if="tab == 'CustomerList'" text @click.stop="showCreate">添加客户</v-btn>
         </v-toolbar-items>
       </v-toolbar>
     </v-col>
@@ -54,8 +54,7 @@ export default {
     }),
 
     ...mapActions({
-      showList: 'customer/showList',
-      refreshCustomer: 'customer/refreshCustomer'
+      showList: 'customer/showList'
     }),
 
     showCreate() {

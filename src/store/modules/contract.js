@@ -1,27 +1,27 @@
-// 客户管理模块
+// 合同管理模块
 
 export default {
   namespaced: true,
   state: {
-    // 客户管理显示页面
-    tab: 'CustomerList',
+    // 合同管理显示页面
+    tab: 'ContractList',
 
-    // 当前客户对象
-    customerInfo: {},
+    // 当前合同对象
+    contractInfo: {},
 
     // 刷新事件
     refreshEvent: false
   },
 
   actions: {
-    // 显示客户信息页面
+    // 显示合同信息页面
     showDetails({ commit }) {
-      commit('setTab', 'CustomerDetails')
+      commit('setTab', 'ContractDetails')
     },
 
-    // 显示客户列表页面
+    // 显示合同列表页面
     showList({ commit }) {
-      commit('setTab', 'CustomerList')
+      commit('setTab', 'ContractList')
     }
   },
 
@@ -31,9 +31,9 @@ export default {
       state.tab = tab
     },
 
-    // 设置客户对象
-    setCustomerInfo: (state, val) => {
-      state.customerInfo = val
+    // 设置合同对象
+    setContractInfo: (state, val) => {
+      state.contractInfo = val
     },
 
     // 刷新操作

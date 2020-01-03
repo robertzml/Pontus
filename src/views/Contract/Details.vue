@@ -49,24 +49,29 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 import contract from '@/controllers/contract'
 
 export default {
   name: 'ContractDetails',
-  data: () => ({
-    contractId: 0,
-    info: {}
+  data: () => ({}),
+  computed: mapState({
+    info: state => state.contract.contractInfo,
+    refreshEvent: state => state.contract.refreshEvent
   }),
+  watch: {
+    refreshEvent: function() {
+      this.loadInfo()
+    }
+  },
   methods: {
-    getInfo(id) {
-      this.contractId = id
-      if (this.contractId == 0) {
-        return
-      }
-
+    ...mapMutations({
+      setContractInfo: 'contract/setContractInfo'
+    }),
+    loadInfo() {
       let vm = this
-      contract.get(id).then(res => {
-        vm.info = res
+      contract.get(this.info.id).then(res => {
+        vm.setContractInfo(res)
       })
     }
   }

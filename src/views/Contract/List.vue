@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations, mapActions } from 'vuex'
 import contract from '@/controllers/contract'
 
 export default {
@@ -56,15 +57,32 @@ export default {
       { text: '操作', value: 'action', sortable: false }
     ]
   }),
+  computed: mapState({
+    refreshEvent: state => state.contract.refreshEvent
+  }),
+  watch: {
+    refreshEvent: function() {
+      this.loadList()
+    }
+  },
   methods: {
+    ...mapActions({
+      showDetails: 'contract/showDetails'
+    }),
+    ...mapMutations({
+      setContractInfo: 'contract/setContractInfo'
+    }),
+
     loadList() {
       let vm = this
       contract.getList().then(res => {
         vm.contractListData = res
       })
     },
+
     viewItem(item) {
-      this.$emit('toDetails', item.id)
+      this.setContractInfo(item)
+      this.showDetails()
     }
   },
   mounted: function() {

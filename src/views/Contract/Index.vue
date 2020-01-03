@@ -6,32 +6,28 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-btn v-if="window == 'details'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
+          <v-btn v-if="tab == 'ContractDetails'" text color="amber accent-4" @click.stop="showList">返回</v-btn>
           <v-btn text @click.stop="refresh">刷新</v-btn>
-          <v-btn v-if="window == 'details'" text @click.stop="showEdit">编辑合同</v-btn>
-          <v-btn text @click.stop="showCreate">添加合同</v-btn>
+          <v-btn v-if="tab == 'ContractDetails'" text @click.stop="showEdit">编辑合同</v-btn>
+          <v-btn v-if="tab == 'ContractList'" text @click.stop="showCreate">添加合同</v-btn>
         </v-toolbar-items>
       </v-toolbar>
     </v-col>
 
     <v-col cols="12">
-      <v-window v-model="window">
-        <v-window-item value="list" :eager="true">
-          <contract-list ref="listMod" @toDetails="toDetails"></contract-list>
-        </v-window-item>
-        <v-window-item value="details" :eager="true">
-          <contract-details ref="detailsMod"></contract-details>
-        </v-window-item>
-      </v-window>
+      <v-slide-x-transition leave-absolute>
+        <component v-bind:is="tab"></component>
+      </v-slide-x-transition>
     </v-col>
 
     <v-col cols="12">
-      <contract-edit ref="contractEditMod"></contract-edit>
+      <contract-edit ref="contractEditMod" @update="refresh"></contract-edit>
     </v-col>
   </v-row>
 </template>
 
 <script>
+import { mapState, mapMutations, mapActions } from 'vuex'
 import ContractList from './List'
 import ContractDetails from './Details'
 import ContractEdit from './Edit'
@@ -43,34 +39,26 @@ export default {
     ContractDetails,
     ContractEdit
   },
-  data: () => ({
-    window: 'list',
-    currentContractId: 0
-  }),
+  data: () => ({}),
+  computed: {
+    ...mapState({
+      tab: state => state.contract.tab,
+      contractInfo: state => state.contract.contractInfo
+    })
+  },
   methods: {
-    toDetails(id) {
-      this.window = 'details'
-      this.currentContractId = id
-      this.$refs.detailsMod.getInfo(id)
-    },
-    toList() {
-      this.window = 'list'
-      this.currentContractId = 0
-    },
+    ...mapMutations({
+      refresh: 'contract/refresh'
+    }),
+    ...mapActions({
+      showList: 'contract/showList'
+    }),
 
     showCreate() {
       this.$refs.contractEditMod.init(0)
     },
     showEdit() {
-      this.$refs.contractEditMod.init(this.currentContractId)
-    },
-
-    refresh() {
-      if (this.currentContractId != 0) {
-        this.$refs.detailsMod.getInfo(this.currentContractId)
-      } else {
-        this.$refs.listMod.loadList()
-      }
+      this.$refs.contractEditMod.init(this.contractInfo.id)
     }
   }
 }

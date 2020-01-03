@@ -5,6 +5,7 @@ import getters from './getters'
 import mutations from './mutations'
 import actions from './actions'
 import customer from './modules/customer'
+import contract from './modules/contract'
 import warehouse from './modules/warehouse'
 import stockIn from './modules/stockIn'
 import stockOut from './modules/stockOut'
@@ -19,6 +20,7 @@ export default new Vuex.Store({
   actions,
   modules: {
     customer,
+    contract,
     warehouse,
     stockIn,
     stockOut,

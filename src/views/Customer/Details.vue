@@ -54,8 +54,8 @@
 </template>
 
 <script>
-import customer from '@/controllers/customer'
 import { mapState, mapMutations } from 'vuex'
+import customer from '@/controllers/customer'
 
 export default {
   name: 'CustomerDetails',
