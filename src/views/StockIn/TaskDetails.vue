@@ -125,13 +125,6 @@ export default {
       }
     }
   },
-  watch: {
-    window: function(val) {
-      if (val == 'taskDetails') {
-        this.loadCarryInTask()
-      }
-    }
-  },
   methods: {
     loadCarryInTask() {
       let vm = this
@@ -163,6 +156,8 @@ export default {
       })
     }
   },
-  mounted: function() {}
+  mounted: function() {
+    this.loadCarryInTask()
+  }
 }
 </script>

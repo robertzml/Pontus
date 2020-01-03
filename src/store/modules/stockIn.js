@@ -2,12 +2,19 @@
 
 export default {
   namespaced: true,
+
   state: {
+    // 货品入库显示页面
+    tab: 'StockInDetails',
+
     // 货品入库显示页面
     stockInWindow: 'details',
 
     // 显示入库任务页面侧边
     showTaskDrawer: false,
+
+    // 当前入库日期
+    inTime: new Date().toISOString().substr(0, 10),
 
     // 当前入库单ID
     stockInId: '',
@@ -25,16 +32,20 @@ export default {
   actions: {
     // 显示入库单信息页面
     showDetails({ commit }) {
-      commit('setWindow', 'details')
+      commit('setTab', 'StockInDetails')
     },
 
     // 显示入库任务信息页面
     showTaskDetals({ commit }) {
-      commit('setWindow', 'taskDetails')
+      commit('setTab', 'StockInTaskDetails')
     }
   },
 
   mutations: {
+    setTab: (state, tab) => {
+      state.tab = tab
+    },
+
     setWindow: (state, window) => {
       state.stockInWindow = window
     },
@@ -50,8 +61,13 @@ export default {
       state.showTaskDrawer = false
     },
 
+    // 设置当前入库日期
+    setInTime: (state, inTime) => {
+      state.inTime = inTime
+    },
+
     // 设置入库单ID
-    setId: (state, id) => {
+    setStockInId: (state, id) => {
       state.stockInId = id
     },
 

@@ -1,4 +1,5 @@
 // 出库模块
+
 export default {
   namespaced: true,
 

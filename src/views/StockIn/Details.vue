@@ -115,7 +115,7 @@ export default {
     VueBarcode
   },
   data: () => ({
-    panel: [0],
+    panel: [0, 1],
     finishDialog: false,
     headers: [
       { text: '货品名称', value: 'cargoName' },
@@ -140,13 +140,16 @@ export default {
       if (val) {
         this.loadInfo()
         this.loadTaskList()
+      } else {
+        this.setStockInInfo({})
+        this.taskInfoList = []
       }
     }
   },
   methods: {
     ...mapMutations({
-      setTaskInfo: 'stockIn/setTaskInfo',
-      setStockInInfo: 'stockIn/setStockInInfo'
+      setStockInInfo: 'stockIn/setStockInInfo',
+      setTaskInfo: 'stockIn/setTaskInfo'
     }),
     ...mapActions({
       showTaskDetails: 'stockIn/showTaskDetals'
@@ -204,8 +207,11 @@ export default {
   },
   mounted: function() {
     if (this.stockInId) {
-      // this.loadInfo()
+      this.loadInfo()
       this.loadTaskList()
+    } else {
+      this.setStockInInfo({})
+      this.taskInfoList = []
     }
   }
 }

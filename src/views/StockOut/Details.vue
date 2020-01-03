@@ -208,6 +208,9 @@ export default {
     if (this.stockOutId) {
       this.loadInfo()
       this.loadTaskList()
+    } else {
+      this.setStockOutInfo({})
+      this.taskInfoList = []
     }
   }
 }

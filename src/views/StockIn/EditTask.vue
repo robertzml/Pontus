@@ -74,7 +74,7 @@ export default {
       inWeight: 0.0,
       specification: '',
       originPlace: '',
-      durability: '',
+      durability: 0,
       remark: ''
     },
     warehouseRules: [v => (v && v.number != '') || '请选择仓库']
@@ -127,7 +127,7 @@ export default {
         inWeight: 0.0,
         specification: '',
         originPlace: '',
-        durability: '',
+        durability: 0,
         remark: '',
         userId: 0,
         userName: ''

@@ -7,7 +7,7 @@
 
         <v-toolbar-items>
           <v-btn v-if="tab != 'StockOutDetails'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
-          <v-btn text @click.stop="showCreate">货品出库</v-btn>
+          <v-btn text @click.stop="showCreate">新建出库单</v-btn>
           <v-btn text @click.stop="refresh">刷新</v-btn>
           <v-menu v-model="outTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290">
             <template v-slot:activator="{ on }">
@@ -60,6 +60,9 @@ export default {
     StockOutDetails,
     StockOutTaskDetails
   },
+  data: () => ({
+    outTimeMenu: false
+  }),
   computed: {
     ...mapState({
       tab: state => state.stockOut.tab
@@ -73,9 +76,6 @@ export default {
       }
     }
   },
-  data: () => ({
-    outTimeMenu: false
-  }),
   methods: {
     ...mapActions({
       stockOutShowDetails: 'stockOut/showDetails'

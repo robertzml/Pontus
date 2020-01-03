@@ -13,6 +13,15 @@ export default {
     return res.data
   },
 
+  /**
+   * 按入库日期获取入库单
+   * @param {入库日期}} inTime
+   */
+  async getListByTime(inTime) {
+    const res = await axios._get({ url: '/stockIn/listByTime', params: { inTime: inTime } })
+    return res.data
+  },
+
   async get(id) {
     const res = await axios._get({ url: '/stockIn/get', params: { id: id } })
     return res.data
