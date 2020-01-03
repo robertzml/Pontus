@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import customer from '@/controllers/customer'
 
 export default {
@@ -48,6 +48,14 @@ export default {
       { text: '操作', value: 'action', sortable: false }
     ]
   }),
+  computed: mapState({
+    refreshEvent: state => state.customer.refreshEvent
+  }),
+  watch: {
+    refreshEvent: function() {
+      this.loadList()
+    }
+  },
   methods: {
     ...mapActions({
       showDetails: 'customer/showDetails'

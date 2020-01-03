@@ -90,10 +90,10 @@ export default {
     ]
   }),
   computed: mapState({
-    refreshSignal: state => state.warehouse.refreshSignal
+    refreshEvent: state => state.warehouse.refreshEvent
   }),
   watch: {
-    refreshSignal: function() {
+    refreshEvent: function() {
       this.loadList()
     }
   },

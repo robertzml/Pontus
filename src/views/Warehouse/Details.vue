@@ -51,10 +51,10 @@ export default {
   data: () => ({}),
   computed: mapState({
     warehouseInfo: state => state.warehouse.warehouseInfo,
-    refreshSignal: state => state.warehouse.refreshSignal
+    refreshEvent: state => state.warehouse.refreshEvent
   }),
   watch: {
-    refreshSignal: function() {
+    refreshEvent: function() {
       this.loadInfo()
     }
   },

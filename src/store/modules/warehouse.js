@@ -9,8 +9,8 @@ export default {
     // 当前仓库对象
     warehouseInfo: {},
 
-    // 刷新信号量
-    refreshSignal: false
+    // 刷新事件
+    refreshEvent: false
   },
 
   actions: {
@@ -38,7 +38,7 @@ export default {
 
     // 刷新操作
     refresh: state => {
-      state.refreshSignal = !state.refreshSignal
+      state.refreshEvent = !state.refreshEvent
     }
   }
 }

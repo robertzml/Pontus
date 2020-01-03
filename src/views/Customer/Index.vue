@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import CustomerList from './List'
 import CustomerDetails from './Details'
 import CustomerEdit from './Edit'
@@ -47,6 +47,10 @@ export default {
     })
   },
   methods: {
+    ...mapMutations({
+      refresh: 'customer/refresh'
+    }),
+
     ...mapActions({
       showList: 'customer/showList',
       refreshCustomer: 'customer/refreshCustomer'
@@ -57,14 +61,6 @@ export default {
     },
     showEdit() {
       this.$refs.customerEditMod.init(this.customerInfo.id)
-    },
-
-    refresh() {
-      if (this.tab == 'CustomerDetails') {
-        this.refreshCustomer()
-      } else {
-        this.$refs.listMod.loadList()
-      }
     }
   },
   mounted: function() {

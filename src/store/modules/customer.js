@@ -8,7 +8,10 @@ export default {
     tab: 'CustomerList',
 
     // 当前客户对象
-    customerInfo: {}
+    customerInfo: {},
+
+    // 刷新事件
+    refreshEvent: false
   },
 
   actions: {
@@ -38,6 +41,11 @@ export default {
     // 设置客户对象
     setCustomerInfo: (state, val) => {
       state.customerInfo = val
+    },
+
+    // 刷新操作
+    refresh: state => {
+      state.refreshEvent = !state.refreshEvent
     }
   }
 }

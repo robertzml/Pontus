@@ -10,9 +10,10 @@
 
       <v-card-text>
         <div class="d-md-block my-2">
-          货架号：{{ shelfInfo.number }}&nbsp;&nbsp;&nbsp;排数： {{ shelfInfo.row }}&nbsp;&nbsp;&nbsp; 层数：{{
-            shelfInfo.layer
-          }}&nbsp;&nbsp;&nbsp;进数：{{ shelfInfo.depth }}
+          <span class="mr-4">货架号：{{ shelfInfo.number }}</span>
+          <span class="mr-4">排数：{{ shelfInfo.row }}</span>
+          <span class="mr-4">层数：{{ shelfInfo.layer }}</span>
+          <span class="mr-4">进数：{{ shelfInfo.depth }}</span>
         </div>
         <div class="d-flex flex-row" v-if="positionCount > 0">
           <div class="mr-1 align-self-center">
@@ -127,7 +128,7 @@ export default {
       this.loading = true
       position.generate({ shelfId: this.shelfInfo.id }).then(res => {
         if (res.status == 0) {
-          vm.$store.commit('alertSuccess', '生成货架成功')
+          vm.$store.commit('alertSuccess', '生成仓位成功')
           vm.loading = false
           vm.sheet = false
         } else {
@@ -141,7 +142,7 @@ export default {
       this.sRowLayer = true
       this.sRow = row
       this.sLayer = layer
-      this.positionTitle = this.shelfInfo.number + '货架' + row + '列' + layer + '层 仓位'
+      this.positionTitle = this.shelfInfo.number + '货架' + row + '排' + layer + '层 仓位'
       this.positionInfo = {}
     },
 

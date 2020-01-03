@@ -59,23 +59,24 @@ import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'CustomerDetails',
-  data: () => ({
-    customerId: 0
-  }),
+  data: () => ({}),
   computed: mapState({
-    info: state => state.customer.customerInfo
+    info: state => state.customer.customerInfo,
+    refreshEvent: state => state.customer.refreshEvent
   }),
+  watch: {
+    refreshEvent: function() {
+      this.loadInfo()
+    }
+  },
   methods: {
-    ...mapMutations(['alertInfo', 'alertError']),
-    getInfo(id) {
-      this.customerId = id
-      if (this.customerId == 0) {
-        return
-      }
-
+    ...mapMutations({
+      setWarehouseInfo: 'customer/setWarehouseInfo'
+    }),
+    loadInfo() {
       let vm = this
-      customer.get(id).then(res => {
-        vm.info = res
+      customer.get(this.info.id).then(res => {
+        vm.setWarehouseInfo(res)
       })
     }
   }
