@@ -128,7 +128,6 @@ export default {
   watch: {
     window: function(val) {
       if (val == 'taskDetails') {
-        console.log('task details show')
         this.loadCarryInTask()
       }
     }

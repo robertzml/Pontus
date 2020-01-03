@@ -113,11 +113,6 @@ export default {
     carryOutList: [],
     moveCount: 0
   }),
-  watch: {
-    taskInfo: function(val) {
-      console.log(val)
-    }
-  },
   methods: {
     init() {
       this.taskInfo = ''

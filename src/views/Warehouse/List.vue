@@ -70,16 +70,11 @@
 </template>
 
 <script>
+import { mapState, mapMutations, mapActions } from 'vuex'
 import warehouse from '@/controllers/warehouse'
 
 export default {
   name: 'WarehouseList',
-  props: {
-    showWindow: {
-      type: Function,
-      default: null
-    }
-  },
   data: () => ({
     tab: null,
     search: '',
@@ -94,7 +89,22 @@ export default {
       { text: '操作', value: 'action', sortable: false }
     ]
   }),
+  computed: mapState({
+    refreshSignal: state => state.warehouse.refreshSignal
+  }),
+  watch: {
+    refreshSignal: function() {
+      this.loadList()
+    }
+  },
   methods: {
+    ...mapActions({
+      showDetails: 'warehouse/showDetails'
+    }),
+    ...mapMutations({
+      setWarehouseInfo: 'warehouse/setWarehouseInfo'
+    }),
+    // 载入仓库列表
     loadList() {
       let vm = this
       warehouse.getList().then(res => {
@@ -105,9 +115,8 @@ export default {
       })
     },
     viewItem(item) {
-      if (this.showWindow) {
-        this.showWindow('details', item.id)
-      }
+      this.setWarehouseInfo(item)
+      this.showDetails()
     }
   },
   mounted: function() {

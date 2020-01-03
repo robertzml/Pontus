@@ -33,12 +33,13 @@
     </v-col>
 
     <v-col cols="12">
-      <shelf-list :warehouse-id="this.warehouseId"></shelf-list>
+      <shelf-list :warehouse-id="this.warehouseInfo.id"></shelf-list>
     </v-col>
   </v-row>
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 import warehouse from '@/controllers/warehouse'
 import ShelfList from '../Shelf/List'
 
@@ -47,26 +48,25 @@ export default {
   components: {
     ShelfList
   },
-  props: {
-    showWindow: {
-      type: Function,
-      default: null
+  data: () => ({}),
+  computed: mapState({
+    warehouseInfo: state => state.warehouse.warehouseInfo,
+    refreshSignal: state => state.warehouse.refreshSignal
+  }),
+  watch: {
+    refreshSignal: function() {
+      this.loadInfo()
     }
   },
-  data: () => ({
-    warehouseId: 0,
-    warehouseInfo: {}
-  }),
   methods: {
-    getInfo(id) {
-      this.warehouseId = id
-      if (this.warehouseId == 0) {
-        return
-      }
+    ...mapMutations({
+      setWarehouseInfo: 'warehouse/setWarehouseInfo'
+    }),
 
+    loadInfo() {
       let vm = this
-      warehouse.get(id).then(res => {
-        vm.warehouseInfo = res
+      warehouse.get(this.warehouseInfo.id).then(res => {
+        vm.setWarehouseInfo(res)
       })
     }
   }

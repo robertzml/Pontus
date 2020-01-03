@@ -83,15 +83,6 @@ export default {
     ],
     dialog: false
   }),
-  watch: {
-    warehouseId: function(val) {
-      if (val == 0) {
-        this.shelfListData = []
-      } else {
-        this.loadList()
-      }
-    }
-  },
   methods: {
     loadList() {
       let vm = this
@@ -109,6 +100,9 @@ export default {
     editItem(item) {
       this.$refs.shelfEditMod.init(this.warehouseId, item.id)
     }
+  },
+  mounted: function() {
+    this.loadList()
   }
 }
 </script>

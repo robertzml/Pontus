@@ -83,7 +83,6 @@
 </template>
 
 <script>
-import sequence from '@/controllers/sequence'
 import contract from '@/controllers/contract'
 import CustomerSelect from '@/components/Control/CustomerSelect'
 
