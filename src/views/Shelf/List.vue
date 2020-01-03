@@ -37,14 +37,12 @@
 
       <v-col cols="12">
         <v-dialog v-model="dialog" eager max-width="800px">
-          <shelf-details ref="shelfDetailsMod"></shelf-details>
-
-          <v-card tile>
-            <v-card-actions>
+          <shelf-details ref="shelfDetailsMod">
+            <template v-slot:action>
               <v-spacer></v-spacer>
               <v-btn color="blue-grey lighten-3" text @click="dialog = false">关闭</v-btn>
-            </v-card-actions>
-          </v-card>
+            </template>
+          </shelf-details>
         </v-dialog>
       </v-col>
     </v-row>

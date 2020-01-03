@@ -16,7 +16,9 @@
 
     <v-col cols="12">
       <v-slide-x-transition leave-absolute>
-        <component v-bind:is="tab"></component>
+        <keep-alive>
+          <component v-bind:is="tab"></component>
+        </keep-alive>
       </v-slide-x-transition>
     </v-col>
 

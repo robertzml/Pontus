@@ -33,6 +33,9 @@
         </v-row>
       </v-form>
     </v-card-text>
+    <v-card-actions>
+      <slot name="action"></slot>
+    </v-card-actions>
   </v-card>
 </template>
 

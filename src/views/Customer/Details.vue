@@ -71,12 +71,12 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setWarehouseInfo: 'customer/setWarehouseInfo'
+      setCustomerInfo: 'customer/setCustomerInfo'
     }),
     loadInfo() {
       let vm = this
       customer.get(this.info.id).then(res => {
-        vm.setWarehouseInfo(res)
+        vm.setCustomerInfo(res)
       })
     }
   }
