@@ -86,6 +86,10 @@ export default {
 
     submit: function() {
       if (this.$refs.form.validate()) {
+        this.$nextTick(() => {
+          this.valid = false
+        })
+
         let vm = this
         if (this.warehouseId == 0) {
           warehouse.create(this.warehouseInfo).then(res => {
@@ -95,6 +99,7 @@ export default {
               vm.dialog = false
             } else {
               vm.$store.commit('alertError', res.errorMessage)
+              this.$refs.form.resetValidation()
             }
           })
         } else {
@@ -105,6 +110,7 @@ export default {
               vm.dialog = false
             } else {
               vm.$store.commit('alertError', res.errorMessage)
+              this.$refs.form.resetValidation()
             }
           })
         }

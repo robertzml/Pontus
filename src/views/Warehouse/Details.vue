@@ -33,7 +33,7 @@
     </v-col>
 
     <v-col cols="12">
-      <shelf-list :warehouse-id="this.warehouseInfo.id"></shelf-list>
+      <shelf-list :warehouse-id="this.warehouseInfo.id" ref="shelfListMod"></shelf-list>
     </v-col>
   </v-row>
 </template>
@@ -56,6 +56,7 @@ export default {
   watch: {
     refreshEvent: function() {
       this.loadInfo()
+      this.$refs.shelfListMod.loadList()
     }
   },
   methods: {

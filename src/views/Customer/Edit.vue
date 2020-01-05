@@ -98,6 +98,10 @@ export default {
 
     submit() {
       if (this.$refs.form.validate()) {
+        this.$nextTick(() => {
+          this.valid = false
+        })
+
         let vm = this
         if (this.customerId == 0) {
           customer.create(this.customerInfo).then(res => {
@@ -107,6 +111,7 @@ export default {
               vm.dialog = false
             } else {
               vm.$store.commit('alertError', res.errorMessage)
+              this.$refs.form.resetValidation()
             }
           })
         } else {
@@ -117,6 +122,7 @@ export default {
               vm.dialog = false
             } else {
               vm.$store.commit('alertError', res.errorMessage)
+              this.$refs.form.resetValidation()
             }
           })
         }

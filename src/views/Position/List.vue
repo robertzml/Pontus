@@ -52,7 +52,10 @@
                 {{ depth.toString().padStart(2, '0') }}
               </v-card>
             </div>
-            <div class="d-flex my-4">仓位编号：{{ positionInfo.number }}&nbsp;&nbsp;&nbsp; 副编号：{{ positionInfo.viceNumber }}</div>
+            <div class="d-flex my-4">
+              <span class="mr-4">仓位编号：{{ positionInfo.number }}</span>
+              <span>副编号：{{ positionInfo.viceNumber }}</span>
+            </div>
           </div>
         </div>
       </v-card-text>

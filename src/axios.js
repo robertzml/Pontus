@@ -3,7 +3,7 @@ import { async } from 'q'
 
 const ax = axios.create({
   baseURL: 'https://localhost:44328/api',
-  timeout: 5000,
+  timeout: 10000,
   withCredentials: false, // 允许跨域 cookie
   headers: { 'Content-Type': 'application/json' }
 })

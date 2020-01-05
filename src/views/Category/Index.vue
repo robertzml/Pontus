@@ -6,6 +6,7 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
+          <v-btn text @click.stop="refresh">刷新</v-btn>
           <v-btn text @click.stop="showCreate">添加分类</v-btn>
           <v-btn v-if="currentCategoryId != 0" text @click.stop="showEdit">编辑分类</v-btn>
         </v-toolbar-items>
@@ -80,9 +81,8 @@ export default {
         category.get(this.currentCategoryId).then(res => {
           vm.categoryInfo = res
         })
-      } else {
-        this.loadCategory()
       }
+      this.loadCategory()
     },
     showCreate() {
       this.$refs.categoryEditMod.init(0)

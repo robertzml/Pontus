@@ -152,6 +152,10 @@ export default {
 
     submit() {
       if (this.$refs.form.validate()) {
+        this.$nextTick(() => {
+          this.valid = false
+        })
+
         let vm = this
         this.contractInfo.userId = this.$store.state.user.id
         this.contractInfo.userName = this.$store.state.user.name
@@ -164,6 +168,7 @@ export default {
               vm.dialog = false
             } else {
               vm.$store.commit('alertError', res.errorMessage)
+              this.$refs.form.resetValidation()
             }
           })
         } else {
@@ -174,6 +179,7 @@ export default {
               vm.dialog = false
             } else {
               vm.$store.commit('alertError', res.errorMessage)
+              this.$refs.form.resetValidation()
             }
           })
         }
