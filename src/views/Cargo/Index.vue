@@ -11,10 +11,13 @@
               <v-col cols="6">
                 <customer-select :customer-id.sync="customerId"></customer-select>
               </v-col>
-              <v-col cols="6" align-self="center">
+              <v-col cols="5" align-self="center">
                 <v-btn color="success darken-1" :disabled="!valid" @click="submit">搜索</v-btn>
 
                 <v-btn color="lime darken-4" :disabled="!valid" class="ml-2" @click="showCreate">添加货物</v-btn>
+              </v-col>
+              <v-col cols="1">
+                <v-text-field v-show="false"></v-text-field>
               </v-col>
             </v-row>
           </v-form>
@@ -23,7 +26,7 @@
     </v-col>
     <v-col cols="12">
       <v-card class="mx-auto">
-        <v-card-title class="orange">
+        <v-card-title class="teal">
           货品列表
         </v-card-title>
         <v-card-text class="px-0">
@@ -32,15 +35,21 @@
               {{ item.registerTime | displayDate }}
             </template>
             <template v-slot:item.action="{ item }">
-              <v-btn small color="success" @click="viewItem(item)">
+              <v-btn small color="success" @click="viewItem(item)" class="mr-2">
                 <v-icon left dark>pageview</v-icon>
                 查看
+              </v-btn>
+              <v-btn small color="warning" @click="editItem(item)">
+                <v-icon left dark>edit</v-icon>
+                编辑
               </v-btn>
             </template>
           </v-data-table>
         </v-card-text>
 
-        <cargo-edit ref="cargoEditMod" @update="submit"></cargo-edit>
+        <cargo-create ref="cargoCreateMod" @update="submit"></cargo-create>
+        <cargo-edit ref="cargoEditMod"></cargo-edit>
+        <cargo-details ref="cargoDetailsMod"></cargo-details>
       </v-card>
     </v-col>
   </v-row>
@@ -48,14 +57,18 @@
 
 <script>
 import CustomerSelect from '@/components/Control/CustomerSelect'
+import CargoCreate from './Create'
 import CargoEdit from './Edit'
+import CargoDetails from './Details'
 import cargo from '@/controllers/cargo'
 
 export default {
   name: 'CargoIndex',
   components: {
     CustomerSelect,
-    CargoEdit
+    CargoCreate,
+    CargoEdit,
+    CargoDetails
   },
   data: () => ({
     valid: true,
@@ -90,12 +103,16 @@ export default {
 
     showCreate() {
       if (this.$refs.form.validate()) {
-        this.$refs.cargoEditMod.init(this.customerId)
+        this.$refs.cargoCreateMod.init(this.customerId)
       }
     },
 
     viewItem(val) {
-      console.log(val)
+      this.$refs.cargoDetailsMod.init(val.id)
+    },
+
+    editItem(val) {
+      this.$refs.cargoEditMod.init(this.customerId, val.id)
     }
   },
   mounted: function() {

@@ -1,8 +1,8 @@
 <template>
-  <v-dialog v-model="dialog" persistent eager max-width="800px">
+  <v-dialog v-model="dialog" persistent max-width="800px">
     <v-card class="mx-auto">
       <v-card-title class="cyan">
-        编辑货品
+        货品信息
       </v-card-title>
 
       <v-card-text>
@@ -18,7 +18,7 @@
               </v-col>
 
               <v-col cols="6" md="6" sm="6">
-                <v-text-field label="单位重量*" v-model="cargoInfo.unitWeight" suffix="千克" readonly></v-text-field>
+                <v-text-field label="单位重量*" v-model="cargoInfo.unitWeight" suffix="千克"></v-text-field>
               </v-col>
 
               <v-col cols="6" md="6" sm="6">
@@ -43,7 +43,7 @@ import CategorySelect from '@/components/Control/CategorySelect'
 import cargo from '@/controllers/cargo'
 
 export default {
-  name: 'CargoEdit',
+  name: 'CargoCreate',
   components: {
     CategorySelect
   },
@@ -51,7 +51,6 @@ export default {
     dialog: false,
     valid: true,
     customerId: 0,
-    cargoId: '',
     cargoInfo: {
       name: '',
       customerId: 0,
@@ -62,10 +61,15 @@ export default {
     nameRules: [v => !!v || '请输入货品名称']
   }),
   methods: {
-    init(customerId, cargoId) {
+    init(customerId) {
       this.customerId = customerId
-      this.cargoId = cargoId
-      this.loadInfo()
+      this.cargoInfo = {
+        name: '',
+        customerId: customerId,
+        categoryId: 0,
+        unitWeight: 0,
+        remark: ''
+      }
 
       this.dialog = true
       this.$nextTick(() => {
@@ -73,25 +77,17 @@ export default {
       })
     },
 
-    loadInfo() {
-      let vm = this
-      cargo.get(this.cargoId).then(res => {
-        vm.cargoInfo = res
-      })
-    },
-
     submit() {
       if (this.$refs.form.validate()) {
         let vm = this
 
-        cargo.update(this.cargoInfo).then(res => {
+        cargo.create(this.cargoInfo).then(res => {
           if (res.status == 0) {
-            vm.$store.commit('alertSuccess', '编辑货品成功')
+            vm.$store.commit('alertSuccess', '添加货品成功')
             vm.$emit('update')
             vm.dialog = false
           } else {
             vm.$store.commit('alertError', res.errorMessage)
-            this.$refs.form.resetValidation()
           }
         })
       }

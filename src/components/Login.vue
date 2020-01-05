@@ -17,6 +17,7 @@
                 v-model="loginUser.password"
                 :rules="passwordRules"
                 required
+                @keyup.enter="submit"
               ></v-text-field>
             </v-form>
           </v-card-text>
@@ -57,14 +58,6 @@ export default {
       }
     }
   },
-  created: function() {
-    let vm = this
-    document.onkeydown = function() {
-      let key = window.event.keyCode
-      if (key == 13) {
-        vm.submit()
-      }
-    }
-  }
+  mounted: function() {}
 }
 </script>
