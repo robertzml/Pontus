@@ -6,7 +6,7 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-btn v-if="tab != 'StockOutDetails'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
+          <v-btn v-if="tab != 'StockInDetails'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
           <v-btn text @click.stop="showCreate">新建入库单</v-btn>
           <v-btn text @click.stop="refresh">刷新</v-btn>
           <v-menu v-model="inTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290">
@@ -80,17 +80,14 @@ export default {
     ...mapMutations({
       setId: 'stockIn/setId',
       setStockInInfo: 'stockIn/setStockInInfo',
-      setInTime: 'stockIn/setInTime'
+      setInTime: 'stockIn/setInTime',
+      refresh: 'stockIn/refresh'
     }),
 
     ...mapActions({
       stockInShowDetails: 'stockIn/showDetails',
       stockInShowTaskDetails: 'stockIn/showTaskDetals'
     }),
-
-    refresh() {
-      this.$refs.listMod.init()
-    },
 
     // 返回入库列表
     toList() {
@@ -104,13 +101,9 @@ export default {
 
     /**
      * 关闭添加入库
-     * val: 入库id
-     * update: 是否新增
      *  */
-    closeCreate(val, update) {
-      if (update) {
-        this.$refs.listMod.update()
-      }
+    closeCreate() {
+      this.refresh()
     }
   }
 }

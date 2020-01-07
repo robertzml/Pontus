@@ -30,11 +30,15 @@ export default {
     model: function(val) {
       this.setId(val)
       this.showDetails()
+    },
+    refreshEvent: function() {
+      this.loadStockInList()
     }
   },
   computed: mapState({
     inTime: state => state.stockIn.inTime,
-    stockInId: state => state.stockIn.stockInId
+    stockInId: state => state.stockIn.stockInId,
+    refreshEvent: state => state.stockIn.refreshEvent
   }),
   methods: {
     ...mapMutations({

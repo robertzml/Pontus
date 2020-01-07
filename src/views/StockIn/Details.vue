@@ -163,6 +163,7 @@ export default {
       })
     },
 
+    // 载入入库任务列表
     loadTaskList() {
       let vm = this
       stockIn.getTaskList(this.stockInId).then(res => {
@@ -170,8 +171,9 @@ export default {
       })
     },
 
+    // 显示添加入库任务
     showAddTask() {
-      if (this.stockInId != 0) {
+      if (this.stockInId) {
         this.$refs.editTaskMod.init()
       }
     },
@@ -181,6 +183,7 @@ export default {
       this.loadTaskList()
     },
 
+    // 查看入库任务
     viewTaskItem(val) {
       this.setTaskInfo(val)
       this.showTaskDetails()

@@ -7,9 +7,6 @@ export default {
     // 货品入库显示页面
     tab: 'StockInDetails',
 
-    // 货品入库显示页面
-    stockInWindow: 'details',
-
     // 显示入库任务页面侧边
     showTaskDrawer: false,
 
@@ -26,7 +23,10 @@ export default {
     stockInTaskInfo: {},
 
     // 当前查看搬运任务信息
-    carryInTaskInfo: {}
+    carryInTaskInfo: {},
+
+    // 刷新事件
+    refreshEvent: false
   },
 
   actions: {
@@ -79,6 +79,11 @@ export default {
     // 设置入库任务
     setTaskInfo: (state, payload) => {
       state.stockInTaskInfo = payload
+    },
+
+    // 刷新操作
+    refresh: state => {
+      state.refreshEvent = !state.refreshEvent
     }
   }
 }
