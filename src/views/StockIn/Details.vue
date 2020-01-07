@@ -62,7 +62,7 @@
             </v-form>
 
             <v-card-actions>
-              <v-btn color="primary darken-1" :disabled="info.status != 71" @click="showAddTask">添加货物</v-btn>
+              <v-btn color="primary darken-1" v-if="info.status == 71" @click="showAddTask">添加货物</v-btn>
               <v-btn color="deep-orange darken-3" v-if="info.status == 71" @click.stop="showFinish">入库单确认</v-btn>
             </v-card-actions>
           </v-card>
@@ -133,17 +133,17 @@ export default {
   }),
   computed: mapState({
     stockInId: state => state.stockIn.stockInId,
-    info: state => state.stockIn.stockInInfo
+    info: state => state.stockIn.stockInInfo,
+    refreshEvent: state => state.stockIn.refreshEvent
   }),
   watch: {
-    stockInId: function(val) {
-      if (val) {
-        this.loadInfo()
-        this.loadTaskList()
-      } else {
-        this.setStockInInfo({})
-        this.taskInfoList = []
-      }
+    stockInId: function() {
+      this.loadInfo()
+      this.loadTaskList()
+    },
+    refreshEvent: function() {
+      this.loadInfo()
+      this.loadTaskList()
     }
   },
   methods: {
@@ -157,18 +157,26 @@ export default {
 
     // 载入入库单信息
     loadInfo() {
-      let vm = this
-      stockIn.get(this.stockInId).then(res => {
-        vm.setStockInInfo(res)
-      })
+      if (this.stockInId) {
+        let vm = this
+        stockIn.get(this.stockInId).then(res => {
+          vm.setStockInInfo(res)
+        })
+      } else {
+        this.setStockInInfo({})
+      }
     },
 
     // 载入入库任务列表
     loadTaskList() {
-      let vm = this
-      stockIn.getTaskList(this.stockInId).then(res => {
-        vm.taskInfoList = res
-      })
+      if (this.stockInId) {
+        let vm = this
+        stockIn.getTaskList(this.stockInId).then(res => {
+          vm.taskInfoList = res
+        })
+      } else {
+        this.taskInfoList = []
+      }
     },
 
     // 显示添加入库任务
@@ -209,13 +217,8 @@ export default {
     }
   },
   mounted: function() {
-    if (this.stockInId) {
-      this.loadInfo()
-      this.loadTaskList()
-    } else {
-      this.setStockInInfo({})
-      this.taskInfoList = []
-    }
+    this.loadInfo()
+    this.loadTaskList()
   }
 }
 </script>

@@ -65,7 +65,7 @@
 
     <v-card-actions>
       <v-btn color="blue-grey lighten-3" text @click="closeTaskDrawer">关闭</v-btn>
-      <v-btn color="success darken-1" v-if="carryInTask.status == 74" @click="confirmTask">入库确认</v-btn>
+      <v-btn color="success darken-1" v-if="carryInTask.status == 74" :disabled="!enableConfirm" @click="confirmTask">入库确认</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -77,6 +77,7 @@ import carryIn from '@/controllers/carryIn'
 export default {
   name: 'CarryInDetails',
   data: () => ({
+    enableConfirm: true,
     remark: ''
   }),
   computed: {
@@ -90,6 +91,9 @@ export default {
     }),
 
     confirmTask() {
+      this.$nextTick(() => {
+        this.enableConfirm = false
+      })
       let vm = this
 
       let model = {
@@ -101,10 +105,12 @@ export default {
       carryIn.finishTask(model).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '任务确认成功')
-          vm.$emit('update')
+          vm.enableConfirm = true
+          vm.$emit('close')
           vm.closeTaskDrawer()
         } else {
           vm.$store.commit('alertError', res.errorMessage)
+          this.enableConfirm = true
         }
       })
     }

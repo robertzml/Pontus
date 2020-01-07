@@ -1,38 +1,36 @@
 <template>
-  <v-navigation-drawer v-model="drawer" fixed temporary right>
-    <v-card flat>
-      <v-card-title>
-        <p class="headline">搬运入库任务</p>
-      </v-card-title>
-      <v-card-text>
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-container fluid>
-            <v-row>
-              <v-col cols="12">
-                <v-text-field label="托盘码*" v-model="carryInInfo.trayCode" :rules="trayCodeRules"></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="入库数量*" v-model="carryInInfo.moveCount"></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="总重量*" v-model="totalWeight" suffix="吨" readonly></v-text-field>
-              </v-col>
+  <v-card flat>
+    <v-card-title>
+      <p class="headline">搬运入库任务</p>
+    </v-card-title>
+    <v-card-text>
+      <v-form ref="form" v-model="valid" lazy-validation>
+        <v-container fluid>
+          <v-row>
+            <v-col cols="12">
+              <v-text-field label="托盘码*" v-model="carryInInfo.trayCode" :rules="trayCodeRules"></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field label="入库数量*" v-model="carryInInfo.moveCount"></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field label="总重量*" v-model="totalWeight" suffix="吨" readonly></v-text-field>
+            </v-col>
 
-              <v-col cols="12" md="12">
-                <v-text-field label="备注" v-model="carryInInfo.remark"></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-form>
-      </v-card-text>
+            <v-col cols="12" md="12">
+              <v-text-field label="备注" v-model="carryInInfo.remark"></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-form>
+    </v-card-text>
 
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="blue-grey lighten-3" text @click="drawer = false">取消</v-btn>
-        <v-btn color="success darken-1" :disabled="!valid" @click="addTask">添加</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-navigation-drawer>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="blue-grey lighten-3" text @click="close">取消</v-btn>
+      <v-btn color="success darken-1" :disabled="!valid" @click="addTask">添加</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
@@ -46,7 +44,6 @@ export default {
     }
   },
   data: () => ({
-    drawer: null,
     valid: false,
     carryInInfo: {
       trayCode: '',
@@ -62,12 +59,12 @@ export default {
     }
   },
   methods: {
-    show() {
-      this.drawer = true
-    },
-
     addTask() {
       if (this.$refs.form.validate()) {
+        this.$nextTick(() => {
+          this.valid = false
+        })
+
         let vm = this
 
         this.carryInInfo.type = 1
@@ -79,13 +76,17 @@ export default {
         carryIn.create(this.carryInInfo).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加任务成功')
-            vm.$emit('update')
-            vm.drawer = false
+            vm.$emit('close', true)
           } else {
             vm.$store.commit('alertError', res.errorMessage)
+            this.$refs.form.resetValidation()
           }
         })
       }
+    },
+
+    close() {
+      this.$emit('close', false)
     }
   }
 }

@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     init() {
-      // this.clearTask()
+      this.clearTask()
       this.dialog = true
       this.loadCargoData()
 
@@ -144,6 +144,10 @@ export default {
 
     addTask() {
       if (this.$refs.form.validate()) {
+        this.$nextTick(() => {
+          this.valid = false
+        })
+
         let vm = this
 
         this.taskInfo.cargoId = this.cargoId
@@ -160,6 +164,7 @@ export default {
             vm.dialog = false
           } else {
             vm.$store.commit('alertError', res.errorMessage)
+            this.$refs.form.resetValidation()
           }
         })
       }

@@ -15,7 +15,7 @@
               <v-text-field v-model="info.flowNumber" label="入库单流水号" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="3" md="3" sm="6">
-              <v-text-field :value="$util.stockInType(info.type)" label="入库类型" hide-details readonly></v-text-field>
+              <v-text-field :value="$util.stockInType(info.stockInType)" label="入库类型" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="3" md="3" sm="6">
               <v-text-field v-model="info.taskCode" label="入库任务码" hide-details readonly></v-text-field>
@@ -64,16 +64,19 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn color="primary" v-if="this.info.status == 71" @click.stop="setCarryIn">任务下发</v-btn>
+        <v-btn color="primary" v-if="this.info.status == 71" @click.stop="createCarryIn">任务下发</v-btn>
         <v-btn color="deep-orange darken-3" v-if="this.info.status == 71" @click.stop="showFinish">入库货物确认</v-btn>
       </v-card-actions>
     </v-card>
 
     <carry-in-list :item-list="carryInTaskList"></carry-in-list>
-    <carry-in-create ref="carryInMod" :stock-in-task="info" @update="loadCarryInTask"></carry-in-create>
+
+    <v-navigation-drawer v-model="createDrawer" fixed temporary right width="420">
+      <carry-in-create :stock-in-task="info" @close="closeCarryInCreate"></carry-in-create>
+    </v-navigation-drawer>
 
     <v-navigation-drawer v-model="drawer" fixed temporary right width="420">
-      <carry-in-details :carry-in-task="carryInTaskInfo"></carry-in-details>
+      <carry-in-details :carry-in-task="carryInTaskInfo" @close="closeCarryInDetails"></carry-in-details>
     </v-navigation-drawer>
 
     <v-dialog v-model="finishDialog" persistent max-width="300">
@@ -91,7 +94,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import carryIn from '@/controllers/carryIn'
 import CarryInCreate from '../CarryIn/Create'
@@ -107,6 +110,7 @@ export default {
     CarryInList
   },
   data: () => ({
+    createDrawer: false,
     finishDialog: false,
     carryInTaskList: [],
     carryInTaskInfo: {}
@@ -114,7 +118,7 @@ export default {
   computed: {
     ...mapState({
       info: state => state.stockIn.stockInTaskInfo,
-      window: state => state.stockIn.stockInWindow
+      refreshEvent: state => state.stockIn.refreshEvent
     }),
     drawer: {
       get() {
@@ -125,7 +129,24 @@ export default {
       }
     }
   },
+  watch: {
+    refreshEvent: function() {
+      this.loadStockInTask()
+      this.loadCarryInTask()
+    }
+  },
   methods: {
+    ...mapMutations({
+      setTaskInfo: 'stockIn/setTaskInfo'
+    }),
+
+    loadStockInTask() {
+      let vm = this
+      stockIn.getTask(this.info.id).then(res => {
+        vm.setTaskInfo(res)
+      })
+    },
+
     loadCarryInTask() {
       let vm = this
       carryIn.listByStockInTask(this.info.id).then(res => {
@@ -133,8 +154,29 @@ export default {
       })
     },
 
-    setCarryIn() {
-      this.$refs.carryInMod.show()
+    // 添加入库搬运
+    createCarryIn() {
+      this.createDrawer = true
+    },
+
+    // 关闭入库搬运
+    closeCarryInCreate(update) {
+      this.createDrawer = false
+      if (!update) {
+        return
+      }
+      let vm = this
+      carryIn.listByStockInTask(this.info.id).then(res => {
+        vm.carryInTaskList = res
+      })
+    },
+
+    // 关闭入库搬运信息
+    closeCarryInDetails() {
+      let vm = this
+      carryIn.listByStockInTask(this.info.id).then(res => {
+        vm.carryInTaskList = res
+      })
     },
 
     showFinish() {
@@ -148,7 +190,7 @@ export default {
       stockIn.finishTask({ taskId: this.info.id }).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '确认任务成功')
-          vm.$emit('update')
+          vm.loadStockInTask()
           vm.finishDialog = false
         } else {
           vm.$store.commit('alertError', res.errorMessage)

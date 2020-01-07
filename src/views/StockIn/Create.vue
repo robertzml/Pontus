@@ -131,6 +131,10 @@ export default {
 
     submit() {
       if (this.$refs.form.validate()) {
+        this.$nextTick(() => {
+          this.valid = false
+        })
+
         let vm = this
         this.stockInInfo.contractId = this.selectedContract.id
         this.stockInInfo.userId = this.$store.state.user.id
@@ -143,6 +147,7 @@ export default {
             vm.dialog = false
           } else {
             vm.$store.commit('alertError', res.errorMessage)
+            this.$refs.form.resetValidation()
           }
         })
       }

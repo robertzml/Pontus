@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto">
-    <v-card-title class="orange">
+    <v-card-title class="amber">
       搬运任务
     </v-card-title>
     <v-card-text class="px-0">

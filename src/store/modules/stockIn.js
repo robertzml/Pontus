@@ -46,10 +46,6 @@ export default {
       state.tab = tab
     },
 
-    setWindow: (state, window) => {
-      state.stockInWindow = window
-    },
-
     // 设置入库任务侧边显示 搬运任务
     showTaskDrawer: (state, payload) => {
       state.showTaskDrawer = true
