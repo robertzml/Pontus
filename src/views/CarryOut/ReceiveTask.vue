@@ -92,7 +92,7 @@
           </v-card-text>
 
           <v-card-actions>
-            <v-btn color="success" class="ml-8" large :disabled="!taskInfo" @click="receive">
+            <v-btn color="success" class="ml-8" large :disabled="!taskInfo" :loading="loading" @click="receive">
               出 库 接 单
             </v-btn>
           </v-card-actions>
@@ -109,6 +109,7 @@ export default {
   name: 'CarryOutReceiveTask',
   data: () => ({
     valid: true,
+    loading: false,
     taskInfo: '',
     carryOutList: [],
     moveCount: 0
@@ -116,6 +117,7 @@ export default {
   methods: {
     init() {
       this.taskInfo = ''
+      this.loading = false
       this.carryOutList = []
 
       this.loadTask()
@@ -133,14 +135,20 @@ export default {
         return
       }
 
+      this.$nextTick(() => {
+        this.loading = true
+      })
+
       let vm = this
       let req = { taskCode: this.taskInfo.taskCode, userId: this.$store.state.user.id }
       carryOut.receiveTask(req).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '出库接单成功')
+          vm.loading = false
           this.$router.push({ name: 'carryOutLeaveTask' })
         } else {
           vm.$store.commit('alertError', res.errorMessage)
+          vm.loading = false
         }
       })
     }

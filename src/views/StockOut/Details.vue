@@ -62,7 +62,7 @@
             </v-form>
 
             <v-card-actions>
-              <v-btn color="primary darken-1" :disabled="info.status != 81" @click="showAddTask">添加货物</v-btn>
+              <v-btn color="primary darken-1" v-if="info.status == 81" @click="showAddTask">添加货物</v-btn>
               <v-btn color="deep-orange darken-3" v-if="info.status == 81" @click.stop="showFinish">出库单确认</v-btn>
             </v-card-actions>
           </v-card>
@@ -95,7 +95,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue-grey lighten-3" text @click="finishDialog = false">取消</v-btn>
-          <v-btn color="green darken-1" text @click="finish">确定</v-btn>
+          <v-btn color="green darken-1" text @click="finish" :loading="finishLoading">确定</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -116,6 +116,7 @@ export default {
   },
   data: () => ({
     panel: [0, 1],
+    finishLoading: false,
     finishDialog: false,
     headers: [
       { text: '货品名称', value: 'cargoName' },
@@ -203,14 +204,19 @@ export default {
     // 确认出库单完成
     finish() {
       let vm = this
+      this.$nextTick(() => {
+        this.finishLoading = true
+      })
 
       stockOut.confirm({ id: this.info.id }).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '出库单已确认')
           vm.loadInfo()
+          vm.finishLoading = false
           vm.finishDialog = false
         } else {
           vm.$store.commit('alertError', res.errorMessage)
+          vm.finishLoading = false
         }
       })
     }

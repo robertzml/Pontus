@@ -74,11 +74,11 @@
 
     <v-col cols="12">
       <v-dialog v-model="carryOutDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-        <carry-out-create></carry-out-create>
+        <carry-out-create @close="closeCarryOut"></carry-out-create>
       </v-dialog>
 
       <v-navigation-drawer v-model="drawer" fixed temporary right width="420">
-        <carry-out-details></carry-out-details>
+        <carry-out-details @close="closeCarryOutDetails"></carry-out-details>
       </v-navigation-drawer>
 
       <v-dialog v-model="finishDialog" persistent max-width="300">
@@ -88,7 +88,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue-grey lighten-3" text @click="finishDialog = false">取消</v-btn>
-            <v-btn color="green darken-1" text @click="finishTask()">确定</v-btn>
+            <v-btn color="green darken-1" text @click="finishTask" :loading="finishLoading">确定</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -113,6 +113,7 @@ export default {
     CarryOutDetails
   },
   data: () => ({
+    finishLoading: false,
     finishDialog: false,
     carryOutTaskList: []
   }),
@@ -168,6 +169,14 @@ export default {
       this.carryOutDialog = true
     },
 
+    closeCarryOut() {
+      this.loadCarryOutTask()
+    },
+
+    closeCarryOutDetails() {
+      this.loadCarryOutTask()
+    },
+
     showFinish() {
       this.finishDialog = true
     },
@@ -175,14 +184,19 @@ export default {
     // 完成任务
     finishTask() {
       let vm = this
+      this.$nextTick(() => {
+        this.finishLoading = true
+      })
 
       stockOut.finishTask({ taskId: this.info.id }).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '确认任务成功')
           vm.loadStockOutTask()
+          vm.finishLoading = false
           vm.finishDialog = false
         } else {
           vm.$store.commit('alertError', res.errorMessage)
+          vm.finishLoading = false
         }
       })
     }

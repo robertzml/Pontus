@@ -66,7 +66,7 @@
 
     <v-card-actions>
       <v-btn color="blue-grey lighten-3" text @click="closeTaskDrawer">关闭</v-btn>
-      <v-btn color="success darken-1" v-if="carryOutTask.status == 83" @click="confirmTask">出库确认</v-btn>
+      <v-btn color="success darken-1" v-if="carryOutTask.status == 83" @click="confirmTask" :loading="submitLoading">出库确认</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -78,6 +78,7 @@ import carryOut from '@/controllers/carryOut'
 export default {
   name: 'CarryOutDetails',
   data: () => ({
+    submitLoading: false,
     remark: ''
   }),
   computed: {
@@ -99,13 +100,19 @@ export default {
         remark: this.remark
       }
 
+      this.$nextTick(() => {
+        this.submitLoading = true
+      })
+
       carryOut.finishTask(model).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '任务确认成功')
-          vm.$emit('update')
+          vm.$emit('close')
+          vm.submitLoading = false
           vm.closeTaskDrawer()
         } else {
           vm.$store.commit('alertError', res.errorMessage)
+          vm.submitLoading = false
         }
       })
     }

@@ -76,7 +76,7 @@
     </v-navigation-drawer>
 
     <v-navigation-drawer v-model="drawer" fixed temporary right width="420">
-      <carry-in-details :carry-in-task="carryInTaskInfo" @close="closeCarryInDetails"></carry-in-details>
+      <carry-in-details @close="closeCarryInDetails"></carry-in-details>
     </v-navigation-drawer>
 
     <v-dialog v-model="finishDialog" persistent max-width="300">
@@ -165,18 +165,13 @@ export default {
       if (!update) {
         return
       }
-      let vm = this
-      carryIn.listByStockInTask(this.info.id).then(res => {
-        vm.carryInTaskList = res
-      })
+
+      this.loadCarryInTask()
     },
 
     // 关闭入库搬运信息
     closeCarryInDetails() {
-      let vm = this
-      carryIn.listByStockInTask(this.info.id).then(res => {
-        vm.carryInTaskList = res
-      })
+      this.loadCarryInTask()
     },
 
     showFinish() {
