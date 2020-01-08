@@ -99,9 +99,7 @@ export default {
       this.$refs.stockInCreateMod.init(0)
     },
 
-    /**
-     * 关闭添加入库
-     *  */
+    //关闭添加入库
     closeCreate() {
       this.refresh()
     }

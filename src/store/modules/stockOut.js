@@ -26,7 +26,10 @@ export default {
     stockOutTaskInfo: {},
 
     // 当前查看搬运任务信息
-    carryOutTaskInfo: {}
+    carryOutTaskInfo: {},
+
+    // 刷新事件
+    refreshEvent: false
   },
 
   actions: {
@@ -79,6 +82,11 @@ export default {
     // 设置出库任务
     setTaskInfo: (state, payload) => {
       state.stockOutTaskInfo = payload
+    },
+
+    // 刷新操作
+    refresh: state => {
+      state.refreshEvent = !state.refreshEvent
     }
   }
 }

@@ -95,7 +95,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue-grey lighten-3" text @click="finishDialog = false">取消</v-btn>
-          <v-btn color="green darken-1" text @click="finish()">确定</v-btn>
+          <v-btn color="green darken-1" text @click="finish">确定</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -132,17 +132,17 @@ export default {
   }),
   computed: mapState({
     stockOutId: state => state.stockOut.stockOutId,
-    info: state => state.stockOut.stockOutInfo
+    info: state => state.stockOut.stockOutInfo,
+    refreshEvent: state => state.stockOut.refreshEvent
   }),
   watch: {
-    stockOutId: function(val) {
-      if (val) {
-        this.loadInfo()
-        this.loadTaskList()
-      } else {
-        this.setStockOutInfo({})
-        this.taskInfoList = []
-      }
+    stockOutId: function() {
+      this.loadInfo()
+      this.loadTaskList()
+    },
+    refreshEvent: function() {
+      this.loadInfo()
+      this.loadTaskList()
     }
   },
   methods: {
@@ -156,19 +156,29 @@ export default {
 
     // 载入入库单信息
     loadInfo() {
-      let vm = this
-      stockOut.get(this.stockOutId).then(res => {
-        vm.setStockOutInfo(res)
-      })
+      if (this.stockOutId) {
+        let vm = this
+        stockOut.get(this.stockOutId).then(res => {
+          vm.setStockOutInfo(res)
+        })
+      } else {
+        this.setStockOutInfo({})
+      }
     },
 
+    // 载入出库任务列表
     loadTaskList() {
-      let vm = this
-      stockOut.getTaskList(this.stockOutId).then(res => {
-        vm.taskInfoList = res
-      })
+      if (this.stockOutId) {
+        let vm = this
+        stockOut.getTaskList(this.stockOutId).then(res => {
+          vm.taskInfoList = res
+        })
+      } else {
+        this.taskInfoList = []
+      }
     },
 
+    // 显示添加入库任务
     showAddTask() {
       if (this.stockOutId) {
         this.$refs.editTaskMod.init()
@@ -180,6 +190,7 @@ export default {
       this.loadTaskList()
     },
 
+    // 查看入库任务
     viewTaskItem(val) {
       this.setTaskInfo(val)
       this.showTaskDetails()
@@ -189,7 +200,7 @@ export default {
       this.finishDialog = true
     },
 
-    // 确认入库单完成
+    // 确认出库单完成
     finish() {
       let vm = this
 
@@ -205,13 +216,8 @@ export default {
     }
   },
   mounted: function() {
-    if (this.stockOutId) {
-      this.loadInfo()
-      this.loadTaskList()
-    } else {
-      this.setStockOutInfo({})
-      this.taskInfoList = []
-    }
+    this.loadInfo()
+    this.loadTaskList()
   }
 }
 </script>

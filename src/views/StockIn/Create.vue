@@ -55,7 +55,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue-grey lighten-3" text @click="dialog = false">取消</v-btn>
-        <v-btn color="success darken-1" :disabled="!valid" @click="submit">保存</v-btn>
+        <v-btn color="success darken-1" :disabled="!valid" :loading="submitLoading" @click="submit">保存</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -73,6 +73,7 @@ export default {
   },
   data: () => ({
     dialog: false,
+    submitLoading: false,
     valid: true,
     stockInTimeMenu: false,
     stockInInfo: {
@@ -132,7 +133,7 @@ export default {
     submit() {
       if (this.$refs.form.validate()) {
         this.$nextTick(() => {
-          this.valid = false
+          this.submitLoading = true
         })
 
         let vm = this
@@ -143,11 +144,12 @@ export default {
         stockIn.create(this.stockInInfo).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加入库成功')
-            this.$emit('close', res.entity.id, true)
+            vm.$emit('close', res.entity.id, true)
+            vm.submitLoading = false
             vm.dialog = false
           } else {
             vm.$store.commit('alertError', res.errorMessage)
-            this.$refs.form.resetValidation()
+            vm.submitLoading = false
           }
         })
       }

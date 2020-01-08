@@ -44,6 +44,12 @@ export default {
     return res.data
   },
 
+  // 获取入库任务
+  async getTask(taskId) {
+    const res = await axios._get({ url: '/stockOut/getTask', params: { taskId: taskId } })
+    return res.data
+  },
+
   // 添加出库任务
   async addTask(entity) {
     const res = await axios._post({ url: '/stockOut/addTask', data: entity })

@@ -83,7 +83,8 @@ export default {
 
     ...mapMutations({
       setStockOutId: 'stockOut/setStockOutId',
-      setOutTime: 'stockOut/setOutTime'
+      setOutTime: 'stockOut/setOutTime',
+      refresh: 'stockOut/refresh'
     }),
 
     // 返回出库单页面
@@ -91,22 +92,14 @@ export default {
       this.stockOutShowDetails()
     },
 
-    refresh() {},
-
     // 显示货品出库
     showCreate() {
       this.$refs.stockOutCreateMod.init()
     },
 
-    /**
-     * 关闭添加出库
-     * val: 出库id
-     * update: 是否新增
-     *  */
-    closeCreate(val, update) {
-      if (update) {
-        this.$refs.listMod.update()
-      }
+    // 关闭添加出库
+    closeCreate() {
+      this.refresh()
     }
   }
 }

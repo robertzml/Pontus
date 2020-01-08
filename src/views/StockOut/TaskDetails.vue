@@ -118,7 +118,8 @@ export default {
   }),
   computed: {
     ...mapState({
-      info: state => state.stockOut.stockOutTaskInfo
+      info: state => state.stockOut.stockOutTaskInfo,
+      refreshEvent: state => state.stockOut.refreshEvent
     }),
     carryOutDialog: {
       get() {
@@ -137,18 +138,23 @@ export default {
       }
     }
   },
-  watch: {},
+  watch: {
+    refreshEvent: function() {
+      this.loadStockOutTask()
+      this.loadCarryOutTask()
+    }
+  },
   methods: {
     ...mapMutations({
+      setTaskInfo: 'stockOut/setTaskInfo',
       setCarryOutDialog: 'stockOut/setCarryOutDialog'
     }),
 
-    showCarryOut() {
-      this.carryOutDialog = true
-    },
-
-    showFinish() {
-      this.finishDialog = true
+    loadStockOutTask() {
+      let vm = this
+      stockOut.getTask(this.info.id).then(res => {
+        vm.setTaskInfo(res)
+      })
     },
 
     loadCarryOutTask() {
@@ -158,6 +164,14 @@ export default {
       })
     },
 
+    showCarryOut() {
+      this.carryOutDialog = true
+    },
+
+    showFinish() {
+      this.finishDialog = true
+    },
+
     // 完成任务
     finishTask() {
       let vm = this
@@ -165,7 +179,7 @@ export default {
       stockOut.finishTask({ taskId: this.info.id }).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '确认任务成功')
-          vm.$emit('update')
+          vm.loadStockOutTask()
           vm.finishDialog = false
         } else {
           vm.$store.commit('alertError', res.errorMessage)

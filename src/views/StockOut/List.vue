@@ -29,11 +29,16 @@ export default {
     },
     model: function(val) {
       this.setId(val)
+      this.showDetails()
+    },
+    refreshEvent: function() {
+      this.loadStockOutList()
     }
   },
   computed: mapState({
     outTime: state => state.stockOut.outTime,
-    stockOutId: state => state.stockOut.stockOutId
+    stockOutId: state => state.stockOut.stockOutId,
+    refreshEvent: state => state.stockOut.refreshEvent
   }),
   methods: {
     ...mapMutations({
@@ -42,7 +47,7 @@ export default {
     }),
 
     ...mapActions({
-      stockOutShowDetails: 'stockOut/showDetails'
+      showDetails: 'stockOut/showDetails'
     }),
 
     loadStockOutList() {
