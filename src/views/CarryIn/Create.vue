@@ -28,7 +28,7 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn color="blue-grey lighten-3" text @click="close">取消</v-btn>
-      <v-btn color="success darken-1" :disabled="!valid" @click="addTask">添加</v-btn>
+      <v-btn color="success darken-1" :disabled="!valid" :loading="loading" @click="addTask">添加</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -45,6 +45,7 @@ export default {
   },
   data: () => ({
     valid: false,
+    loading: false,
     carryInInfo: {
       trayCode: '',
       moveCount: 0,
@@ -62,7 +63,7 @@ export default {
     addTask() {
       if (this.$refs.form.validate()) {
         this.$nextTick(() => {
-          this.valid = false
+          this.loading = true
         })
 
         let vm = this
@@ -76,10 +77,11 @@ export default {
         carryIn.create(this.carryInInfo).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加任务成功')
+            vm.loading = false
             vm.$emit('close', true)
           } else {
             vm.$store.commit('alertError', res.errorMessage)
-            this.$refs.form.resetValidation()
+            vm.loading = false
           }
         })
       }

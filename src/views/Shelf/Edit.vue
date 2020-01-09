@@ -55,7 +55,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue-grey lighten-3" text @click="dialog = false">关闭</v-btn>
-        <v-btn color="success darken-1" :disabled="!valid" @click="submit">保存</v-btn>
+        <v-btn color="success darken-1" :disabled="!valid" :loading="loading" @click="submit">保存</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -69,6 +69,7 @@ export default {
   name: 'ShelfEdit',
   data: () => ({
     dialog: false,
+    loading: false,
     valid: true,
     warehouseId: 0,
     warehouseInfo: {
@@ -117,6 +118,8 @@ export default {
           vm.shelfInfo = res
         })
       }
+
+      this.loading = false
       this.dialog = true
       this.$refs.form.resetValidation()
     },
@@ -124,7 +127,7 @@ export default {
     submit: function() {
       if (this.$refs.form.validate()) {
         this.$nextTick(() => {
-          this.valid = false
+          this.loading = true
         })
 
         let vm = this
@@ -133,10 +136,11 @@ export default {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '添加货架成功')
               vm.$emit('update')
+              vm.loading = false
               vm.dialog = false
             } else {
               vm.$store.commit('alertError', res.errorMessage)
-              this.$refs.form.resetValidation()
+              vm.loading = false
             }
           })
         } else {
@@ -144,10 +148,11 @@ export default {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '修改货架成功')
               vm.$emit('update')
+              vm.loading = false
               vm.dialog = false
             } else {
               vm.$store.commit('alertError', res.errorMessage)
-              this.$refs.form.resetValidation()
+              vm.loading = false
             }
           })
         }

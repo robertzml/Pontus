@@ -33,7 +33,7 @@
       <v-btn color="primary" class="ml-4" large :disabled="!valid" @click="search">
         托 盘 搜 索
       </v-btn>
-      <v-btn color="success" class="ml-8" large :disabled="taskList.length == 0 || !valid" @click="receive">
+      <v-btn color="success" class="ml-8" large :disabled="taskList.length == 0 || !valid" :loading="loading" @click="receive">
         入 库 接 单
       </v-btn>
     </v-card-actions>
@@ -120,6 +120,7 @@ export default {
   name: 'CarryInReceiveTask',
   data: () => ({
     valid: false,
+    loading: false,
     trayCode: '',
     trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
     taskList: []
@@ -127,6 +128,7 @@ export default {
   methods: {
     init() {
       this.trayCode = ''
+      this.loading = false
       this.valid = false
       this.taskList = []
     },
@@ -147,14 +149,20 @@ export default {
         return
       }
 
+      this.$nextTick(() => {
+        this.loading = true
+      })
+
       let vm = this
       let req = { trayCode: this.trayCode, userId: this.$store.state.user.id }
       carryIn.receiveTask(req).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '入库接单成功')
+          vm.loading = false
           this.$router.push({ name: 'carryInEnterTask' })
         } else {
           vm.$store.commit('alertError', res.errorMessage)
+          vm.loading = false
         }
       })
     }

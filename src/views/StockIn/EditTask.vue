@@ -43,7 +43,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue-grey lighten-3" text @click="dialog = false">取消</v-btn>
-        <v-btn color="success darken-1" :disabled="!valid" @click="addTask">添加</v-btn>
+        <v-btn color="success darken-1" :disabled="!valid" :loading="submitLoading" @click="addTask">添加</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -62,6 +62,7 @@ export default {
   },
   data: () => ({
     dialog: false,
+    submitLoading: false,
     valid: false,
     cargoId: '',
     unitWeight: 0.0,
@@ -145,7 +146,7 @@ export default {
     addTask() {
       if (this.$refs.form.validate()) {
         this.$nextTick(() => {
-          this.valid = false
+          this.submitLoading = true
         })
 
         let vm = this
@@ -161,10 +162,11 @@ export default {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加任务成功')
             vm.$emit('update')
+            vm.submitLoading = false
             vm.dialog = false
           } else {
             vm.$store.commit('alertError', res.errorMessage)
-            this.$refs.form.resetValidation()
+            vm.submitLoading = false
           }
         })
       }

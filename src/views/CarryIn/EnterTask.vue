@@ -12,7 +12,7 @@
 
             <v-text-field label="货架码" prepend-icon="border_all" v-model="shelfCode" :rules="shelfCodeRules" autofocus></v-text-field>
 
-            <v-btn color="success" class="mt-4 ml-8" large :disabled="taskList.length == 0 || !valid" @click="enter">
+            <v-btn color="success" class="mt-4 ml-8" large :disabled="taskList.length == 0 || !valid" :loading="loading" @click="enter">
               货 物 上 架
             </v-btn>
           </v-form>
@@ -102,6 +102,7 @@ export default {
   name: 'CarryInEnterTask',
   data: () => ({
     valid: false,
+    loading: false,
     trayCode: '',
     shelfCode: '',
     taskList: [],
@@ -122,14 +123,20 @@ export default {
 
     enter() {
       if (this.$refs.form.validate()) {
+        this.$nextTick(() => {
+          this.loading = true
+        })
+
         let vm = this
         let req = { trayCode: this.trayCode, shelfCode: this.shelfCode, userId: this.$store.state.user.id }
         carryIn.enterTask(req).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '入库上架成功')
+            vm.loading = false
             this.$router.push({ name: 'home' })
           } else {
             vm.$store.commit('alertError', res.errorMessage)
+            vm.loading = false
           }
         })
       }

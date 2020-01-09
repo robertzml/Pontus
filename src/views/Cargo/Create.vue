@@ -32,7 +32,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue-grey lighten-3" text @click="dialog = false">取消</v-btn>
-        <v-btn color="success darken-1" :disabled="!valid" @click="submit">保存</v-btn>
+        <v-btn color="success darken-1" :disabled="!valid" :loading="loading" @click="submit">保存</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -49,6 +49,7 @@ export default {
   },
   data: () => ({
     dialog: false,
+    loading: false,
     valid: true,
     customerId: 0,
     cargoInfo: {
@@ -70,7 +71,7 @@ export default {
         unitWeight: 0,
         remark: ''
       }
-
+      this.loading = false
       this.dialog = true
       this.$nextTick(() => {
         this.$refs.form.resetValidation()
@@ -79,15 +80,20 @@ export default {
 
     submit() {
       if (this.$refs.form.validate()) {
+        this.$nextTick(() => {
+          this.loading = true
+        })
         let vm = this
 
         cargo.create(this.cargoInfo).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加货品成功')
             vm.$emit('update')
+            vm.loading = false
             vm.dialog = false
           } else {
             vm.$store.commit('alertError', res.errorMessage)
+            vm.loading = false
           }
         })
       }

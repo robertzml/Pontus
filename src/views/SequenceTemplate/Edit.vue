@@ -51,7 +51,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue-grey lighten-3" text @click="dialog = false">关闭</v-btn>
-        <v-btn color="success darken-1" :disabled="!valid" @click="submit">保存</v-btn>
+        <v-btn color="success darken-1" :disabled="!valid" :loading="loading" @click="submit">保存</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -64,6 +64,7 @@ export default {
   name: 'SequenceTemplateEdit',
   data: () => ({
     valid: true,
+    loading: false,
     dialog: false,
     sequenceId: 0,
     sequenceInfo: {
@@ -109,6 +110,7 @@ export default {
       }
 
       this.loadTableNames()
+      this.loading = false
       this.dialog = true
       this.$refs.form.resetValidation()
     },
@@ -133,15 +135,21 @@ export default {
 
     submit() {
       if (this.$refs.form.validate()) {
+        this.$nextTick(() => {
+          this.loading = true
+        })
+
         let vm = this
         if (!this.sequenceId || this.sequenceId == '') {
           sequence.createTemplate(this.sequenceInfo).then(res => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '添加编号模板成功')
               vm.$emit('update')
+              vm.loading = false
               vm.dialog = false
             } else {
               vm.$store.commit('alertError', res.errorMessage)
+              vm.loading = false
             }
           })
         } else {
@@ -149,9 +157,11 @@ export default {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '修改编号模板成功')
               vm.$emit('update')
+              vm.loading = false
               vm.dialog = false
             } else {
               vm.$store.commit('alertError', res.errorMessage)
+              vm.loading = false
             }
           })
         }

@@ -42,7 +42,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue-grey lighten-3" text @click="dialog = false">关闭</v-btn>
-        <v-btn color="success darken-1" :disabled="!valid" @click="submit">保存</v-btn>
+        <v-btn color="success darken-1" :disabled="!valid" :loading="loading" @click="submit">保存</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -55,6 +55,7 @@ export default {
   name: 'PositionEdit',
   data: () => ({
     valid: true,
+    loading: false,
     dialog: false,
     positionId: 0,
     positionInfo: {
@@ -84,12 +85,17 @@ export default {
           vm.positionInfo = res
         })
       }
+      this.loading = false
       this.dialog = true
       this.$refs.form.resetValidation()
     },
 
     submit() {
       if (this.$refs.form.validate()) {
+        this.$nextTick(() => {
+          this.loading = true
+        })
+
         let vm = this
         if (this.positionId == 0) {
           return
@@ -98,9 +104,11 @@ export default {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '修改仓位信息成功')
               vm.$emit('update')
+              vm.loading = false
               vm.dialog = false
             } else {
               vm.$store.commit('alertError', res.errorMessage)
+              vm.loading = false
             }
           })
         }
