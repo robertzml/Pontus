@@ -1,28 +1,29 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12 md12>
+  <v-row dense>
+    <v-col cols="12">
       <v-toolbar dense>
         <v-toolbar-title>用户管理</v-toolbar-title>
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
+          <v-btn text @click.stop="refresh">刷新</v-btn>
           <v-btn :disabled="selectedUser.length == 0" text @click.stop="showEdit">编辑用户</v-btn>
-          <v-btn text>添加用户</v-btn>
+          <v-btn text @click.stop="showCreate">添加用户</v-btn>
           <v-btn text @click.stop="enableUser">启用</v-btn>
           <v-btn text @click.stop="disableUser">禁用</v-btn>
         </v-toolbar-items>
       </v-toolbar>
-    </v-flex>
+    </v-col>
 
-    <v-flex xs12 md12>
-      <v-card dark>
+    <v-col cols="12">
+      <v-card>
         <v-card-title class="orange">
           用户列表
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="userList" :items-per-page="10" v-model="selectedUser" show-select single-select disable-sort>
             <template v-slot:item.userGroupId="{ item }">
-              {{ userGroupList.find(r => r.id == item.userGroupId).title }}
+              {{ item.userGroupId | userGroupName }}
             </template>
             <template v-slot:item.lastLoginTime="{ item }">
               {{ item.lastLoginTime | displayDateTime }}
@@ -36,21 +37,26 @@
           </v-data-table>
         </v-card-text>
       </v-card>
-    </v-flex>
+    </v-col>
 
-    <user-edit ref="userEditMod"></user-edit>
-  </v-layout>
+    <v-col cols="12">
+      <user-edit ref="userEditMod" @update="loadUser"></user-edit>
+      <user-create ref="userCreateMod" @update="loadUser"></user-create>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
 import user from '@/controllers/user'
 import userGroup from '@/controllers/userGroup'
 import UserEdit from './Edit'
+import UserCreate from './Create'
 
 export default {
   name: 'UserIndex',
   components: {
-    UserEdit
+    UserEdit,
+    UserCreate
   },
   data: () => ({
     userList: [],
@@ -81,6 +87,10 @@ export default {
       })
     },
 
+    refresh() {
+      this.loadUser()
+    },
+
     enableUser() {
       if (this.selectedUser.length == 0) {
         return
@@ -99,6 +109,10 @@ export default {
       user.enable({ id: this.selectedUser[0].id, enable: false }).then(() => {
         this.loadUser()
       })
+    },
+
+    showCreate() {
+      this.$refs.userCreateMod.init()
     },
 
     showEdit() {

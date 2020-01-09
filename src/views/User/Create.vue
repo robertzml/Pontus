@@ -9,15 +9,23 @@
           <v-container fluid>
             <v-row>
               <v-col cols="6" md="6" sm="6">
-                <v-text-field label="用户名*" v-model="userInfo.userName"></v-text-field>
+                <v-text-field label="用户名*" v-model="userInfo.userName" :rules="userNameRules"></v-text-field>
               </v-col>
 
               <v-col cols="6" md="6" sm="6">
-                <v-text-field label="姓名*" v-model="userInfo.name" readonly></v-text-field>
+                <v-text-field label="姓名*" v-model="userInfo.name" :rules="nameRules"></v-text-field>
               </v-col>
 
               <v-col cols="6" md="6" sm="6">
-                <v-select :items="$dict.userGroup" label="用户组*" v-model="userInfo.userGroupId" required></v-select>
+                <v-text-field label="密码" v-model="userInfo.password" type="password" :rules="passwordRules"></v-text-field>
+              </v-col>
+
+              <v-col cols="6" md="6" sm="6">
+                <v-text-field label="密码确认" v-model="confirmPassword" type="password" :rules="confirmPasswordRules"></v-text-field>
+              </v-col>
+
+              <v-col cols="6" md="6" sm="6">
+                <v-select :items="$dict.userGroup" label="用户组*" v-model="userInfo.userGroupId" :rules="userGroupRules"></v-select>
               </v-col>
 
               <v-col cols="6" md="6" sm="6">
@@ -41,28 +49,27 @@
 import user from '@/controllers/user'
 
 export default {
-  name: 'UserEdit',
+  name: 'UserCreate',
   data: () => ({
     dialog: false,
     loading: false,
     valid: false,
-    userId: 0,
     userInfo: {
       userName: '',
       userGroupId: 0,
       name: '',
+      password: '',
       remark: ''
-    }
+    },
+    confirmPassword: '',
+    userNameRules: [v => !!v || '请输入用户名'],
+    nameRules: [v => !!v || '请输入姓名'],
+    userGroupRules: [v => !!v || '请选择用户组'],
+    passwordRules: [v => !!v || '请输入密码'],
+    confirmPasswordRules: [v => !!v || '请输入密码']
   }),
   methods: {
-    init(userId) {
-      this.userId = userId
-
-      let vm = this
-      user.get(userId).then(res => {
-        vm.userInfo = res
-      })
-
+    init() {
       this.loading = false
       this.dialog = true
       this.$nextTick(() => {
@@ -78,9 +85,9 @@ export default {
 
         let vm = this
 
-        user.update(this.userInfo).then(res => {
+        user.create(this.userInfo).then(res => {
           if (res.status == 0) {
-            vm.$store.commit('alertSuccess', '修改用户信息成功')
+            vm.$store.commit('alertSuccess', '添加用户成功')
             vm.$emit('update')
             vm.loading = false
             vm.dialog = false

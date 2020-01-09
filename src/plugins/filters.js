@@ -24,6 +24,10 @@ const filters = Vue => {
     return val ? '是' : '否'
   })
 
+  Vue.filter('userGroupName', function(val) {
+    return util.userGroupName(val)
+  })
+
   Vue.filter('customerType', function(val) {
     return util.customerType(val)
   })

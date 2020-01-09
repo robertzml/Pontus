@@ -59,6 +59,16 @@ export default {
     }
   },
 
+  // 用户组名称
+  userGroupName: val => {
+    let ug = dict.userGroup.find(r => r.value == val)
+    if (ug != undefined) {
+      return ug.text
+    } else {
+      return ''
+    }
+  },
+
   // 客户类型
   customerType: type => {
     let ct = dict.customerType.find(r => r.value == type)
