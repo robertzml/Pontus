@@ -22,59 +22,53 @@
       </v-row>
 
       <v-row dense>
-        <v-col cols="12">
-          <v-sheet class="d-flex flex-row">
-            <div class="d-flex ml-4 mr-8 align-center">
-              <span>货架</span>
-            </div>
+        <v-col cols="3">
+          <div class="ml-4">
+            <span>货架</span>
+          </div>
 
-            <v-chip-group active-class="primary--text" v-model="sShelfId" class="d-flex justify-space-between">
-              <v-chip v-for="shelf in shelfListData" :key="shelf.id" :value="shelf.id" @click="selectShelf(shelf.id)">
-                <template v-if="shelf.type == 1">
-                  <v-avatar left>
-                    <v-icon>home</v-icon>
-                  </v-avatar>
-                  {{ shelf.number }} 号货架
-                </template>
-                <template v-else-if="shelf.type == 2">
-                  <v-avatar left>
-                    <v-icon>storage</v-icon>
-                  </v-avatar>
-                  {{ shelf.number }} 号货架
-                </template>
-                <template v-else>
-                  <v-avatar left>
-                    <v-icon>cloud</v-icon>
-                  </v-avatar>
-                  {{ shelf.number }} 号货架
-                </template>
-              </v-chip>
-            </v-chip-group>
-          </v-sheet>
+          <v-chip-group active-class="primary--text" v-model="sShelfId">
+            <v-chip v-for="shelf in shelfListData" :key="shelf.id" :value="shelf.id" @click="selectShelf(shelf.id)">
+              <template v-if="shelf.type == 1">
+                <v-avatar left>
+                  <v-icon>home</v-icon>
+                </v-avatar>
+                {{ shelf.number }} 号货架
+              </template>
+              <template v-else-if="shelf.type == 2">
+                <v-avatar left>
+                  <v-icon>storage</v-icon>
+                </v-avatar>
+                {{ shelf.number }} 号货架
+              </template>
+              <template v-else>
+                <v-avatar left>
+                  <v-icon>cloud</v-icon>
+                </v-avatar>
+                {{ shelf.number }} 号货架
+              </template>
+            </v-chip>
+          </v-chip-group>
         </v-col>
-        <v-col cols="12">
-          <v-sheet class="d-flex flex-row">
-            <div class="d-flex ml-4 mr-8 align-center">
-              <span>排</span>
-            </div>
-            <v-chip-group active-class="amber--text" v-model="sRow" class="d-flex justify-space-between">
-              <v-chip label v-for="row in rowListData" :key="row" :value="row" @click="selectRow(row)">
-                {{ row }}
-              </v-chip>
-            </v-chip-group>
-          </v-sheet>
+        <v-col cols="6">
+          <div class="ml-4">
+            <span>排</span>
+          </div>
+          <v-chip-group active-class="amber--text" v-model="sRow">
+            <v-chip label v-for="row in rowListData" :key="row" :value="row" @click="selectRow(row)">
+              {{ row }}
+            </v-chip>
+          </v-chip-group>
         </v-col>
-        <v-col cols="12">
-          <v-sheet class="d-flex flex-row">
-            <div class="d-flex ml-4 mr-8 align-center">
-              <span>层</span>
-            </div>
-            <v-chip-group active-class="amber--text" v-model="sLayer" class="d-flex justify-space-between">
-              <v-chip label v-for="layer in layerListData" :key="layer" :value="layer" @click="selectLayer(layer)">
-                {{ layer }}
-              </v-chip>
-            </v-chip-group>
-          </v-sheet>
+        <v-col cols="3">
+          <div class="ml-4 mr-8">
+            <span>层</span>
+          </div>
+          <v-chip-group active-class="amber--text" v-model="sLayer">
+            <v-chip label v-for="layer in layerListData" :key="layer" :value="layer" @click="selectLayer(layer)">
+              {{ layer }}
+            </v-chip>
+          </v-chip-group>
         </v-col>
       </v-row>
 
@@ -175,18 +169,35 @@ export default {
           number: this.storeList.find(s => s.shelfId == r).shelfNumber
         }
       })
+
+      this.shelfListData.sort(function(a, b) {
+        if (a.number > b.number) {
+          return 1
+        }
+        if (a.number < b.number) {
+          return -1
+        }
+
+        return 0
+      })
     },
 
     // 选择货架
     selectShelf(id) {
       let rows = this.storeList.filter(r => r.shelfId == id).map(r => r.row)
       this.rowListData = [...new Set(rows)]
+      this.rowListData.sort(function(a, b) {
+        return a - b
+      })
     },
 
     // 选择排
     selectRow(row) {
       let layers = this.storeList.filter(r => r.shelfId == this.sShelfId && r.row == row).map(r => r.layer)
       this.layerListData = [...new Set(layers)]
+      this.layerListData.sort(function(a, b) {
+        return a - b
+      })
     },
 
     // 选择层

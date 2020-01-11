@@ -5,6 +5,9 @@
     </v-card-title>
     <v-card-text class="px-0">
       <v-data-table :headers="headers" :items="itemList" hide-default-footer disable-filtering disable-pagination>
+        <template v-slot:item.type="{ item }">
+          {{ item.type | carryOutTaskType }}
+        </template>
         <template v-slot:item.status="{ item }">
           {{ item.status | displayStatus }}
         </template>
@@ -32,6 +35,7 @@ export default {
   data: () => ({
     headers: [
       { text: '托盘码', value: 'trayCode' },
+      { text: '搬运类型', value: 'type' },
       { text: '搬运数量', value: 'moveCount' },
       { text: '搬运重量(t)', value: 'moveWeight' },
       { text: '仓位码', value: 'positionNumber' },

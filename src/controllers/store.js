@@ -3,6 +3,10 @@ import * as axios from '../axios'
 export default {
   name: 'store',
 
+  /**
+   * 按仓位查找在库库存
+   * @param {仓位ID} positionId
+   */
   async findStoreIn(positionId) {
     const res = await axios._get({ url: '/store/findStoreIn', params: { positionId: positionId } })
     return res.data

@@ -43,6 +43,10 @@
               <v-divider></v-divider>
               <v-list dense>
                 <v-list-item>
+                  <v-list-item-content>托盘码:</v-list-item-content>
+                  <v-list-item-content class="align-end">{{ sStoreInfo.trayCode }}</v-list-item-content>
+                </v-list-item>
+                <v-list-item>
                   <v-list-item-content>货品名称:</v-list-item-content>
                   <v-list-item-content class="align-end">{{ sStoreInfo.cargoName }}</v-list-item-content>
                 </v-list-item>
@@ -72,11 +76,15 @@
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>保质期:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ sStoreInfo.durability }}</v-list-item-content>
+                  <v-list-item-content class="align-end">{{ sStoreInfo.durability }} 月</v-list-item-content>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-content>入库时间:</v-list-item-content>
                   <v-list-item-content class="align-end">{{ $util.displayDate(sStoreInfo.inTime) }}</v-list-item-content>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-content>是否有其它货物:</v-list-item-content>
+                  <v-list-item-content class="align-end">{{ this.positionStores.length > 1 ? '是' : '否' }}</v-list-item-content>
                 </v-list-item>
               </v-list>
 
@@ -175,6 +183,7 @@ export default {
     storeListData: [],
     sPositionInfo: null,
     sStoreInfo: null,
+    positionStores: [],
     digitRules: [v => (v != null && /^\d+/.test(v)) || '请输入数字'],
     taskHeaders: [
       { text: '托盘码', value: 'trayCode', align: 'left' },
@@ -218,6 +227,9 @@ export default {
         this.$refs.form.resetValidation()
         this.storeListData = []
       }
+    },
+    'editedItem.moveCount': function(val) {
+      this.editedItem.moveWeight = (val * this.editedItem.unitWeight) / 1000
     }
   },
   computed: {
@@ -261,6 +273,20 @@ export default {
     selectStore(store, pos) {
       this.sStoreInfo = store
       this.sPositionInfo = pos
+
+      if (pos != null) {
+        this.loadPositionStore()
+      } else {
+        this.positionStores = []
+      }
+    },
+
+    // 获取仓位上所有库存
+    loadPositionStore() {
+      let vm = this
+      store.findStoreIn(this.sPositionInfo.id).then(res => {
+        vm.positionStores = res
+      })
     },
 
     // 添加到出库任务

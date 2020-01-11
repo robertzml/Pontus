@@ -18,10 +18,10 @@ export default {
   },
 
   /**
-   * 获取待办出库搬运任务
+   * 获取待办出库搬运任务仓位码
    */
-  async listToDo() {
-    const res = await axios._get({ url: '/carryOutTask/listToDo ' })
+  async listToOut() {
+    const res = await axios._get({ url: '/carryOutTask/listToOut ' })
     return res.data
   },
 

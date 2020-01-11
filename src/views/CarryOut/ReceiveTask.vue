@@ -3,11 +3,11 @@
     <v-col cols="3">
       <v-card>
         <v-list shaped>
-          <v-subheader class="subtitle-1 teal--text text--lighten-2">出库任务列表</v-subheader>
-          <v-list-item-group v-model="taskInfo" color="primary" mandatory>
-            <v-list-item v-for="item in carryOutList" :key="item.id" :value="item">
+          <v-subheader class="subtitle-1 teal--text text--lighten-2">待出库仓位</v-subheader>
+          <v-list-item-group v-model="positionInfo" color="primary" mandatory>
+            <v-list-item v-for="item in outPositionList" :key="item" :value="item">
               <v-list-item-content>
-                <v-list-item-title v-text="item.taskCode"></v-list-item-title>
+                <v-list-item-title v-text="item"></v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -111,7 +111,9 @@ export default {
     valid: true,
     loading: false,
     taskInfo: '',
+    positionInfo: {},
     carryOutList: [],
+    outPositionList: [],
     moveCount: 0
   }),
   methods: {
@@ -119,14 +121,14 @@ export default {
       this.taskInfo = ''
       this.loading = false
       this.carryOutList = []
-
+      this.outPositionList = []
       this.loadTask()
     },
 
     loadTask() {
       let vm = this
-      carryOut.listToDo().then(res => {
-        vm.carryOutList = res
+      carryOut.listToOut().then(res => {
+        vm.outPositionList = res
       })
     },
 
