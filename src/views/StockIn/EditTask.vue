@@ -23,7 +23,7 @@
               </v-col>
 
               <v-col cols="6" md="4" sm="6">
-                <v-text-field label="规格" v-model="taskInfo.specification"></v-text-field>
+                <v-text-field label="批次" v-model="taskInfo.batch"></v-text-field>
               </v-col>
               <v-col cols="6" md="4" sm="6">
                 <v-text-field label="产地" v-model="taskInfo.originPlace"></v-text-field>
@@ -73,7 +73,7 @@ export default {
       inCount: 0,
       unitWeight: 0.0,
       inWeight: 0.0,
-      specification: '',
+      batch: '',
       originPlace: '',
       durability: 0,
       remark: ''
@@ -126,7 +126,7 @@ export default {
         inCount: 0,
         unitWeight: 0.0,
         inWeight: 0.0,
-        specification: '',
+        batch: '',
         originPlace: '',
         durability: 0,
         remark: '',

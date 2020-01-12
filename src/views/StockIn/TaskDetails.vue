@@ -39,6 +39,9 @@
               <v-text-field v-model="info.specification" label="规格" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="3" md="3" sm="6">
+              <v-text-field v-model="info.batch" label="批次" hide-details readonly></v-text-field>
+            </v-col>
+            <v-col cols="3" md="3" sm="6">
               <v-text-field v-model="info.originPlace" label="产地" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="3" md="3" sm="6">
@@ -69,13 +72,30 @@
       </v-card-actions>
     </v-card>
 
-    <carry-in-list :item-list="carryInTaskList"></carry-in-list>
+    <v-card class="mx-auto">
+      <v-card-title class="amber">
+        搬运入库任务
+      </v-card-title>
+      <v-card-text class="px-0">
+        <v-data-table :headers="carryInTaskHeaders" :items="carryInTaskList" hide-default-footer disable-filtering disable-pagination>
+          <template v-slot:item.status="{ item }">
+            {{ item.status | displayStatus }}
+          </template>
+          <template v-slot:item.action="{ item }">
+            <v-btn small color="success" @click="viewCarryInDetails(item)">
+              <v-icon left dark>pageview</v-icon>
+              查看
+            </v-btn>
+          </template>
+        </v-data-table>
+      </v-card-text>
+    </v-card>
 
     <v-navigation-drawer v-model="createDrawer" fixed temporary right width="420">
       <carry-in-create :stock-in-task="info" @close="closeCarryInCreate"></carry-in-create>
     </v-navigation-drawer>
 
-    <v-navigation-drawer v-model="drawer" fixed temporary right width="420">
+    <v-navigation-drawer v-model="viewDrawer" fixed temporary right width="420">
       <carry-in-details @close="closeCarryInDetails"></carry-in-details>
     </v-navigation-drawer>
 
@@ -99,35 +119,35 @@ import stockIn from '@/controllers/stockIn'
 import carryIn from '@/controllers/carryIn'
 import CarryInCreate from '../CarryIn/Create'
 import CarryInDetails from '../CarryIn/Details'
-import CarryInList from '../CarryIn/List'
 
 export default {
   name: 'StockInTaskDetails',
   props: {},
   components: {
     CarryInCreate,
-    CarryInDetails,
-    CarryInList
+    CarryInDetails
   },
   data: () => ({
     createDrawer: false,
+    viewDrawer: false,
     finishDialog: false,
     carryInTaskList: [],
-    carryInTaskInfo: {}
+    carryInTaskInfo: {},
+    carryInTaskHeaders: [
+      { text: '托盘码', value: 'trayCode' },
+      { text: '搬运数量', value: 'moveCount' },
+      { text: '搬运重量(t)', value: 'moveWeight' },
+      { text: '仓位码', value: 'positionNumber' },
+      { text: '接单人', value: 'receiveUserName' },
+      { text: '状态', value: 'status' },
+      { text: '操作', value: 'action', sortable: false }
+    ]
   }),
   computed: {
     ...mapState({
       info: state => state.stockIn.stockInTaskInfo,
       refreshEvent: state => state.stockIn.refreshEvent
-    }),
-    drawer: {
-      get() {
-        return this.$store.state.stockIn.showTaskDrawer
-      },
-      set(val) {
-        this.$store.state.stockIn.showTaskDrawer = val
-      }
-    }
+    })
   },
   watch: {
     refreshEvent: function() {
@@ -137,7 +157,8 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setTaskInfo: 'stockIn/setTaskInfo'
+      setTaskInfo: 'stockIn/setTaskInfo',
+      setCarryInTaskInfo: 'stockIn/setCarryInTaskInfo'
     }),
 
     loadStockInTask() {
@@ -162,16 +183,23 @@ export default {
     // 关闭入库搬运
     closeCarryInCreate(update) {
       this.createDrawer = false
-      if (!update) {
-        return
+      if (update) {
+        this.loadCarryInTask()
       }
+    },
 
-      this.loadCarryInTask()
+    // 查看搬运入库任务信息
+    viewCarryInDetails(item) {
+      this.setCarryInTaskInfo(item)
+      this.viewDrawer = true
     },
 
     // 关闭入库搬运信息
-    closeCarryInDetails() {
-      this.loadCarryInTask()
+    closeCarryInDetails(update) {
+      this.viewDrawer = false
+      if (update) {
+        this.loadCarryInTask()
+      }
     },
 
     showFinish() {

@@ -20,8 +20,6 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
-
 export default {
   name: 'CarryInList',
   props: {
@@ -41,10 +39,9 @@ export default {
     ]
   }),
   methods: {
-    ...mapMutations({ showTaskDrawer: 'stockIn/showTaskDrawer' }),
-
     viewItem(item) {
-      this.showTaskDrawer(item)
+      //this.showTaskDrawer(item)
+      console.log(item)
     }
   }
 }

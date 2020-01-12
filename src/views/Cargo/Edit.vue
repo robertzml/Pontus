@@ -22,6 +22,10 @@
               </v-col>
 
               <v-col cols="6" md="6" sm="6">
+                <v-text-field label="规格" v-model="cargoInfo.specification"></v-text-field>
+              </v-col>
+
+              <v-col cols="12" md="12" sm="12">
                 <v-text-field label="备注" v-model="cargoInfo.remark"></v-text-field>
               </v-col>
             </v-row>
@@ -58,6 +62,7 @@ export default {
       customerId: 0,
       categoryId: 0,
       unitWeight: 0,
+      specification: '',
       remark: ''
     },
     nameRules: [v => !!v || '请输入货品名称']

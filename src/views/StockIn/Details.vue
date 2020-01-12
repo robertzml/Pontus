@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-sheet class="transparent">
     <v-expansion-panels v-model="panel" multiple>
       <v-expansion-panel>
         <v-expansion-panel-header ripple>入库单信息</v-expansion-panel-header>
@@ -99,7 +99,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>
+  </v-sheet>
 </template>
 
 <script>
@@ -123,7 +123,7 @@ export default {
       { text: '入库数量', value: 'inCount' },
       { text: '单位重量(kg)', value: 'unitWeight' },
       { text: '总重量(t)', value: 'inWeight' },
-      { text: '规格', value: 'specification' },
+      { text: '批次', value: 'batch' },
       { text: '产地', value: 'originPlace' },
       { text: '保质期(月)', value: 'durability' },
       { text: '状态', value: 'status' },

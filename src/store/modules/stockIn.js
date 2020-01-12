@@ -7,9 +7,6 @@ export default {
     // 货品入库显示页面
     tab: 'StockInDetails',
 
-    // 显示入库任务页面侧边
-    showTaskDrawer: false,
-
     // 当前入库日期
     inTime: new Date().toISOString().substr(0, 10),
 
@@ -46,17 +43,6 @@ export default {
       state.tab = tab
     },
 
-    // 设置入库任务侧边显示 搬运任务
-    showTaskDrawer: (state, payload) => {
-      state.showTaskDrawer = true
-      state.carryInTaskInfo = payload
-    },
-
-    // 设置入库任务侧边关闭
-    closeTaskDrawer: state => {
-      state.showTaskDrawer = false
-    },
-
     // 设置当前入库日期
     setInTime: (state, inTime) => {
       state.inTime = inTime
@@ -75,6 +61,11 @@ export default {
     // 设置入库任务
     setTaskInfo: (state, payload) => {
       state.stockInTaskInfo = payload
+    },
+
+    // 设置搬运入库任务
+    setCarryInTaskInfo: (state, payload) => {
+      state.carryInTaskInfo = payload
     },
 
     // 刷新操作

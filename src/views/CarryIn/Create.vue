@@ -68,7 +68,6 @@ export default {
 
         let vm = this
 
-        this.carryInInfo.type = 1
         this.carryInInfo.stockInTaskId = this.stockInTask.id
         this.carryInInfo.moveWeight = this.totalWeight
         this.carryInInfo.checkUserId = this.$store.state.user.id

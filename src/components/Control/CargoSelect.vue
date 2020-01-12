@@ -18,8 +18,14 @@
     <template v-slot:item="data">
       <v-list-item-content>
         <v-list-item-title v-html="data.item.name"></v-list-item-title>
-        <v-list-item-subtitle>类别：{{ data.item.categoryName }}</v-list-item-subtitle>
-        <v-list-item-subtitle>代码：{{ data.item.categoryNumber }}</v-list-item-subtitle>
+        <v-list-item-subtitle>
+          <span class="mr-4">类别：{{ data.item.categoryName }}</span>
+          <span>代码：{{ data.item.categoryNumber }}</span>
+        </v-list-item-subtitle>
+        <v-list-item-subtitle>
+          <span class="mr-4">单位重量：{{ data.item.unitWeight }} kg</span>
+          <span>规格：{{ data.item.specification }}</span>
+        </v-list-item-subtitle>
         <v-list-item-subtitle>客户：{{ data.item.customerName }}</v-list-item-subtitle>
       </v-list-item-content>
     </template>

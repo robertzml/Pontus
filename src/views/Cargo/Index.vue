@@ -49,7 +49,7 @@
 
         <cargo-create ref="cargoCreateMod" @update="submit"></cargo-create>
         <cargo-edit ref="cargoEditMod"></cargo-edit>
-        <cargo-details ref="cargoDetailsMod"></cargo-details>
+        <cargo-details ref="cargoDetailsMod" @update="submit"></cargo-details>
       </v-card>
     </v-col>
   </v-row>
@@ -82,11 +82,11 @@ export default {
       { text: '类别代码', value: 'categoryNumber' },
       { text: '类别名称', value: 'categoryName' },
       { text: '单位重量(kg)', value: 'unitWeight' },
+      { text: '规格', value: 'specification' },
       { text: '登记时间', value: 'registerTime' },
       { text: '操作', value: 'action', sortable: false }
     ]
   }),
-  watch: {},
   methods: {
     init() {
       this.$refs.form.resetValidation()

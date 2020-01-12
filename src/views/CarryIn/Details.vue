@@ -64,14 +64,14 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-btn color="blue-grey lighten-3" text @click="closeTaskDrawer">关闭</v-btn>
+      <v-btn color="blue-grey lighten-3" text @click="close">关闭</v-btn>
       <v-btn color="success darken-1" v-if="carryInTask.status == 74" :disabled="!enableConfirm" @click="confirmTask">入库确认</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 import carryIn from '@/controllers/carryIn'
 
 export default {
@@ -86,9 +86,9 @@ export default {
     })
   },
   methods: {
-    ...mapMutations({
-      closeTaskDrawer: 'stockIn/closeTaskDrawer'
-    }),
+    close() {
+      this.$emit('close', false)
+    },
 
     confirmTask() {
       this.$nextTick(() => {
@@ -106,8 +106,7 @@ export default {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '任务确认成功')
           vm.enableConfirm = true
-          vm.$emit('close')
-          vm.closeTaskDrawer()
+          vm.$emit('close', true)
         } else {
           vm.$store.commit('alertError', res.errorMessage)
           this.enableConfirm = true
