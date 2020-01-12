@@ -4,7 +4,7 @@
     <navigation-bar :drawer="drawer"></navigation-bar>
 
     <v-content>
-      <v-container fluid class="grid-list-md">
+      <v-container fluid>
         <router-view></router-view>
       </v-container>
     </v-content>

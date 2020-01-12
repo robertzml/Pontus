@@ -18,6 +18,15 @@ export default {
   },
 
   /**
+   * 根据出库任务查找
+   * @param {出库任务ID}} taskId
+   */
+  async listByStockOutTask(taskId) {
+    const res = await axios._get({ url: '/carryInTask/findByStockOutTask', params: { taskId: taskId } })
+    return res.data
+  },
+
+  /**
    * 根据托盘码搜索入库任务
    * @param {托盘码} trayCode
    */

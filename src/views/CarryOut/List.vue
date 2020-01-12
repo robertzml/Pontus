@@ -1,7 +1,7 @@
 <template>
   <v-card class="mx-auto">
     <v-card-title class="orange">
-      搬运任务
+      搬运出库任务
     </v-card-title>
     <v-card-text class="px-0">
       <v-data-table :headers="headers" :items="itemList" hide-default-footer disable-filtering disable-pagination>

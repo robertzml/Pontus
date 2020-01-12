@@ -73,6 +73,10 @@
     </v-col>
 
     <v-col cols="12">
+      <carry-in-list :item-list="carryInTaskList"></carry-in-list>
+    </v-col>
+
+    <v-col cols="12">
       <v-dialog v-model="carryOutDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
         <carry-out-create @close="closeCarryOut"></carry-out-create>
       </v-dialog>
@@ -100,9 +104,11 @@
 import { mapState, mapMutations } from 'vuex'
 import stockOut from '@/controllers/stockOut'
 import carryOut from '@/controllers/carryOut'
+import carryIn from '@/controllers/carryIn'
 import CarryOutCreate from '../CarryOut/Create'
 import CarryOutList from '../CarryOut/List'
 import CarryOutDetails from '../CarryOut/Details'
+import CarryInList from '../CarryIn/List'
 
 export default {
   name: 'StockOutTaskDetails',
@@ -110,12 +116,14 @@ export default {
   components: {
     CarryOutCreate,
     CarryOutList,
-    CarryOutDetails
+    CarryOutDetails,
+    CarryInList
   },
   data: () => ({
     finishLoading: false,
     finishDialog: false,
-    carryOutTaskList: []
+    carryOutTaskList: [],
+    carryInTaskList: []
   }),
   computed: {
     ...mapState({
@@ -143,6 +151,7 @@ export default {
     refreshEvent: function() {
       this.loadStockOutTask()
       this.loadCarryOutTask()
+      this.loadCarryInTask()
     }
   },
   methods: {
@@ -162,6 +171,14 @@ export default {
       let vm = this
       carryOut.listByStockOutTask(this.info.id).then(res => {
         vm.carryOutTaskList = res
+      })
+    },
+
+    // 载入临时搬运入库任务
+    loadCarryInTask() {
+      let vm = this
+      carryIn.listByStockOutTask(this.info.id).then(res => {
+        vm.carryInTaskList = res
       })
     },
 
@@ -203,6 +220,7 @@ export default {
   },
   mounted: function() {
     this.loadCarryOutTask()
+    this.loadCarryInTask()
   }
 }
 </script>

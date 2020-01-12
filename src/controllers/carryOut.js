@@ -21,7 +21,16 @@ export default {
    * 获取待办出库搬运任务仓位码
    */
   async listToOut() {
-    const res = await axios._get({ url: '/carryOutTask/listToOut ' })
+    const res = await axios._get({ url: '/carryOutTask/listToOut' })
+    return res.data
+  },
+
+  /**
+   * 根据仓位获取出库搬运任务
+   * @param {仓位码} positionNumber
+   */
+  async findByPosition(positionNumber) {
+    const res = await axios._get({ url: '/carryOutTask/findByPosition', params: { positionNumber: positionNumber } })
     return res.data
   },
 
