@@ -8,7 +8,7 @@
       <v-row>
         <v-col cols="12">
           <v-form ref="form" v-model="valid" lazy-validation>
-            <v-text-field label="任务码" prepend-icon="dns" v-model="taskCode" autocomplete="off" readonly></v-text-field>
+            <v-text-field label="仓位码" prepend-icon="dns" v-model="positionNumber" autocomplete="off" readonly></v-text-field>
 
             <v-text-field
               label="托盘码"
@@ -127,7 +127,7 @@ export default {
   data: () => ({
     valid: false,
     loading: false,
-    taskCode: '',
+    positionNumber: '',
     trayCode: '',
     shelfCode: '',
     taskList: [],
@@ -142,7 +142,7 @@ export default {
       carryOut.findCurrentReceive(userId).then(res => {
         vm.taskList = res
         if (vm.taskList.length > 0) {
-          vm.taskCode = vm.taskList[0].taskCode
+          vm.positionNumber = vm.taskList[0].positionNumber
         }
       })
     },
@@ -154,7 +154,7 @@ export default {
         })
 
         let vm = this
-        let req = { taskCode: this.taskCode, trayCode: this.trayCode, shelfCode: this.shelfCode, userId: this.$store.state.user.id }
+        let req = { trayCode: this.trayCode, shelfCode: this.shelfCode, userId: this.$store.state.user.id }
         carryOut.leaveTask(req).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '出库下架成功')

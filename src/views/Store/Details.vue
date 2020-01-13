@@ -65,13 +65,13 @@
               <v-text-field v-model="item.specification" label="规格" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6" md="3" sm="4">
+              <v-text-field v-model="item.batch" label="批次" hide-details readonly></v-text-field>
+            </v-col>
+            <v-col cols="6" md="3" sm="4">
               <v-text-field v-model="item.originPlace" label="产地" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6" md="3" sm="4">
               <v-text-field v-model="item.durability" label="保质期" suffix="月" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" md="3" sm="4">
-              <v-text-field v-model="item.trayCode" label="托盘码" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6" md="3" sm="4">
               <v-text-field v-model="item.totalCount" label="货品总数量" hide-details readonly></v-text-field>
@@ -84,6 +84,9 @@
             </v-col>
             <v-col cols="6" md="3" sm="4">
               <v-text-field v-model="item.storeWeight" label="在库重量" suffix="吨" hide-details readonly></v-text-field>
+            </v-col>
+            <v-col cols="6" md="3" sm="4">
+              <v-text-field v-model="item.trayCode" label="托盘码" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6" md="3" sm="4">
               <v-text-field :value="$util.displayDate(item.inTime)" label="入库时间" hide-details readonly></v-text-field>

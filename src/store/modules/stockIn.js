@@ -20,9 +20,6 @@ export default {
     // 当前查看入库任务信息
     stockInTaskInfo: {},
 
-    // 当前查看搬运任务信息
-    carryInTaskInfo: {},
-
     // 刷新事件
     refreshEvent: false
   },
@@ -62,11 +59,6 @@ export default {
     // 设置入库任务
     setTaskInfo: (state, payload) => {
       state.stockInTaskInfo = payload
-    },
-
-    // 设置搬运入库任务
-    setCarryInTaskInfo: (state, payload) => {
-      state.carryInTaskInfo = payload
     },
 
     // 刷新操作

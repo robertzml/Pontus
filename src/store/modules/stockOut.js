@@ -11,9 +11,6 @@ export default {
     // 搬运出库编辑框显示
     carryOutDialog: false,
 
-    // 显示出库任务页面侧边
-    showTaskDrawer: false,
-
     // 当前出库日期
     outTime: moment().format('YYYY-MM-DD'),
 
@@ -26,7 +23,7 @@ export default {
     // 当前出库任务对象
     stockOutTaskInfo: {},
 
-    // 当前查看搬运任务信息
+    // 当前查看搬运出库任务信息
     carryOutTaskInfo: {},
 
     // 刷新事件
@@ -54,17 +51,6 @@ export default {
       state.carryOutDialog = val
     },
 
-    // 设置出库任务侧边显示 搬运任务
-    showTaskDrawer: (state, payload) => {
-      state.showTaskDrawer = true
-      state.carryOutTaskInfo = payload
-    },
-
-    // 设置出库任务侧边关闭
-    closeTaskDrawer: state => {
-      state.showTaskDrawer = false
-    },
-
     // 设置当前出库日期
     setOutTime: (state, outTime) => {
       state.outTime = outTime
@@ -83,6 +69,11 @@ export default {
     // 设置出库任务
     setTaskInfo: (state, payload) => {
       state.stockOutTaskInfo = payload
+    },
+
+    // 设置搬运出库任务
+    setCarryOutTaskInfo: (state, payload) => {
+      state.carryOutTaskInfo = payload
     },
 
     // 刷新操作

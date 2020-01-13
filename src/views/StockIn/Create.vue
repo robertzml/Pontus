@@ -99,7 +99,7 @@ export default {
   methods: {
     init: function() {
       this.stockInInfo = {
-        inTime: moment().format('YYYY-MM-DD'),
+        inTime: this.$moment().format('YYYY-MM-DD'),
         monthTime: '',
         flowNumber: '',
         type: 1,

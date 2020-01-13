@@ -19,11 +19,18 @@
             <v-col cols="6">
               <v-text-field label="托盘码" v-model="carryOutTask.trayCode" hide-details readonly></v-text-field>
             </v-col>
+
             <v-col cols="6">
-              <v-text-field label="搬运数量" v-model="carryOutTask.moveCount" hide-details readonly></v-text-field>
+              <v-text-field label="在库数量" v-model="carryOutTask.storeCount" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6">
-              <v-text-field label="搬运重量" v-model="carryOutTask.moveWeight" suffix="吨" hide-details readonly></v-text-field>
+              <v-text-field label="在库重量" v-model="carryOutTask.storeWeight" suffix="吨" hide-details readonly></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field label="移出数量" v-model="carryOutTask.moveCount" hide-details readonly></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field label="移出重量" v-model="carryOutTask.moveWeight" suffix="吨" hide-details readonly></v-text-field>
             </v-col>
 
             <v-col cols="6">
@@ -55,49 +62,66 @@
             </v-col>
           </v-row>
 
-          <v-row v-if="carryOutTask.status == 83">
-            <v-col cols="12">
-              <v-text-field label="出库确认备注" v-model="remark"></v-text-field>
-            </v-col>
-          </v-row>
+          <v-sheet :elevation="10" color="blue-grey darken-2" class="mt-4 pa-2" v-if="carryOutTask.status == 83">
+            <v-subheader>出库确认</v-subheader>
+            <v-row>
+              <v-col cols="6">
+                <v-text-field label="出库数量" v-model="finishInfo.moveCount"></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-text-field label="出库重量" v-model="moveWeight" suffix="吨" readonly></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field label="出库确认备注" v-model="finishInfo.remark"></v-text-field>
+              </v-col>
+            </v-row>
+          </v-sheet>
         </v-container>
       </v-form>
     </v-card-text>
 
     <v-card-actions>
-      <v-btn color="blue-grey lighten-3" text @click="closeTaskDrawer">关闭</v-btn>
+      <v-btn color="blue-grey lighten-3" text @click="close">关闭</v-btn>
       <v-btn color="success darken-1" v-if="carryOutTask.status == 83" @click="confirmTask" :loading="submitLoading">出库确认</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 import carryOut from '@/controllers/carryOut'
 
 export default {
   name: 'CarryOutDetails',
   data: () => ({
     submitLoading: false,
-    remark: ''
+    finishInfo: {
+      moveCount: 0,
+      remark: ''
+    }
   }),
   computed: {
     ...mapState({
       carryOutTask: state => state.stockOut.carryOutTaskInfo
-    })
+    }),
+    moveWeight: function() {
+      return (this.finishInfo.moveCount * this.carryOutTask.unitWeight) / 1000
+    }
   },
   methods: {
-    ...mapMutations({
-      closeTaskDrawer: 'stockOut/closeTaskDrawer'
-    }),
+    close() {
+      this.$emit('close', false)
+    },
 
     confirmTask() {
       let vm = this
 
       let model = {
         taskId: this.carryOutTask.id,
+        moveCount: this.finishInfo.moveCount,
+        moveWeight: this.moveWeight,
         userId: this.$store.state.user.id,
-        remark: this.remark
+        remark: this.finishInfo.remark
       }
 
       this.$nextTick(() => {
@@ -107,9 +131,8 @@ export default {
       carryOut.finishTask(model).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '任务确认成功')
-          vm.$emit('close')
           vm.submitLoading = false
-          vm.closeTaskDrawer()
+          vm.$emit('close', true)
         } else {
           vm.$store.commit('alertError', res.errorMessage)
           vm.submitLoading = false

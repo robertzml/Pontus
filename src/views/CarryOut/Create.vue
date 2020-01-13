@@ -71,6 +71,10 @@
                   <v-list-item-content class="align-end">{{ sStoreInfo.specification }}</v-list-item-content>
                 </v-list-item>
                 <v-list-item>
+                  <v-list-item-content>批次:</v-list-item-content>
+                  <v-list-item-content class="align-end">{{ sStoreInfo.batch }}</v-list-item-content>
+                </v-list-item>
+                <v-list-item>
                   <v-list-item-content>产地:</v-list-item-content>
                   <v-list-item-content class="align-end">{{ sStoreInfo.originPlace }}</v-list-item-content>
                 </v-list-item>

@@ -96,7 +96,7 @@
     </v-navigation-drawer>
 
     <v-navigation-drawer v-model="viewDrawer" fixed temporary right width="420">
-      <carry-in-details @close="closeCarryInDetails"></carry-in-details>
+      <carry-in-details :carry-in-task="carryInTask" @close="closeCarryInDetails"></carry-in-details>
     </v-navigation-drawer>
 
     <v-dialog v-model="finishDialog" persistent max-width="300">
@@ -132,7 +132,6 @@ export default {
     viewDrawer: false,
     finishDialog: false,
     carryInTaskList: [],
-    carryInTaskInfo: {},
     carryInTaskHeaders: [
       { text: '托盘码', value: 'trayCode' },
       { text: '搬运数量', value: 'moveCount' },
@@ -141,7 +140,8 @@ export default {
       { text: '接单人', value: 'receiveUserName' },
       { text: '状态', value: 'status' },
       { text: '操作', value: 'action', sortable: false }
-    ]
+    ],
+    carryInTask: {}
   }),
   computed: {
     ...mapState({
@@ -157,8 +157,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setTaskInfo: 'stockIn/setTaskInfo',
-      setCarryInTaskInfo: 'stockIn/setCarryInTaskInfo'
+      setTaskInfo: 'stockIn/setTaskInfo'
     }),
 
     loadStockInTask() {
@@ -190,7 +189,7 @@ export default {
 
     // 查看搬运入库任务信息
     viewCarryInDetails(item) {
-      this.setCarryInTaskInfo(item)
+      this.carryInTask = item
       this.viewDrawer = true
     },
 

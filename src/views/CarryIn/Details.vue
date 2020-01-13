@@ -65,26 +65,23 @@
 
     <v-card-actions>
       <v-btn color="blue-grey lighten-3" text @click="close">关闭</v-btn>
-      <v-btn color="success darken-1" v-if="carryInTask.status == 74" :disabled="!enableConfirm" @click="confirmTask">入库确认</v-btn>
+      <v-btn color="success darken-1" v-if="carryInTask.status == 74" :loading="submitLoading" @click="confirmTask">入库确认</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import carryIn from '@/controllers/carryIn'
 
 export default {
   name: 'CarryInDetails',
+  props: {
+    carryInTask: Object
+  },
   data: () => ({
-    enableConfirm: true,
+    submitLoading: false,
     remark: ''
   }),
-  computed: {
-    ...mapState({
-      carryInTask: state => state.stockIn.carryInTaskInfo
-    })
-  },
   methods: {
     close() {
       this.$emit('close', false)
@@ -92,7 +89,7 @@ export default {
 
     confirmTask() {
       this.$nextTick(() => {
-        this.enableConfirm = false
+        this.submitLoading = true
       })
       let vm = this
 
@@ -105,11 +102,11 @@ export default {
       carryIn.finishTask(model).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '任务确认成功')
-          vm.enableConfirm = true
+          vm.submitLoading = false
           vm.$emit('close', true)
         } else {
           vm.$store.commit('alertError', res.errorMessage)
-          this.enableConfirm = true
+          this.submitLoading = false
         }
       })
     }
