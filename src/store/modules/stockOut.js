@@ -1,4 +1,5 @@
 // 出库模块
+import moment from 'moment'
 
 export default {
   namespaced: true,
@@ -14,7 +15,7 @@ export default {
     showTaskDrawer: false,
 
     // 当前出库日期
-    outTime: new Date().toISOString().substr(0, 10),
+    outTime: moment().format('YYYY-MM-DD'),
 
     // 当前出库单ID
     stockOutId: '',

@@ -1,4 +1,5 @@
 // 入库模块
+import moment from 'moment'
 
 export default {
   namespaced: true,
@@ -8,7 +9,7 @@ export default {
     tab: 'StockInDetails',
 
     // 当前入库日期
-    inTime: new Date().toISOString().substr(0, 10),
+    inTime: moment().format('YYYY-MM-DD'),
 
     // 当前入库单ID
     stockInId: '',

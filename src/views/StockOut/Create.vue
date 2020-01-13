@@ -101,7 +101,7 @@ export default {
   methods: {
     init: function() {
       this.stockOutInfo = {
-        outTime: new Date().toISOString().substr(0, 10),
+        outTime: moment().format('YYYY-MM-DD'),
         monthTime: '',
         flowNumber: '',
         type: 1,
