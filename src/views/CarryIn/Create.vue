@@ -71,7 +71,6 @@ export default {
         this.carryInInfo.stockInTaskId = this.stockInTask.id
         this.carryInInfo.moveWeight = this.totalWeight
         this.carryInInfo.checkUserId = this.$store.state.user.id
-        this.carryInInfo.checkUserName = this.$store.state.user.name
 
         carryIn.create(this.carryInInfo).then(res => {
           if (res.status == 0) {
