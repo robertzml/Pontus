@@ -66,5 +66,11 @@ export default {
   async finishTask(data) {
     const res = await axios._postqs({ url: '/stockIn/finishTask', params: data })
     return res.data
+  },
+
+  // 删除入库任务
+  async deleteTask(data) {
+    const res = await axios._postqs({ url: '/stockIn/deleteTask', params: data })
+    return res.data
   }
 }

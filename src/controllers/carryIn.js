@@ -69,5 +69,11 @@ export default {
   async finishTask(entity) {
     const res = await axios._post({ url: '/carryInTask/finishTask', data: entity })
     return res.data
+  },
+
+  // 删除搬运入库任务
+  async delete(data) {
+    const res = await axios._postqs({ url: '/carryInTask/delete', params: data })
+    return res.data
   }
 }

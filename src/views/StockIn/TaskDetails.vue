@@ -69,6 +69,7 @@
       <v-card-actions>
         <v-btn color="primary" v-if="this.info.status == 71" @click.stop="createCarryIn">任务下发</v-btn>
         <v-btn color="deep-orange darken-3" v-if="this.info.status == 71" @click.stop="showFinish">入库货物确认</v-btn>
+        <v-btn color="red darken-3" @click.stop="showDelete">删除入库货物</v-btn>
       </v-card-actions>
     </v-card>
 
@@ -85,6 +86,10 @@
             <v-btn small color="success" @click="viewCarryInDetails(item)">
               <v-icon left dark>pageview</v-icon>
               查看
+            </v-btn>
+            <v-btn v-if="item.status == 72" small color="red darken-3" class="ml-2" @click="deleteCarryIn(item)">
+              <v-icon left dark>delete</v-icon>
+              删除
             </v-btn>
           </template>
         </v-data-table>
@@ -106,7 +111,19 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue-grey lighten-3" text @click="finishDialog = false">取消</v-btn>
-          <v-btn color="green darken-1" text @click="finishTask()">确定</v-btn>
+          <v-btn color="green darken-1" text @click="finishTask">确定</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="deleteDialog" persistent max-width="300">
+      <v-card>
+        <v-card-title class="headline">删除入库货物</v-card-title>
+        <v-card-text>是否确认删除该入库货物？仅能删除未下发搬运任务的入库货物。</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue-grey lighten-3" text @click="deleteDialog = false">取消</v-btn>
+          <v-btn color="green darken-1" text @click="deleteTask">确定</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -114,7 +131,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import carryIn from '@/controllers/carryIn'
 import CarryInCreate from '../CarryIn/Create'
@@ -131,6 +148,7 @@ export default {
     createDrawer: false,
     viewDrawer: false,
     finishDialog: false,
+    deleteDialog: false,
     carryInTaskList: [],
     carryInTaskHeaders: [
       { text: '托盘码', value: 'trayCode' },
@@ -158,6 +176,10 @@ export default {
   methods: {
     ...mapMutations({
       setTaskInfo: 'stockIn/setTaskInfo'
+    }),
+
+    ...mapActions({
+      stockInShowDetails: 'stockIn/showDetails'
     }),
 
     loadStockInTask() {
@@ -218,6 +240,40 @@ export default {
           vm.$store.commit('alertError', res.errorMessage)
         }
       })
+    },
+
+    showDelete() {
+      this.deleteDialog = true
+    },
+
+    // 删除入库任务
+    deleteTask() {
+      let vm = this
+
+      stockIn.deleteTask({ taskId: this.info.id }).then(res => {
+        if (res.status == 0) {
+          vm.$store.commit('alertSuccess', '删除任务成功')
+          vm.stockInShowDetails()
+          vm.deleteDialog = false
+        } else {
+          vm.$store.commit('alertError', res.errorMessage)
+        }
+      })
+    },
+
+    // 删除搬运入库
+    deleteCarryIn(item) {
+      if (confirm('是否删除该搬运任务')) {
+        let vm = this
+        carryIn.delete({ id: item.id }).then(res => {
+          if (res.status == 0) {
+            vm.$store.commit('alertSuccess', '删除搬运入库任务成功')
+            vm.loadCarryInTask()
+          } else {
+            vm.$store.commit('alertError', res.errorMessage)
+          }
+        })
+      }
     }
   },
   mounted: function() {

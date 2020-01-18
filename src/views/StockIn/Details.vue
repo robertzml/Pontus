@@ -64,7 +64,7 @@
             <v-card-actions>
               <v-btn color="primary darken-1" v-if="info.status == 71" @click="showAddTask">添加货物</v-btn>
               <v-btn color="deep-orange darken-3" v-if="info.status == 71" @click.stop="showFinish">入库单确认</v-btn>
-              <v-btn color="red darken-3" @click.stop="showDelete">删除入库单</v-btn>
+              <v-btn color="red darken-3" v-if="stockInId" @click.stop="showDelete">删除入库单</v-btn>
             </v-card-actions>
           </v-card>
         </v-expansion-panel-content>
