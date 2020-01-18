@@ -69,7 +69,7 @@
       <v-card-actions>
         <v-btn color="primary" v-if="this.info.status == 71" @click.stop="createCarryIn">任务下发</v-btn>
         <v-btn color="deep-orange darken-3" v-if="this.info.status == 71" @click.stop="showFinish">入库货物确认</v-btn>
-        <v-btn color="red darken-3" @click.stop="showDelete">删除入库货物</v-btn>
+        <v-btn color="red darken-3" v-if="info.status != 75" @click.stop="showDelete">删除入库货物</v-btn>
       </v-card-actions>
     </v-card>
 

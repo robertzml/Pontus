@@ -38,6 +38,12 @@ export default {
     return res.data
   },
 
+  // 删除出库单
+  async deleteStockOut(data) {
+    const res = await axios._postqs({ url: '/stockOut/delete', params: data })
+    return res.data
+  },
+
   // 出库任务列表
   async getTaskList(stockOutId) {
     const res = await axios._get({ url: '/stockOut/taskList', params: { stockOutId: stockOutId } })
@@ -59,6 +65,12 @@ export default {
   // 确认出库任务
   async finishTask(data) {
     const res = await axios._postqs({ url: '/stockOut/finishTask', params: data })
+    return res.data
+  },
+
+  // 删除出库任务
+  async deleteTask(data) {
+    const res = await axios._postqs({ url: '/stockOut/deleteTask', params: data })
     return res.data
   }
 }

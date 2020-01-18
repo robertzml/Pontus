@@ -40,7 +40,7 @@
             </v-col>
 
             <v-col cols="6">
-              <v-text-field label="移入时间" :value="$util.displayDateTime(carryInTask.moveTime)" hide-details readonly></v-text-field>
+              <v-text-field label="上架时间" :value="$util.displayDateTime(carryInTask.moveTime)" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-text-field label="确认时间" :value="$util.displayDateTime(carryInTask.finishTime)" hide-details readonly></v-text-field>

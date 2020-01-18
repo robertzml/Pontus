@@ -63,7 +63,8 @@
 
             <v-card-actions>
               <v-btn color="primary darken-1" v-if="info.status == 81" @click="showAddTask">添加货物</v-btn>
-              <v-btn color="deep-orange darken-3" v-if="info.status == 81" @click.stop="showFinish">出库单确认</v-btn>
+              <v-btn color="deep-orange darken-3" v-if="info.status == 81" @click.stop="finishDialog = true">出库单确认</v-btn>
+              <v-btn color="red darken-3" v-if="stockOutId && info.status != 85" @click.stop="deleteDialog = true">删除出库单</v-btn>
             </v-card-actions>
           </v-card>
         </v-expansion-panel-content>
@@ -99,6 +100,18 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="deleteDialog" persistent max-width="300">
+      <v-card>
+        <v-card-title class="headline">删除出库单</v-card-title>
+        <v-card-text>是否确认删除该出库单？仅能删除无出库货物的出库单。</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue-grey lighten-3" text @click="deleteDialog = false">取消</v-btn>
+          <v-btn color="green darken-1" text @click="deleteStockOut" :loading="deleteLoading">确定</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -118,6 +131,8 @@ export default {
     panel: [0, 1],
     finishLoading: false,
     finishDialog: false,
+    deleteLoading: false,
+    deleteDialog: false,
     headers: [
       { text: '货品名称', value: 'cargoName' },
       { text: '类别名称', value: 'categoryName' },
@@ -149,7 +164,8 @@ export default {
   methods: {
     ...mapMutations({
       setStockOutInfo: 'stockOut/setStockOutInfo',
-      setTaskInfo: 'stockOut/setTaskInfo'
+      setTaskInfo: 'stockOut/setTaskInfo',
+      refresh: 'stockIn/refresh'
     }),
     ...mapActions({
       showTaskDetails: 'stockOut/showTaskDetals'
@@ -197,10 +213,6 @@ export default {
       this.showTaskDetails()
     },
 
-    showFinish() {
-      this.finishDialog = true
-    },
-
     // 确认出库单完成
     finish() {
       let vm = this
@@ -217,6 +229,26 @@ export default {
         } else {
           vm.$store.commit('alertError', res.errorMessage)
           vm.finishLoading = false
+        }
+      })
+    },
+
+    // 删除出库单
+    deleteStockOut() {
+      let vm = this
+      this.$nextTick(() => {
+        this.deleteLoading = true
+      })
+
+      stockOut.deleteStockOut({ id: this.info.id }).then(res => {
+        if (res.status == 0) {
+          vm.$store.commit('alertSuccess', '出库单已删除')
+          vm.refresh()
+          vm.deleteLoading = false
+          vm.deleteDialog = false
+        } else {
+          vm.$store.commit('alertError', res.errorMessage)
+          vm.deleteLoading = false
         }
       })
     }
