@@ -64,6 +64,7 @@
             <v-card-actions>
               <v-btn color="primary darken-1" v-if="info.status == 71" @click="showAddTask">添加货物</v-btn>
               <v-btn color="deep-orange darken-3" v-if="info.status == 71" @click.stop="showFinish">入库单确认</v-btn>
+              <v-btn color="red darken-3" @click.stop="showDelete">删除入库单</v-btn>
             </v-card-actions>
           </v-card>
         </v-expansion-panel-content>
@@ -95,7 +96,19 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue-grey lighten-3" text @click="finishDialog = false">取消</v-btn>
-          <v-btn color="green darken-1" text @click="finish()">确定</v-btn>
+          <v-btn color="green darken-1" text @click="finish">确定</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="deleteDialog" persistent max-width="300">
+      <v-card>
+        <v-card-title class="headline">删除入库单</v-card-title>
+        <v-card-text>是否确认删除该入库单？仅能删除无入库货物的入库单。</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue-grey lighten-3" text @click="deleteDialog = false">取消</v-btn>
+          <v-btn color="green darken-1" text @click="deleteStockIn">确定</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -117,6 +130,7 @@ export default {
   data: () => ({
     panel: [0, 1],
     finishDialog: false,
+    deleteDialog: false,
     headers: [
       { text: '货品名称', value: 'cargoName' },
       { text: '类别名称', value: 'categoryName' },
@@ -149,7 +163,8 @@ export default {
   methods: {
     ...mapMutations({
       setStockInInfo: 'stockIn/setStockInInfo',
-      setTaskInfo: 'stockIn/setTaskInfo'
+      setTaskInfo: 'stockIn/setTaskInfo',
+      refresh: 'stockIn/refresh'
     }),
     ...mapActions({
       showTaskDetails: 'stockIn/showTaskDetals'
@@ -210,6 +225,25 @@ export default {
           vm.$store.commit('alertSuccess', '入库单已确认')
           vm.loadInfo()
           vm.finishDialog = false
+        } else {
+          vm.$store.commit('alertError', res.errorMessage)
+        }
+      })
+    },
+
+    showDelete() {
+      this.deleteDialog = true
+    },
+
+    // 删除入库单
+    deleteStockIn() {
+      let vm = this
+
+      stockIn.deleteStockIn({ id: this.info.id }).then(res => {
+        if (res.status == 0) {
+          vm.$store.commit('alertSuccess', '入库单已删除')
+          vm.refresh()
+          vm.deleteDialog = false
         } else {
           vm.$store.commit('alertError', res.errorMessage)
         }

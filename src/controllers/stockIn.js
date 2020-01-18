@@ -38,6 +38,12 @@ export default {
     return res.data
   },
 
+  // 删除入库单
+  async deleteStockIn(data) {
+    const res = await axios._postqs({ url: '/stockIn/delete', params: data })
+    return res.data
+  },
+
   // 入库任务列表
   async getTaskList(stockInId) {
     const res = await axios._get({ url: '/stockIn/taskList', params: { stockInId: stockInId } })
