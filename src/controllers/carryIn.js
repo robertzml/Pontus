@@ -71,6 +71,15 @@ export default {
     return res.data
   },
 
+  /**
+   * 任务取消接单
+   * @param {任务数据} entity
+   */
+  async unReceiveTask(entity) {
+    const res = await axios._post({ url: '/carryInTask/unReceiveTask', data: entity })
+    return res.data
+  },
+
   // 删除搬运入库任务
   async delete(data) {
     const res = await axios._postqs({ url: '/carryInTask/delete', params: data })

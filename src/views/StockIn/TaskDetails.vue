@@ -111,7 +111,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue-grey lighten-3" text @click="finishDialog = false">取消</v-btn>
-          <v-btn color="green darken-1" text @click="finishTask">确定</v-btn>
+          <v-btn color="green darken-1" text :loading="finishLoading" @click="finishTask">确定</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -147,6 +147,7 @@ export default {
   data: () => ({
     createDrawer: false,
     viewDrawer: false,
+    finishLoading: false,
     finishDialog: false,
     deleteDialog: false,
     carryInTaskList: [],
@@ -230,14 +231,19 @@ export default {
     // 完成任务
     finishTask() {
       let vm = this
+      this.$nextTick(() => {
+        this.finishLoading = true
+      })
 
       stockIn.finishTask({ taskId: this.info.id }).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '确认任务成功')
           vm.loadStockInTask()
+          vm.finishLoading = false
           vm.finishDialog = false
         } else {
           vm.$store.commit('alertError', res.errorMessage)
+          vm.finishLoading = false
         }
       })
     },

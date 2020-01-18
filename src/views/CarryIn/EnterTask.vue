@@ -12,8 +12,11 @@
 
             <v-text-field label="货架码" prepend-icon="border_all" v-model="shelfCode" :rules="shelfCodeRules" autofocus></v-text-field>
 
-            <v-btn color="success" class="mt-4 ml-8" large :disabled="taskList.length == 0 || !valid" :loading="loading" @click="enter">
+            <v-btn color="success" class="mt-4 ml-4" large :disabled="taskList.length == 0 || !valid" :loading="loading" @click="enter">
               货 物 上 架
+            </v-btn>
+            <v-btn color="red darken-3" class="mt-4 ml-8" large @click="unReceiveDialog = true">
+              取 消 接 单
             </v-btn>
           </v-form>
         </v-col>
@@ -92,6 +95,18 @@
         </v-col>
       </v-row>
     </v-card-text>
+
+    <v-dialog v-model="unReceiveDialog" persistent max-width="300">
+      <v-card>
+        <v-card-title class="headline">取消接单</v-card-title>
+        <v-card-text>是否取消该上架任务？</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue-grey lighten-3" text @click="unReceiveDialog = false">取消</v-btn>
+          <v-btn color="green darken-1" text :loading="cancelLoading" @click="cancelReceive">确定</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -102,7 +117,9 @@ export default {
   name: 'CarryInEnterTask',
   data: () => ({
     valid: false,
+    unReceiveDialog: false,
     loading: false,
+    cancelLoading: false,
     trayCode: '',
     shelfCode: '',
     taskList: [],
@@ -140,6 +157,27 @@ export default {
           }
         })
       }
+    },
+
+    // 取消接单
+    cancelReceive() {
+      this.$nextTick(() => {
+        this.cancelLoading = true
+      })
+
+      let vm = this
+      let req = { trayCode: this.trayCode, userId: this.$store.state.user.id }
+      carryIn.unReceiveTask(req).then(res => {
+        if (res.status == 0) {
+          vm.$store.commit('alertSuccess', '取消接单成功')
+          vm.cancelLoading = false
+          vm.unReceiveDialog = false
+          this.$router.push({ name: 'home' })
+        } else {
+          vm.$store.commit('alertError', res.errorMessage)
+          vm.cancelLoading = false
+        }
+      })
     }
   },
   mounted: function() {
