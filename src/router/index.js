@@ -87,6 +87,11 @@ const routes = [
     component: () => import('@/views/CarryOut/LeaveTask.vue')
   },
   {
+    path: '/receipt',
+    name: 'receipt',
+    component: () => import('@/views/Receipt/Index.vue')
+  },
+  {
     path: '/store',
     name: 'store',
     component: () => import('@/views/Store/Index.vue')
