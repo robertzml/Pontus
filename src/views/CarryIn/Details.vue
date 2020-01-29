@@ -67,6 +67,29 @@
       <v-btn color="blue-grey lighten-3" text @click="close">关闭</v-btn>
       <v-btn color="success darken-1" v-if="carryInTask.status == 74" :loading="submitLoading" @click="confirmTask">入库确认</v-btn>
     </v-card-actions>
+
+    <v-card-actions>
+      <v-btn color="indigo" v-if="carryInTask.status == 72" :loading="receiveLoading" @click="receiveTask">接单</v-btn>
+      <v-btn color="teal darken-3" v-if="carryInTask.status == 73" @click="enterDialog = true">上架</v-btn>
+    </v-card-actions>
+
+    <v-dialog v-model="enterDialog" persistent max-width="400">
+      <v-card>
+        <v-card-title class="headline">货物上架</v-card-title>
+        <v-card-text>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-text-field label="托盘码" prepend-icon="power_input" autocomplete="off" :value="carryInTask.trayCode" readonly></v-text-field>
+
+            <v-text-field label="货架码" prepend-icon="border_all" v-model="shelfCode" :rules="shelfCodeRules" autofocus></v-text-field>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue-grey lighten-3" text @click="enterDialog = false">取消</v-btn>
+          <v-btn color="green darken-1" text :loading="enterLoading" :disabled="!valid" @click="enterTask">确定</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -79,8 +102,14 @@ export default {
     carryInTask: Object
   },
   data: () => ({
+    valid: false,
     submitLoading: false,
-    remark: ''
+    receiveLoading: false,
+    enterLoading: false,
+    enterDialog: false,
+    remark: '',
+    shelfCode: '',
+    shelfCodeRules: [v => !!v || '请输入货架码', v => (v && v.length == 12) || '请输入正确货架码']
   }),
   methods: {
     close() {
@@ -109,6 +138,46 @@ export default {
           this.submitLoading = false
         }
       })
+    },
+
+    receiveTask() {
+      this.$nextTick(() => {
+        this.receiveLoading = true
+      })
+      let vm = this
+
+      let req = { trayCode: this.carryInTask.trayCode, userId: this.$store.state.user.id }
+      carryIn.receiveTask(req).then(res => {
+        if (res.status == 0) {
+          vm.$store.commit('alertSuccess', '入库接单成功')
+          vm.receiveLoading = false
+          vm.$emit('close', true)
+        } else {
+          vm.$store.commit('alertError', res.errorMessage)
+          vm.receiveLoading = false
+        }
+      })
+    },
+
+    enterTask() {
+      if (this.$refs.form.validate()) {
+        this.$nextTick(() => {
+          this.enterLoading = true
+        })
+
+        let vm = this
+        let req = { trayCode: this.carryInTask.trayCode, shelfCode: this.shelfCode, userId: this.$store.state.user.id }
+        carryIn.enterTask(req).then(res => {
+          if (res.status == 0) {
+            vm.$store.commit('alertSuccess', '入库上架成功')
+            vm.enterLoading = false
+            vm.$emit('close', true)
+          } else {
+            vm.$store.commit('alertError', res.errorMessage)
+            vm.enterLoading = false
+          }
+        })
+      }
     }
   }
 }
