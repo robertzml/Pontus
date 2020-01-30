@@ -1,7 +1,29 @@
 <template>
-  <v-app id="inspire" v-if="isLogin">
-    <header-bar :drawer.sync="drawer"></header-bar>
-    <navigation-bar :drawer="drawer"></navigation-bar>
+  <v-app id="inspire">
+    <v-navigation-drawer v-if="isLogin" v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" :width="220" app>
+      <navigation-bar></navigation-bar>
+    </v-navigation-drawer>
+    <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app dense color="blue darken-3">
+      <v-toolbar-title style="width: 300px" class="ml-0 pl-0">
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="isLogin"></v-app-bar-nav-icon>
+        <span class="hidden-sm-and-down">海安润思达食品有限公司</span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn icon v-if="isLogin">
+        <v-icon>apps</v-icon>
+      </v-btn>
+      <v-btn icon v-if="isLogin">
+        <v-icon>notifications</v-icon>
+      </v-btn>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on" @click.stop="logout">
+            <v-icon>exit_to_app</v-icon>
+          </v-btn>
+        </template>
+        <span>退出系统</span>
+      </v-tooltip>
+    </v-app-bar>
 
     <v-content>
       <v-container fluid>
@@ -16,33 +38,30 @@
       </v-btn>
     </v-snackbar>
   </v-app>
-  <v-app id="login" v-else>
-    <login></login>
-  </v-app>
 </template>
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
-import HeaderBar from '@/components/HeaderBar'
 import NavigationBar from '@/components/NavigationBar'
-import Login from '@/components/Login'
 
 export default {
   name: 'App',
   components: {
-    HeaderBar,
-    NavigationBar,
-    Login
+    NavigationBar
   },
   data: () => ({
-    drawer: false
+    drawer: true
   }),
   computed: {
     ...mapGetters(['isLogin', 'alertMessage'])
   },
   methods: {
     ...mapActions(['initDict']),
-    ...mapMutations(['getToken', 'alertClose'])
+    ...mapMutations(['getToken', 'alertClose']),
+    logout() {
+      this.$store.dispatch('logout')
+      this.$router.push({ name: 'login' })
+    }
   },
   mounted: function() {
     this.getToken()

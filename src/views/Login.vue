@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'Login',
@@ -47,12 +47,16 @@ export default {
   }),
   methods: {
     ...mapActions(['login']),
+    ...mapMutations(['getToken']),
 
     submit() {
       if (this.$refs.form.validate()) {
         this.login(this.loginUser).then(res => {
           if (res.status != 0) {
             alert(res.errorMessage)
+          } else {
+            this.getToken()
+            this.$router.push({ name: 'home' })
           }
         })
       }
