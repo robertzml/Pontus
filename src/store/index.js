@@ -9,6 +9,7 @@ import contract from './modules/contract'
 import warehouse from './modules/warehouse'
 import stockIn from './modules/stockIn'
 import stockOut from './modules/stockOut'
+import receipt from './modules/receipt'
 import store from './modules/store'
 
 Vue.use(Vuex)
@@ -24,6 +25,7 @@ export default new Vuex.Store({
     warehouse,
     stockIn,
     stockOut,
+    receipt,
     store
   }
 })

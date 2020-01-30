@@ -27,6 +27,15 @@ export const topRoutes = [
     roles: [1, 2, 3, 4, 5]
   },
   {
+    name: 'receipt',
+    icon: 'list',
+    'icon-alt': 'list',
+    text: '单据管理',
+    model: false,
+    children: [],
+    roles: [1, 2, 3]
+  },
+  {
     name: 'store',
     icon: 'domain',
     'icon-alt': 'domain',
@@ -165,7 +174,7 @@ export const menuRoutes = [
     text: '货品出库',
     group: 'stock',
     model: false,
-    roles: [1, 2, 3],
+    roles: [1, 2, 3, 4],
     component: () => import('@/views/StockOut/Index.vue')
   },
   {
@@ -189,6 +198,10 @@ export const menuRoutes = [
   {
     path: '/receipt',
     name: 'receipt',
+    text: '单据列表',
+    group: 'receipt',
+    model: false,
+    roles: [1, 2, 3],
     component: () => import('@/views/Receipt/Index.vue')
   },
   {
