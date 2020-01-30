@@ -1,9 +1,9 @@
 import axios from 'axios'
+import config from './config'
 import { async } from 'q'
 
 const ax = axios.create({
-  baseURL: 'https://localhost:44328/api',
-  // baseURL: 'http://192.168.16.245:8000/api',
+  baseURL: config.baseURL,
   timeout: 10000,
   withCredentials: false, // 允许跨域 cookie
   headers: { 'Content-Type': 'application/json' }
