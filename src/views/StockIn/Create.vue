@@ -31,7 +31,7 @@
               <customer-select :customer-id.sync="stockInInfo.customerId"></customer-select>
             </v-col>
 
-            <v-col cols="12" md="6" sm="6">
+            <v-col cols="6" md="6" sm="6">
               <v-select
                 :items="contractListData"
                 label="选择合同*"
@@ -45,7 +45,11 @@
               ></v-select>
             </v-col>
 
-            <v-col cols="12" md="12" sm="12">
+            <v-col cols="6" md="6" sm="6">
+              <v-text-field label="车牌号" v-model="stockInInfo.vehicleNumber"></v-text-field>
+            </v-col>
+
+            <v-col cols="6" md="6" sm="6">
               <v-text-field label="备注" v-model="stockInInfo.remark"></v-text-field>
             </v-col>
           </v-row>
@@ -83,6 +87,7 @@ export default {
       type: 1,
       customerId: 0,
       contractId: 0,
+      vehicleNumber: '',
       userId: 0,
       userName: '',
       remark: ''
@@ -105,6 +110,7 @@ export default {
         type: 1,
         customerId: 0,
         contractId: 0,
+        vehicleNumber: '',
         userId: 0,
         userName: '',
         remark: ''

@@ -40,6 +40,9 @@
                 <v-col cols="3" md="3" sm="6">
                   <v-text-field v-model="info.unitPrice" label="冷藏费单价" :suffix="$util.billingTypeUnit(info.billingType)" readonly></v-text-field>
                 </v-col>
+                <v-col cols="6" md="3" sm="6">
+                  <v-text-field label="车牌号" :value="info.vehicleNumber" readonly> </v-text-field>
+                </v-col>
                 <v-col cols="3" md="3" sm="6">
                   <v-text-field v-model="info.userName" label="登记人" readonly></v-text-field>
                 </v-col>
@@ -53,7 +56,7 @@
                   <v-text-field :value="$util.displayStatus(info.status)" label="状态" readonly></v-text-field>
                 </v-col>
                 <v-col cols="6" md="6" sm="6">
-                  <v-text-field label=" 备注" :value="info.remark" readonly> </v-text-field>
+                  <v-text-field label="备注" :value="info.remark" readonly> </v-text-field>
                 </v-col>
                 <v-col cols="6" md="6" sm="6">
                   <vue-barcode v-if="stockOutId" v-bind:value="info.flowNumber" :height="50" :font-size="10"></vue-barcode>
