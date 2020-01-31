@@ -25,6 +25,14 @@ export default {
     return res.data
   },
 
+  /**
+   * 获取未完成入库单
+   */
+  async getUnfinish() {
+    const res = await axios._get({ url: '/stockIn/listUnfinish' })
+    return res.data
+  },
+
   async get(id) {
     const res = await axios._get({ url: '/stockIn/get', params: { id: id } })
     return res.data

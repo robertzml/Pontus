@@ -6,7 +6,7 @@ export const topRoutes = [
     icon: 'home',
     text: '主页',
     component: () => import('@/views/Home.vue'),
-    roles: [1, 2, 3, 4, 5]
+    meta: { roles: [1, 2, 3, 4, 5] }
   },
   {
     name: 'info',
@@ -15,7 +15,7 @@ export const topRoutes = [
     text: '信息管理',
     model: false,
     children: [],
-    roles: [1, 2, 3]
+    meta: { roles: [1, 2, 3] }
   },
   {
     name: 'stock',
@@ -24,7 +24,7 @@ export const topRoutes = [
     text: '冷库租赁',
     model: false,
     children: [],
-    roles: [1, 2, 3, 4, 5]
+    meta: { roles: [1, 2, 3, 4, 5] }
   },
   {
     name: 'receipt',
@@ -33,7 +33,7 @@ export const topRoutes = [
     text: '单据管理',
     model: false,
     children: [],
-    roles: [1, 2, 3]
+    meta: { roles: [1, 2, 3] }
   },
   {
     name: 'store',
@@ -42,7 +42,7 @@ export const topRoutes = [
     text: '库存管理',
     model: false,
     children: [],
-    roles: [1, 2, 3, 4]
+    meta: { roles: [1, 2, 3, 4] }
   },
   {
     name: 'report',
@@ -51,7 +51,7 @@ export const topRoutes = [
     text: '统计报表',
     model: false,
     children: [],
-    roles: [1, 2, 3]
+    meta: { roles: [1, 2, 3] }
   },
   {
     name: 'user',
@@ -60,7 +60,7 @@ export const topRoutes = [
     text: '用户管理',
     model: false,
     children: [],
-    roles: [1, 2]
+    meta: { roles: [1, 2] }
   },
   {
     name: 'setting',
@@ -69,7 +69,7 @@ export const topRoutes = [
     text: '系统设置',
     model: false,
     children: [],
-    roles: [1, 2]
+    meta: { roles: [1, 2] }
   },
   {
     path: '/about',
@@ -77,7 +77,7 @@ export const topRoutes = [
     icon: 'help',
     text: '关于',
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
-    roles: [1, 2, 3, 4, 5]
+    meta: { roles: [1, 2, 3, 4, 5] }
   }
 ]
 
@@ -93,8 +93,8 @@ export const menuRoutes = [
     text: '客户管理',
     group: 'info',
     model: false,
-    roles: [1, 2, 3],
-    component: () => import('@/views/Customer/Index.vue')
+    component: () => import('@/views/Customer/Index.vue'),
+    meta: { roles: [1, 2, 3] }
   },
   {
     path: '/contract',
@@ -102,8 +102,8 @@ export const menuRoutes = [
     text: '合同管理',
     group: 'info',
     model: false,
-    roles: [1, 2, 3],
-    component: () => import('@/views/Contract/Index.vue')
+    component: () => import('@/views/Contract/Index.vue'),
+    meta: { roles: [1, 2, 3] }
   },
   {
     path: '/category',
@@ -111,8 +111,8 @@ export const menuRoutes = [
     text: '类别管理',
     group: 'info',
     model: false,
-    roles: [1, 2, 3],
-    component: () => import('@/views/Category/Index.vue')
+    component: () => import('@/views/Category/Index.vue'),
+    meta: { roles: [1, 2, 3] }
   },
   {
     path: '/cargo',
@@ -120,8 +120,8 @@ export const menuRoutes = [
     text: '货品管理',
     group: 'info',
     model: false,
-    roles: [1, 2, 3],
-    component: () => import('@/views/Cargo/Index.vue')
+    component: () => import('@/views/Cargo/Index.vue'),
+    meta: { roles: [1, 2, 3] }
   },
   {
     path: '/warehouse',
@@ -129,8 +129,8 @@ export const menuRoutes = [
     text: '仓库管理',
     group: 'info',
     model: false,
-    roles: [1, 2, 3],
-    component: () => import('@/views/Warehouse/Index.vue')
+    component: () => import('@/views/Warehouse/Index.vue'),
+    meta: { roles: [1, 2, 3] }
   },
   {
     path: '/position',
@@ -138,8 +138,8 @@ export const menuRoutes = [
     text: '仓位管理',
     group: 'info',
     model: false,
-    roles: [1, 2, 3],
-    component: () => import('@/views/Position/Index.vue')
+    component: () => import('@/views/Position/Index.vue'),
+    meta: { roles: [1, 2, 3] }
   },
   {
     path: '/stockin',
@@ -147,8 +147,8 @@ export const menuRoutes = [
     text: '货品入库',
     group: 'stock',
     model: false,
-    roles: [1, 2, 3, 4],
-    component: () => import('@/views/StockIn/Index.vue')
+    component: () => import('@/views/StockIn/Index.vue'),
+    meta: { roles: [1, 2, 3, 4] }
   },
   {
     // 入库接单
@@ -157,7 +157,8 @@ export const menuRoutes = [
     name: 'carryInReceiveTask',
     text: '入库接单',
     model: false,
-    component: () => import('@/views/CarryIn/ReceiveTask.vue')
+    component: () => import('@/views/CarryIn/ReceiveTask.vue'),
+    meta: { roles: [6] }
   },
   {
     // 入库上架
@@ -166,7 +167,8 @@ export const menuRoutes = [
     name: 'carryInEnterTask',
     text: '入库上架',
     model: false,
-    component: () => import('@/views/CarryIn/EnterTask.vue')
+    component: () => import('@/views/CarryIn/EnterTask.vue'),
+    meta: { roles: [6] }
   },
   {
     path: '/stockout',
@@ -174,8 +176,8 @@ export const menuRoutes = [
     text: '货品出库',
     group: 'stock',
     model: false,
-    roles: [1, 2, 3, 4],
-    component: () => import('@/views/StockOut/Index.vue')
+    component: () => import('@/views/StockOut/Index.vue'),
+    meta: { roles: [1, 2, 3, 4] }
   },
   {
     // 出库接单
@@ -184,7 +186,8 @@ export const menuRoutes = [
     name: 'carryOutReceiveTask',
     text: '出库接单',
     model: false,
-    component: () => import('@/views/CarryOut/ReceiveTask.vue')
+    component: () => import('@/views/CarryOut/ReceiveTask.vue'),
+    meta: { roles: [6] }
   },
   {
     // 出库下架
@@ -193,7 +196,8 @@ export const menuRoutes = [
     name: 'carryOutLeaveTask',
     text: '出库下架',
     model: false,
-    component: () => import('@/views/CarryOut/LeaveTask.vue')
+    component: () => import('@/views/CarryOut/LeaveTask.vue'),
+    meta: { roles: [6] }
   },
   {
     path: '/receipt',
@@ -201,8 +205,8 @@ export const menuRoutes = [
     text: '单据列表',
     group: 'receipt',
     model: false,
-    roles: [1, 2, 3],
-    component: () => import('@/views/Receipt/Index.vue')
+    component: () => import('@/views/Receipt/Index.vue'),
+    meta: { roles: [1, 2, 3] }
   },
   {
     path: '/store',
@@ -210,8 +214,8 @@ export const menuRoutes = [
     text: '仓库库存',
     group: 'store',
     model: false,
-    roles: [1, 2, 3],
-    component: () => import('@/views/Store/Index.vue')
+    component: () => import('@/views/Store/Index.vue'),
+    meta: { roles: [1, 2, 3] }
   },
   {
     path: '/user',
@@ -219,8 +223,8 @@ export const menuRoutes = [
     text: '用户列表',
     group: 'user',
     model: false,
-    roles: [1, 2],
-    component: () => import('@/views/User/Index.vue')
+    component: () => import('@/views/User/Index.vue'),
+    meta: { roles: [1, 2] }
   },
   {
     path: '/usergroup',
@@ -228,8 +232,8 @@ export const menuRoutes = [
     text: '用户组列表',
     group: 'user',
     model: false,
-    roles: [1, 2],
-    component: () => import('@/views/UserGroup/Index.vue')
+    component: () => import('@/views/UserGroup/Index.vue'),
+    meta: { roles: [1, 2] }
   },
   {
     path: '/sequenceTemplate',
@@ -237,8 +241,15 @@ export const menuRoutes = [
     text: '编号模板',
     group: 'setting',
     model: false,
-    roles: [1, 2],
-    component: () => import('@/views/SequenceTemplate/Index.vue')
+    component: () => import('@/views/SequenceTemplate/Index.vue'),
+    meta: { roles: [1, 2] }
+  },
+  {
+    path: '/keeperstockin',
+    name: 'keeperStockIn',
+    text: '货品入库',
+    component: () => import('@/views/Keeper/StockIn.vue'),
+    meta: { roles: [5] }
   }
 ]
 

@@ -68,14 +68,14 @@ export default {
     makeMenu(groupId) {
       this.items = []
       topRoutes.forEach(item => {
-        if (item.roles.includes(groupId)) {
+        if (item.meta.roles.includes(groupId)) {
           if (item.children != undefined) {
             item.children = []
           }
 
           menuRoutes.forEach(sub => {
             if (sub.group == item.name) {
-              if (sub.roles.includes(groupId)) {
+              if (sub.meta.roles.includes(groupId)) {
                 item.children.push(sub)
               }
             }

@@ -1,14 +1,17 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-if="isLogin" v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" :width="220" app>
+    <v-navigation-drawer v-if="isLogin && userInfo.userGroupId < 5" v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" :width="220" app>
       <navigation-bar></navigation-bar>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app dense color="blue darken-3">
       <v-toolbar-title style="width: 300px" class="ml-0 pl-0">
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="isLogin"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="isLogin && userInfo.userGroupId < 5"></v-app-bar-nav-icon>
         <span class="hidden-sm-and-down">海安润思达食品有限公司</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
+      <v-chip color="transparent">
+        {{ userInfo.name }}
+      </v-chip>
       <v-btn icon v-if="isLogin">
         <v-icon>apps</v-icon>
       </v-btn>
@@ -26,6 +29,9 @@
     </v-app-bar>
 
     <v-content>
+      <v-container fluid style="height:100px;" class="px-4" v-if="userInfo.userGroupId == 5">
+        <keeper-menu></keeper-menu>
+      </v-container>
       <v-container fluid>
         <router-view></router-view>
       </v-container>
@@ -43,17 +49,19 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import NavigationBar from '@/components/NavigationBar'
+import KeeperMenu from '@/components/KeeperMenu'
 
 export default {
   name: 'App',
   components: {
-    NavigationBar
+    NavigationBar,
+    KeeperMenu
   },
   data: () => ({
     drawer: true
   }),
   computed: {
-    ...mapGetters(['isLogin', 'alertMessage'])
+    ...mapGetters(['isLogin', 'userInfo', 'alertMessage'])
   },
   methods: {
     ...mapActions(['initDict']),

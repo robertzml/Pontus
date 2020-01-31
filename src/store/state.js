@@ -23,7 +23,7 @@ export default {
     { userGroupId: 2, code: 'administrator' },
     { userGroupId: 3, code: 'manager' },
     { userGroupId: 4, code: 'executive' },
-    { userGroupId: 5, code: 'warehouse' },
+    { userGroupId: 5, code: 'keeper' },
     { userGroupId: 6, code: 'forklift' }
   ],
 
