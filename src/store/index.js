@@ -11,6 +11,7 @@ import stockIn from './modules/stockIn'
 import stockOut from './modules/stockOut'
 import receipt from './modules/receipt'
 import store from './modules/store'
+import keeper from './modules/keeper'
 
 Vue.use(Vuex)
 
@@ -26,6 +27,7 @@ export default new Vuex.Store({
     stockIn,
     stockOut,
     receipt,
-    store
+    store,
+    keeper
   }
 })

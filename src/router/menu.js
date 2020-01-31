@@ -250,6 +250,13 @@ export const menuRoutes = [
     text: '货品入库',
     component: () => import('@/views/Keeper/StockIn.vue'),
     meta: { roles: [5] }
+  },
+  {
+    path: '/keeperstockout',
+    name: 'keeperStockOut',
+    text: '货品出库',
+    component: () => import('@/views/Keeper/StockOut.vue'),
+    meta: { roles: [5] }
   }
 ]
 

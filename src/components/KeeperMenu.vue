@@ -8,7 +8,7 @@
       </v-card>
     </v-col>
     <v-col cols="3">
-      <v-card tile hover height="60" color="cyan darken-2" to="keeperStockIn" :ripple="{ center: true, class: 'primary--text' }">
+      <v-card tile hover height="60" color="cyan darken-2" to="keeperStockOut" :ripple="{ center: true, class: 'primary--text' }">
         <v-card-text class="text-center headline">
           货品出库
         </v-card-text>
