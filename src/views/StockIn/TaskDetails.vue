@@ -139,7 +139,6 @@ import CarryInDetails from '../CarryIn/Details'
 
 export default {
   name: 'StockInTaskDetails',
-  props: {},
   components: {
     CarryInCreate,
     CarryInDetails

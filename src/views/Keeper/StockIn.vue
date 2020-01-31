@@ -73,9 +73,11 @@
 
           <v-card-actions>
             <v-btn color="primary darken-1" @click="showStockInTaskList">货物列表</v-btn>
-            <v-btn color="cyan darken-1" v-if="stockInInfo.status == 71">添加货物</v-btn>
+            <v-btn color="cyan darken-1" v-if="stockInInfo.status == 71" @click="showAddTask">添加货物</v-btn>
           </v-card-actions>
         </v-card>
+
+        <stock-in-edit-task v-if="stockInInfo" ref="editTaskMod" :stockInInfo="stockInInfo"></stock-in-edit-task>
 
         <v-slide-x-transition leave-absolute>
           <component v-bind:is="tab"></component>
@@ -90,12 +92,14 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import StockInTaskList from './StockInTaskList'
 import StockInTaskDetails from './StockInTaskDetails'
+import StockInEditTask from './StockInEditTask'
 
 export default {
   name: 'KeeperStockIn',
   components: {
     StockInTaskList,
-    StockInTaskDetails
+    StockInTaskDetails,
+    StockInEditTask
   },
   data: () => ({
     stockInList: [],
@@ -125,6 +129,7 @@ export default {
       setStockInTaskId: 'keeper/setStockInTaskId'
     }),
 
+    // 载入入库单列表
     loadStockInList() {
       let vm = this
 
@@ -133,11 +138,19 @@ export default {
       })
     },
 
+    // 载入入库单信息
     loadStockInInfo() {
       let vm = this
       stockIn.get(this.model).then(res => {
         vm.stockInInfo = res
       })
+    },
+
+    // 显示添加入库任务
+    showAddTask() {
+      if (this.model) {
+        this.$refs.editTaskMod.init()
+      }
     }
   },
   mounted: function() {

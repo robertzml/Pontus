@@ -42,7 +42,6 @@ export default {
   },
   watch: {
     stockInId: function() {
-      console.log('watch stock in')
       this.loadTaskList()
     }
   },
@@ -57,10 +56,12 @@ export default {
 
     // 载入入库任务列表
     loadTaskList() {
-      let vm = this
-      stockIn.getTaskList(this.stockInId).then(res => {
-        vm.taskInfoList = res
-      })
+      if (this.stockInId) {
+        let vm = this
+        stockIn.getTaskList(this.stockInId).then(res => {
+          vm.taskInfoList = res
+        })
+      }
     },
 
     viewTaskItem(item) {
