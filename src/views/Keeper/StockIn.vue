@@ -3,7 +3,11 @@
     <v-row dense>
       <v-col cols="2">
         <v-list shaped class="brown darken-1">
-          <v-subheader class="subtitle-1 teal--text text--lighten-2">待入库单据</v-subheader>
+          <v-subheader class="subtitle-1 teal--text text--lighten-2">
+            待入库单据
+            <v-spacer></v-spacer>
+            <v-btn color="purple" small tile @click.stop="loadStockInList">刷新</v-btn>
+          </v-subheader>
           <v-list-item-group v-model="model" color="primary" mandatory>
             <v-list-item v-for="item in stockInList" :key="item.id" :value="item.id">
               <v-list-item-content>
@@ -15,7 +19,7 @@
       </v-col>
 
       <v-col cols="10">
-        <v-card class="px-2">
+        <v-card class="px-2 blue-grey darken-3">
           <v-subheader class="subtitle-1 teal--text text--lighten-2">入库单信息</v-subheader>
           <v-row dense>
             <v-col cols="3" md="3" sm="6">
@@ -73,7 +77,7 @@
 
           <v-card-actions>
             <v-btn color="success darken-1" @click="refresh">刷新</v-btn>
-            <v-btn color="primary darken-1" v-if="tab == 'StockInTaskDetails'" @click="showStockInTaskList">货物列表</v-btn>
+            <v-btn color="primary darken-1" v-if="tab == 'StockInTaskDetails'" @click="showStockInTaskList">返回货物列表</v-btn>
             <v-btn color="cyan darken-1" v-if="stockInInfo.status == 71 && tab == 'StockInTaskList'" @click="showAddTask">添加货物</v-btn>
           </v-card-actions>
         </v-card>
@@ -146,10 +150,12 @@ export default {
 
     // 载入入库单信息
     loadStockInInfo() {
-      let vm = this
-      stockIn.get(this.model).then(res => {
-        vm.stockInInfo = res
-      })
+      if (this.model) {
+        let vm = this
+        stockIn.get(this.model).then(res => {
+          vm.stockInInfo = res
+        })
+      }
     },
 
     // 显示添加入库任务
