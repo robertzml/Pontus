@@ -35,5 +35,11 @@ export default {
   async update(entity) {
     const res = await axios._post({ url: '/category/update', data: entity })
     return res.data
+  },
+
+  // 删除入库单
+  async delete(data) {
+    const res = await axios._postqs({ url: '/category/delete', params: data })
+    return res.data
   }
 }

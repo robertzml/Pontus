@@ -74,7 +74,7 @@
     </v-card>
 
     <v-card class="mx-auto">
-      <v-card-title class="amber">
+      <v-card-title class="deep-purple">
         搬运入库任务
       </v-card-title>
       <v-card-text class="px-0">

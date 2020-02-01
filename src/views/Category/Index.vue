@@ -9,6 +9,7 @@
           <v-btn text @click.stop="refresh">刷新</v-btn>
           <v-btn text @click.stop="showCreate">添加分类</v-btn>
           <v-btn v-if="currentCategoryId != 0" text @click.stop="showEdit">编辑分类</v-btn>
+          <v-btn v-if="currentCategoryId != 0" text @click.stop="deleteDialog = true">删除分类</v-btn>
         </v-toolbar-items>
       </v-toolbar>
     </v-col>
@@ -43,6 +44,18 @@
     <v-col cols="12">
       <category-edit ref="categoryEditMod" @update="refresh"></category-edit>
     </v-col>
+
+    <v-dialog v-model="deleteDialog" persistent max-width="300">
+      <v-card>
+        <v-card-title class="headline">删除分类</v-card-title>
+        <v-card-text>是否确认删除该分类？仅能删除无子类别和无货品使用的分类。</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue-grey lighten-3" text @click="deleteDialog = false">取消</v-btn>
+          <v-btn color="green darken-1" text :loading="deleteLoading" @click="deleteCategory">确定</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 
@@ -59,7 +72,9 @@ export default {
     categoryList: [],
     categoryNodes: [],
     categoryInfo: {},
-    currentCategoryId: 0
+    currentCategoryId: 0,
+    deleteDialog: false,
+    deleteLoading: false
   }),
   methods: {
     loadCategory() {
@@ -89,6 +104,26 @@ export default {
     },
     showEdit() {
       this.$refs.categoryEditMod.init(this.categoryInfo.id)
+    },
+
+    // 删除类别
+    deleteCategory() {
+      let vm = this
+      this.$nextTick(() => {
+        this.deleteLoading = true
+      })
+
+      category.delete({ id: this.currentCategoryId }).then(res => {
+        if (res.status == 0) {
+          vm.$store.commit('alertSuccess', '删除分类成功')
+          vm.loadCategory()
+          vm.deleteLoading = false
+          vm.deleteDialog = false
+        } else {
+          vm.$store.commit('alertError', res.errorMessage)
+          vm.deleteLoading = false
+        }
+      })
     }
   },
   mounted: function() {
