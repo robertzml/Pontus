@@ -32,6 +32,9 @@
       <v-container fluid style="height:100px;" class="px-4" v-if="userInfo.userGroupId == 5">
         <keeper-menu></keeper-menu>
       </v-container>
+      <v-container fluid style="height:100px;" class="px-4" v-if="userInfo.userGroupId == 6">
+        <forklift-menu></forklift-menu>
+      </v-container>
       <v-container fluid>
         <router-view></router-view>
       </v-container>
@@ -50,12 +53,14 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import NavigationBar from '@/components/NavigationBar'
 import KeeperMenu from '@/components/KeeperMenu'
+import ForkliftMenu from '@/components/ForkliftMenu'
 
 export default {
   name: 'App',
   components: {
     NavigationBar,
-    KeeperMenu
+    KeeperMenu,
+    ForkliftMenu
   },
   data: () => ({
     drawer: true

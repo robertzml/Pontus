@@ -1,27 +1,43 @@
 <template>
   <v-card class="mx-auto">
-    <v-card-title class="light-blue lighten-2">
-      入库上架
+    <v-card-title class="cyan">
+      入库接单
     </v-card-title>
 
-    <v-card-text>
-      <v-row>
-        <v-col cols="12">
-          <v-form ref="form" v-model="valid" lazy-validation>
-            <v-text-field label="托盘码" prepend-icon="power_input" autocomplete="off" v-model="trayCode" readonly></v-text-field>
-
-            <v-text-field label="货架码" prepend-icon="border_all" v-model="shelfCode" :rules="shelfCodeRules" autofocus></v-text-field>
-
-            <v-btn color="success" class="mt-4 ml-4" large :disabled="taskList.length == 0 || !valid" :loading="loading" @click="enter">
-              货 物 上 架
-            </v-btn>
-            <v-btn color="red darken-3" class="mt-4 ml-8" large @click="unReceiveDialog = true">
-              取 消 接 单
-            </v-btn>
-          </v-form>
-        </v-col>
-      </v-row>
+    <v-card-text class="mb-0 pb-1">
+      <v-form ref="form" v-model="valid" lazy-validation>
+        <v-container fluid class="py-0">
+          <v-row dense>
+            <v-col cols="10">
+              <v-text-field
+                label="托盘码"
+                autofocus
+                prepend-icon="power_input"
+                :counter="6"
+                autocomplete="off"
+                clearable
+                v-model="trayCode"
+                :rules="trayCodeRules"
+                @input="changeText"
+                @keyup.enter="search"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="2">
+              <v-text-field v-show="false"></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-form>
     </v-card-text>
+
+    <v-card-actions>
+      <v-btn color="primary" class="ml-4" large :disabled="!valid" @click="search">
+        托 盘 搜 索
+      </v-btn>
+      <v-btn color="success" class="ml-8" large :disabled="taskList.length == 0 || !valid" :loading="loading" @click="receive">
+        入 库 接 单
+      </v-btn>
+    </v-card-actions>
 
     <v-card-text class="pt-0">
       <v-row>
@@ -95,18 +111,6 @@
         </v-col>
       </v-row>
     </v-card-text>
-
-    <v-dialog v-model="unReceiveDialog" persistent max-width="300">
-      <v-card>
-        <v-card-title class="headline">取消接单</v-card-title>
-        <v-card-text>是否取消该上架任务？</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-grey lighten-3" text @click="unReceiveDialog = false">取消</v-btn>
-          <v-btn color="green darken-1" text :loading="cancelLoading" @click="cancelReceive">确定</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-card>
 </template>
 
@@ -114,74 +118,58 @@
 import carryIn from '@/controllers/carryIn'
 
 export default {
-  name: 'CarryInEnterTask',
+  name: 'ForkliftReceiveInTask',
   data: () => ({
     valid: false,
-    unReceiveDialog: false,
     loading: false,
-    cancelLoading: false,
     trayCode: '',
-    shelfCode: '',
-    taskList: [],
-    shelfCodeRules: [v => !!v || '请输入货架码', v => (v && v.length == 12) || '请输入正确货架码']
+    trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
+    taskList: []
   }),
   methods: {
-    findCurrentReceive() {
-      let userId = this.$store.state.user.id
-
-      let vm = this
-      carryIn.findCurrentReceive(userId).then(res => {
-        vm.taskList = res
-        if (vm.taskList.length > 0) {
-          vm.trayCode = vm.taskList[0].trayCode
-        }
-      })
+    init() {
+      this.trayCode = ''
+      this.loading = false
+      this.valid = false
+      this.taskList = []
     },
-
-    enter() {
+    changeText() {
+      this.taskList = []
+    },
+    search() {
       if (this.$refs.form.validate()) {
-        this.$nextTick(() => {
-          this.loading = true
-        })
-
         let vm = this
-        let req = { trayCode: this.trayCode, shelfCode: this.shelfCode, userId: this.$store.state.user.id }
-        carryIn.enterTask(req).then(res => {
-          if (res.status == 0) {
-            vm.$store.commit('alertSuccess', '入库上架成功')
-            vm.loading = false
-            this.$router.push({ name: 'home' })
-          } else {
-            vm.$store.commit('alertError', res.errorMessage)
-            vm.loading = false
-          }
+
+        carryIn.listByTray(this.trayCode).then(res => {
+          vm.taskList = res
         })
       }
     },
+    receive() {
+      if (this.taskList.length == 0) {
+        return
+      }
 
-    // 取消接单
-    cancelReceive() {
       this.$nextTick(() => {
-        this.cancelLoading = true
+        this.loading = true
       })
 
       let vm = this
       let req = { trayCode: this.trayCode, userId: this.$store.state.user.id }
-      carryIn.unReceiveTask(req).then(res => {
+      carryIn.receiveTask(req).then(res => {
         if (res.status == 0) {
-          vm.$store.commit('alertSuccess', '取消接单成功')
-          vm.cancelLoading = false
-          vm.unReceiveDialog = false
-          this.$router.push({ name: 'home' })
+          vm.$store.commit('alertSuccess', '入库接单成功')
+          vm.loading = false
+          this.$router.push({ name: 'forkliftEnterTask' })
         } else {
           vm.$store.commit('alertError', res.errorMessage)
-          vm.cancelLoading = false
+          vm.loading = false
         }
       })
     }
   },
   mounted: function() {
-    this.findCurrentReceive()
+    this.init()
   }
 }
 </script>

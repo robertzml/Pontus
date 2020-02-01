@@ -16,12 +16,14 @@
               v-model="trayCode"
               autocomplete="off"
               :rules="trayCodeRules"
+              :counter="6"
+              clearable
               autofocus
             ></v-text-field>
 
-            <v-text-field label="货架码" prepend-icon="border_all" v-model="shelfCode" :rules="shelfCodeRules"></v-text-field>
+            <v-text-field label="货架码" prepend-icon="border_all" v-model="shelfCode" :counter="12" :rules="shelfCodeRules" clearable></v-text-field>
 
-            <v-btn color="success" class="mt-4 ml-8" large :disabled="taskList.length == 0 || !valid" :loading="loading" @click="enter">
+            <v-btn color="success" class="mt-4 ml-8" large :disabled="taskList.length == 0 || !valid" :loading="loading" @click="leave">
               货 物 下 架
             </v-btn>
           </v-form>
@@ -123,7 +125,7 @@
 import carryOut from '@/controllers/carryOut'
 
 export default {
-  name: 'CarryOutLeaveTask',
+  name: 'ForkliftLeaveTask',
   data: () => ({
     valid: false,
     loading: false,
@@ -147,7 +149,7 @@ export default {
       })
     },
 
-    enter() {
+    leave() {
       if (this.$refs.form.validate()) {
         this.$nextTick(() => {
           this.loading = true

@@ -111,7 +111,7 @@
 import carryOut from '@/controllers/carryOut'
 
 export default {
-  name: 'CarryOutReceiveTask',
+  name: 'ForkliftReceiveOutTask',
   data: () => ({
     valid: true,
     loading: false,
@@ -159,7 +159,7 @@ export default {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '出库接单成功')
           vm.loading = false
-          this.$router.push({ name: 'carryOutLeaveTask' })
+          this.$router.push({ name: 'forkliftLeaveTask' })
         } else {
           vm.$store.commit('alertError', res.errorMessage)
           vm.loading = false

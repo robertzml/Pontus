@@ -80,7 +80,7 @@
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-text-field label="托盘码" prepend-icon="power_input" autocomplete="off" :value="carryInTask.trayCode" readonly></v-text-field>
 
-            <v-text-field label="货架码" prepend-icon="border_all" v-model="shelfCode" :rules="shelfCodeRules" autofocus></v-text-field>
+            <v-text-field label="货架码" prepend-icon="border_all" v-model="shelfCode" :counter="12" :rules="shelfCodeRules" autofocus></v-text-field>
           </v-form>
         </v-card-text>
         <v-card-actions>

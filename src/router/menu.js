@@ -151,26 +151,6 @@ export const menuRoutes = [
     meta: { roles: [1, 2, 3, 4] }
   },
   {
-    // 入库接单
-    // 叉车工操作
-    path: '/carryinreceivetask',
-    name: 'carryInReceiveTask',
-    text: '入库接单',
-    model: false,
-    component: () => import('@/views/CarryIn/ReceiveTask.vue'),
-    meta: { roles: [6] }
-  },
-  {
-    // 入库上架
-    // 叉车工操作
-    path: '/carryinentertask',
-    name: 'carryInEnterTask',
-    text: '入库上架',
-    model: false,
-    component: () => import('@/views/CarryIn/EnterTask.vue'),
-    meta: { roles: [6] }
-  },
-  {
     path: '/stockout',
     name: 'stockout',
     text: '货品出库',
@@ -178,26 +158,6 @@ export const menuRoutes = [
     model: false,
     component: () => import('@/views/StockOut/Index.vue'),
     meta: { roles: [1, 2, 3, 4] }
-  },
-  {
-    // 出库接单
-    // 叉车工操作
-    path: '/carryoutreceivetask',
-    name: 'carryOutReceiveTask',
-    text: '出库接单',
-    model: false,
-    component: () => import('@/views/CarryOut/ReceiveTask.vue'),
-    meta: { roles: [6] }
-  },
-  {
-    // 出库下架
-    // 叉车工操作
-    path: '/carryoutleaveetask',
-    name: 'carryOutLeaveTask',
-    text: '出库下架',
-    model: false,
-    component: () => import('@/views/CarryOut/LeaveTask.vue'),
-    meta: { roles: [6] }
   },
   {
     path: '/receipt',
@@ -257,6 +217,46 @@ export const menuRoutes = [
     text: '货品出库',
     component: () => import('@/views/Keeper/StockOut.vue'),
     meta: { roles: [5] }
+  },
+  {
+    // 入库接单
+    // 叉车工操作
+    path: '/forkliftreceiveintask',
+    name: 'forkliftReceiveInTask',
+    text: '入库接单',
+    model: false,
+    component: () => import('@/views/Forklift/ReceiveInTask.vue'),
+    meta: { roles: [6] }
+  },
+  {
+    // 入库上架
+    // 叉车工操作
+    path: '/forkliftentertask',
+    name: 'forkliftEnterTask',
+    text: '入库上架',
+    model: false,
+    component: () => import('@/views/Forklift/EnterTask.vue'),
+    meta: { roles: [6] }
+  },
+  {
+    // 出库接单
+    // 叉车工操作
+    path: '/forkliftreceiveouttask',
+    name: 'forkliftReceiveOutTask',
+    text: '出库接单',
+    model: false,
+    component: () => import('@/views/Forklift/ReceiveOutTask.vue'),
+    meta: { roles: [6] }
+  },
+  {
+    // 出库下架
+    // 叉车工操作
+    path: '/forkliftleavetask',
+    name: 'forkliftLeaveTask',
+    text: '出库下架',
+    model: false,
+    component: () => import('@/views/Forklift/LeaveTask.vue'),
+    meta: { roles: [6] }
   }
 ]
 
