@@ -4,68 +4,79 @@
       <p class="headline">搬运入库任务</p>
     </v-card-title>
     <v-card-text>
-      <v-form>
-        <v-container fluid class="mx-0 px-0">
-          <v-row dense>
-            <v-col cols="6">
-              <v-text-field label="仓库" v-model="carryInTask.warehouseName" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-text-field label="仓位码" v-model="carryInTask.positionNumber" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-text-field label="任务码" v-model="carryInTask.taskCode" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-text-field label="托盘码" v-model="carryInTask.trayCode" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-text-field label="搬运数量" v-model="carryInTask.moveCount" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-text-field label="搬运重量" v-model="carryInTask.moveWeight" suffix="吨" hide-details readonly></v-text-field>
-            </v-col>
+      <v-container fluid class="mx-0 px-0">
+        <v-row dense>
+          <v-col cols="6">
+            <v-text-field label="仓库" v-model="carryInTask.warehouseName" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field label="仓位码" v-model="carryInTask.positionNumber" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field label="任务码" v-model="carryInTask.taskCode" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field label="托盘码" v-model="carryInTask.trayCode" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field label="搬运数量" v-model="carryInTask.moveCount" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field label="搬运重量" v-model="carryInTask.moveWeight" suffix="吨" hide-details readonly></v-text-field>
+          </v-col>
 
-            <v-col cols="6">
-              <v-text-field label="清点人" v-model="carryInTask.checkUserName" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-text-field label="清点时间" :value="$util.displayDateTime(carryInTask.checkTime)" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-text-field label="接单人" v-model="carryInTask.receiveUserName" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-text-field label="接单时间" :value="$util.displayDateTime(carryInTask.receiveTime)" hide-details readonly></v-text-field>
-            </v-col>
+          <v-col cols="6">
+            <v-text-field label="清点人" v-model="carryInTask.checkUserName" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field label="清点时间" :value="$util.displayDateTime(carryInTask.checkTime)" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field label="接单人" v-model="carryInTask.receiveUserName" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field label="接单时间" :value="$util.displayDateTime(carryInTask.receiveTime)" hide-details readonly></v-text-field>
+          </v-col>
 
-            <v-col cols="6">
-              <v-text-field label="上架时间" :value="$util.displayDateTime(carryInTask.moveTime)" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-text-field label="确认时间" :value="$util.displayDateTime(carryInTask.finishTime)" hide-details readonly></v-text-field>
-            </v-col>
+          <v-col cols="6">
+            <v-text-field label="上架时间" :value="$util.displayDateTime(carryInTask.moveTime)" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field label="确认时间" :value="$util.displayDateTime(carryInTask.finishTime)" hide-details readonly></v-text-field>
+          </v-col>
 
-            <v-col cols="6">
-              <v-text-field label="状态" :value="$util.displayStatus(carryInTask.status)" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" md="6">
-              <v-text-field label="备注" v-model="carryInTask.remark" hide-details readonly></v-text-field>
-            </v-col>
-          </v-row>
+          <v-col cols="6">
+            <v-text-field label="状态" :value="$util.displayStatus(carryInTask.status)" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="6" md="6">
+            <v-text-field label="备注" v-model="carryInTask.remark" hide-details readonly></v-text-field>
+          </v-col>
+        </v-row>
 
-          <v-row v-if="carryInTask.status == 74">
-            <v-col cols="12">
-              <v-text-field label="入库确认备注" v-model="remark"></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-form>
+        <v-sheet :elevation="10" color="blue-grey darken-2" class="mt-4 pa-2" v-if="carryInTask.status == 74">
+          <v-subheader>入库确认</v-subheader>
+          <v-form ref="confirmForm" v-model="confirmValid" lazy-validation>
+            <v-row>
+              <v-col cols="6">
+                <v-text-field label="入库数量" v-model="finishInfo.moveCount" :rules="moveCountRules"></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-text-field label="入库重量" v-model="finishInfo.moveWeight" suffix="吨" :rules="moveWeightRules"></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field label="入库确认备注" v-model="finishInfo.remark"></v-text-field>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-sheet>
+      </v-container>
     </v-card-text>
 
     <v-card-actions>
       <v-btn color="blue-grey lighten-3" text @click="close">关闭</v-btn>
-      <v-btn color="success darken-1" v-if="carryInTask.status == 74" :loading="submitLoading" @click="confirmTask">入库确认</v-btn>
+      <v-btn color="success darken-1" v-if="carryInTask.status == 74" :disabled="!confirmValid" :loading="submitLoading" @click="confirmTask">
+        入库确认
+      </v-btn>
     </v-card-actions>
 
     <v-card-actions>
@@ -103,13 +114,20 @@ export default {
   },
   data: () => ({
     valid: false,
+    confirmValid: false,
     submitLoading: false,
     receiveLoading: false,
     enterLoading: false,
     enterDialog: false,
-    remark: '',
+    finishInfo: {
+      moveCount: '',
+      moveWeight: '',
+      remark: ''
+    },
     shelfCode: '',
-    shelfCodeRules: [v => !!v || '请输入货架码', v => (v && v.length == 12) || '请输入正确货架码']
+    shelfCodeRules: [v => !!v || '请输入货架码', v => (v && v.length == 12) || '请输入正确货架码'],
+    moveCountRules: [v => !!v || '请输入入库数量'],
+    moveWeightRules: [v => !!v || '请输入入库重量']
   }),
   methods: {
     close() {
@@ -117,27 +135,31 @@ export default {
     },
 
     confirmTask() {
-      this.$nextTick(() => {
-        this.submitLoading = true
-      })
-      let vm = this
+      if (this.$refs.confirmForm.validate()) {
+        this.$nextTick(() => {
+          this.submitLoading = true
+        })
+        let vm = this
 
-      let model = {
-        taskId: this.carryInTask.id,
-        userId: this.$store.state.user.id,
-        remark: this.remark
-      }
-
-      carryIn.finishTask(model).then(res => {
-        if (res.status == 0) {
-          vm.$store.commit('alertSuccess', '任务确认成功')
-          vm.submitLoading = false
-          vm.$emit('close', true)
-        } else {
-          vm.$store.commit('alertError', res.errorMessage)
-          this.submitLoading = false
+        let model = {
+          taskId: this.carryInTask.id,
+          userId: this.$store.state.user.id,
+          moveCount: this.finishInfo.moveCount,
+          moveWeight: this.finishInfo.moveWeight,
+          remark: this.finishInfo.remark
         }
-      })
+
+        carryIn.finishTask(model).then(res => {
+          if (res.status == 0) {
+            vm.$store.commit('alertSuccess', '任务确认成功')
+            vm.submitLoading = false
+            vm.$emit('close', true)
+          } else {
+            vm.$store.commit('alertError', res.errorMessage)
+            this.submitLoading = false
+          }
+        })
+      }
     },
 
     receiveTask() {
