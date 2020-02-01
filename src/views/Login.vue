@@ -8,7 +8,15 @@
           </v-toolbar>
           <v-card-text>
             <v-form ref="form" v-model="valid" lazy-validation>
-              <v-text-field label="用户名" prepend-icon="person" type="text" v-model="loginUser.userName" :rules="nameRules" required></v-text-field>
+              <v-text-field
+                label="用户名"
+                autofocus
+                prepend-icon="person"
+                type="text"
+                v-model="loginUser.userName"
+                :rules="nameRules"
+                required
+              ></v-text-field>
 
               <v-text-field
                 label="密码"

@@ -72,12 +72,13 @@
           </v-row>
 
           <v-card-actions>
-            <v-btn color="primary darken-1" @click="showStockInTaskList">货物列表</v-btn>
-            <v-btn color="cyan darken-1" v-if="stockInInfo.status == 71" @click="showAddTask">添加货物</v-btn>
+            <v-btn color="success darken-1" @click="refresh">刷新</v-btn>
+            <v-btn color="primary darken-1" v-if="tab == 'StockInTaskDetails'" @click="showStockInTaskList">货物列表</v-btn>
+            <v-btn color="cyan darken-1" v-if="stockInInfo.status == 71 && tab == 'StockInTaskList'" @click="showAddTask">添加货物</v-btn>
           </v-card-actions>
         </v-card>
 
-        <stock-in-edit-task v-if="stockInInfo" ref="editTaskMod" :stockInInfo="stockInInfo"></stock-in-edit-task>
+        <stock-in-create-task v-if="stockInInfo" ref="createTaskMod" :stockInInfo="stockInInfo" @update="refresh"></stock-in-create-task>
 
         <v-slide-x-transition leave-absolute>
           <component v-bind:is="tab"></component>
@@ -92,14 +93,14 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import StockInTaskList from './StockInTaskList'
 import StockInTaskDetails from './StockInTaskDetails'
-import StockInEditTask from './StockInEditTask'
+import StockInCreateTask from '@/components/Dialog/StockInCreateTask'
 
 export default {
   name: 'KeeperStockIn',
   components: {
     StockInTaskList,
     StockInTaskDetails,
-    StockInEditTask
+    StockInCreateTask
   },
   data: () => ({
     stockInList: [],
@@ -112,11 +113,15 @@ export default {
       this.setStockInId(val)
       this.setStockInTaskId('')
       this.showStockInTaskList()
+    },
+    refreshEvent: function() {
+      this.loadStockInInfo()
     }
   },
   computed: {
     ...mapState({
-      tab: state => state.keeper.stockInTab
+      tab: state => state.keeper.stockInTab,
+      refreshEvent: state => state.keeper.refreshEvent
     })
   },
   methods: {
@@ -126,7 +131,8 @@ export default {
 
     ...mapMutations({
       setStockInId: 'keeper/setStockInId',
-      setStockInTaskId: 'keeper/setStockInTaskId'
+      setStockInTaskId: 'keeper/setStockInTaskId',
+      refresh: 'keeper/refresh'
     }),
 
     // 载入入库单列表
@@ -149,7 +155,7 @@ export default {
     // 显示添加入库任务
     showAddTask() {
       if (this.model) {
-        this.$refs.editTaskMod.init()
+        this.$refs.createTaskMod.init()
       }
     }
   },

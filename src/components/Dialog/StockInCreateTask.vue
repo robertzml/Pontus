@@ -55,7 +55,7 @@ import cargo from '@/controllers/cargo'
 import CargoSelect from '@/components/Control/CargoSelect'
 
 export default {
-  name: 'KeeperStockInEditTask',
+  name: 'StockInCreateTask',
   props: {
     stockInInfo: Object
   },
@@ -79,8 +79,7 @@ export default {
       originPlace: '',
       durability: 0,
       remark: ''
-    },
-    warehouseRules: [v => (v && v.number != '') || '请选择仓库']
+    }
   }),
   watch: {
     cargoId: function(val) {
@@ -131,6 +130,8 @@ export default {
         userId: 0,
         userName: ''
       }
+      this.cargoListData = []
+      this.cargoId = ''
     },
 
     selectCargo(val) {
@@ -143,6 +144,16 @@ export default {
 
     addTask() {
       if (this.$refs.form.validate()) {
+        if (this.cargoId == '') {
+          this.$store.commit('alertError', '请选择货品')
+          return
+        }
+
+        if (this.taskInfo.inCount <= 0) {
+          this.$store.commit('alertError', '请输入正确入库数量')
+          return
+        }
+
         this.$nextTick(() => {
           this.submitLoading = true
         })
@@ -152,7 +163,7 @@ export default {
         this.taskInfo.cargoId = this.cargoId
         this.taskInfo.unitWeight = this.unitWeight
         this.taskInfo.inWeight = this.totalWeight
-        this.taskInfo.stockInId = this.stockInId
+        this.taskInfo.stockInId = this.stockInInfo.id
         this.taskInfo.userId = this.$store.state.user.id
         this.taskInfo.userName = this.$store.state.user.name
 

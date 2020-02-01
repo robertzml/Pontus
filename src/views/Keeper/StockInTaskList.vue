@@ -37,11 +37,15 @@ export default {
   }),
   computed: {
     ...mapState({
-      stockInId: state => state.keeper.stockInId
+      stockInId: state => state.keeper.stockInId,
+      refreshEvent: state => state.keeper.refreshEvent
     })
   },
   watch: {
     stockInId: function() {
+      this.loadTaskList()
+    },
+    refreshEvent: function() {
       this.loadTaskList()
     }
   },
