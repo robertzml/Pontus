@@ -60,6 +60,15 @@ export default {
     }
   },
   methods: {
+    clearInfo() {
+      this.carryInInfo = {
+        trayCode: '',
+        moveCount: 0,
+        moveWeight: 0.0,
+        remark: ''
+      }
+    },
+
     addTask() {
       if (this.$refs.form.validate()) {
         this.$nextTick(() => {
@@ -76,6 +85,7 @@ export default {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加任务成功')
             vm.loading = false
+            vm.clearInfo()
             vm.$emit('close', true)
           } else {
             vm.$store.commit('alertError', res.errorMessage)
@@ -88,6 +98,9 @@ export default {
     close() {
       this.$emit('close', false)
     }
+  },
+  mounted: function() {
+    this.clearInfo()
   }
 }
 </script>

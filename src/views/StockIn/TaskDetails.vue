@@ -67,9 +67,9 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn color="primary" v-if="this.info.status == 71" @click.stop="createCarryIn">任务下发</v-btn>
-        <v-btn color="deep-orange darken-3" v-if="this.info.status == 71" @click.stop="showFinish">入库货物确认</v-btn>
-        <v-btn color="red darken-3" v-if="info.status != 75" @click.stop="showDelete">删除入库货物</v-btn>
+        <v-btn color="primary" v-if="this.info.status == 71" @click.stop="createDrawer = true">任务下发</v-btn>
+        <v-btn color="deep-orange darken-3" v-if="this.info.status == 71" @click.stop="finishDialog = true">入库货物确认</v-btn>
+        <v-btn color="red darken-3" v-if="info.status != 75" @click.stop="deleteDialog = true">删除入库货物</v-btn>
       </v-card-actions>
     </v-card>
 
@@ -149,6 +149,7 @@ export default {
     finishLoading: false,
     finishDialog: false,
     deleteDialog: false,
+    deleteLoading: false,
     carryInTaskList: [],
     carryInTaskHeaders: [
       { text: '托盘码', value: 'trayCode' },
@@ -196,11 +197,6 @@ export default {
       })
     },
 
-    // 添加入库搬运
-    createCarryIn() {
-      this.createDrawer = true
-    },
-
     // 关闭入库搬运
     closeCarryInCreate(update) {
       this.createDrawer = false
@@ -223,10 +219,6 @@ export default {
       }
     },
 
-    showFinish() {
-      this.finishDialog = true
-    },
-
     // 完成任务
     finishTask() {
       let vm = this
@@ -247,21 +239,22 @@ export default {
       })
     },
 
-    showDelete() {
-      this.deleteDialog = true
-    },
-
     // 删除入库任务
     deleteTask() {
       let vm = this
+      this.$nextTick(() => {
+        this.deleteLoading = true
+      })
 
       stockIn.deleteTask({ taskId: this.info.id }).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '删除任务成功')
           vm.stockInShowDetails()
+          vm.deleteLoading = false
           vm.deleteDialog = false
         } else {
           vm.$store.commit('alertError', res.errorMessage)
+          vm.deleteLoading = false
         }
       })
     },

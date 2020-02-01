@@ -43,6 +43,12 @@ export default {
     return res.data
   },
 
+  // 编辑入库单
+  async update(entity) {
+    const res = await axios._post({ url: '/stockIn/update', data: entity })
+    return res.data
+  },
+
   // 确认入库单
   async confirm(data) {
     const res = await axios._postqs({ url: '/stockIn/confirm', params: data })

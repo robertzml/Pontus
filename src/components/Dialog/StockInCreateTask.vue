@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" persistent max-width="800px">
     <v-card>
       <v-card-title class="cyan">
-        入库任务单
+        添加入库任务
       </v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>

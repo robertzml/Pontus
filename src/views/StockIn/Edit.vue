@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" persistent max-width="800px">
     <v-card>
       <v-card-title>
-        新建入库单
+        编辑入库单
       </v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
@@ -28,7 +28,7 @@
             </v-col>
 
             <v-col cols="6" md="6" sm="6">
-              <customer-select :customer-id.sync="stockInInfo.customerId"></customer-select>
+              <v-text-field label="客户" :value="`${stockInInfo.customerNumber} - ${stockInInfo.customerName}`" readonly=""></v-text-field>
             </v-col>
 
             <v-col cols="6" md="6" sm="6">
@@ -68,18 +68,15 @@
 <script>
 import stockIn from '@/controllers/stockIn'
 import contract from '@/controllers/contract'
-import CustomerSelect from '@/components/Control/CustomerSelect'
 
 export default {
-  name: 'StockInCreate',
-  components: {
-    CustomerSelect
-  },
+  name: 'StockInEdit',
   data: () => ({
     dialog: false,
     submitLoading: false,
     valid: true,
     stockInTimeMenu: false,
+    stockInId: '',
     stockInInfo: {
       inTime: null,
       monthTime: '',
@@ -96,25 +93,18 @@ export default {
     contractListData: [],
     contractRules: [v => !!v.id || '请选择合同']
   }),
-  watch: {
-    'stockInInfo.customerId': function(val) {
-      this.loadContract(val)
-    }
-  },
   methods: {
-    init: function() {
-      this.stockInInfo = {
-        inTime: this.$moment().format('YYYY-MM-DD'),
-        monthTime: '',
-        flowNumber: '',
-        type: 1,
-        customerId: 0,
-        contractId: 0,
-        vehicleNumber: '',
-        userId: 0,
-        userName: '',
-        remark: ''
-      }
+    init: function(id) {
+      this.stockInId = id
+
+      let vm = this
+      stockIn.get(id).then(res => {
+        vm.stockInInfo = res
+        vm.stockInInfo.inTime = this.$moment(vm.stockInInfo.inTime).format('YYYY-MM-DD')
+
+        vm.loadContract(vm.stockInInfo.customerId)
+      })
+
       this.dialog = true
       this.$nextTick(() => {
         this.$refs.form.resetValidation()
@@ -147,9 +137,9 @@ export default {
         this.stockInInfo.userId = this.$store.state.user.id
         this.stockInInfo.userName = this.$store.state.user.name
 
-        stockIn.create(this.stockInInfo).then(res => {
+        stockIn.update(this.stockInInfo).then(res => {
           if (res.status == 0) {
-            vm.$store.commit('alertSuccess', '添加入库成功')
+            vm.$store.commit('alertSuccess', '编辑入库成功')
             vm.$emit('close')
             vm.submitLoading = false
             vm.dialog = false

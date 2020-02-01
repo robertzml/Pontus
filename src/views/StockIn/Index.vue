@@ -40,7 +40,7 @@
     </v-col>
 
     <v-col cols="12">
-      <stock-in-create ref="stockInCreateMod" @close="closeCreate"></stock-in-create>
+      <stock-in-create ref="stockInCreateMod" @close="refresh"></stock-in-create>
     </v-col>
   </v-row>
 </template>
@@ -97,11 +97,6 @@ export default {
     // 显示货品入库
     showCreate() {
       this.$refs.stockInCreateMod.init(0)
-    },
-
-    //关闭添加入库
-    closeCreate() {
-      this.refresh()
     }
   }
 }
