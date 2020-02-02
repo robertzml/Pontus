@@ -52,31 +52,11 @@
             <v-text-field label="备注" v-model="carryInTask.remark" hide-details readonly></v-text-field>
           </v-col>
         </v-row>
-
-        <v-sheet :elevation="10" color="blue-grey darken-2" class="mt-4 pa-2" v-if="carryInTask.status == 74">
-          <v-subheader>入库确认</v-subheader>
-          <v-form ref="confirmForm" v-model="confirmValid" lazy-validation>
-            <v-row>
-              <v-col cols="6">
-                <v-text-field label="入库数量" v-model="finishInfo.moveCount" :rules="moveCountRules"></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field label="入库重量" v-model="finishInfo.moveWeight" suffix="吨" :rules="moveWeightRules"></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="入库确认备注" v-model="finishInfo.remark"></v-text-field>
-              </v-col>
-            </v-row>
-          </v-form>
-        </v-sheet>
       </v-container>
     </v-card-text>
 
     <v-card-actions>
       <v-btn color="blue-grey lighten-3" text @click="close">关闭</v-btn>
-      <v-btn color="success darken-1" v-if="carryInTask.status == 74" :disabled="!confirmValid" :loading="submitLoading" @click="confirmTask">
-        入库确认
-      </v-btn>
     </v-card-actions>
 
     <v-card-actions>
@@ -114,52 +94,15 @@ export default {
   },
   data: () => ({
     valid: false,
-    confirmValid: false,
-    submitLoading: false,
     receiveLoading: false,
     enterLoading: false,
     enterDialog: false,
-    finishInfo: {
-      moveCount: '',
-      moveWeight: '',
-      remark: ''
-    },
     shelfCode: '',
-    shelfCodeRules: [v => !!v || '请输入货架码', v => (v && v.length == 12) || '请输入正确货架码'],
-    moveCountRules: [v => !!v || '请输入入库数量'],
-    moveWeightRules: [v => !!v || '请输入入库重量']
+    shelfCodeRules: [v => !!v || '请输入货架码', v => (v && v.length == 12) || '请输入正确货架码']
   }),
   methods: {
     close() {
       this.$emit('close', false)
-    },
-
-    confirmTask() {
-      if (this.$refs.confirmForm.validate()) {
-        this.$nextTick(() => {
-          this.submitLoading = true
-        })
-        let vm = this
-
-        let model = {
-          taskId: this.carryInTask.id,
-          userId: this.$store.state.user.id,
-          moveCount: this.finishInfo.moveCount,
-          moveWeight: this.finishInfo.moveWeight,
-          remark: this.finishInfo.remark
-        }
-
-        carryIn.finishTask(model).then(res => {
-          if (res.status == 0) {
-            vm.$store.commit('alertSuccess', '任务确认成功')
-            vm.submitLoading = false
-            vm.$emit('close', true)
-          } else {
-            vm.$store.commit('alertError', res.errorMessage)
-            this.submitLoading = false
-          }
-        })
-      }
     },
 
     receiveTask() {

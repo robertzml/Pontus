@@ -1,69 +1,67 @@
 <template>
   <v-sheet class="transparent">
-    <v-card flat class="mx-auto mb-2">
+    <v-card flat class="mx-auto mb-2 brown darken-2">
       <v-card-title class="cyan">
         入库货物信息
       </v-card-title>
 
       <v-card-text>
-        <v-form>
-          <v-row dense>
-            <v-col cols="3" md="3" sm="6">
-              <v-text-field :value="$util.displayDate(info.inTime)" label="入库时间" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="3" md="3" sm="6">
-              <v-text-field v-model="info.flowNumber" label="入库单流水号" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="3" md="3" sm="6">
-              <v-text-field :value="$util.stockInType(info.stockInType)" label="入库类型" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="3" md="3" sm="6">
-              <v-text-field v-model="info.taskCode" label="入库任务码" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="3" md="3" sm="6">
-              <v-text-field v-model="info.cargoName" label="货品名称" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="3" md="3" sm="6">
-              <v-text-field v-model="info.inCount" label="入库数量" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="3" md="3" sm="6">
-              <v-text-field v-model="info.unitWeight" label="单位重量" suffix="千克" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="3" md="3" sm="6">
-              <v-text-field v-model="info.inWeight" label="总重量" suffix="吨" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="3" md="3" sm="6">
-              <v-text-field :value="`${info.categoryNumber} - ${info.categoryName}`" label="货品类别" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="3" md="3" sm="6">
-              <v-text-field v-model="info.specification" label="规格" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="3" md="3" sm="6">
-              <v-text-field v-model="info.batch" label="批次" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="3" md="3" sm="6">
-              <v-text-field v-model="info.originPlace" label="产地" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="3" md="3" sm="6">
-              <v-text-field v-model="info.durability" label="保质期" suffix="月" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="3" md="3" sm="6">
-              <v-text-field v-model="info.userName" label="创建人" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="3" md="3" sm="6">
-              <v-text-field :value="$util.displayDateTime(info.createTime)" label="创建时间" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="3" md="3" sm="6">
-              <v-text-field :value="$util.displayDateTime(info.finishTime)" label="完成时间" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="3" md="3" sm="6">
-              <v-text-field :value="$util.displayStatus(info.status)" label="状态" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" md="6" sm="6">
-              <v-text-field v-model="info.remark" label="备注" hide-details readonly></v-text-field>
-            </v-col>
-          </v-row>
-        </v-form>
+        <v-row dense>
+          <v-col cols="3" md="3" sm="6">
+            <v-text-field :value="$util.displayDate(info.inTime)" label="入库时间" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="3" md="3" sm="6">
+            <v-text-field v-model="info.flowNumber" label="入库单流水号" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="3" md="3" sm="6">
+            <v-text-field :value="$util.stockInType(info.stockInType)" label="入库类型" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="3" md="3" sm="6">
+            <v-text-field v-model="info.taskCode" label="入库任务码" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="3" md="3" sm="6">
+            <v-text-field v-model="info.cargoName" label="货品名称" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="3" md="3" sm="6">
+            <v-text-field v-model="info.inCount" label="入库数量" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="3" md="3" sm="6">
+            <v-text-field v-model="info.unitWeight" label="单位重量" suffix="千克" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="3" md="3" sm="6">
+            <v-text-field v-model="info.inWeight" label="总重量" suffix="吨" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="3" md="3" sm="6">
+            <v-text-field :value="`${info.categoryNumber} - ${info.categoryName}`" label="货品类别" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="3" md="3" sm="6">
+            <v-text-field v-model="info.specification" label="规格" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="3" md="3" sm="6">
+            <v-text-field v-model="info.batch" label="批次" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="3" md="3" sm="6">
+            <v-text-field v-model="info.originPlace" label="产地" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="3" md="3" sm="6">
+            <v-text-field v-model="info.durability" label="保质期" suffix="月" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="3" md="3" sm="6">
+            <v-text-field v-model="info.userName" label="创建人" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="3" md="3" sm="6">
+            <v-text-field :value="$util.displayDateTime(info.createTime)" label="创建时间" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="3" md="3" sm="6">
+            <v-text-field :value="$util.displayDateTime(info.finishTime)" label="完成时间" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="3" md="3" sm="6">
+            <v-text-field :value="$util.displayStatus(info.status)" label="状态" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="6" md="6" sm="6">
+            <v-text-field v-model="info.remark" label="备注" hide-details readonly></v-text-field>
+          </v-col>
+        </v-row>
       </v-card-text>
 
       <v-card-actions>
@@ -87,6 +85,10 @@
               <v-icon left dark>pageview</v-icon>
               查看
             </v-btn>
+            <v-btn v-if="item.status == 74" small color="deep-orange" class="ml-2" @click="showConfirmCarryIn(item)">
+              <v-icon left dark>check</v-icon>
+              确认
+            </v-btn>
             <v-btn v-if="item.status == 72" small color="red darken-3" class="ml-2" @click="deleteCarryIn(item)">
               <v-icon left dark>delete</v-icon>
               删除
@@ -103,6 +105,8 @@
     <v-navigation-drawer v-model="viewDrawer" fixed temporary right width="420">
       <carry-in-details :carry-in-task="carryInTask" @close="closeCarryInDetails"></carry-in-details>
     </v-navigation-drawer>
+
+    <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>
 
     <v-dialog v-model="finishDialog" persistent max-width="300">
       <v-card>
@@ -123,7 +127,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue-grey lighten-3" text @click="deleteDialog = false">取消</v-btn>
-          <v-btn color="green darken-1" text @click="deleteTask">确定</v-btn>
+          <v-btn color="green darken-1" text :loading="deleteLoading" @click="deleteTask">确定</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -136,12 +140,14 @@ import stockIn from '@/controllers/stockIn'
 import carryIn from '@/controllers/carryIn'
 import CarryInCreate from '../CarryIn/Create'
 import CarryInDetails from '../CarryIn/Details'
+import CarryInFinish from '@/components/Dialog/CarryInFinish'
 
 export default {
   name: 'StockInTaskDetails',
   components: {
     CarryInCreate,
-    CarryInDetails
+    CarryInDetails,
+    CarryInFinish
   },
   data: () => ({
     createDrawer: false,
@@ -257,6 +263,11 @@ export default {
           vm.deleteLoading = false
         }
       })
+    },
+
+    // 确认搬运入库
+    showConfirmCarryIn(item) {
+      this.$refs.carryInFinishMod.init(item.id)
     },
 
     // 删除搬运入库

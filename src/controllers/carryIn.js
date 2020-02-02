@@ -8,6 +8,11 @@ export default {
     return res.data
   },
 
+  async get(id) {
+    const res = await axios._get({ url: '/carryInTask/get', params: { id: id } })
+    return res.data
+  },
+
   /**
    * 根据入库任务查找
    * @param {入库任务ID}} taskId
