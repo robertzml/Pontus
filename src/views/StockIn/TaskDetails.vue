@@ -65,7 +65,7 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn color="primary" v-if="this.info.status == 71" @click.stop="createDrawer = true">任务下发</v-btn>
+        <v-btn color="primary" v-if="this.info.status == 71" @click.stop="showCarryInCreate">任务下发</v-btn>
         <v-btn color="deep-orange darken-3" v-if="this.info.status == 71" @click.stop="finishDialog = true">入库货物确认</v-btn>
         <v-btn color="red darken-3" v-if="info.status != 75" @click.stop="deleteDialog = true">删除入库货物</v-btn>
       </v-card-actions>
@@ -98,14 +98,11 @@
       </v-card-text>
     </v-card>
 
-    <v-navigation-drawer v-model="createDrawer" fixed temporary right width="420">
-      <carry-in-create :stock-in-task="info" @close="closeCarryInCreate"></carry-in-create>
-    </v-navigation-drawer>
-
     <v-navigation-drawer v-model="viewDrawer" fixed temporary right width="420">
       <carry-in-details :carry-in-task="carryInTask" @close="closeCarryInDetails"></carry-in-details>
     </v-navigation-drawer>
 
+    <carry-in-create ref="carryInCreateMod" :stock-in-task="info" @close="loadCarryInTask"></carry-in-create>
     <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>
 
     <v-dialog v-model="finishDialog" persistent max-width="300">
@@ -138,8 +135,8 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import carryIn from '@/controllers/carryIn'
-import CarryInCreate from '../CarryIn/Create'
 import CarryInDetails from '../CarryIn/Details'
+import CarryInCreate from '@/components/Dialog/CarryInCreate'
 import CarryInFinish from '@/components/Dialog/CarryInFinish'
 
 export default {
@@ -150,7 +147,6 @@ export default {
     CarryInFinish
   },
   data: () => ({
-    createDrawer: false,
     viewDrawer: false,
     finishLoading: false,
     finishDialog: false,
@@ -203,12 +199,9 @@ export default {
       })
     },
 
-    // 关闭入库搬运
-    closeCarryInCreate(update) {
-      this.createDrawer = false
-      if (update) {
-        this.loadCarryInTask()
-      }
+    // 任务下发
+    showCarryInCreate() {
+      this.$refs.carryInCreateMod.init()
     },
 
     // 查看搬运入库任务信息

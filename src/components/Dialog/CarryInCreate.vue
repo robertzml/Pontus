@@ -103,7 +103,7 @@ export default {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加任务成功')
             vm.loading = false
-            vm.$emit('update')
+            vm.$emit('close')
             vm.dialog = false
           } else {
             vm.$store.commit('alertError', res.errorMessage)

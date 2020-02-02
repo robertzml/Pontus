@@ -89,7 +89,7 @@
       </v-card>
     </v-dialog>
 
-    <carry-in-create ref="carryInMod" :stockInTask="taskInfo" @update="loadCarryInList"></carry-in-create>
+    <carry-in-create ref="carryInMod" :stockInTask="taskInfo" @close="loadCarryInList"></carry-in-create>
   </v-row>
 </template>
 
