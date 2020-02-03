@@ -2,7 +2,7 @@
   <v-sheet class="transparent">
     <v-slide-x-transition leave-absolute>
       <keep-alive>
-        <component v-bind:is="stockInCom"></component>
+        <component v-bind:is="stockInTab"></component>
       </keep-alive>
     </v-slide-x-transition>
   </v-sheet>
@@ -11,17 +11,18 @@
 <script>
 import { mapState } from 'vuex'
 import ReceiptStockInList from './StockInList'
+import ReceiptStockInDetails from './StockInDetails'
 
 export default {
   name: 'ReceiptStockIn',
   components: {
-    ReceiptStockInList
+    ReceiptStockInList,
+    ReceiptStockInDetails
   },
-  data: () => ({
-    stockInCom: 'ReceiptStockInList'
-  }),
+  data: () => ({}),
   computed: {
     ...mapState({
+      stockInTab: state => state.receipt.stockInTab,
       refreshEvent: state => state.receipt.refreshEvent
     })
   },

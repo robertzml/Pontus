@@ -5,36 +5,37 @@ export default {
 
   state: {
     // 单据管理显示页面
-    tab: 'ReceiptList',
+    stockInTab: 'ReceiptStockInList',
 
-    // 当前单据对象
-    contractInfo: {},
+    // 当前入库单ID
+    stockInId: '',
 
     // 刷新事件
     refreshEvent: false
   },
 
   actions: {
-    // 显示合同信息页面
-    showDetails({ commit }) {
-      commit('setTab', 'ContractDetails')
+    // 显示单据信息页面
+    showStockInDetails(context, id) {
+      context.commit('setStockInTab', 'ReceiptStockInDetails')
+      context.commit('setStockInId', id)
     },
 
     // 显示单据列表页面
-    showList({ commit }) {
-      commit('setTab', 'ReceiptList')
+    showStockInList({ commit }) {
+      commit('setStockInTab', 'ReceiptStockInList')
     }
   },
 
   mutations: {
     // 设置显示页面
-    setTab: (state, tab) => {
-      state.tab = tab
+    setStockInTab: (state, tab) => {
+      state.stockInTab = tab
     },
 
     // 设置合同对象
-    setContractInfo: (state, val) => {
-      state.contractInfo = val
+    setStockInId: (state, val) => {
+      state.stockInId = val
     },
 
     // 刷新操作

@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import CustomerSelect from '@/components/Control/CustomerSelect'
 
@@ -103,6 +103,7 @@ export default {
     ...mapState({
       refreshEvent: state => state.receipt.refreshEvent
     }),
+    // 过滤后入库单列表
     stockInFilterData() {
       let temp = this.stockInListData
 
@@ -124,6 +125,10 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      showStockInDetails: 'receipt/showStockInDetails'
+    }),
+
     loadStockInList() {
       let vm = this
       stockIn.getList().then(res => {
@@ -133,6 +138,10 @@ export default {
 
     reset() {
       this.$refs.form.reset()
+    },
+
+    viewItem(item) {
+      this.showStockInDetails(item.id)
     }
   },
   mounted: function() {

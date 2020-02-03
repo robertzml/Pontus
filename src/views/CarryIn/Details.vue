@@ -136,6 +136,8 @@ export default {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '入库上架成功')
             vm.enterLoading = false
+            vm.enterDialog = false
+            vm.shelfCode = ''
             vm.$emit('close', true)
           } else {
             vm.$store.commit('alertError', res.errorMessage)

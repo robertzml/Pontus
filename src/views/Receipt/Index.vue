@@ -3,9 +3,9 @@
     <v-col cols="12">
       <v-toolbar dense flat>
         <v-toolbar-title>单据管理</v-toolbar-title>
-
         <v-spacer></v-spacer>
 
+        <v-btn text @click.stop="toList">返回</v-btn>
         <v-btn text @click.stop="refresh">刷新</v-btn>
 
         <template v-slot:extension>
@@ -41,16 +41,21 @@ export default {
     tab: null
   }),
   computed: {
-    ...mapState({})
+    ...mapState({
+      stockInTab: state => state.receipt.stockInTab
+    })
   },
   methods: {
+    ...mapActions({
+      showStockInList: 'receipt/showStockInList'
+    }),
     ...mapMutations({
       refresh: 'receipt/refresh'
     }),
 
-    ...mapActions({
-      showList: 'receipt/showList'
-    })
+    toList() {
+      this.showStockInList()
+    }
   },
   mounted: function() {}
 }
