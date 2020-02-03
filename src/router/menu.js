@@ -121,7 +121,7 @@ export const menuRoutes = [
     group: 'info',
     model: false,
     component: () => import('@/views/Cargo/Index.vue'),
-    meta: { roles: [1, 2, 3] }
+    meta: { roles: [1, 2, 3, 4, 5] }
   },
   {
     path: '/warehouse',
