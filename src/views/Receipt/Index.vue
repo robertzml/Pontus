@@ -1,44 +1,47 @@
 <template>
-  <v-row dense>
+  <v-row dense no-gutters>
     <v-col cols="12">
-      <v-toolbar dense>
+      <v-toolbar dense flat>
         <v-toolbar-title>单据管理</v-toolbar-title>
+
         <v-spacer></v-spacer>
 
-        <v-toolbar-items>
-          <v-btn v-if="tab == 'CustomerDetails'" text color="amber accent-4" @click.stop="showList">返回</v-btn>
-          <v-btn text @click.stop="refresh">刷新</v-btn>
-        </v-toolbar-items>
+        <v-btn text @click.stop="refresh">刷新</v-btn>
+
+        <template v-slot:extension>
+          <v-tabs v-model="tab" grow slider-color="yellow">
+            <v-tab>入库单据</v-tab>
+            <v-tab>出库单据</v-tab>
+          </v-tabs>
+        </template>
       </v-toolbar>
     </v-col>
 
     <v-col cols="12">
-      <v-slide-x-transition leave-absolute>
-        <keep-alive>
-          <component v-bind:is="tab"></component>
-        </keep-alive>
-      </v-slide-x-transition>
+      <v-tabs-items v-model="tab">
+        <v-tab-item>
+          <receipt-stock-in></receipt-stock-in>
+        </v-tab-item>
+        <v-tab-item> </v-tab-item>
+      </v-tabs-items>
     </v-col>
-
-    <v-col cols="12"> </v-col>
   </v-row>
 </template>
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
-import ReceiptList from './List'
+import ReceiptStockIn from './StockIn'
 
 export default {
   name: 'ReceiptIndex',
   components: {
-    ReceiptList
+    ReceiptStockIn
   },
-  data: () => ({}),
+  data: () => ({
+    tab: null
+  }),
   computed: {
-    ...mapState({
-      tab: state => state.receipt.tab,
-      customerInfo: state => state.receipt.customerInfo
-    })
+    ...mapState({})
   },
   methods: {
     ...mapMutations({
@@ -47,17 +50,8 @@ export default {
 
     ...mapActions({
       showList: 'receipt/showList'
-    }),
-
-    showCreate() {
-      this.$refs.customerEditMod.init(0)
-    },
-    showEdit() {
-      this.$refs.customerEditMod.init(this.customerInfo.id)
-    }
+    })
   },
-  mounted: function() {
-    this.showList()
-  }
+  mounted: function() {}
 }
 </script>

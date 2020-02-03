@@ -9,6 +9,7 @@
     clearable
     return-object
     :rules="customerRules"
+    :hide-details="!required"
     @change="selectItem"
   >
     <template v-slot:selection="data"> {{ data.item.number }} - {{ data.item.name }} </template>
@@ -29,12 +30,16 @@ export default {
   props: {
     customerId: {
       type: Number
+    },
+    required: {
+      type: Boolean,
+      default: true
     }
   },
   data: () => ({
     customerData: [],
     selectedCustomer: null,
-    customerRules: [v => (!!v && v.id != 0) || '请选择客户']
+    customerRules2: [v => (!!v && v.id != 0) || '请选择客户']
   }),
   watch: {
     customerId: function() {
@@ -43,6 +48,18 @@ export default {
       } else {
         this.selectedCustomer = null
       }
+    }
+  },
+  computed: {
+    customerRules() {
+      let rules = []
+
+      if (this.required) {
+        const rule = v => (!!v && v.id != 0) || '请选择客户'
+        rules.push(rule)
+      }
+
+      return rules
     }
   },
   methods: {
