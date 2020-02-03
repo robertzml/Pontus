@@ -55,6 +55,12 @@ export default {
     return res.data
   },
 
+  // 撤回入库单
+  async revert(data) {
+    const res = await axios._postqs({ url: '/stockIn/revert', params: data })
+    return res.data
+  },
+
   // 删除入库单
   async deleteStockIn(data) {
     const res = await axios._postqs({ url: '/stockIn/delete', params: data })

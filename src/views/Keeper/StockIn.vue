@@ -82,7 +82,7 @@
           </v-card-actions>
         </v-card>
 
-        <stock-in-create-task v-if="stockInInfo" ref="createTaskMod" :stockInInfo="stockInInfo" @update="refresh"></stock-in-create-task>
+        <stock-in-task-create v-if="stockInInfo" ref="createTaskMod" :stockInInfo="stockInInfo" @update="refresh"></stock-in-task-create>
 
         <v-slide-x-transition leave-absolute>
           <component v-bind:is="tab"></component>
@@ -97,14 +97,14 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import StockInTaskList from './StockInTaskList'
 import StockInTaskDetails from './StockInTaskDetails'
-import StockInCreateTask from '@/components/Dialog/StockInCreateTask'
+import StockInTaskCreate from '@/components/Dialog/StockInTaskCreate'
 
 export default {
   name: 'KeeperStockIn',
   components: {
     StockInTaskList,
     StockInTaskDetails,
-    StockInCreateTask
+    StockInTaskCreate
   },
   data: () => ({
     stockInList: [],

@@ -57,9 +57,7 @@
               <v-col cols="6" md="6" sm="6">
                 <v-text-field label="备注" :value="info.remark" readonly> </v-text-field>
               </v-col>
-              <v-col cols="6" md="6" sm="6">
-                <vue-barcode v-if="stockInId != 0" v-bind:value="info.flowNumber" :height="50" :font-size="10"></vue-barcode>
-              </v-col>
+              <v-col cols="6" md="6" sm="6"> </v-col>
             </v-row>
 
             <v-card-actions>
@@ -90,7 +88,7 @@
     </v-expansion-panels>
 
     <stock-in-edit ref="stockInEditMod" @close="loadInfo"></stock-in-edit>
-    <stock-in-create-task ref="createTaskMod" :stockInInfo="info" @update="loadTaskList"></stock-in-create-task>
+    <stock-in-task-create ref="createTaskMod" :stockInInfo="info" @update="loadTaskList"></stock-in-task-create>
 
     <v-dialog v-model="finishDialog" persistent max-width="300">
       <v-card>
@@ -121,16 +119,14 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import stockIn from '@/controllers/stockIn'
-import StockInCreateTask from '@/components/Dialog/StockInCreateTask'
+import StockInTaskCreate from '@/components/Dialog/StockInTaskCreate'
 import StockInEdit from './Edit'
-import VueBarcode from 'vue-barcode'
 
 export default {
   name: 'StockInDetails',
   components: {
-    StockInCreateTask,
-    StockInEdit,
-    VueBarcode
+    StockInTaskCreate,
+    StockInEdit
   },
   data: () => ({
     panel: [0, 1],

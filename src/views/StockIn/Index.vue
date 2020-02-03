@@ -8,6 +8,7 @@
         <v-toolbar-items>
           <v-btn v-if="tab != 'StockInDetails'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
           <v-btn v-if="tab == 'StockInDetails'" text @click.stop="showCreate">新建入库单</v-btn>
+          <v-btn v-if="tab == 'StockInDetails' && stockInInfo.status == 75" text @click.stop="revertDialog = true">撤回入库单</v-btn>
           <v-btn text @click.stop="refresh">刷新</v-btn>
           <v-menu v-model="inTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290">
             <template v-slot:activator="{ on }">
@@ -42,11 +43,24 @@
     <v-col cols="12">
       <stock-in-create ref="stockInCreateMod" @close="refresh"></stock-in-create>
     </v-col>
+
+    <v-dialog v-model="revertDialog" persistent max-width="300">
+      <v-card>
+        <v-card-title class="headline">撤回入库单</v-card-title>
+        <v-card-text>是否确认撤回该入库单？ <br />流水单号: {{ stockInInfo.flowNumber }}</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue-grey lighten-3" text @click="revertDialog = false">取消</v-btn>
+          <v-btn color="green darken-1" text :loading="revertLoading" @click="revert">确定</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
+import stockIn from '@/controllers/stockIn'
 import StockInList from './List'
 import StockInCreate from './Create'
 import StockInDetails from './Details'
@@ -61,11 +75,14 @@ export default {
     StockInTaskDetails
   },
   data: () => ({
-    inTimeMenu: false
+    inTimeMenu: false,
+    revertDialog: false,
+    revertLoading: false
   }),
   computed: {
     ...mapState({
-      tab: state => state.stockIn.tab
+      tab: state => state.stockIn.tab,
+      stockInInfo: state => state.stockIn.stockInInfo
     }),
     inTime: {
       get() {
@@ -97,6 +114,26 @@ export default {
     // 显示货品入库
     showCreate() {
       this.$refs.stockInCreateMod.init(0)
+    },
+
+    // 撤回入库单
+    revert() {
+      let vm = this
+      this.$nextTick(() => {
+        this.revertLoading = true
+      })
+
+      stockIn.revert({ id: this.stockInInfo.id }).then(res => {
+        if (res.status == 0) {
+          vm.$store.commit('alertSuccess', '入库单已撤回')
+          vm.refresh()
+          vm.revertLoading = false
+          vm.revertDialog = false
+        } else {
+          vm.$store.commit('alertError', res.errorMessage)
+          vm.revertLoading = false
+        }
+      })
     }
   }
 }

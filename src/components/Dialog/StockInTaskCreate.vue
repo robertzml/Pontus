@@ -16,7 +16,7 @@
                 <v-text-field label="入库数量*" v-model="taskInfo.inCount"></v-text-field>
               </v-col>
               <v-col cols="6" md="4" sm="6">
-                <v-text-field label="单位重量*" v-model="unitWeight" suffix="千克"></v-text-field>
+                <v-text-field label="单位重量*" v-model="unitWeight" suffix="千克" readonly></v-text-field>
               </v-col>
               <v-col cols="6" md="4" sm="6">
                 <v-text-field label="总重量*" v-model="totalWeight" suffix="吨"></v-text-field>
@@ -55,7 +55,7 @@ import cargo from '@/controllers/cargo'
 import CargoSelect from '@/components/Control/CargoSelect'
 
 export default {
-  name: 'StockInCreateTask',
+  name: 'StockInTaskCreate',
   props: {
     stockInInfo: Object
   },
