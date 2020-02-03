@@ -65,8 +65,9 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn color="primary" v-if="this.info.status == 71" @click.stop="showCarryInCreate">任务下发</v-btn>
-        <v-btn color="deep-orange darken-3" v-if="this.info.status == 71" @click.stop="finishDialog = true">入库货物确认</v-btn>
+        <v-btn color="indigo darken-3" v-if="this.info.status == 71" @click.stop="showCarryInCreate">任务下发</v-btn>
+        <v-btn color="success darken-1" v-if="this.info.status == 71" @click.stop="finishDialog = true">确认入库货物</v-btn>
+        <v-btn color="warning" v-if="info.status != 75" @click.stop="showEditTask">编辑入库货物</v-btn>
         <v-btn color="red darken-3" v-if="info.status != 75" @click.stop="deleteDialog = true">删除入库货物</v-btn>
       </v-card-actions>
     </v-card>
@@ -81,11 +82,11 @@
             {{ item.status | displayStatus }}
           </template>
           <template v-slot:item.action="{ item }">
-            <v-btn small color="success" @click="viewCarryInDetails(item)">
+            <v-btn small color="primary darken-1" @click="viewCarryInDetails(item)">
               <v-icon left dark>pageview</v-icon>
               查看
             </v-btn>
-            <v-btn v-if="item.status == 74" small color="deep-orange" class="ml-2" @click="showConfirmCarryIn(item)">
+            <v-btn v-if="item.status == 74" small color="success darken-1" class="ml-2" @click="showConfirmCarryIn(item)">
               <v-icon left dark>check</v-icon>
               确认
             </v-btn>
@@ -102,6 +103,7 @@
       <carry-in-details :carry-in-task="carryInTask" @close="closeCarryInDetails"></carry-in-details>
     </v-navigation-drawer>
 
+    <stock-in-task-edit ref="stockInTaskEditMod" :customer-id="info.customerId" @close="closeEditTask"></stock-in-task-edit>
     <carry-in-create ref="carryInCreateMod" :stock-in-task="info" @close="loadCarryInTask"></carry-in-create>
     <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>
 
@@ -135,6 +137,7 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import carryIn from '@/controllers/carryIn'
+import StockInTaskEdit from './EditTask'
 import CarryInDetails from '../CarryIn/Details'
 import CarryInCreate from '@/components/Dialog/CarryInCreate'
 import CarryInFinish from '@/components/Dialog/CarryInFinish'
@@ -142,6 +145,7 @@ import CarryInFinish from '@/components/Dialog/CarryInFinish'
 export default {
   name: 'StockInTaskDetails',
   components: {
+    StockInTaskEdit,
     CarryInCreate,
     CarryInDetails,
     CarryInFinish
@@ -166,6 +170,9 @@ export default {
   }),
   computed: {
     ...mapState({
+      /**
+       * 入库任务单
+       */
       info: state => state.stockIn.stockInTaskInfo,
       refreshEvent: state => state.stockIn.refreshEvent
     })
@@ -236,6 +243,17 @@ export default {
           vm.finishLoading = false
         }
       })
+    },
+
+    // 显示编辑入库任务
+    showEditTask() {
+      this.$refs.stockInTaskEditMod.init(this.info.id)
+    },
+
+    // 关闭编辑入库任务
+    closeEditTask() {
+      this.loadStockInTask()
+      this.loadCarryInTask()
     },
 
     // 删除入库任务

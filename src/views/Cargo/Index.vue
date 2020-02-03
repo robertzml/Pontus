@@ -76,11 +76,11 @@ export default {
     contractListData: [],
     cargoListData: [],
     headers: [
+      { text: '类别代码', value: 'categoryNumber' },
+      { text: '类别名称', value: 'categoryName' },
       { text: '货品名称', value: 'name' },
       { text: '客户编号', value: 'customerNumber' },
       { text: '客户名称', value: 'customerName' },
-      { text: '类别代码', value: 'categoryNumber' },
-      { text: '类别名称', value: 'categoryName' },
       { text: '单位重量(kg)', value: 'unitWeight' },
       { text: '规格', value: 'specification' },
       { text: '登记时间', value: 'registerTime' },

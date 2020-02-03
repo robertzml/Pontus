@@ -91,6 +91,12 @@ export default {
     return res.data
   },
 
+  // 编辑入库任务
+  async updateTask(entity) {
+    const res = await axios._post({ url: '/stockIn/updateTask', data: entity })
+    return res.data
+  },
+
   // 删除入库任务
   async deleteTask(data) {
     const res = await axios._postqs({ url: '/stockIn/deleteTask', params: data })

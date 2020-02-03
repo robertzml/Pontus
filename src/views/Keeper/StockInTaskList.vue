@@ -6,7 +6,7 @@
         {{ item.status | displayStatus }}
       </template>
       <template v-slot:item.action="{ item }">
-        <v-btn small color="success" @click="viewTaskItem(item)">
+        <v-btn small color="primary" @click="viewTaskItem(item)">
           查看
         </v-btn>
       </template>

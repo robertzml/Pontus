@@ -61,9 +61,9 @@
             </v-row>
 
             <v-card-actions>
-              <v-btn color="primary darken-1" v-if="info.status == 71" @click="showAddTask">添加货物</v-btn>
-              <v-btn color="deep-orange darken-3" v-if="info.status == 71" @click.stop="finishDialog = true">入库单确认</v-btn>
-              <v-btn color="pink accent-2" v-if="stockInId && info.status != 75" @click.stop="showEdit">编辑入库单</v-btn>
+              <v-btn color="indigo darken-3" v-if="info.status == 71" @click="showAddTask">添加货物</v-btn>
+              <v-btn color="success darken-1" v-if="info.status == 71" @click.stop="finishDialog = true">确认入库单</v-btn>
+              <v-btn color="warning" v-if="stockInId && info.status != 75" @click.stop="showEdit">编辑入库单</v-btn>
               <v-btn color="red darken-3" v-if="stockInId && info.status != 75" @click.stop="deleteDialog = true">删除入库单</v-btn>
             </v-card-actions>
           </v-card>
@@ -78,7 +78,7 @@
               {{ item.status | displayStatus }}
             </template>
             <template v-slot:item.action="{ item }">
-              <v-btn small color="success" @click="viewTaskItem(item)">
+              <v-btn small color="primary" @click="viewTaskItem(item)">
                 查看
               </v-btn>
             </template>
