@@ -59,6 +59,7 @@ export default {
     dialog: false,
     loading: false,
     valid: false,
+    taskId: '',
     cargoId: '',
     unitWeight: 0.0,
     cargoListData: [],
@@ -81,27 +82,20 @@ export default {
   },
   methods: {
     init(taskId) {
-      let vm = this
+      this.taskId = taskId
 
-      this.loadCargoData().then(() => {
-        stockIn.getTask(taskId).then(res => {
-          vm.taskInfo = res
-          vm.cargoId = vm.taskInfo.cargoId
-        })
-      })
-
+      this.loadData()
       this.dialog = true
       this.$nextTick(() => {
         this.$refs.form.resetValidation()
       })
     },
 
-    // 载入货品
-    async loadCargoData() {
-      let vm = this
-      return cargo.getList(this.customerId).then(res => {
-        vm.cargoListData = res
-      })
+    // 载入货品和入库任务数据
+    async loadData() {
+      this.cargoListData = await cargo.getList(this.customerId)
+      this.taskInfo = await stockIn.getTask(this.taskId)
+      this.cargoId = this.taskInfo.cargoId
     },
 
     selectCargo(val) {
