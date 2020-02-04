@@ -1,11 +1,13 @@
 <template>
-  <v-sheet class="transparent">
-    <v-slide-x-transition leave-absolute>
-      <keep-alive>
-        <component v-bind:is="stockInTab"></component>
-      </keep-alive>
-    </v-slide-x-transition>
-  </v-sheet>
+  <v-row dense>
+    <v-col cols="12">
+      <v-slide-x-transition leave-absolute>
+        <keep-alive>
+          <component v-bind:is="stockInTab"></component>
+        </keep-alive>
+      </v-slide-x-transition>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
