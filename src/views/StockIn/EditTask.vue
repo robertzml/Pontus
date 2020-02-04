@@ -81,12 +81,13 @@ export default {
   },
   methods: {
     init(taskId) {
-      this.loadCargoData()
-
       let vm = this
-      stockIn.getTask(taskId).then(res => {
-        vm.taskInfo = res
-        vm.cargoId = vm.taskInfo.cargoId
+
+      this.loadCargoData().then(() => {
+        stockIn.getTask(taskId).then(res => {
+          vm.taskInfo = res
+          vm.cargoId = vm.taskInfo.cargoId
+        })
       })
 
       this.dialog = true
@@ -96,9 +97,9 @@ export default {
     },
 
     // 载入货品
-    loadCargoData() {
+    async loadCargoData() {
       let vm = this
-      cargo.getList(this.customerId).then(res => {
+      return cargo.getList(this.customerId).then(res => {
         vm.cargoListData = res
       })
     },

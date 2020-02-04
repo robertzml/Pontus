@@ -13,10 +13,17 @@
             <v-text-field label="仓位码" v-model="carryInTask.positionNumber" hide-details readonly></v-text-field>
           </v-col>
           <v-col cols="6">
-            <v-text-field label="任务码" v-model="carryInTask.taskCode" hide-details readonly></v-text-field>
+            <v-text-field label="货架码" v-model="carryInTask.shelfCode" hide-details readonly></v-text-field>
           </v-col>
           <v-col cols="6">
             <v-text-field label="托盘码" v-model="carryInTask.trayCode" hide-details readonly></v-text-field>
+          </v-col>
+
+          <v-col cols="6">
+            <v-text-field label="任务码" v-model="carryInTask.taskCode" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field label="货品名称" v-model="carryInTask.cargoName" hide-details readonly></v-text-field>
           </v-col>
           <v-col cols="6">
             <v-text-field label="搬运数量" v-model="carryInTask.moveCount" hide-details readonly></v-text-field>

@@ -75,6 +75,10 @@
     <v-card class="mx-auto">
       <v-card-title class="deep-purple">
         搬运入库任务
+        <v-spacer> </v-spacer>
+        <span class="subtitle-2">托盘数量: {{ totalTray }}</span>
+        <span class="subtitle-2 ml-4">搬运数量: {{ totalMoveCount }}</span>
+        <span class="subtitle-2 ml-4">搬运重量: {{ totalMoveWeight }} 吨</span>
       </v-card-title>
       <v-card-text class="px-0">
         <v-data-table :headers="carryInTaskHeaders" :items="carryInTaskList" hide-default-footer disable-filtering disable-pagination>
@@ -175,7 +179,26 @@ export default {
        */
       info: state => state.stockIn.stockInTaskInfo,
       refreshEvent: state => state.stockIn.refreshEvent
-    })
+    }),
+    totalTray: function() {
+      return this.carryInTaskList.length
+    },
+    totalMoveCount: function() {
+      let total = 0
+      this.carryInTaskList.forEach(item => {
+        total += item.moveCount
+      })
+
+      return total
+    },
+    totalMoveWeight: function() {
+      let total = 0
+      this.carryInTaskList.forEach(item => {
+        total += item.moveWeight
+      })
+
+      return total
+    }
   },
   watch: {
     refreshEvent: function() {
