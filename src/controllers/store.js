@@ -4,6 +4,14 @@ export default {
   name: 'store',
 
   /**
+   * 获取所有库存
+   */
+  async list() {
+    const res = await axios._get({ url: '/store/list' })
+    return res.data
+  },
+
+  /**
    * 按仓位查找在库库存
    * @param {仓位ID} positionId
    */

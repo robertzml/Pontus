@@ -178,6 +178,15 @@ export const menuRoutes = [
     meta: { roles: [1, 2, 3] }
   },
   {
+    path: '/storelist',
+    name: 'storeList',
+    text: '库存列表',
+    group: 'store',
+    model: false,
+    component: () => import('@/views/Store/List.vue'),
+    meta: { roles: [1, 2, 3] }
+  },
+  {
     path: '/user',
     name: 'user',
     text: '用户列表',
