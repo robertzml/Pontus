@@ -99,7 +99,7 @@
               </v-sheet>
             </v-col>
             <v-col cols="6">
-              <store-details ref="detailsMod" class="sticky-card"></store-details>
+              <store-info ref="detailsMod" class="sticky-card"></store-info>
             </v-col>
           </v-row>
         </v-container>
@@ -113,12 +113,12 @@ import { mapState, mapMutations } from 'vuex'
 import warehouse from '@/controllers/warehouse'
 import shelf from '@/controllers/shelf'
 import position from '@/controllers/position'
-import StoreDetails from './Details'
+import StoreInfo from './Info'
 
 export default {
   name: 'StoreIndex',
   components: {
-    StoreDetails
+    StoreInfo
   },
   data: () => ({
     warehouseListData: [],

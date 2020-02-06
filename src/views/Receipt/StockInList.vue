@@ -6,34 +6,32 @@
           筛选
         </v-card-subtitle>
         <v-card-text>
-          <form>
-            <v-row dense>
-              <v-col cols="4" md="4" sm="4">
-                <customer-select :customer-id.sync="filter.customerId" :required="false"></customer-select>
-              </v-col>
+          <v-row dense>
+            <v-col cols="4" md="4" sm="4">
+              <customer-select :customer-id.sync="filter.customerId" :required="false"></customer-select>
+            </v-col>
 
-              <v-col cols="4" md="4" sm="4">
-                <v-menu v-model="timeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
-                  <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="filter.time"
-                      label="出入库日期"
-                      prepend-icon="event"
-                      clearable
-                      hide-details
-                      readonly
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker v-model="filter.time" :day-format="$util.pickerDayFormat" @input="timeMenu = false"></v-date-picker>
-                </v-menu>
-              </v-col>
+            <v-col cols="4" md="4" sm="4">
+              <v-menu v-model="timeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    v-model="filter.time"
+                    label="出入库日期"
+                    prepend-icon="event"
+                    clearable
+                    hide-details
+                    readonly
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker v-model="filter.time" :day-format="$util.pickerDayFormat" @input="timeMenu = false"></v-date-picker>
+              </v-menu>
+            </v-col>
 
-              <v-col cols="4" md="4" sm="4">
-                <v-text-field v-model="filter.text" append-icon="search" label="搜索" clearable single-line hide-details> </v-text-field>
-              </v-col>
-            </v-row>
-          </form>
+            <v-col cols="4" md="4" sm="4">
+              <v-text-field v-model="filter.text" append-icon="search" label="搜索" clearable single-line hide-details> </v-text-field>
+            </v-col>
+          </v-row>
         </v-card-text>
       </v-card>
     </v-col>

@@ -109,7 +109,7 @@ import { mapState } from 'vuex'
 import store from '@/controllers/store'
 
 export default {
-  name: 'StoreDetails',
+  name: 'StoreInfo',
   data: () => ({
     storeInfo: []
   }),

@@ -14,45 +14,32 @@
 
     <v-col cols="12">
       <v-card flat>
-        <v-card-subtitle>
-          筛选
-        </v-card-subtitle>
         <v-card-text>
-          <form>
+          <v-form ref="form" v-model="valid" lazy-validation>
             <v-row dense>
-              <v-col cols="4" md="4" sm="4">
-                <customer-select :customer-id.sync="filter.customerId" :required="false"></customer-select>
+              <v-col cols="4">
+                <customer-select :customer-id.sync="filter.customerId" :required="true"></customer-select>
               </v-col>
 
-              <v-col cols="4" md="4" sm="4">
-                <v-menu
-                  v-model="inTimeMenu"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="filter.time"
-                      label="入库日期"
-                      prepend-icon="event"
-                      clearable
-                      hide-details
-                      readonly
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker v-model="filter.time" :day-format="$util.pickerDayFormat" @input="inTimeMenu = false"></v-date-picker>
-                </v-menu>
+              <v-col cols="4">
+                <v-select
+                  :items="contractListData"
+                  label="选择合同*"
+                  :rules="contractRules"
+                  :hint="`${filter.selectedContract.number}`"
+                  item-text="name"
+                  item-value="id"
+                  v-model="filter.selectedContract"
+                  persistent-hint
+                  return-object
+                ></v-select>
               </v-col>
 
-              <v-col cols="4" md="4" sm="4">
-                <v-text-field v-model="filter.text" append-icon="search" label="搜索" clearable single-line hide-details> </v-text-field>
+              <v-col cols="4">
+                <v-btn color="success darken-1 mt-2" :disabled="!valid" :loading="loading" @click="search">搜索</v-btn>
               </v-col>
             </v-row>
-          </form>
+          </v-form>
         </v-card-text>
       </v-card>
     </v-col>
@@ -63,7 +50,7 @@
           库存列表
         </v-card-title>
         <v-card-text class="px-0">
-          <v-data-table :headers="headers" :items="storeData" :search="search" :items-per-page="10">
+          <v-data-table :headers="headers" :items="storeData" :items-per-page="10">
             <template v-slot:item.status="{ item }">
               {{ item.status | displayStatus }}
             </template>
@@ -88,6 +75,7 @@
 
 <script>
 import store from '@/controllers/store'
+import contract from '@/controllers/contract'
 import CustomerSelect from '@/components/Control/CustomerSelect'
 
 export default {
@@ -96,13 +84,14 @@ export default {
     CustomerSelect
   },
   data: () => ({
-    search: '',
-    inTimeMenu: false,
+    valid: false,
+    loading: false,
     filter: {
       customerId: 0,
-      time: null,
-      text: ''
+      selectedContract: { number: '' }
     },
+    contractListData: [],
+    contractRules: [v => !!v.id || '请选择合同'],
     storeData: [],
     headers: [
       { text: '客户代码', value: 'customerNumber' },
@@ -118,13 +107,34 @@ export default {
       { text: '操作', value: 'action', sortable: false }
     ]
   }),
+  watch: {
+    'filter.customerId': function(val) {
+      this.loadContract(val)
+    }
+  },
   methods: {
     async loadStore() {
       this.storeData = await store.list()
+    },
+
+    // 载入合同
+    async loadContract(customerId) {
+      if (customerId) {
+        this.contractListData = await contract.getList(customerId)
+      } else {
+        this.contractListData = []
+      }
+    },
+
+    // 搜索库存
+    async search() {
+      if (this.$refs.form.validate()) {
+        this.storeData = await store.findByContract(this.filter.selectedContract.id)
+      }
     }
   },
   mounted: function() {
-    this.loadStore()
+    // this.loadStore()
   }
 }
 </script>

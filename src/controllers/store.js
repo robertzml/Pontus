@@ -20,10 +20,14 @@ export default {
     return res.data
   },
 
-  async findByContract({ contractId, isStoreIn }) {
+  /**
+   * 按合同查找库存
+   * @param {合同ID} contractId
+   */
+  async findByContract(contractId) {
     const res = await axios._get({
       url: '/store/findByContract',
-      params: { contractId: contractId, isStoreIn: isStoreIn }
+      params: { contractId: contractId }
     })
     return res.data
   },
