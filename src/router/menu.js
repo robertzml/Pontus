@@ -178,12 +178,12 @@ export const menuRoutes = [
     meta: { roles: [1, 2, 3] }
   },
   {
-    path: '/storelist',
-    name: 'storeList',
-    text: '库存列表',
+    path: '/storegrid',
+    name: 'storeGrid',
+    text: '表格视图',
     group: 'store',
     model: false,
-    component: () => import('@/views/Store/List.vue'),
+    component: () => import('@/views/Store/Grid.vue'),
     meta: { roles: [1, 2, 3] }
   },
   {

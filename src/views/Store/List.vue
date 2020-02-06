@@ -74,6 +74,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import store from '@/controllers/store'
 import contract from '@/controllers/contract'
 import CustomerSelect from '@/components/Control/CustomerSelect'
@@ -113,6 +114,10 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      showStoreDetails: 'store/showStoreDetails'
+    }),
+
     async loadStore() {
       this.storeData = await store.list()
     },
@@ -131,6 +136,11 @@ export default {
       if (this.$refs.form.validate()) {
         this.storeData = await store.findByContract(this.filter.selectedContract.id)
       }
+    },
+
+    // 查看库存信息
+    viewItem(item) {
+      this.showStoreDetails(item.id)
     }
   },
   mounted: function() {

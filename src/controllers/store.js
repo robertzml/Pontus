@@ -11,6 +11,11 @@ export default {
     return res.data
   },
 
+  async get(id) {
+    const res = await axios._get({ url: '/store/get', params: { id: id } })
+    return res.data
+  },
+
   /**
    * 按仓位查找在库库存
    * @param {仓位ID} positionId
