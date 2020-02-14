@@ -1,6 +1,5 @@
 import axios from 'axios'
 import config from './config'
-import { async } from 'q'
 
 const ax = axios.create({
   baseURL: config.baseURL,
