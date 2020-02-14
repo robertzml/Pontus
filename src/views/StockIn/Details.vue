@@ -2,7 +2,7 @@
   <v-sheet class="transparent">
     <v-expansion-panels v-model="panel" multiple>
       <v-expansion-panel>
-        <v-expansion-panel-header ripple>入库单信息 </v-expansion-panel-header>
+        <v-expansion-panel-header ripple class="primary">入库单信息 </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-card flat class="mx-auto">
             <v-row dense>
@@ -68,9 +68,9 @@
 
             <v-card-actions>
               <v-btn color="indigo darken-3" v-if="info.status == 71" @click="showAddTask">添加货物</v-btn>
-              <v-btn color="success darken-1" v-if="info.status == 71" @click.stop="finishDialog = true">确认入库单</v-btn>
+              <v-btn color="success darken-1" v-if="info.status == 71" @click.stop="showFinish">确认入库单</v-btn>
               <v-btn color="warning" v-if="stockInId && info.status != 75" @click.stop="showEdit">编辑入库单</v-btn>
-              <v-btn color="red darken-3" v-if="stockInId && info.status != 75" @click.stop="deleteDialog = true">删除入库单</v-btn>
+              <v-btn color="red darken-3" v-if="stockInId && info.status != 75" @click.stop="showDelete">删除入库单</v-btn>
             </v-card-actions>
           </v-card>
         </v-expansion-panel-content>
@@ -94,31 +94,9 @@
     </v-expansion-panels>
 
     <stock-in-edit ref="stockInEditMod" @close="loadInfo"></stock-in-edit>
+    <stock-in-finish ref="stockInFinishMod" @close="loadInfo"></stock-in-finish>
+    <stock-in-delete ref="stockInDeleteMod" @close="refresh"></stock-in-delete>
     <stock-in-task-create ref="createTaskMod" :stockInInfo="info" @update="loadTaskList"></stock-in-task-create>
-
-    <v-dialog v-model="finishDialog" persistent max-width="300">
-      <v-card>
-        <v-card-title class="headline">入库单确认</v-card-title>
-        <v-card-text>是否确认该入库单已经入库完成？请确认所有入库货物已经上架，确认后无法再增加货物。</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-grey lighten-3" text @click="finishDialog = false">取消</v-btn>
-          <v-btn color="green darken-1" text :loading="finishLoading" @click="finish">确定</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <v-dialog v-model="deleteDialog" persistent max-width="300">
-      <v-card>
-        <v-card-title class="headline">删除入库单</v-card-title>
-        <v-card-text>是否确认删除该入库单？仅能删除无入库货物的入库单。</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-grey lighten-3" text @click="deleteDialog = false">取消</v-btn>
-          <v-btn color="green darken-1" text :loading="deleteLoading" @click="deleteStockIn">确定</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-sheet>
 </template>
 
@@ -126,20 +104,20 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import StockInTaskCreate from '@/components/Dialog/StockInTaskCreate'
-import StockInEdit from './Edit'
+import StockInEdit from './Dialog/Edit'
+import StockInFinish from './Dialog/Finish'
+import StockInDelete from './Dialog/Delete'
 
 export default {
   name: 'StockInDetails',
   components: {
     StockInTaskCreate,
-    StockInEdit
+    StockInEdit,
+    StockInFinish,
+    StockInDelete
   },
   data: () => ({
     panel: [0, 1],
-    finishDialog: false,
-    finishLoading: false,
-    deleteDialog: false,
-    deleteLoading: false,
     headers: [
       { text: '货品名称', value: 'cargoName' },
       { text: '类别名称', value: 'categoryName' },
@@ -214,49 +192,19 @@ export default {
       this.showTaskDetails()
     },
 
-    // 确认入库单完成
-    finish() {
-      this.$nextTick(() => {
-        this.finishDialog = true
-      })
-      let vm = this
-
-      stockIn.confirm({ id: this.info.id }).then(res => {
-        if (res.status == 0) {
-          vm.$store.commit('alertSuccess', '入库单已确认')
-          vm.loadInfo()
-          vm.finishLoading = false
-          vm.finishDialog = false
-        } else {
-          vm.$store.commit('alertError', res.errorMessage)
-          vm.finishLoading = false
-        }
-      })
-    },
-
     // 显示编辑入库单
     showEdit() {
       this.$refs.stockInEditMod.init(this.stockInId)
     },
 
-    // 删除入库单
-    deleteStockIn() {
-      let vm = this
-      this.$nextTick(() => {
-        this.deleteLoading = true
-      })
+    // 显示确认入库单
+    showFinish() {
+      this.$refs.stockInFinishMod.init(this.stockInId)
+    },
 
-      stockIn.deleteStockIn({ id: this.info.id }).then(res => {
-        if (res.status == 0) {
-          vm.$store.commit('alertSuccess', '入库单已删除')
-          vm.refresh()
-          vm.deleteLoading = false
-          vm.deleteDialog = false
-        } else {
-          vm.$store.commit('alertError', res.errorMessage)
-          vm.deleteLoading = false
-        }
-      })
+    // 显示删除入库单
+    showDelete() {
+      this.$refs.stockInDeleteMod.init(this.stockInId)
     }
   },
   mounted: function() {

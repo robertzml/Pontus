@@ -6,7 +6,7 @@
       </v-card-title>
 
       <v-card-text>
-        <v-alert dense type="info" class="mt-2 body-2">可修改名称、规格、备注</v-alert>
+        <v-alert dense type="info" class="mt-2 body-2">名称、单位重量、规格不能完全相同，可修改名称、规格、备注。</v-alert>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-container fluid>
             <v-row>

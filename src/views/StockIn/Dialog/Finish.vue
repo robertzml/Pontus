@@ -36,7 +36,7 @@ export default {
       })
       let vm = this
 
-      stockIn.confirm({ id: this.info.id }).then(res => {
+      stockIn.confirm({ id: this.stockInId }).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '入库单已确认')
           vm.$emit('close')

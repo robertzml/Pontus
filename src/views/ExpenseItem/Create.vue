@@ -4,7 +4,6 @@
       <v-card-title>
         <span class="headline">添加费用项目</span>
       </v-card-title>
-      <v-divider></v-divider>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row dense>
