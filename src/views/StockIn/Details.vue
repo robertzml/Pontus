@@ -2,7 +2,7 @@
   <v-sheet class="transparent">
     <v-expansion-panels v-model="panel" multiple>
       <v-expansion-panel>
-        <v-expansion-panel-header ripple>入库单信息</v-expansion-panel-header>
+        <v-expansion-panel-header ripple>入库单信息 </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-card flat class="mx-auto">
             <v-row dense>
@@ -77,7 +77,7 @@
       </v-expansion-panel>
 
       <v-expansion-panel>
-        <v-expansion-panel-header ripple>入库货物</v-expansion-panel-header>
+        <v-expansion-panel-header ripple class="indigo accent-4">入库货物</v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="headers" :items="taskInfoList" hide-default-footer disable-pagination>
             <template v-slot:item.status="{ item }">

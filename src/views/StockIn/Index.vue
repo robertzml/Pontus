@@ -84,6 +84,7 @@ export default {
   computed: {
     ...mapState({
       tab: state => state.stockIn.tab,
+      stockInId: state => state.stockIn.stockInId,
       stockInInfo: state => state.stockIn.stockInInfo
     }),
     monthTime: {
@@ -111,7 +112,7 @@ export default {
 
     // 返回入库列表
     toList() {
-      this.stockInShowDetails()
+      this.stockInShowDetails(this.stockInId)
     },
 
     // 显示货品入库
