@@ -8,8 +8,8 @@ export default {
     // 货品入库显示页面
     tab: 'StockInDetails',
 
-    // 当前入库日期
-    inTime: moment().format('YYYY-MM-DD'),
+    // 入库月份
+    monthTime: moment().format('YYYY-MM'),
 
     // 当前入库单ID
     stockInId: '',
@@ -26,8 +26,9 @@ export default {
 
   actions: {
     // 显示入库单信息页面
-    showDetails({ commit }) {
-      commit('setTab', 'StockInDetails')
+    showDetails(context, id) {
+      context.commit('setTab', 'StockInDetails')
+      context.commit('setStockInId', id)
     },
 
     // 显示入库任务信息页面
@@ -41,9 +42,9 @@ export default {
       state.tab = tab
     },
 
-    // 设置当前入库日期
-    setInTime: (state, inTime) => {
-      state.inTime = inTime
+    // 设置入库月份
+    setMonthTime: (state, monthTime) => {
+      state.monthTime = monthTime
     },
 
     // 设置入库单ID

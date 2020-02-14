@@ -17,6 +17,16 @@ export default {
   },
 
   /**
+   * 按入库月份获取入库单
+   * @param {入库月份} monthTime
+   */
+  async getListByMonth(monthTime) {
+    let mt = monthTime.replace(/-/, '')
+    const res = await axios._get({ url: '/stockIn/listByMonth', params: { monthTime: mt } })
+    return res.data
+  },
+
+  /**
    * 按入库日期获取入库单
    * @param {入库日期}} inTime
    */

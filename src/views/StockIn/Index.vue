@@ -13,9 +13,9 @@
           <v-menu v-model="inTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290">
             <template v-slot:activator="{ on }">
               <v-text-field
-                v-model="inTime"
-                prefix="入库时间"
-                style="width:200px;"
+                v-model="monthTime"
+                prefix="入库月份"
+                style="width:180px;"
                 single-line
                 hide-details
                 solo
@@ -24,14 +24,14 @@
                 v-on="on"
               ></v-text-field>
             </template>
-            <v-date-picker v-model="inTime" :day-format="$util.pickerDayFormat" @input="inTimeMenu = false"></v-date-picker>
+            <v-date-picker v-model="monthTime" type="month" @input="inTimeMenu = false"></v-date-picker>
           </v-menu>
         </v-toolbar-items>
       </v-toolbar>
     </v-col>
 
     <v-col cols="2">
-      <stock-in-list ref="listMod"></stock-in-list>
+      <stock-in-month></stock-in-month>
     </v-col>
 
     <v-col cols="10">
@@ -61,6 +61,7 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import stockIn from '@/controllers/stockIn'
+import StockInMonth from './Month'
 import StockInList from './List'
 import StockInCreate from './Create'
 import StockInDetails from './Details'
@@ -69,6 +70,7 @@ import StockInTaskDetails from './TaskDetails'
 export default {
   name: 'StockInIndex',
   components: {
+    StockInMonth,
     StockInList,
     StockInCreate,
     StockInDetails,
@@ -84,12 +86,12 @@ export default {
       tab: state => state.stockIn.tab,
       stockInInfo: state => state.stockIn.stockInInfo
     }),
-    inTime: {
+    monthTime: {
       get() {
-        return this.$store.state.stockIn.inTime
+        return this.$store.state.stockIn.monthTime
       },
       set(val) {
-        this.setInTime(val)
+        this.setMonthTime(val)
       }
     }
   },
@@ -98,6 +100,7 @@ export default {
       setId: 'stockIn/setId',
       setStockInInfo: 'stockIn/setStockInInfo',
       setInTime: 'stockIn/setInTime',
+      setMonthTime: 'stockIn/setMonthTime',
       refresh: 'stockIn/refresh'
     }),
 
