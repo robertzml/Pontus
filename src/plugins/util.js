@@ -128,6 +128,16 @@ export default {
     }
   },
 
+  // 费用计算方式
+  expenseItemType: type => {
+    let et = dict.expenseItemType.find(r => r.value == type)
+    if (et != undefined) {
+      return et.text
+    } else {
+      return ''
+    }
+  },
+
   // 入库类型
   stockInType: type => {
     let st = dict.stockInType.find(r => r.value == type)

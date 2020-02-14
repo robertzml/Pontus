@@ -40,6 +40,10 @@ const filters = Vue => {
     return util.billingType(val)
   })
 
+  Vue.filter('expenseItemType', function(val) {
+    return util.expenseItemType(val)
+  })
+
   Vue.filter('warehouseType', function(val) {
     return util.warehouseType(val)
   })

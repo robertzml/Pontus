@@ -47,6 +47,15 @@ export default {
     { text: '板位', value: 5, unit: '元/(板位*天)' }
   ],
 
+  /**
+   * 费用计算方式
+   */
+  expenseItemType: [
+    { text: '直接', value: 1 },
+    { text: '单价', value: 2 },
+    { text: '其它', value: 3 }
+  ],
+
   /** 入库类型 */
   stockInType: [
     { text: '普通库入库', value: 1 },

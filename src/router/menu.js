@@ -152,7 +152,7 @@ export const menuRoutes = [
   },
   {
     path: '/stockin',
-    name: 'stockin',
+    name: 'stockIn',
     text: '货品入库',
     group: 'stock',
     model: false,
@@ -161,7 +161,7 @@ export const menuRoutes = [
   },
   {
     path: '/stockout',
-    name: 'stockout',
+    name: 'stockOut',
     text: '货品出库',
     group: 'stock',
     model: false,
@@ -220,6 +220,15 @@ export const menuRoutes = [
     group: 'setting',
     model: false,
     component: () => import('@/views/SequenceTemplate/Index.vue'),
+    meta: { roles: [1, 2] }
+  },
+  {
+    path: '/expenseitem',
+    name: 'expenseItem',
+    text: '费用项目',
+    group: 'setting',
+    model: false,
+    component: () => import('@/views/ExpenseItem/Index.vue'),
     meta: { roles: [1, 2] }
   },
   {
