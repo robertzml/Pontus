@@ -45,6 +45,15 @@ export const topRoutes = [
     meta: { roles: [1, 2, 3, 4] }
   },
   {
+    name: 'expense',
+    icon: 'attach_money',
+    'icon-alt': 'attach_money',
+    text: '费用管理',
+    model: false,
+    children: [],
+    meta: { roles: [1, 2, 3, 4] }
+  },
+  {
     name: 'report',
     icon: 'bar_chart',
     'icon-alt': 'bar_chart',
