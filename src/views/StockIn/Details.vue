@@ -68,6 +68,7 @@
 
             <v-card-actions>
               <v-btn color="indigo darken-3" v-if="info.status == 71" @click="showAddTask">添加货物</v-btn>
+              <v-btn color="purple darken-3" v-if="info.status == 71" @click="showBilling">设置入库费用</v-btn>
               <v-btn color="success darken-1" v-if="info.status == 71" @click.stop="showFinish">确认入库单</v-btn>
               <v-btn color="warning" v-if="stockInId && info.status != 75" @click.stop="showEdit">编辑入库单</v-btn>
               <v-btn color="red darken-3" v-if="stockInId && info.status != 75" @click.stop="showDelete">删除入库单</v-btn>
@@ -77,7 +78,7 @@
       </v-expansion-panel>
 
       <v-expansion-panel>
-        <v-expansion-panel-header ripple class="indigo accent-4">入库货物</v-expansion-panel-header>
+        <v-expansion-panel-header ripple class="blue darken-2">入库货物</v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="headers" :items="taskInfoList" hide-default-footer disable-pagination>
             <template v-slot:item.status="{ item }">
@@ -91,8 +92,20 @@
           </v-data-table>
         </v-expansion-panel-content>
       </v-expansion-panel>
+
+      <v-expansion-panel>
+        <v-expansion-panel-header ripple class="blue darken-4">入库费用</v-expansion-panel-header>
+        <v-expansion-panel-content eager>
+          <v-data-table :headers="billingHeaders" :items="billingItems" hide-default-footer disable-pagination>
+            <template v-slot:item.unitPrice="{ item }">
+              {{ item.unitPrice == 0 ? '' : item.unitPrice }}
+            </template>
+          </v-data-table>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
     </v-expansion-panels>
 
+    <stock-in-edit-billing ref="bllingMod" @close="loadBilling"></stock-in-edit-billing>
     <stock-in-edit ref="stockInEditMod" @close="loadInfo"></stock-in-edit>
     <stock-in-finish ref="stockInFinishMod" @close="loadInfo"></stock-in-finish>
     <stock-in-delete ref="stockInDeleteMod" @close="refresh"></stock-in-delete>
@@ -107,6 +120,7 @@ import StockInTaskCreate from '@/components/Dialog/StockInTaskCreate'
 import StockInEdit from './Dialog/Edit'
 import StockInFinish from './Dialog/Finish'
 import StockInDelete from './Dialog/Delete'
+import StockInEditBilling from './Dialog/EditBilling'
 
 export default {
   name: 'StockInDetails',
@@ -114,10 +128,11 @@ export default {
     StockInTaskCreate,
     StockInEdit,
     StockInFinish,
-    StockInDelete
+    StockInDelete,
+    StockInEditBilling
   },
   data: () => ({
-    panel: [0, 1],
+    panel: [0, 1, 2],
     headers: [
       { text: '货品名称', value: 'cargoName' },
       { text: '类别名称', value: 'categoryName' },
@@ -130,7 +145,15 @@ export default {
       { text: '状态', value: 'status' },
       { text: '操作', value: 'action', sortable: false }
     ],
-    taskInfoList: []
+    taskInfoList: [],
+    billingHeaders: [
+      { text: '费用代码', value: 'code' },
+      { text: '费用项目', value: 'name' },
+      { text: '单价(吨/元)', value: 'unitPrice' },
+      { text: '数量(吨)', value: 'count' },
+      { text: '总价(元)', value: 'amount' }
+    ],
+    billingItems: []
   }),
   computed: mapState({
     // 传入入库单ID
@@ -142,10 +165,12 @@ export default {
     stockInId: function() {
       this.loadInfo()
       this.loadTaskList()
+      this.loadBilling()
     },
     refreshEvent: function() {
       this.loadInfo()
       this.loadTaskList()
+      this.loadBilling()
     }
   },
   methods: {
@@ -179,10 +204,12 @@ export default {
       }
     },
 
-    // 显示添加入库任务
-    showAddTask() {
+    // 载入入库计费
+    async loadBilling() {
       if (this.stockInId) {
-        this.$refs.createTaskMod.init()
+        this.billingItems = await stockIn.getBilling(this.stockInId)
+      } else {
+        this.billingItems = []
       }
     },
 
@@ -190,6 +217,18 @@ export default {
     viewTaskItem(val) {
       this.setTaskInfo(val)
       this.showTaskDetails()
+    },
+
+    // 显示添加入库任务
+    showAddTask() {
+      if (this.stockInId) {
+        this.$refs.createTaskMod.init()
+      }
+    },
+
+    // 显示计费
+    showBilling() {
+      this.$refs.bllingMod.init(this.stockInId)
     },
 
     // 显示编辑入库单
@@ -210,6 +249,7 @@ export default {
   mounted: function() {
     this.loadInfo()
     this.loadTaskList()
+    this.loadBilling()
   }
 }
 </script>
