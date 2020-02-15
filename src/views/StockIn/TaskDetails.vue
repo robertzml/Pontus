@@ -1,114 +1,121 @@
 <template>
   <v-sheet class="transparent">
-    <v-card flat class="mx-auto mb-2 brown darken-2">
-      <v-card-title class="cyan">
-        入库货物信息
-      </v-card-title>
+    <v-expansion-panels v-model="panel" multiple>
+      <v-expansion-panel>
+        <v-expansion-panel-header ripple class="green darken-1">入库货物信息 </v-expansion-panel-header>
+        <v-expansion-panel-content eager>
+          <v-card flat class="mx-auto">
+            <v-row dense>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field :value="$util.displayDate(taskInfo.inTime)" label="入库时间" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="taskInfo.flowNumber" label="入库单流水号" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field :value="$util.stockInType(taskInfo.stockInType)" label="入库类型" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="taskInfo.taskCode" label="入库任务码" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="taskInfo.cargoName" label="货品名称" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="taskInfo.inCount" label="入库数量" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="taskInfo.unitWeight" label="单位重量" suffix="千克" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="taskInfo.inWeight" label="总重量" suffix="吨" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field :value="`${taskInfo.categoryNumber} - ${taskInfo.categoryName}`" label="货品类别" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="taskInfo.specification" label="规格" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="taskInfo.batch" label="批次" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="taskInfo.originPlace" label="产地" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="taskInfo.durability" label="保质期" suffix="月" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="taskInfo.userName" label="创建人" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field :value="$util.displayDateTime(taskInfo.createTime)" label="创建时间" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field :value="$util.displayDateTime(taskInfo.finishTime)" label="完成时间" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field :value="$util.displayStatus(taskInfo.status)" label="状态" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" md="6" sm="6">
+                <v-text-field v-model="taskInfo.remark" label="备注" hide-details readonly></v-text-field>
+              </v-col>
+            </v-row>
 
-      <v-card-text>
-        <v-row dense>
-          <v-col cols="3" md="3" sm="6">
-            <v-text-field :value="$util.displayDate(info.inTime)" label="入库时间" hide-details readonly></v-text-field>
-          </v-col>
-          <v-col cols="3" md="3" sm="6">
-            <v-text-field v-model="info.flowNumber" label="入库单流水号" hide-details readonly></v-text-field>
-          </v-col>
-          <v-col cols="3" md="3" sm="6">
-            <v-text-field :value="$util.stockInType(info.stockInType)" label="入库类型" hide-details readonly></v-text-field>
-          </v-col>
-          <v-col cols="3" md="3" sm="6">
-            <v-text-field v-model="info.taskCode" label="入库任务码" hide-details readonly></v-text-field>
-          </v-col>
-          <v-col cols="3" md="3" sm="6">
-            <v-text-field v-model="info.cargoName" label="货品名称" hide-details readonly></v-text-field>
-          </v-col>
-          <v-col cols="3" md="3" sm="6">
-            <v-text-field v-model="info.inCount" label="入库数量" hide-details readonly></v-text-field>
-          </v-col>
-          <v-col cols="3" md="3" sm="6">
-            <v-text-field v-model="info.unitWeight" label="单位重量" suffix="千克" hide-details readonly></v-text-field>
-          </v-col>
-          <v-col cols="3" md="3" sm="6">
-            <v-text-field v-model="info.inWeight" label="总重量" suffix="吨" hide-details readonly></v-text-field>
-          </v-col>
-          <v-col cols="3" md="3" sm="6">
-            <v-text-field :value="`${info.categoryNumber} - ${info.categoryName}`" label="货品类别" hide-details readonly></v-text-field>
-          </v-col>
-          <v-col cols="3" md="3" sm="6">
-            <v-text-field v-model="info.specification" label="规格" hide-details readonly></v-text-field>
-          </v-col>
-          <v-col cols="3" md="3" sm="6">
-            <v-text-field v-model="info.batch" label="批次" hide-details readonly></v-text-field>
-          </v-col>
-          <v-col cols="3" md="3" sm="6">
-            <v-text-field v-model="info.originPlace" label="产地" hide-details readonly></v-text-field>
-          </v-col>
-          <v-col cols="3" md="3" sm="6">
-            <v-text-field v-model="info.durability" label="保质期" suffix="月" hide-details readonly></v-text-field>
-          </v-col>
-          <v-col cols="3" md="3" sm="6">
-            <v-text-field v-model="info.userName" label="创建人" hide-details readonly></v-text-field>
-          </v-col>
-          <v-col cols="3" md="3" sm="6">
-            <v-text-field :value="$util.displayDateTime(info.createTime)" label="创建时间" hide-details readonly></v-text-field>
-          </v-col>
-          <v-col cols="3" md="3" sm="6">
-            <v-text-field :value="$util.displayDateTime(info.finishTime)" label="完成时间" hide-details readonly></v-text-field>
-          </v-col>
-          <v-col cols="3" md="3" sm="6">
-            <v-text-field :value="$util.displayStatus(info.status)" label="状态" hide-details readonly></v-text-field>
-          </v-col>
-          <v-col cols="6" md="6" sm="6">
-            <v-text-field v-model="info.remark" label="备注" hide-details readonly></v-text-field>
-          </v-col>
-        </v-row>
-      </v-card-text>
+            <v-card-actions>
+              <v-btn color="indigo darken-3" v-if="this.taskInfo.status == 71" @click.stop="showCarryInCreate">任务下发</v-btn>
+              <v-btn color="success darken-1" v-if="this.taskInfo.status == 71" @click.stop="finishDialog = true">确认入库货物</v-btn>
+              <v-btn color="warning" v-if="taskInfo.status != 75" @click.stop="showEditTask">编辑入库货物</v-btn>
+              <v-btn color="red darken-3" v-if="taskInfo.status != 75" @click.stop="deleteDialog = true">删除入库货物</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
 
-      <v-card-actions>
-        <v-btn color="indigo darken-3" v-if="this.info.status == 71" @click.stop="showCarryInCreate">任务下发</v-btn>
-        <v-btn color="success darken-1" v-if="this.info.status == 71" @click.stop="finishDialog = true">确认入库货物</v-btn>
-        <v-btn color="warning" v-if="info.status != 75" @click.stop="showEditTask">编辑入库货物</v-btn>
-        <v-btn color="red darken-3" v-if="info.status != 75" @click.stop="deleteDialog = true">删除入库货物</v-btn>
-      </v-card-actions>
-    </v-card>
-
-    <v-card class="mx-auto">
-      <v-card-title class="deep-purple">
-        搬运入库任务
-        <v-spacer> </v-spacer>
-        <span class="subtitle-2">托盘数量: {{ totalTray }}</span>
-        <span class="subtitle-2 ml-4">搬运数量: {{ totalMoveCount }}</span>
-        <span class="subtitle-2 ml-4">搬运重量: {{ totalMoveWeight }} 吨</span>
-      </v-card-title>
-      <v-card-text class="px-0">
-        <v-data-table :headers="carryInTaskHeaders" :items="carryInTaskList" hide-default-footer disable-filtering disable-pagination>
-          <template v-slot:item.status="{ item }">
-            {{ item.status | displayStatus }}
+      <v-expansion-panel>
+        <v-expansion-panel-header ripple class="green darken-3">
+          <template v-slot:default="">
+            搬运入库任务
+            <v-spacer></v-spacer>
+            <span class="subtitle-2">托盘数量: {{ totalTray }}</span>
+            <span class="subtitle-2 ml-4">搬运数量: {{ totalMoveCount }}</span>
+            <span class="subtitle-2 ml-4">搬运重量: {{ totalMoveWeight }} 吨</span>
           </template>
-          <template v-slot:item.action="{ item }">
-            <v-btn small color="primary darken-1" @click="viewCarryInDetails(item)">
-              <v-icon left dark>pageview</v-icon>
-              查看
-            </v-btn>
-            <v-btn v-if="item.status == 74" small color="success darken-1" class="ml-2" @click="showConfirmCarryIn(item)">
-              <v-icon left dark>check</v-icon>
-              确认
-            </v-btn>
-            <v-btn v-if="item.status == 72" small color="red darken-3" class="ml-2" @click="deleteCarryIn(item)">
-              <v-icon left dark>delete</v-icon>
-              删除
-            </v-btn>
-          </template>
-        </v-data-table>
-      </v-card-text>
-    </v-card>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content eager>
+          <v-data-table :headers="carryInTaskHeaders" :items="carryInTaskList" hide-default-footer disable-filtering disable-pagination>
+            <template v-slot:item.status="{ item }">
+              {{ item.status | displayStatus }}
+            </template>
+            <template v-slot:item.action="{ item }">
+              <v-btn small color="primary darken-1" @click="viewCarryInDetails(item)">
+                <v-icon left dark>pageview</v-icon>
+                查看
+              </v-btn>
+              <v-btn v-if="item.status == 74" small color="success darken-1" class="ml-2" @click="showConfirmCarryIn(item)">
+                <v-icon left dark>check</v-icon>
+                确认
+              </v-btn>
+              <v-btn v-if="item.status == 72" small color="red darken-3" class="ml-2" @click="deleteCarryIn(item)">
+                <v-icon left dark>delete</v-icon>
+                删除
+              </v-btn>
+            </template>
+          </v-data-table>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
 
     <v-navigation-drawer v-model="viewDrawer" fixed temporary right width="420">
       <carry-in-details :carry-in-task="carryInTask" @close="closeCarryInDetails"></carry-in-details>
     </v-navigation-drawer>
 
-    <stock-in-task-edit ref="stockInTaskEditMod" :customer-id="info.customerId" @close="closeEditTask"></stock-in-task-edit>
-    <carry-in-create ref="carryInCreateMod" :stock-in-task="info" @close="loadCarryInTask"></carry-in-create>
+    <!-- 搬运任务下发组件 -->
+    <carry-in-create ref="carryInCreateMod" :stock-in-task="taskInfo" @close="loadCarryInTask"></carry-in-create>
+
+    <!-- 入库任务编辑组件 -->
+    <stock-in-task-edit ref="stockInTaskEditMod" :customer-id="taskInfo.customerId" @close="closeEditTask"></stock-in-task-edit>
+
     <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>
 
     <v-dialog v-model="finishDialog" persistent max-width="300">
@@ -141,7 +148,7 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import carryIn from '@/controllers/carryIn'
-import StockInTaskEdit from './EditTask'
+import StockInTaskEdit from './Dialog/EditTask'
 import CarryInDetails from '../CarryIn/Details'
 import CarryInCreate from '@/components/Dialog/CarryInCreate'
 import CarryInFinish from '@/components/Dialog/CarryInFinish'
@@ -155,6 +162,7 @@ export default {
     CarryInFinish
   },
   data: () => ({
+    panel: [0, 1],
     viewDrawer: false,
     finishLoading: false,
     finishDialog: false,
@@ -177,7 +185,7 @@ export default {
       /**
        * 入库任务单
        */
-      info: state => state.stockIn.stockInTaskInfo,
+      taskInfo: state => state.stockIn.stockInTaskInfo,
       refreshEvent: state => state.stockIn.refreshEvent
     }),
     totalTray: function() {
@@ -217,14 +225,14 @@ export default {
 
     loadStockInTask() {
       let vm = this
-      stockIn.getTask(this.info.id).then(res => {
+      stockIn.getTask(this.taskInfo.id).then(res => {
         vm.setTaskInfo(res)
       })
     },
 
     loadCarryInTask() {
       let vm = this
-      carryIn.listByStockInTask(this.info.id).then(res => {
+      carryIn.listByStockInTask(this.taskInfo.id).then(res => {
         vm.carryInTaskList = res
       })
     },
@@ -255,7 +263,7 @@ export default {
         this.finishLoading = true
       })
 
-      stockIn.finishTask({ taskId: this.info.id }).then(res => {
+      stockIn.finishTask({ taskId: this.taskInfo.id }).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '确认任务成功')
           vm.loadStockInTask()
@@ -270,7 +278,7 @@ export default {
 
     // 显示编辑入库任务
     showEditTask() {
-      this.$refs.stockInTaskEditMod.init(this.info.id)
+      this.$refs.stockInTaskEditMod.init(this.taskInfo.id)
     },
 
     // 关闭编辑入库任务
@@ -286,7 +294,7 @@ export default {
         this.deleteLoading = true
       })
 
-      stockIn.deleteTask({ taskId: this.info.id }).then(res => {
+      stockIn.deleteTask({ taskId: this.taskInfo.id }).then(res => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '删除任务成功')
           vm.stockInShowDetails()

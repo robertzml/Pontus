@@ -68,7 +68,7 @@
 
             <v-card-actions>
               <v-btn color="indigo darken-3" v-if="info.status == 71" @click="showAddTask">添加货物</v-btn>
-              <v-btn color="purple darken-3" v-if="info.status == 71" @click="showBilling">设置入库费用</v-btn>
+              <v-btn color="purple darken-3" text v-if="info.status == 71" @click="showBilling">设置入库费用</v-btn>
               <v-btn color="success darken-1" v-if="info.status == 71" @click.stop="showFinish">确认入库单</v-btn>
               <v-btn color="warning" v-if="stockInId && info.status != 75" @click.stop="showEdit">编辑入库单</v-btn>
               <v-btn color="red darken-3" v-if="stockInId && info.status != 75" @click.stop="showDelete">删除入库单</v-btn>
@@ -215,8 +215,7 @@ export default {
 
     // 查看入库任务
     viewTaskItem(val) {
-      this.setTaskInfo(val)
-      this.showTaskDetails()
+      this.showTaskDetails(val)
     },
 
     // 显示添加入库任务

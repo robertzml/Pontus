@@ -9,10 +9,10 @@
           <v-container fluid>
             <v-row>
               <v-col cols="12">
-                <v-text-field label="托盘码*" v-model="carryInInfo.trayCode" :rules="trayCodeRules"></v-text-field>
+                <v-text-field label="托盘码*" v-model="carryInInfo.trayCode" :counter="6" :rules="trayCodeRules"></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-text-field label="入库数量*" v-model="carryInInfo.moveCount"></v-text-field>
+                <v-text-field label="入库数量*" v-model="carryInInfo.moveCount" :rules="numberRules"></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field label="总重量*" v-model="totalWeight" suffix="吨" readonly></v-text-field>
@@ -55,7 +55,8 @@ export default {
       moveWeight: 0.0,
       remark: ''
     },
-    trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码']
+    trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
+    numberRules: [v => /^\d+$/.test(v) || '请输入数字']
   }),
   computed: {
     totalWeight: function() {
