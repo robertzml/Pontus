@@ -66,7 +66,7 @@
               <v-btn color="indigo darken-3" v-if="this.taskInfo.status == 71" @click.stop="showCarryInCreate">任务下发</v-btn>
               <v-btn color="success darken-1" v-if="this.taskInfo.status == 71" @click.stop="showFinishTask">确认入库货物</v-btn>
               <v-btn color="warning" v-if="taskInfo.status != 75" @click.stop="showEditTask">编辑入库货物</v-btn>
-              <v-btn color="red darken-3" v-if="taskInfo.status != 75" @click.stop="deleteDialog = true">删除入库货物</v-btn>
+              <v-btn color="red darken-3" v-if="taskInfo.status != 75" @click.stop="showDeleteTask">删除入库货物</v-btn>
             </v-card-actions>
           </v-card>
         </v-expansion-panel-content>
@@ -119,19 +119,10 @@
     <!-- 入库任务确认组件 -->
     <stock-in-task-finish ref="stockInTaskFinishMod" @close="loadStockInTask"></stock-in-task-finish>
 
-    <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>
+    <!-- 入库任务删除组件 -->
+    <stock-in-task-delete ref="stockInTaskDeleteMod" @close="stockInShowDetails(taskInfo.stockInId)"></stock-in-task-delete>
 
-    <v-dialog v-model="deleteDialog" persistent max-width="300">
-      <v-card>
-        <v-card-title class="headline">删除入库货物</v-card-title>
-        <v-card-text>是否确认删除该入库货物？仅能删除未下发搬运任务的入库货物。</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-grey lighten-3" text @click="deleteDialog = false">取消</v-btn>
-          <v-btn color="green darken-1" text :loading="deleteLoading" @click="deleteTask">确定</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>
   </v-sheet>
 </template>
 
@@ -141,6 +132,7 @@ import stockIn from '@/controllers/stockIn'
 import carryIn from '@/controllers/carryIn'
 import StockInTaskEdit from './Dialog/EditTask'
 import StockInTaskFinish from './Dialog/FinishTask'
+import StockInTaskDelete from './Dialog/DeleteTask'
 import CarryInDetails from '../CarryIn/Details'
 import CarryInCreate from '@/components/Dialog/CarryInCreate'
 import CarryInFinish from '@/components/Dialog/CarryInFinish'
@@ -150,6 +142,7 @@ export default {
   components: {
     StockInTaskEdit,
     StockInTaskFinish,
+    StockInTaskDelete,
     CarryInCreate,
     CarryInDetails,
     CarryInFinish
@@ -157,8 +150,6 @@ export default {
   data: () => ({
     panel: [0, 1],
     viewDrawer: false,
-    deleteDialog: false,
-    deleteLoading: false,
     carryInTaskList: [],
     carryInTaskHeaders: [
       { text: '托盘码', value: 'trayCode' },
@@ -246,6 +237,11 @@ export default {
       this.$refs.stockInTaskFinishMod.init(this.taskInfo.id)
     },
 
+    // 显示删除入库任务
+    showDeleteTask() {
+      this.$refs.stockInTaskDeleteMod.init(this.taskInfo.id)
+    },
+
     // 任务下发
     showCarryInCreate() {
       this.$refs.carryInCreateMod.init()
@@ -263,26 +259,6 @@ export default {
       if (update) {
         this.loadCarryInTask()
       }
-    },
-
-    // 删除入库任务
-    deleteTask() {
-      let vm = this
-      this.$nextTick(() => {
-        this.deleteLoading = true
-      })
-
-      stockIn.deleteTask({ taskId: this.taskInfo.id }).then(res => {
-        if (res.status == 0) {
-          vm.$store.commit('alertSuccess', '删除任务成功')
-          vm.stockInShowDetails()
-          vm.deleteLoading = false
-          vm.deleteDialog = false
-        } else {
-          vm.$store.commit('alertError', res.errorMessage)
-          vm.deleteLoading = false
-        }
-      })
     },
 
     // 确认搬运入库
