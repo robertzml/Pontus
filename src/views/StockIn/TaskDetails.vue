@@ -64,7 +64,7 @@
 
             <v-card-actions>
               <v-btn color="indigo darken-3" v-if="this.taskInfo.status == 71" @click.stop="showCarryInCreate">任务下发</v-btn>
-              <v-btn color="success darken-1" v-if="this.taskInfo.status == 71" @click.stop="finishDialog = true">确认入库货物</v-btn>
+              <v-btn color="success darken-1" v-if="this.taskInfo.status == 71" @click.stop="showFinishTask">确认入库货物</v-btn>
               <v-btn color="warning" v-if="taskInfo.status != 75" @click.stop="showEditTask">编辑入库货物</v-btn>
               <v-btn color="red darken-3" v-if="taskInfo.status != 75" @click.stop="deleteDialog = true">删除入库货物</v-btn>
             </v-card-actions>
@@ -116,19 +116,10 @@
     <!-- 入库任务编辑组件 -->
     <stock-in-task-edit ref="stockInTaskEditMod" :customer-id="taskInfo.customerId" @close="closeEditTask"></stock-in-task-edit>
 
-    <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>
+    <!-- 入库任务确认组件 -->
+    <stock-in-task-finish ref="stockInTaskFinishMod" @close="loadStockInTask"></stock-in-task-finish>
 
-    <v-dialog v-model="finishDialog" persistent max-width="300">
-      <v-card>
-        <v-card-title class="headline">入库货物确认</v-card-title>
-        <v-card-text>是否确认该货物已经入库完成？请确认所有搬运任务已经上架，确认后无法再下发任务。</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-grey lighten-3" text @click="finishDialog = false">取消</v-btn>
-          <v-btn color="green darken-1" text :loading="finishLoading" @click="finishTask">确定</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>
 
     <v-dialog v-model="deleteDialog" persistent max-width="300">
       <v-card>
@@ -149,6 +140,7 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import carryIn from '@/controllers/carryIn'
 import StockInTaskEdit from './Dialog/EditTask'
+import StockInTaskFinish from './Dialog/FinishTask'
 import CarryInDetails from '../CarryIn/Details'
 import CarryInCreate from '@/components/Dialog/CarryInCreate'
 import CarryInFinish from '@/components/Dialog/CarryInFinish'
@@ -157,6 +149,7 @@ export default {
   name: 'StockInTaskDetails',
   components: {
     StockInTaskEdit,
+    StockInTaskFinish,
     CarryInCreate,
     CarryInDetails,
     CarryInFinish
@@ -164,8 +157,6 @@ export default {
   data: () => ({
     panel: [0, 1],
     viewDrawer: false,
-    finishLoading: false,
-    finishDialog: false,
     deleteDialog: false,
     deleteLoading: false,
     carryInTaskList: [],
@@ -223,6 +214,7 @@ export default {
       stockInShowDetails: 'stockIn/showDetails'
     }),
 
+    // 载入入库任务
     loadStockInTask() {
       let vm = this
       stockIn.getTask(this.taskInfo.id).then(res => {
@@ -230,11 +222,28 @@ export default {
       })
     },
 
+    // 载入搬运入库任务
     loadCarryInTask() {
       let vm = this
       carryIn.listByStockInTask(this.taskInfo.id).then(res => {
         vm.carryInTaskList = res
       })
+    },
+
+    // 显示编辑入库任务
+    showEditTask() {
+      this.$refs.stockInTaskEditMod.init(this.taskInfo.id)
+    },
+
+    // 关闭编辑入库任务
+    closeEditTask() {
+      this.loadStockInTask()
+      this.loadCarryInTask()
+    },
+
+    // 显示确认入库任务
+    showFinishTask() {
+      this.$refs.stockInTaskFinishMod.init(this.taskInfo.id)
     },
 
     // 任务下发
@@ -254,37 +263,6 @@ export default {
       if (update) {
         this.loadCarryInTask()
       }
-    },
-
-    // 完成任务
-    finishTask() {
-      let vm = this
-      this.$nextTick(() => {
-        this.finishLoading = true
-      })
-
-      stockIn.finishTask({ taskId: this.taskInfo.id }).then(res => {
-        if (res.status == 0) {
-          vm.$store.commit('alertSuccess', '确认任务成功')
-          vm.loadStockInTask()
-          vm.finishLoading = false
-          vm.finishDialog = false
-        } else {
-          vm.$store.commit('alertError', res.errorMessage)
-          vm.finishLoading = false
-        }
-      })
-    },
-
-    // 显示编辑入库任务
-    showEditTask() {
-      this.$refs.stockInTaskEditMod.init(this.taskInfo.id)
-    },
-
-    // 关闭编辑入库任务
-    closeEditTask() {
-      this.loadStockInTask()
-      this.loadCarryInTask()
     },
 
     // 删除入库任务
