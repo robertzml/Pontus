@@ -1,18 +1,6 @@
 <template>
   <v-row dense>
     <v-col cols="12">
-      <v-toolbar dense>
-        <v-toolbar-title>库存列表</v-toolbar-title>
-        <v-spacer></v-spacer>
-
-        <v-toolbar-items>
-          <v-btn text color="amber accent-4" @click.stop="showList">返回</v-btn>
-          <v-btn text @click.stop="refresh">刷新</v-btn>
-        </v-toolbar-items>
-      </v-toolbar>
-    </v-col>
-
-    <v-col cols="12">
       <v-card flat>
         <v-card-text>
           <v-form ref="form" v-model="valid" lazy-validation>
