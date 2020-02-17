@@ -12,7 +12,7 @@
             </v-col>
 
             <v-col v-if="item.type == 2" cols="3" md="3" sm="3">
-              <v-text-field label="单价" suffix="元/吨" :rules="numberRules" v-model="item.unitPrice"></v-text-field>
+              <v-text-field label="单价" suffix="元/吨" :rules="numberRules" v-model="item.unitPrice" @input="editUnit(item)"></v-text-field>
             </v-col>
 
             <v-col v-if="item.type == 2" cols="3" md="3" sm="3">
@@ -48,12 +48,24 @@ export default {
     expenseItems: [],
     billingItems: [],
     stockInId: '',
+    stockInTaskList: [],
     numberRules: [v => (v != null && /^[0-9]+(.[0-9]{1,3})?$/.test(v)) || '请输入数字，最多3位小数']
   }),
+  computed: {
+    totalWeight: function() {
+      let total = 0
+      this.stockInTaskList.forEach(item => {
+        total += item.inWeight
+      })
+
+      return total.toFixed(3)
+    }
+  },
   methods: {
     init(stockInId) {
       this.stockInId = stockInId
 
+      this.getTaskList()
       this.billingItems = []
       this.setBillingItems()
 
@@ -62,6 +74,10 @@ export default {
       this.$nextTick(() => {
         this.$refs.form.resetValidation()
       })
+    },
+
+    async getTaskList() {
+      this.stockInTaskList = await stockIn.getTaskList(this.stockInId)
     },
 
     async setBillingItems() {
@@ -78,13 +94,20 @@ export default {
             name: item.name,
             type: item.type,
             unitPrice: 0,
-            count: 0,
+            count: this.totalWeight,
             amount: 0
           }
 
           this.billingItems.push(bill)
         }
       })
+    },
+
+    // 修改单价
+    editUnit(item) {
+      if (item.type == 2) {
+        item.amount = (item.unitPrice * item.count).toFixed(3)
+      }
     },
 
     submit() {

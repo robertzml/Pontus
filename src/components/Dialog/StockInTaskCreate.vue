@@ -93,7 +93,7 @@ export default {
   },
   computed: {
     totalWeight: function() {
-      return (this.taskInfo.inCount * this.unitWeight) / 1000
+      return ((this.taskInfo.inCount * this.unitWeight) / 1000).toFixed(4)
     }
   },
   methods: {

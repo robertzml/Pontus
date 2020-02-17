@@ -60,7 +60,7 @@ export default {
   }),
   computed: {
     totalWeight: function() {
-      return (this.carryInInfo.moveCount * this.stockInTask.unitWeight) / 1000
+      return ((this.carryInInfo.moveCount * this.stockInTask.unitWeight) / 1000).toFixed(4)
     }
   },
   methods: {

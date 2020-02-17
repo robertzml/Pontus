@@ -68,7 +68,7 @@
 
             <v-card-actions>
               <v-btn color="indigo darken-3" v-if="info.status == 71" @click="showAddTask">添加货物</v-btn>
-              <v-btn color="purple darken-3" text v-if="info.status == 71" @click="showBilling">设置入库费用</v-btn>
+              <v-btn color="purple darken-3" v-if="info.status == 71" @click="showBilling">设置入库费用</v-btn>
               <v-btn color="success darken-1" v-if="info.status == 71" @click.stop="showFinish">确认入库单</v-btn>
               <v-btn color="warning" v-if="stockInId && info.status != 75" @click.stop="showEdit">编辑入库单</v-btn>
               <v-btn color="red darken-3" v-if="stockInId && info.status != 75" @click.stop="showDelete">删除入库单</v-btn>
@@ -78,7 +78,12 @@
       </v-expansion-panel>
 
       <v-expansion-panel>
-        <v-expansion-panel-header ripple class="blue darken-2">入库货物</v-expansion-panel-header>
+        <v-expansion-panel-header ripple class="blue darken-2">
+          入库货物
+          <v-spacer></v-spacer>
+          <span class="subtitle-2 ml-4">入库总数量: {{ totalCount }}</span>
+          <span class="subtitle-2 ml-4">入库总重量: {{ totalWeight }} 吨</span>
+        </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="headers" :items="taskInfoList" hide-default-footer disable-pagination>
             <template v-slot:item.status="{ item }">
@@ -94,7 +99,11 @@
       </v-expansion-panel>
 
       <v-expansion-panel>
-        <v-expansion-panel-header ripple class="blue darken-4">入库费用</v-expansion-panel-header>
+        <v-expansion-panel-header ripple class="blue darken-4">
+          入库费用
+          <v-spacer></v-spacer>
+          <span class="subtitle-2 ml-4">费用合计: {{ totalFee }} 元</span>
+        </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="billingHeaders" :items="billingItems" hide-default-footer disable-pagination>
             <template v-slot:item.unitPrice="{ item }">
@@ -155,12 +164,38 @@ export default {
     ],
     billingItems: []
   }),
-  computed: mapState({
-    // 传入入库单ID
-    stockInId: state => state.stockIn.stockInId,
-    info: state => state.stockIn.stockInInfo,
-    refreshEvent: state => state.stockIn.refreshEvent
-  }),
+  computed: {
+    ...mapState({
+      // 传入入库单ID
+      stockInId: state => state.stockIn.stockInId,
+      info: state => state.stockIn.stockInInfo,
+      refreshEvent: state => state.stockIn.refreshEvent
+    }),
+    totalCount: function() {
+      let total = 0
+      this.taskInfoList.forEach(item => {
+        total += item.inCount
+      })
+
+      return total
+    },
+    totalWeight: function() {
+      let total = 0
+      this.taskInfoList.forEach(item => {
+        total += item.inWeight
+      })
+
+      return total.toFixed(3)
+    },
+    totalFee: function() {
+      let total = 0
+      this.billingItems.forEach(item => {
+        total += item.amount
+      })
+
+      return total.toFixed(3)
+    }
+  },
   watch: {
     stockInId: function() {
       this.loadInfo()

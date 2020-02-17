@@ -187,7 +187,7 @@ export default {
         total += item.moveWeight
       })
 
-      return total.toFixed(3)
+      return total.toFixed(4)
     }
   },
   watch: {
