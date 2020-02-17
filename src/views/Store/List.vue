@@ -49,7 +49,7 @@
               {{ item.outTime | displayDate }}
             </template>
             <template v-slot:item.action="{ item }">
-              <v-btn small color="success" @click="viewItem(item)">
+              <v-btn small color="primary" @click="viewItem(item)">
                 <v-icon left dark>pageview</v-icon>
                 查看
               </v-btn>
@@ -83,10 +83,10 @@ export default {
     contractRules: [v => !!v.id || '请选择合同'],
     storeData: [],
     headers: [
-      { text: '客户代码', value: 'customerNumber' },
       { text: '客户名称', value: 'customerName' },
       { text: '托盘码', value: 'trayCode' },
       { text: '仓位码', value: 'positionNumber' },
+      { text: '货品名称', value: 'cargoName' },
       { text: '货品总数量', value: 'totalCount' },
       { text: '货品总重量', value: 'totalWeight' },
       { text: '入库时间', value: 'inTime' },
