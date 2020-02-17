@@ -84,6 +84,11 @@ export default {
       refreshEvent: state => state.store.refreshEvent
     })
   },
+  watch: {
+    refreshEvent: function() {
+      this.loadStore()
+    }
+  },
   methods: {
     async loadStore() {
       this.storeInfo = await store.get(this.storeId)

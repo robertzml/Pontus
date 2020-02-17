@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import store from '@/controllers/store'
 import contract from '@/controllers/contract'
 import CustomerSelect from '@/components/Control/CustomerSelect'
@@ -99,11 +99,19 @@ export default {
   watch: {
     'filter.customerId': function(val) {
       this.loadContract(val)
+    },
+    refreshEvent: function() {
+      this.search()
     }
+  },
+  computed: {
+    ...mapState({
+      refreshEvent: state => state.store.refreshEvent
+    })
   },
   methods: {
     ...mapActions({
-      showStoreDetails: 'store/showStoreDetails'
+      showDetails: 'store/showDetails'
     }),
 
     async loadStore() {
@@ -128,7 +136,7 @@ export default {
 
     // 查看库存信息
     viewItem(item) {
-      this.showStoreDetails(item.id)
+      this.showDetails(item.id)
     }
   },
   mounted: function() {
