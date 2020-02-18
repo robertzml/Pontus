@@ -8,8 +8,18 @@ export default {
     return res.data
   },
 
-  async getList(monthTime) {
-    const res = await axios._get({ url: '/stockOut/list', params: { monthTime: monthTime } })
+  async getList() {
+    const res = await axios._get({ url: '/stockOut/list' })
+    return res.data
+  },
+
+  /**
+   * 按出库月份获取入库单
+   * @param {出库月份} monthTime
+   */
+  async getListByMonth(monthTime) {
+    let mt = monthTime.replace(/-/, '')
+    const res = await axios._get({ url: '/stockOut/listByMonth', params: { monthTime: mt } })
     return res.data
   },
 

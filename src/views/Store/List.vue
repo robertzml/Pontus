@@ -122,6 +122,9 @@ export default {
     async loadContract(customerId) {
       if (customerId) {
         this.contractListData = await contract.getList(customerId)
+        if (this.contractListData.length > 0) {
+          this.filter.selectedContract = this.contractListData[0]
+        }
       } else {
         this.contractListData = []
       }

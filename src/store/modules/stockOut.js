@@ -8,11 +8,11 @@ export default {
     // 货品出库显示页面
     tab: 'StockOutDetails',
 
+    // 出库月份
+    monthTime: moment().format('YYYY-MM'),
+
     // 搬运出库编辑框显示
     carryOutDialog: false,
-
-    // 当前出库日期
-    outTime: moment().format('YYYY-MM-DD'),
 
     // 当前出库单ID
     stockOutId: '',
@@ -47,13 +47,13 @@ export default {
       state.tab = tab
     },
 
-    setCarryOutDialog: (state, val) => {
-      state.carryOutDialog = val
+    // 设置入库月份
+    setMonthTime: (state, monthTime) => {
+      state.monthTime = monthTime
     },
 
-    // 设置当前出库日期
-    setOutTime: (state, outTime) => {
-      state.outTime = outTime
+    setCarryOutDialog: (state, val) => {
+      state.carryOutDialog = val
     },
 
     // 设置出库单ID

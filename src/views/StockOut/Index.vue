@@ -12,9 +12,9 @@
           <v-menu v-model="outTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290">
             <template v-slot:activator="{ on }">
               <v-text-field
-                v-model="outTime"
-                prefix="出库时间"
-                style="width:200px;"
+                v-model="monthTime"
+                prefix="出库月份"
+                style="width:180px;"
                 single-line
                 hide-details
                 solo
@@ -23,7 +23,7 @@
                 v-on="on"
               ></v-text-field>
             </template>
-            <v-date-picker v-model="outTime" :day-format="$util.pickerDayFormat" @input="outTimeMenu = false"></v-date-picker>
+            <v-date-picker v-model="monthTime" type="month" @input="outTimeMenu = false"></v-date-picker>
           </v-menu>
         </v-toolbar-items>
       </v-toolbar>
@@ -40,7 +40,7 @@
     </v-col>
 
     <v-col cols="12">
-      <stock-out-create ref="stockOutCreateMod" @close="closeCreate"></stock-out-create>
+      <stock-out-create ref="stockOutCreateMod" @close="refresh"></stock-out-create>
     </v-col>
   </v-row>
 </template>
@@ -48,7 +48,8 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import StockOutList from './List'
-import StockOutCreate from './Create'
+import StockOutMonth from './Month'
+import StockOutCreate from './Dialog/Create'
 import StockOutDetails from './Details'
 import StockOutTaskDetails from './TaskDetails'
 
@@ -56,6 +57,7 @@ export default {
   name: 'StockOutIndex',
   components: {
     StockOutList,
+    StockOutMonth,
     StockOutCreate,
     StockOutDetails,
     StockOutTaskDetails
@@ -67,12 +69,12 @@ export default {
     ...mapState({
       tab: state => state.stockOut.tab
     }),
-    outTime: {
+    monthTime: {
       get() {
-        return this.$store.state.stockOut.outTime
+        return this.$store.state.stockOut.monthTime
       },
       set(val) {
-        this.setOutTime(val)
+        this.setMonthTime(val)
       }
     }
   },
@@ -83,7 +85,7 @@ export default {
 
     ...mapMutations({
       setStockOutId: 'stockOut/setStockOutId',
-      setOutTime: 'stockOut/setOutTime',
+      setMonthTime: 'stockOut/setMonthTime',
       refresh: 'stockOut/refresh'
     }),
 
@@ -95,11 +97,6 @@ export default {
     // 显示货品出库
     showCreate() {
       this.$refs.stockOutCreateMod.init()
-    },
-
-    // 关闭添加出库
-    closeCreate() {
-      this.refresh()
     }
   }
 }
