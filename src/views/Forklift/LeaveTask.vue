@@ -161,7 +161,7 @@ export default {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '出库下架成功')
             vm.loading = false
-            this.$router.push({ name: 'home' })
+            this.$router.push({ name: 'forkliftReceiveOutTask' })
           } else {
             vm.$store.commit('alertError', res.errorMessage)
             vm.loading = false

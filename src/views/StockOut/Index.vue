@@ -30,7 +30,7 @@
     </v-col>
 
     <v-col cols="2">
-      <stock-out-list ref="listMod"></stock-out-list>
+      <stock-out-month></stock-out-month>
     </v-col>
 
     <v-col cols="10">
@@ -67,7 +67,8 @@ export default {
   }),
   computed: {
     ...mapState({
-      tab: state => state.stockOut.tab
+      tab: state => state.stockOut.tab,
+      stockOutId: state => state.stockOut.stockOutId
     }),
     monthTime: {
       get() {
@@ -91,7 +92,7 @@ export default {
 
     // 返回出库单页面
     toList() {
-      this.stockOutShowDetails()
+      this.stockOutShowDetails(this.stockOutId)
     },
 
     // 显示货品出库

@@ -180,7 +180,7 @@ export default {
           vm.$store.commit('alertSuccess', '取消接单成功')
           vm.cancelLoading = false
           vm.unReceiveDialog = false
-          this.$router.push({ name: 'home' })
+          this.$router.push({ name: 'forkliftReceiveInTask' })
         } else {
           vm.$store.commit('alertError', res.errorMessage)
           vm.cancelLoading = false

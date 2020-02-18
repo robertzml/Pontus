@@ -32,8 +32,9 @@ export default {
 
   actions: {
     // 显示出库单信息页面
-    showDetails({ commit }) {
-      commit('setTab', 'StockOutDetails')
+    showDetails(context, id) {
+      context.commit('setTab', 'StockOutDetails')
+      context.commit('setStockOutId', id)
     },
 
     // 显示出库任务信息页面

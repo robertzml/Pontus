@@ -83,7 +83,7 @@
             {{ item.status | displayStatus }}
           </template>
           <template v-slot:item.action="{ item }">
-            <v-btn small color="success" @click="viewCarryOutDetails(item)">
+            <v-btn small color="primary" @click="viewCarryOutDetails(item)">
               <v-icon left dark>pageview</v-icon>
               查看
             </v-btn>
@@ -106,14 +106,21 @@
             {{ item.status | displayStatus }}
           </template>
           <template v-slot:item.action="{ item }">
-            <v-btn small color="success" @click="viewCarryInDetails(item)">
+            <v-btn small color="primary" @click="viewCarryInDetails(item)">
               <v-icon left dark>pageview</v-icon>
               查看
+            </v-btn>
+            <v-btn v-if="item.status == 74" small color="success darken-1" class="ml-2" @click="showConfirmCarryIn(item)">
+              <v-icon left dark>check</v-icon>
+              确认
             </v-btn>
           </template>
         </v-data-table>
       </v-card-text>
     </v-card>
+
+    <!-- 搬运入库确认组件 -->
+    <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>
 
     <v-dialog v-model="carryOutDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
       <carry-out-create @close="closeCarryOut"></carry-out-create>
@@ -161,6 +168,7 @@ import carryIn from '@/controllers/carryIn'
 import CarryOutCreate from '../CarryOut/Create'
 import CarryOutDetails from '../CarryOut/Details'
 import CarryInDetails from '../CarryIn/Details'
+import CarryInFinish from '@/components/Dialog/CarryInFinish'
 
 export default {
   name: 'StockOutTaskDetails',
@@ -168,7 +176,8 @@ export default {
   components: {
     CarryOutCreate,
     CarryOutDetails,
-    CarryInDetails
+    CarryInDetails,
+    CarryInFinish
   },
   data: () => ({
     viewOutDrawer: false,
@@ -351,6 +360,11 @@ export default {
           }
         })
       }
+    },
+
+    // 确认搬运入库
+    showConfirmCarryIn(item) {
+      this.$refs.carryInFinishMod.init(item.id)
     }
   },
   mounted: function() {

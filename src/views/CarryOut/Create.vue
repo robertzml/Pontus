@@ -230,6 +230,7 @@ export default {
       if (val) {
         this.$refs.form.resetValidation()
         this.storeListData = []
+        this.taskInfoList = []
       }
     },
     'editedItem.moveCount': function(val) {
