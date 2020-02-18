@@ -143,7 +143,7 @@ export default {
     },
 
     receive() {
-      if (!this.positionNumber) {
+      if (!this.positionNumber || this.carryOutList.length == 0) {
         return
       }
 

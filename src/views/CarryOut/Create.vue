@@ -30,7 +30,7 @@
         </v-row>
         <v-row dense>
           <v-col cols="12">
-            <store-find :store-list="storeListData" @select="selectStore"></store-find>
+            <store-find :store-list="storeListData" @select="selectStore" ref="storeFindMod"></store-find>
           </v-col>
         </v-row>
 
@@ -272,6 +272,7 @@ export default {
       store.findByStockOut({ stockOutId: this.stockOutInfo.id, cargoId: this.stockOutTaskInfo.cargoId }).then(res => {
         vm.storeListData = res
       })
+      this.$refs.storeFindMod.init()
     },
 
     // 选择待出库库存

@@ -64,7 +64,7 @@
           <div class="ml-4 mr-8">
             <span>层</span>
           </div>
-          <v-chip-group active-class="amber--text" v-model="sLayer">
+          <v-chip-group active-class="deep-orange--text" v-model="sLayer">
             <v-chip label v-for="layer in layerListData" :key="layer" :value="layer" @click="selectLayer(layer)">
               {{ layer }}
             </v-chip>
@@ -112,12 +112,6 @@ export default {
     }
   },
   watch: {
-    storeList: function() {
-      this.sShelfId = 0
-      this.sRow = 0
-      this.sLayer = 0
-      this.sPosition = null
-    },
     // 选择出库仓位
     sPosition: function(val) {
       if (val) {
@@ -129,6 +123,17 @@ export default {
     }
   },
   methods: {
+    init() {
+      this.shelfListData = []
+      this.rowListData = []
+      this.layerListData = []
+      this.positionList = []
+      this.sShelfId = 0
+      this.sRow = 0
+      this.sLayer = 0
+      this.sPosition = null
+    },
+
     // 生成仓库选择信息
     warehouseInfo: function(id) {
       let s = this.storeList.find(r => r.warehouseId == id)

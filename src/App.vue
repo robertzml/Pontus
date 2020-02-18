@@ -35,7 +35,7 @@
       <v-container fluid style="height:100px;" class="px-4" v-if="userInfo.userGroupId == 6">
         <forklift-menu></forklift-menu>
       </v-container>
-      <v-container fluid>
+      <v-container fluid class="px-1">
         <router-view></router-view>
       </v-container>
     </v-content>

@@ -2,64 +2,67 @@
   <div>
     <v-expansion-panels v-model="panel" multiple>
       <v-expansion-panel>
-        <v-expansion-panel-header ripple>出库单信息</v-expansion-panel-header>
+        <v-expansion-panel-header ripple class="deep-purple darken-1">出库单信息</v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-card flat class="mx-auto">
             <v-form>
               <v-row dense>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field :value="$util.displayDate(info.outTime)" label="出库时间" readonly></v-text-field>
+                  <v-text-field :value="$util.displayDate(info.outTime)" label="出库时间" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field v-model="info.monthTime" label="出库月份" readonly></v-text-field>
+                  <v-text-field v-model="info.monthTime" label="出库月份" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field v-model="info.flowNumber" label="流水单号" readonly></v-text-field>
+                  <v-text-field v-model="info.flowNumber" label="流水单号" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field :value="$util.stockOutType(info.type)" label="出库类型" readonly></v-text-field>
+                  <v-text-field :value="$util.stockOutType(info.type)" label="出库类型" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field v-model="info.customerNumber" label="客户编号" readonly></v-text-field>
+                  <v-text-field v-model="info.customerNumber" label="客户编号" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field v-model="info.customerName" label="客户名称" readonly></v-text-field>
+                  <v-text-field v-model="info.customerName" label="客户名称" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field v-model="info.contractNumber" label="合同编号" readonly></v-text-field>
+                  <v-text-field v-model="info.contractNumber" label="合同编号" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field v-model="info.contractName" label="合同名称" readonly></v-text-field>
+                  <v-text-field v-model="info.contractName" label="合同名称" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field :value="$util.contractType(info.contractType)" label="合同类型" readonly></v-text-field>
+                  <v-text-field :value="$util.contractType(info.contractType)" label="合同类型" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field :value="$util.billingType(info.billingType)" label="计费方式" readonly></v-text-field>
+                  <v-text-field :value="$util.billingType(info.billingType)" label="计费方式" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field v-model="info.unitPrice" label="冷藏费单价" :suffix="$util.billingTypeUnit(info.billingType)" readonly></v-text-field>
+                  <v-text-field
+                    v-model="info.unitPrice"
+                    label="冷藏费单价"
+                    :suffix="$util.billingTypeUnit(info.billingType)"
+                    hide-details
+                    readonly
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="6" md="3" sm="6">
-                  <v-text-field label="车牌号" :value="info.vehicleNumber" readonly> </v-text-field>
+                  <v-text-field label="车牌号" :value="info.vehicleNumber" hide-details readonly> </v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field v-model="info.userName" label="登记人" readonly></v-text-field>
+                  <v-text-field v-model="info.userName" label="登记人" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field :value="$util.displayDateTime(info.createTime)" label="创建时间" readonly></v-text-field>
+                  <v-text-field :value="$util.displayDateTime(info.createTime)" label="创建时间" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field :value="$util.displayDateTime(info.confirmTime)" label="确认时间" readonly></v-text-field>
+                  <v-text-field :value="$util.displayDateTime(info.confirmTime)" label="确认时间" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="3" md="3" sm="6">
-                  <v-text-field :value="$util.displayStatus(info.status)" label="状态" readonly></v-text-field>
+                  <v-text-field :value="$util.displayStatus(info.status)" label="状态" hide-details readonly></v-text-field>
                 </v-col>
                 <v-col cols="6" md="6" sm="6">
-                  <v-text-field label="备注" :value="info.remark" readonly> </v-text-field>
-                </v-col>
-                <v-col cols="6" md="6" sm="6">
-                  <vue-barcode v-if="stockOutId" v-bind:value="info.flowNumber" :height="50" :font-size="10"></vue-barcode>
+                  <v-text-field label="备注" :value="info.remark" hide-details readonly> </v-text-field>
                 </v-col>
               </v-row>
             </v-form>
@@ -74,7 +77,7 @@
       </v-expansion-panel>
 
       <v-expansion-panel>
-        <v-expansion-panel-header ripple>出库货物</v-expansion-panel-header>
+        <v-expansion-panel-header ripple class="deep-purple darken-3">出库货物</v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="headers" :items="taskInfoList" hide-default-footer disable-pagination>
             <template v-slot:item.status="{ item }">
@@ -122,13 +125,11 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import stockOut from '@/controllers/stockOut'
 import StockOutEditTask from './EditTask'
-import VueBarcode from 'vue-barcode'
 
 export default {
   name: 'StockOutDetails',
   components: {
-    StockOutEditTask,
-    VueBarcode
+    StockOutEditTask
   },
   data: () => ({
     panel: [0, 1],
