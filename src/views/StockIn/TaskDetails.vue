@@ -63,7 +63,9 @@
             </v-row>
 
             <v-card-actions>
-              <v-btn color="indigo darken-3" v-if="this.taskInfo.status == 71" @click.stop="showCarryInCreate">任务下发</v-btn>
+              <v-btn color="indigo darken-3" v-if="this.taskInfo.status == 71 && this.taskInfo.type == 2" @click.stop="showCarryInCreate">
+                任务下发
+              </v-btn>
               <v-btn color="success darken-1" v-if="this.taskInfo.status == 71" @click.stop="showFinishTask">确认入库货物</v-btn>
               <v-btn color="warning" v-if="taskInfo.status != 75" @click.stop="showEditTask">编辑入库货物</v-btn>
               <v-btn color="red darken-3" v-if="taskInfo.status != 75" @click.stop="showDeleteTask">删除入库货物</v-btn>
@@ -72,7 +74,7 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
 
-      <v-expansion-panel>
+      <v-expansion-panel v-if="this.taskInfo.type == 2">
         <v-expansion-panel-header ripple class="green darken-3">
           <template v-slot:default="">
             搬运入库任务

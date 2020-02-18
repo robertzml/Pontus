@@ -138,6 +138,12 @@ export default {
 
     submit() {
       if (this.$refs.form.validate()) {
+        if (this.stockInInfo.type == 3 && this.selectedContract.type != 3) {
+          this.$store.commit('alertError', '冷冻库入库请使用冷冻合同')
+          this.submitLoading = false
+          return
+        }
+
         this.$nextTick(() => {
           this.submitLoading = true
         })

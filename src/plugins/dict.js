@@ -59,7 +59,8 @@ export default {
   /** 入库类型 */
   stockInType: [
     { text: '普通库入库', value: 1 },
-    { text: '仓位库入库', value: 2 }
+    { text: '仓位库入库', value: 2 },
+    { text: '冷冻库入库', value: 3 }
   ],
 
   /** 出库类型 */
