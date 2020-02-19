@@ -5,73 +5,71 @@
         <v-expansion-panel-header ripple class="deep-purple darken-1">出库单信息</v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-card flat class="mx-auto">
-            <v-form>
-              <v-row dense>
-                <v-col cols="3" md="3" sm="6">
-                  <v-text-field :value="$util.displayDate(info.outTime)" label="出库时间" hide-details readonly></v-text-field>
-                </v-col>
-                <v-col cols="3" md="3" sm="6">
-                  <v-text-field v-model="info.monthTime" label="出库月份" hide-details readonly></v-text-field>
-                </v-col>
-                <v-col cols="3" md="3" sm="6">
-                  <v-text-field v-model="info.flowNumber" label="流水单号" hide-details readonly></v-text-field>
-                </v-col>
-                <v-col cols="3" md="3" sm="6">
-                  <v-text-field :value="$util.stockOutType(info.type)" label="出库类型" hide-details readonly></v-text-field>
-                </v-col>
-                <v-col cols="3" md="3" sm="6">
-                  <v-text-field v-model="info.customerNumber" label="客户编号" hide-details readonly></v-text-field>
-                </v-col>
-                <v-col cols="3" md="3" sm="6">
-                  <v-text-field v-model="info.customerName" label="客户名称" hide-details readonly></v-text-field>
-                </v-col>
-                <v-col cols="3" md="3" sm="6">
-                  <v-text-field v-model="info.contractNumber" label="合同编号" hide-details readonly></v-text-field>
-                </v-col>
-                <v-col cols="3" md="3" sm="6">
-                  <v-text-field v-model="info.contractName" label="合同名称" hide-details readonly></v-text-field>
-                </v-col>
-                <v-col cols="3" md="3" sm="6">
-                  <v-text-field :value="$util.contractType(info.contractType)" label="合同类型" hide-details readonly></v-text-field>
-                </v-col>
-                <v-col cols="3" md="3" sm="6">
-                  <v-text-field :value="$util.billingType(info.billingType)" label="计费方式" hide-details readonly></v-text-field>
-                </v-col>
-                <v-col cols="3" md="3" sm="6">
-                  <v-text-field
-                    v-model="info.unitPrice"
-                    label="冷藏费单价"
-                    :suffix="$util.billingTypeUnit(info.billingType)"
-                    hide-details
-                    readonly
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="6" md="3" sm="6">
-                  <v-text-field label="车牌号" :value="info.vehicleNumber" hide-details readonly> </v-text-field>
-                </v-col>
-                <v-col cols="3" md="3" sm="6">
-                  <v-text-field v-model="info.userName" label="登记人" hide-details readonly></v-text-field>
-                </v-col>
-                <v-col cols="3" md="3" sm="6">
-                  <v-text-field :value="$util.displayDateTime(info.createTime)" label="创建时间" hide-details readonly></v-text-field>
-                </v-col>
-                <v-col cols="3" md="3" sm="6">
-                  <v-text-field :value="$util.displayDateTime(info.confirmTime)" label="确认时间" hide-details readonly></v-text-field>
-                </v-col>
-                <v-col cols="3" md="3" sm="6">
-                  <v-text-field :value="$util.displayStatus(info.status)" label="状态" hide-details readonly></v-text-field>
-                </v-col>
-                <v-col cols="6" md="6" sm="6">
-                  <v-text-field label="备注" :value="info.remark" hide-details readonly> </v-text-field>
-                </v-col>
-              </v-row>
-            </v-form>
+            <v-row dense>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field :value="$util.displayDate(info.outTime)" label="出库时间" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="info.monthTime" label="出库月份" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="info.flowNumber" label="流水单号" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field :value="$util.stockOutType(info.type)" label="出库类型" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="info.customerNumber" label="客户编号" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="info.customerName" label="客户名称" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="info.contractNumber" label="合同编号" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="info.contractName" label="合同名称" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field :value="$util.contractType(info.contractType)" label="合同类型" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field :value="$util.billingType(info.billingType)" label="计费方式" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field
+                  v-model="info.unitPrice"
+                  label="冷藏费单价"
+                  :suffix="$util.billingTypeUnit(info.billingType)"
+                  hide-details
+                  readonly
+                ></v-text-field>
+              </v-col>
+              <v-col cols="6" md="3" sm="6">
+                <v-text-field label="车牌号" :value="info.vehicleNumber" hide-details readonly> </v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field v-model="info.userName" label="登记人" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field :value="$util.displayDateTime(info.createTime)" label="创建时间" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field :value="$util.displayDateTime(info.confirmTime)" label="确认时间" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="3" md="3" sm="6">
+                <v-text-field :value="$util.displayStatus(info.status)" label="状态" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" md="6" sm="6">
+                <v-text-field label="备注" :value="info.remark" hide-details readonly> </v-text-field>
+              </v-col>
+            </v-row>
 
             <v-card-actions>
               <v-btn color="indigo darken-3" v-if="info.status == 81" @click="showAddTask">添加货物</v-btn>
               <v-btn color="success darken-1" v-if="info.status == 81" @click.stop="finishDialog = true">确认出库单</v-btn>
               <v-btn color="warning" v-if="stockOutId && info.status != 85" @click.stop="showEdit">编辑出库单</v-btn>
-              <v-btn color="red darken-3" v-if="stockOutId && info.status != 85" @click.stop="deleteDialog = true">删除出库单</v-btn>
+              <v-btn color="red darken-3" v-if="stockOutId && info.status != 85" @click.stop="showDelete">删除出库单</v-btn>
             </v-card-actions>
           </v-card>
         </v-expansion-panel-content>
@@ -97,6 +95,9 @@
     <!-- 编辑出库单组件 -->
     <stock-out-edit ref="stockOutEditMod" @close="loadInfo"></stock-out-edit>
 
+    <!-- 删除出库单组件 -->
+    <stock-out-delete ref="stockOutDeleteMod" @close="refresh"></stock-out-delete>
+
     <stock-out-edit-task ref="editTaskMod" @update="updateTask"></stock-out-edit-task>
 
     <v-dialog v-model="finishDialog" persistent max-width="300">
@@ -110,18 +111,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-    <v-dialog v-model="deleteDialog" persistent max-width="300">
-      <v-card>
-        <v-card-title class="headline">删除出库单</v-card-title>
-        <v-card-text>是否确认删除该出库单？仅能删除无出库货物的出库单。</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-grey lighten-3" text @click="deleteDialog = false">取消</v-btn>
-          <v-btn color="green darken-1" text @click="deleteStockOut" :loading="deleteLoading">确定</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-sheet>
 </template>
 
@@ -129,20 +118,20 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import stockOut from '@/controllers/stockOut'
 import StockOutEdit from './Dialog/Edit'
+import StockOutDelete from './Dialog/Delete'
 import StockOutEditTask from './EditTask'
 
 export default {
   name: 'StockOutDetails',
   components: {
     StockOutEdit,
+    StockOutDelete,
     StockOutEditTask
   },
   data: () => ({
     panel: [0, 1],
     finishLoading: false,
     finishDialog: false,
-    deleteLoading: false,
-    deleteDialog: false,
     headers: [
       { text: '货品名称', value: 'cargoName' },
       { text: '类别名称', value: 'categoryName' },
@@ -177,7 +166,7 @@ export default {
     ...mapMutations({
       setStockOutInfo: 'stockOut/setStockOutInfo',
       setTaskInfo: 'stockOut/setTaskInfo',
-      refresh: 'stockIn/refresh'
+      refresh: 'stockOut/refresh'
     }),
     ...mapActions({
       showTaskDetails: 'stockOut/showTaskDetals'
@@ -230,6 +219,11 @@ export default {
       this.$refs.stockOutEditMod.init(this.stockOutId)
     },
 
+    // 显示删除出库单
+    showDelete() {
+      this.$refs.stockOutDeleteMod.init(this.stockOutId)
+    },
+
     // 确认出库单完成
     finish() {
       let vm = this
@@ -246,26 +240,6 @@ export default {
         } else {
           vm.$store.commit('alertError', res.errorMessage)
           vm.finishLoading = false
-        }
-      })
-    },
-
-    // 删除出库单
-    deleteStockOut() {
-      let vm = this
-      this.$nextTick(() => {
-        this.deleteLoading = true
-      })
-
-      stockOut.deleteStockOut({ id: this.info.id }).then(res => {
-        if (res.status == 0) {
-          vm.$store.commit('alertSuccess', '出库单已删除')
-          vm.refresh()
-          vm.deleteLoading = false
-          vm.deleteDialog = false
-        } else {
-          vm.$store.commit('alertError', res.errorMessage)
-          vm.deleteLoading = false
         }
       })
     }
