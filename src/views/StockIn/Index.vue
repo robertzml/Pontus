@@ -29,8 +29,6 @@
     </v-toolbar>
 
     <v-row dense>
-      <v-col cols="12"> </v-col>
-
       <v-col cols="2">
         <stock-in-month></stock-in-month>
       </v-col>
@@ -67,9 +65,7 @@ export default {
     StockInTaskDetails
   },
   data: () => ({
-    inTimeMenu: false,
-    revertDialog: false,
-    revertLoading: false
+    inTimeMenu: false
   }),
   computed: {
     ...mapState({

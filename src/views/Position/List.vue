@@ -47,14 +47,25 @@
             <div class="d-flex mb-2">
               {{ positionTitle }}
             </div>
+
             <div class="d-flex flex-wrap">
-              <v-card v-for="depth in shelfInfo.depth" :key="depth" class="pa-2" outlined tile @click.stop="selectPosition(depth)">
+              <v-card
+                v-for="depth in shelfInfo.depth"
+                :key="depth"
+                :color="positionColor(sRow, sLayer, depth)"
+                class="pa-2"
+                outlined
+                tile
+                @click.stop="selectPosition(depth)"
+              >
                 {{ depth.toString().padStart(2, '0') }}
               </v-card>
             </div>
+
             <div class="d-flex my-4">
               <span class="mr-4">仓位编号：{{ positionInfo.number }}</span>
-              <span>副编号：{{ positionInfo.viceNumber }}</span>
+              <span class="mr-4">副编号：{{ positionInfo.viceNumber }}</span>
+              <span>状态：{{ positionInfo.status | displayStatus }}</span>
             </div>
           </div>
         </div>
@@ -111,8 +122,9 @@ export default {
         vm.shelfInfo = res
       })
 
-      position.count(shelfId).then(res => {
-        vm.positionCount = res
+      position.getList({ shelfId }).then(res => {
+        vm.positionListData = res
+        vm.positionCount = vm.positionListData.length
       })
     },
 
@@ -154,6 +166,22 @@ export default {
       position.get({ shelfId: this.shelfInfo.id, row: this.sRow, layer: this.sLayer, depth: depth }).then(res => {
         vm.positionInfo = res
       })
+    },
+
+    // 根据状态显示仓位颜色
+    positionColor(row, layer, depth) {
+      let pos = this.positionListData.find(r => r.row == row && r.layer == layer && r.depth == depth)
+      if (pos == undefined) {
+        return
+      }
+
+      if (pos.status == 2) {
+        return 'grey darken-4' //禁用
+      } else if (pos.status == 31) {
+        return '' // 可用
+      } else {
+        return 'primary' // 暂用
+      }
     },
 
     showEdit() {

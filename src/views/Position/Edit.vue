@@ -71,6 +71,7 @@ export default {
     },
     positionStatus: [
       { value: 31, text: '可用' },
+      { value: 32, text: '占用' },
       { value: 2, text: '禁用' }
     ]
   }),

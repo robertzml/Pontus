@@ -1,53 +1,52 @@
 <template>
-  <v-row dense>
-    <v-col cols="12">
-      <v-toolbar dense>
-        <v-toolbar-title>货品出库</v-toolbar-title>
-        <v-spacer></v-spacer>
+  <v-sheet class="transparent">
+    <v-toolbar dense class="sticky-toolbar">
+      <v-toolbar-title>货品出库</v-toolbar-title>
+      <v-spacer></v-spacer>
 
-        <v-toolbar-items>
-          <v-btn v-if="tab != 'StockOutDetails'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
-          <v-btn v-if="tab == 'StockOutDetails'" text @click.stop="showCreate">新建出库单</v-btn>
-          <v-btn text @click.stop="refresh">刷新</v-btn>
-          <v-menu v-model="outTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290">
-            <template v-slot:activator="{ on }">
-              <v-text-field
-                v-model="monthTime"
-                prefix="出库月份"
-                style="width:180px;"
-                single-line
-                hide-details
-                solo
-                flat
-                readonly
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker v-model="monthTime" type="month" @input="outTimeMenu = false"></v-date-picker>
-          </v-menu>
-        </v-toolbar-items>
-      </v-toolbar>
-    </v-col>
+      <v-toolbar-items>
+        <v-btn v-if="tab != 'StockOutDetails'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
+        <v-btn v-if="tab == 'StockOutDetails'" text @click.stop="showCreate">新建出库单</v-btn>
+        <v-btn text @click.stop="refresh">刷新</v-btn>
+        <v-menu v-model="outTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290">
+          <template v-slot:activator="{ on }">
+            <v-text-field
+              v-model="monthTime"
+              prefix="出库月份"
+              style="width:180px;"
+              single-line
+              hide-details
+              solo
+              flat
+              readonly
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker v-model="monthTime" type="month" @input="outTimeMenu = false"></v-date-picker>
+        </v-menu>
+      </v-toolbar-items>
+    </v-toolbar>
 
-    <v-col cols="2">
-      <stock-out-month></stock-out-month>
-    </v-col>
+    <v-row dense>
+      <v-col cols="2">
+        <stock-out-month></stock-out-month>
+      </v-col>
 
-    <v-col cols="10">
-      <v-slide-x-transition leave-absolute>
-        <component v-bind:is="tab"></component>
-      </v-slide-x-transition>
-    </v-col>
+      <v-col cols="10">
+        <v-slide-x-transition leave-absolute>
+          <component v-bind:is="tab"></component>
+        </v-slide-x-transition>
+      </v-col>
 
-    <v-col cols="12">
-      <stock-out-create ref="stockOutCreateMod" @close="refresh"></stock-out-create>
-    </v-col>
-  </v-row>
+      <v-col cols="12">
+        <stock-out-create ref="stockOutCreateMod" @close="refresh"></stock-out-create>
+      </v-col>
+    </v-row>
+  </v-sheet>
 </template>
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
-import StockOutList from './List'
 import StockOutMonth from './Month'
 import StockOutCreate from './Dialog/Create'
 import StockOutDetails from './Details'
@@ -56,7 +55,6 @@ import StockOutTaskDetails from './TaskDetails'
 export default {
   name: 'StockOutIndex',
   components: {
-    StockOutList,
     StockOutMonth,
     StockOutCreate,
     StockOutDetails,
@@ -102,3 +100,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.sticky-toolbar {
+  top: 48px;
+  position: sticky;
+  position: -webkit-sticky;
+  z-index: 9999;
+}
+</style>

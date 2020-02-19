@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-sheet class="transparent">
     <v-expansion-panels v-model="panel" multiple>
       <v-expansion-panel>
         <v-expansion-panel-header ripple class="deep-purple darken-1">出库单信息</v-expansion-panel-header>
@@ -68,8 +68,9 @@
             </v-form>
 
             <v-card-actions>
-              <v-btn color="primary darken-1" v-if="info.status == 81" @click="showAddTask">添加货物</v-btn>
-              <v-btn color="deep-orange darken-3" v-if="info.status == 81" @click.stop="finishDialog = true">出库单确认</v-btn>
+              <v-btn color="indigo darken-3" v-if="info.status == 81" @click="showAddTask">添加货物</v-btn>
+              <v-btn color="success darken-1" v-if="info.status == 81" @click.stop="finishDialog = true">确认出库单</v-btn>
+              <v-btn color="warning" v-if="stockOutId && info.status != 85" @click.stop="showEdit">编辑出库单</v-btn>
               <v-btn color="red darken-3" v-if="stockOutId && info.status != 85" @click.stop="deleteDialog = true">删除出库单</v-btn>
             </v-card-actions>
           </v-card>
@@ -92,6 +93,9 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
+
+    <!-- 编辑出库单组件 -->
+    <stock-out-edit ref="stockOutEditMod" @close="loadInfo"></stock-out-edit>
 
     <stock-out-edit-task ref="editTaskMod" @update="updateTask"></stock-out-edit-task>
 
@@ -118,17 +122,19 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>
+  </v-sheet>
 </template>
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import stockOut from '@/controllers/stockOut'
+import StockOutEdit from './Dialog/Edit'
 import StockOutEditTask from './EditTask'
 
 export default {
   name: 'StockOutDetails',
   components: {
+    StockOutEdit,
     StockOutEditTask
   },
   data: () => ({
@@ -150,11 +156,13 @@ export default {
     ],
     taskInfoList: []
   }),
-  computed: mapState({
-    stockOutId: state => state.stockOut.stockOutId,
-    info: state => state.stockOut.stockOutInfo,
-    refreshEvent: state => state.stockOut.refreshEvent
-  }),
+  computed: {
+    ...mapState({
+      stockOutId: state => state.stockOut.stockOutId,
+      info: state => state.stockOut.stockOutInfo,
+      refreshEvent: state => state.stockOut.refreshEvent
+    })
+  },
   watch: {
     stockOutId: function() {
       this.loadInfo()
@@ -175,7 +183,7 @@ export default {
       showTaskDetails: 'stockOut/showTaskDetals'
     }),
 
-    // 载入入库单信息
+    // 载入出库单信息
     loadInfo() {
       if (this.stockOutId) {
         let vm = this
@@ -215,6 +223,11 @@ export default {
     viewTaskItem(val) {
       this.setTaskInfo(val)
       this.showTaskDetails()
+    },
+
+    // 显示编辑入库单
+    showEdit() {
+      this.$refs.stockOutEditMod.init(this.stockOutId)
     },
 
     // 确认出库单完成
