@@ -87,8 +87,9 @@ export default {
       this.expenseItems = exp.filter(r => r.type != 3)
 
       this.expenseItems.forEach(item => {
-        if (this.billingItems.every(r => r.expenseItemId != item.id)) {
-          let bill = {
+        let bill = this.billingItems.find(r => r.expenseItemId == item.id)
+        if (bill == undefined) {
+          bill = {
             expenseItemId: item.id,
             code: item.code,
             name: item.name,
@@ -97,8 +98,12 @@ export default {
             count: this.totalWeight,
             amount: 0
           }
-
           this.billingItems.push(bill)
+        } else {
+          if (bill.type == 2) {
+            bill.count = this.totalWeight
+            bill.amount = (bill.count * bill.unitPrice).toFixed(3)
+          }
         }
       })
     },
