@@ -51,14 +51,13 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import store from '@/controllers/store'
 import stockOut from '@/controllers/stockOut'
 import cargo from '@/controllers/cargo'
 import CargoSelect from '@/components/Control/CargoSelect'
 
 export default {
-  name: 'StockOutEditTask',
+  name: 'StockOutTaskCreate',
   components: {
     CargoSelect
   },
@@ -66,6 +65,7 @@ export default {
     dialog: false,
     valid: true,
     submitLoading: false,
+    stockOutInfo: {},
     cargoId: '',
     unitWeight: 0.0,
     cargoListData: [],
@@ -93,11 +93,6 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      stockOutId: state => state.stockOut.stockOutId,
-      stockOutInfo: state => state.stockOut.stockOutInfo
-    }),
-
     // 货品库存信息
     cargoStoreInfo: function() {
       let sum = this.storeListData.reduce(
@@ -114,7 +109,7 @@ export default {
       let info = {
         trayCount: sum.trayCount,
         totalCount: sum.totalCount,
-        totalWeight: sum.totalWeight
+        totalWeight: sum.totalWeight.toFixed(3)
       }
 
       return info
@@ -125,8 +120,9 @@ export default {
     }
   },
   methods: {
-    init() {
+    init(outInfo) {
       this.dialog = true
+      this.stockOutInfo = outInfo
       this.loadCargoData()
 
       this.$nextTick(() => {
@@ -164,7 +160,7 @@ export default {
 
         let vm = this
 
-        this.taskInfo.stockOutId = this.stockOutId
+        this.taskInfo.stockOutId = this.stockOutInfo.id
         this.taskInfo.cargoId = this.cargoId
         this.taskInfo.outWeight = this.totalWeight
         this.taskInfo.userId = this.$store.state.user.id
@@ -173,7 +169,7 @@ export default {
         stockOut.addTask(this.taskInfo).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加任务成功')
-            vm.$emit('update')
+            vm.$emit('close')
             vm.submitLoading = false
             vm.dialog = false
           } else {

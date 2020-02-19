@@ -67,7 +67,7 @@
 
             <v-card-actions>
               <v-btn color="indigo darken-3" v-if="info.status == 81" @click="showAddTask">添加货物</v-btn>
-              <v-btn color="success darken-1" v-if="info.status == 81" @click.stop="finishDialog = true">确认出库单</v-btn>
+              <v-btn color="success darken-1" v-if="info.status == 81" @click.stop="showFinish">确认出库单</v-btn>
               <v-btn color="warning" v-if="stockOutId && info.status != 85" @click.stop="showEdit">编辑出库单</v-btn>
               <v-btn color="red darken-3" v-if="stockOutId && info.status != 85" @click.stop="showDelete">删除出库单</v-btn>
             </v-card-actions>
@@ -98,19 +98,11 @@
     <!-- 删除出库单组件 -->
     <stock-out-delete ref="stockOutDeleteMod" @close="refresh"></stock-out-delete>
 
-    <stock-out-edit-task ref="editTaskMod" @update="updateTask"></stock-out-edit-task>
+    <!-- 删除出库单组件 -->
+    <stock-out-finish ref="stockOutFinishMod" @close="loadInfo"></stock-out-finish>
 
-    <v-dialog v-model="finishDialog" persistent max-width="300">
-      <v-card>
-        <v-card-title class="headline">出库单确认</v-card-title>
-        <v-card-text>是否确认该出库单已经出库完成？请确认所有出库货物已经下架，确认后无法再增加货物。</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-grey lighten-3" text @click="finishDialog = false">取消</v-btn>
-          <v-btn color="green darken-1" text @click="finish" :loading="finishLoading">确定</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <!-- 添加出库任务组件 -->
+    <stock-out-task-create ref="createTaskMod" @close="loadTaskList"></stock-out-task-create>
   </v-sheet>
 </template>
 
@@ -119,19 +111,19 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 import stockOut from '@/controllers/stockOut'
 import StockOutEdit from './Dialog/Edit'
 import StockOutDelete from './Dialog/Delete'
-import StockOutEditTask from './EditTask'
+import StockOutFinish from './Dialog/Finish'
+import StockOutTaskCreate from '@/components/Dialog/StockOutTaskCreate'
 
 export default {
   name: 'StockOutDetails',
   components: {
     StockOutEdit,
     StockOutDelete,
-    StockOutEditTask
+    StockOutFinish,
+    StockOutTaskCreate
   },
   data: () => ({
     panel: [0, 1],
-    finishLoading: false,
-    finishDialog: false,
     headers: [
       { text: '货品名称', value: 'cargoName' },
       { text: '类别名称', value: 'categoryName' },
@@ -199,7 +191,7 @@ export default {
     // 显示添加入库任务
     showAddTask() {
       if (this.stockOutId) {
-        this.$refs.editTaskMod.init()
+        this.$refs.createTaskMod.init(this.info)
       }
     },
 
@@ -224,24 +216,9 @@ export default {
       this.$refs.stockOutDeleteMod.init(this.stockOutId)
     },
 
-    // 确认出库单完成
-    finish() {
-      let vm = this
-      this.$nextTick(() => {
-        this.finishLoading = true
-      })
-
-      stockOut.confirm({ id: this.info.id }).then(res => {
-        if (res.status == 0) {
-          vm.$store.commit('alertSuccess', '出库单已确认')
-          vm.loadInfo()
-          vm.finishLoading = false
-          vm.finishDialog = false
-        } else {
-          vm.$store.commit('alertError', res.errorMessage)
-          vm.finishLoading = false
-        }
-      })
+    // 显示确认出库单
+    showFinish() {
+      this.$refs.stockOutFinishMod.init(this.stockOutId)
     }
   },
   mounted: function() {
