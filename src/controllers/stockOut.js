@@ -88,5 +88,11 @@ export default {
   async deleteTask(data) {
     const res = await axios._postqs({ url: '/stockOut/deleteTask', params: data })
     return res.data
+  },
+
+  // 添加搬运出库到出库任务
+  async addCarryOut(data) {
+    const res = await axios._post({ url: '/stockOut/addCarryOut', data: data })
+    return res.data
   }
 }

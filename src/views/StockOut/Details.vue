@@ -67,6 +67,7 @@
 
             <v-card-actions>
               <v-btn color="indigo darken-3" v-if="info.status == 81" @click="showAddTask">添加货物</v-btn>
+              <v-btn color="cyan darken-2" v-if="info.status == 81" @click="showScanTray">扫托盘码出库</v-btn>
               <v-btn color="success darken-1" v-if="info.status == 81" @click.stop="showFinish">确认出库单</v-btn>
               <v-btn color="warning" v-if="stockOutId && info.status != 85" @click.stop="showEdit">编辑出库单</v-btn>
               <v-btn color="red darken-3" v-if="stockOutId && info.status != 85" @click.stop="showDelete">删除出库单</v-btn>
@@ -100,7 +101,7 @@
         <v-expansion-panel-header ripple class="deep-purple darken-3">
           搬运任务
         </v-expansion-panel-header>
-        <v-expansion-panel eager>
+        <v-expansion-panel-content eager>
           <v-tabs v-model="tab" grow slider-color="yellow">
             <v-tab>下架任务</v-tab>
             <v-tab>上架任务</v-tab>
@@ -109,7 +110,14 @@
             <v-tab-item> </v-tab-item>
             <v-tab-item> </v-tab-item>
           </v-tabs-items>
-        </v-expansion-panel>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+
+      <v-expansion-panel>
+        <v-expansion-panel-header ripple class="deep-purple darken-3">
+          搬运出库任务
+        </v-expansion-panel-header>
+        <v-expansion-panel-content eager> </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
 
@@ -124,6 +132,9 @@
 
     <!-- 添加出库任务组件 -->
     <stock-out-task-create ref="createTaskMod" @close="loadTaskList"></stock-out-task-create>
+
+    <!-- 扫托盘码出库组件 -->
+    <scan-tray-out ref="scanMod" @close="loadTaskList"></scan-tray-out>
   </v-sheet>
 </template>
 
@@ -134,6 +145,7 @@ import StockOutEdit from './Dialog/Edit'
 import StockOutDelete from './Dialog/Delete'
 import StockOutFinish from './Dialog/Finish'
 import StockOutTaskCreate from '@/components/Dialog/StockOutTaskCreate'
+import ScanTrayOut from '@/components/Dialog/ScanTrayOut'
 
 export default {
   name: 'StockOutDetails',
@@ -141,7 +153,8 @@ export default {
     StockOutEdit,
     StockOutDelete,
     StockOutFinish,
-    StockOutTaskCreate
+    StockOutTaskCreate,
+    ScanTrayOut
   },
   data: () => ({
     panel: [0, 1],
@@ -233,15 +246,9 @@ export default {
       }
     },
 
-    // 完成编辑出库任务
-    updateTask() {
-      this.loadTaskList()
-    },
-
-    // 查看入库任务
-    viewTaskItem(val) {
-      this.setTaskInfo(val)
-      this.showTaskDetails()
+    // 显示扫托盘码出库
+    showScanTray() {
+      this.$refs.scanMod.init(this.stockOutId)
     },
 
     // 显示编辑入库单
@@ -257,6 +264,12 @@ export default {
     // 显示确认出库单
     showFinish() {
       this.$refs.stockOutFinishMod.init(this.stockOutId)
+    },
+
+    // 查看入库任务
+    viewTaskItem(val) {
+      this.setTaskInfo(val)
+      this.showTaskDetails()
     }
   },
   mounted: function() {

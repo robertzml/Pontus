@@ -44,6 +44,15 @@ export default {
   },
 
   /**
+   * 根据托盘码获取当前搬运出库任务
+   * @param {托盘码} trayCode
+   */
+  async findByTray(trayCode) {
+    const res = await axios._get({ url: '/carryOutTask/findByTray', params: { trayCode: trayCode } })
+    return res.data
+  },
+
+  /**
    * 任务接单
    * @param {任务数据} entity
    */
