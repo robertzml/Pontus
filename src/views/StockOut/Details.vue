@@ -2,7 +2,7 @@
   <v-sheet class="transparent">
     <v-expansion-panels v-model="panel" multiple>
       <v-expansion-panel>
-        <v-expansion-panel-header ripple class="deep-purple darken-1">出库单信息</v-expansion-panel-header>
+        <v-expansion-panel-header ripple class="deep-purple">出库单信息</v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-card flat class="mx-auto">
             <v-row dense>
@@ -76,7 +76,12 @@
       </v-expansion-panel>
 
       <v-expansion-panel>
-        <v-expansion-panel-header ripple class="deep-purple darken-3">出库货物</v-expansion-panel-header>
+        <v-expansion-panel-header ripple class="deep-purple darken-2">
+          出库货物
+          <v-spacer></v-spacer>
+          <span class="subtitle-2">出库总数量: {{ totalCount }}</span>
+          <span class="subtitle-2 ml-4">出库总重量: {{ totalWeight }} 吨</span>
+        </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="headers" :items="taskInfoList" hide-default-footer disable-pagination>
             <template v-slot:item.status="{ item }">
@@ -89,6 +94,22 @@
             </template>
           </v-data-table>
         </v-expansion-panel-content>
+      </v-expansion-panel>
+
+      <v-expansion-panel>
+        <v-expansion-panel-header ripple class="deep-purple darken-3">
+          搬运任务
+        </v-expansion-panel-header>
+        <v-expansion-panel eager>
+          <v-tabs v-model="tab" grow slider-color="yellow">
+            <v-tab>下架任务</v-tab>
+            <v-tab>上架任务</v-tab>
+          </v-tabs>
+          <v-tabs-items v-model="tab">
+            <v-tab-item> </v-tab-item>
+            <v-tab-item> </v-tab-item>
+          </v-tabs-items>
+        </v-expansion-panel>
       </v-expansion-panel>
     </v-expansion-panels>
 
@@ -124,6 +145,7 @@ export default {
   },
   data: () => ({
     panel: [0, 1],
+    tab: null,
     headers: [
       { text: '货品名称', value: 'cargoName' },
       { text: '类别名称', value: 'categoryName' },
@@ -142,7 +164,23 @@ export default {
       stockOutId: state => state.stockOut.stockOutId,
       info: state => state.stockOut.stockOutInfo,
       refreshEvent: state => state.stockOut.refreshEvent
-    })
+    }),
+    totalCount: function() {
+      let total = 0
+      this.taskInfoList.forEach(item => {
+        total += item.outCount
+      })
+
+      return total
+    },
+    totalWeight: function() {
+      let total = 0
+      this.taskInfoList.forEach(item => {
+        total += item.outWeight
+      })
+
+      return total.toFixed(3)
+    }
   },
   watch: {
     stockOutId: function() {

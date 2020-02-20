@@ -53,11 +53,20 @@ export default {
   },
 
   /**
-   * 任务上架
+   * 任务下架
    * @param {任务数据} entity
    */
   async leaveTask(entity) {
     const res = await axios._post({ url: '/carryOutTask/leaveTask', data: entity })
+    return res.data
+  },
+
+  /**
+   * 出库直接下架
+   * @param {任务数据} entity
+   */
+  async leaveUnassign(entity) {
+    const res = await axios._post({ url: '/carryOutTask/leaveUnassignTask', data: entity })
     return res.data
   },
 
