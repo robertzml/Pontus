@@ -87,7 +87,7 @@
                 <v-icon left dark>delete</v-icon>
                 删除
               </v-btn>
-              <v-btn v-if="item.status == 84" small color="success darken-1" class="ml-2" @click="showFinishCarryOut(item)">
+              <v-btn v-if="item.status == 84" small color="success darken-1" class="ml-2" @click="showCarryOutFinish(item)">
                 <v-icon left dark>check</v-icon>
                 确认
               </v-btn>
@@ -108,7 +108,11 @@
                 <v-icon left dark>pageview</v-icon>
                 查看
               </v-btn>
-              <v-btn v-if="item.status == 74" small color="success darken-1" class="ml-2" @click="showConfirmCarryIn(item)">
+              <v-btn v-if="item.status == 73" small color="teal darken-3" class="ml-2" @click="showCarryInEnter(item)">
+                <v-icon left dark>pageview</v-icon>
+                上架
+              </v-btn>
+              <v-btn v-if="item.status == 74" small color="success darken-1" class="ml-2" @click="showCarryInFinish(item)">
                 <v-icon left dark>check</v-icon>
                 确认
               </v-btn>
@@ -124,19 +128,21 @@
     <!-- 搬运出库信息组件 -->
     <carry-out-details ref="carryOutDetailsMod" @close="loadCarryOutTask"></carry-out-details>
 
-    <!-- 搬运入库确认组件 -->
-    <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>
+    <!-- 搬运入库信息组件 -->
+    <carry-in-details ref="carryInDetailsMod" @close="loadCarryInTask"></carry-in-details>
 
     <!-- 搬运出库确认组件 -->
     <carry-out-finish ref="carryOutFinishMod" @close="loadCarryOutTask"></carry-out-finish>
 
+    <!-- 搬运入库确认组件 -->
+    <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>
+
+    <!-- 搬运入库上架组件 -->
+    <carry-in-enter ref="carryInEnterMod" @close="loadCarryInTask"></carry-in-enter>
+
     <v-dialog v-model="carryOutDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
       <carry-out-create @close="closeCarryOut"></carry-out-create>
     </v-dialog>
-
-    <v-navigation-drawer v-model="viewInDrawer" fixed temporary right width="420">
-      <carry-in-details :carry-in-task="carryInTask" @close="closeCarryInDetails"></carry-in-details>
-    </v-navigation-drawer>
 
     <v-dialog v-model="deleteDialog" persistent max-width="300">
       <v-card>
@@ -160,9 +166,10 @@ import carryIn from '@/controllers/carryIn'
 import StockOutTaskFinish from './Dialog/FinishTask'
 import CarryOutCreate from '../CarryOut/Create'
 import CarryOutDetails from '@/components/Dialog/CarryOutDetails'
+import CarryOutFinish from '@/components/Dialog/CarryOutFinish'
 import CarryInDetails from '@/components/Dialog/CarryInDetails'
 import CarryInFinish from '@/components/Dialog/CarryInFinish'
-import CarryOutFinish from '@/components/Dialog/CarryOutFinish'
+import CarryInEnter from '@/components/Dialog/CarryInEnter'
 
 export default {
   name: 'StockOutTaskDetails',
@@ -173,13 +180,13 @@ export default {
     CarryOutDetails,
     CarryInDetails,
     CarryInFinish,
-    CarryOutFinish
+    CarryOutFinish,
+    CarryInEnter
   },
   data: () => ({
     panel: [0, 1],
     viewOutDrawer: false,
     viewInDrawer: false,
-
     deleteLoading: false,
     deleteDialog: false,
     carryOutTaskList: [],
@@ -203,8 +210,7 @@ export default {
       { text: '接单人', value: 'receiveUserName' },
       { text: '状态', value: 'status' },
       { text: '操作', value: 'action', sortable: false }
-    ],
-    carryInTask: {}
+    ]
   }),
   computed: {
     ...mapState({
@@ -282,22 +288,23 @@ export default {
     },
 
     // 确认搬运出库任务
-    showFinishCarryOut(item) {
+    showCarryOutFinish(item) {
       this.$refs.carryOutFinishMod.init(item.id)
     },
 
     // 查看搬运入库任务
     viewCarryInDetails(item) {
-      this.carryInTask = item
-      this.viewInDrawer = true
+      this.$refs.carryInDetailsMod.init(item.id)
     },
 
-    // 关闭查看搬运入库任务
-    closeCarryInDetails(update) {
-      this.viewInDrawer = false
-      if (update) {
-        this.loadCarryInTask()
-      }
+    // 显示搬运入库上架
+    showCarryInEnter(item) {
+      this.$refs.carryInEnterMod.init(item.trayCode)
+    },
+
+    // 确认搬运入库
+    showCarryInFinish(item) {
+      this.$refs.carryInFinishMod.init(item.id)
     },
 
     // 删除出库任务
@@ -333,15 +340,9 @@ export default {
           }
         })
       }
-    },
-
-    // 确认搬运入库
-    showConfirmCarryIn(item) {
-      this.$refs.carryInFinishMod.init(item.id)
     }
   },
   mounted: function() {
-    this.carryInTask = {}
     this.loadCarryOutTask()
     this.loadCarryInTask()
   }
