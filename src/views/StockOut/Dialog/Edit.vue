@@ -32,17 +32,13 @@
             </v-col>
 
             <v-col cols="6" md="6" sm="6">
-              <v-select
-                :items="contractListData"
-                label="选择合同*"
-                :rules="contractRules"
-                :hint="`${selectedContract.number}`"
-                item-text="name"
-                item-value="id"
-                v-model="selectedContract"
+              <v-text-field
+                label="所属合同"
+                v-model="stockOutInfo.contractName"
+                :hint="stockOutInfo.contractNumber"
                 persistent-hint
-                return-object
-              ></v-select>
+                readonly
+              ></v-text-field>
             </v-col>
 
             <v-col cols="6" md="6" sm="6">
@@ -67,7 +63,6 @@
 
 <script>
 import stockOut from '@/controllers/stockOut'
-import contract from '@/controllers/contract'
 
 export default {
   name: 'StockOutEdit',
@@ -88,10 +83,7 @@ export default {
       userId: 0,
       userName: '',
       remark: ''
-    },
-    selectedContract: { number: '' },
-    contractListData: [],
-    contractRules: [v => !!v.id || '请选择合同']
+    }
   }),
   methods: {
     init(id) {
@@ -101,28 +93,11 @@ export default {
       stockOut.get(id).then(res => {
         vm.stockOutInfo = res
         vm.stockOutInfo.outTime = this.$moment(vm.stockOutInfo.outTime).format('YYYY-MM-DD')
-
-        vm.loadContract(vm.stockOutInfo.customerId)
       })
 
       this.dialog = true
       this.$nextTick(() => {
         this.$refs.form.resetValidation()
-      })
-    },
-
-    loadContract(customerId) {
-      this.selectedContract = { number: '' }
-      if (customerId == 0) {
-        this.contractListData = []
-        return
-      }
-      let vm = this
-      contract.getList(customerId).then(res => {
-        vm.contractListData = res
-        if (res.length > 0) {
-          vm.selectedContract = res[0]
-        }
       })
     },
 
@@ -133,7 +108,6 @@ export default {
         })
 
         let vm = this
-        this.stockOutInfo.contractId = this.selectedContract.id
         this.stockOutInfo.userId = this.$store.state.user.id
         this.stockOutInfo.userName = this.$store.state.user.name
 

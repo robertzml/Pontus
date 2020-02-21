@@ -161,7 +161,7 @@ export default {
     tab: null,
     headers: [
       { text: '货品名称', value: 'cargoName' },
-      { text: '类别名称', value: 'categoryName' },
+      { text: '规格', value: 'specification' },
       { text: '在库数量', value: 'storeCount' },
       { text: '出库数量', value: 'outCount' },
       { text: '单位重量(kg)', value: 'unitWeight' },
