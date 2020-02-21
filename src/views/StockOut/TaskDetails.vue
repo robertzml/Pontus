@@ -60,7 +60,7 @@
             </v-row>
 
             <v-card-actions>
-              <v-btn color="primary" v-if="this.info.status == 81" @click.stop="showCarryOut">任务下发</v-btn>
+              <v-btn color="primary" v-if="this.info.status == 81" @click.stop="showCarryOutCreate">任务下发</v-btn>
               <v-btn color="deep-orange darken-3" v-if="this.info.status == 81" @click.stop="showFinish">出库货物确认</v-btn>
               <v-btn color="red darken-3" v-if="info.status != 85" @click.stop="deleteDialog = true">删除出库货物</v-btn>
             </v-card-actions>
@@ -125,6 +125,9 @@
     <!-- 出库任务确认组件 -->
     <stock-out-task-finish ref="stockOutTaskFinishMod" @close="loadStockOutTask"></stock-out-task-finish>
 
+    <!-- 下发搬运出库任务组件 -->
+    <carry-out-create ref="carryOutCreateMod" @close="loadCarryOutTask"></carry-out-create>
+
     <!-- 搬运出库信息组件 -->
     <carry-out-details ref="carryOutDetailsMod" @close="loadCarryOutTask"></carry-out-details>
 
@@ -139,10 +142,6 @@
 
     <!-- 搬运入库上架组件 -->
     <carry-in-enter ref="carryInEnterMod" @close="loadCarryInTask"></carry-in-enter>
-
-    <v-dialog v-model="carryOutDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-      <carry-out-create @close="closeCarryOut"></carry-out-create>
-    </v-dialog>
 
     <v-dialog v-model="deleteDialog" persistent max-width="300">
       <v-card>
@@ -164,7 +163,7 @@ import stockOut from '@/controllers/stockOut'
 import carryOut from '@/controllers/carryOut'
 import carryIn from '@/controllers/carryIn'
 import StockOutTaskFinish from './Dialog/FinishTask'
-import CarryOutCreate from '../CarryOut/Create'
+import CarryOutCreate from '@/components/Dialog/CarryOutCreate'
 import CarryOutDetails from '@/components/Dialog/CarryOutDetails'
 import CarryOutFinish from '@/components/Dialog/CarryOutFinish'
 import CarryInDetails from '@/components/Dialog/CarryInDetails'
@@ -236,8 +235,7 @@ export default {
   methods: {
     ...mapMutations({
       setTaskInfo: 'stockOut/setTaskInfo',
-      setCarryOutDialog: 'stockOut/setCarryOutDialog',
-      setCarryOutTaskInfo: 'stockOut/setCarryOutTaskInfo'
+      setCarryOutDialog: 'stockOut/setCarryOutDialog'
     }),
 
     ...mapActions({
@@ -273,13 +271,8 @@ export default {
     },
 
     // 下发搬运任务
-    showCarryOut() {
-      this.carryOutDialog = true
-    },
-
-    // 关闭下发搬运任务
-    closeCarryOut() {
-      this.loadCarryOutTask()
+    showCarryOutCreate() {
+      this.$refs.carryOutCreateMod.init(this.info.id)
     },
 
     // 查看搬运出库任务

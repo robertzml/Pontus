@@ -11,9 +11,6 @@ export default {
     // 出库月份
     monthTime: moment().format('YYYY-MM'),
 
-    // 搬运出库编辑框显示
-    carryOutDialog: false,
-
     // 当前出库单ID
     stockOutId: '',
 
@@ -22,9 +19,6 @@ export default {
 
     // 当前出库任务对象
     stockOutTaskInfo: {},
-
-    // 当前查看搬运出库任务信息
-    carryOutTaskInfo: {},
 
     // 刷新事件
     refreshEvent: false
@@ -53,10 +47,6 @@ export default {
       state.monthTime = monthTime
     },
 
-    setCarryOutDialog: (state, val) => {
-      state.carryOutDialog = val
-    },
-
     // 设置出库单ID
     setStockOutId: (state, id) => {
       state.stockOutId = id
@@ -70,11 +60,6 @@ export default {
     // 设置出库任务
     setTaskInfo: (state, payload) => {
       state.stockOutTaskInfo = payload
-    },
-
-    // 设置搬运出库任务
-    setCarryOutTaskInfo: (state, payload) => {
-      state.carryOutTaskInfo = payload
     },
 
     // 刷新操作

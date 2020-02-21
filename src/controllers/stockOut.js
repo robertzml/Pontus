@@ -14,7 +14,7 @@ export default {
   },
 
   /**
-   * 按出库月份获取入库单
+   * 按出库月份获取出库单
    * @param {出库月份} monthTime
    */
   async getListByMonth(monthTime) {
@@ -66,7 +66,7 @@ export default {
     return res.data
   },
 
-  // 获取入库任务
+  // 获取出库任务
   async getTask(taskId) {
     const res = await axios._get({ url: '/stockOut/getTask', params: { taskId: taskId } })
     return res.data

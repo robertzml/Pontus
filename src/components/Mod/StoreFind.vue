@@ -23,52 +23,58 @@
 
       <v-row dense>
         <v-col cols="3">
-          <div class="ml-4">
-            <span>货架</span>
-          </div>
+          <v-card>
+            <v-subheader>货架</v-subheader>
 
-          <v-chip-group active-class="primary--text" v-model="sShelfId">
-            <v-chip v-for="shelf in shelfListData" :key="shelf.id" :value="shelf.id" @click="selectShelf(shelf.id)">
-              <template v-if="shelf.type == 1">
-                <v-avatar left>
-                  <v-icon>home</v-icon>
-                </v-avatar>
-                {{ shelf.number }} 号货架
-              </template>
-              <template v-else-if="shelf.type == 2">
-                <v-avatar left>
-                  <v-icon>storage</v-icon>
-                </v-avatar>
-                {{ shelf.number }} 号货架
-              </template>
-              <template v-else>
-                <v-avatar left>
-                  <v-icon>cloud</v-icon>
-                </v-avatar>
-                {{ shelf.number }} 号货架
-              </template>
-            </v-chip>
-          </v-chip-group>
+            <v-chip-group active-class="primary--text" v-model="sShelfId" mandatory>
+              <v-chip v-for="shelf in shelfListData" :key="shelf.id" :value="shelf.id" @click="selectShelf(shelf.id)">
+                <template v-if="shelf.type == 1">
+                  <v-avatar left>
+                    <v-icon>home</v-icon>
+                  </v-avatar>
+                  {{ shelf.number }} 号货架
+                </template>
+                <template v-else-if="shelf.type == 2">
+                  <v-avatar left>
+                    <v-icon>storage</v-icon>
+                  </v-avatar>
+                  {{ shelf.number }} 号货架
+                </template>
+                <template v-else>
+                  <v-avatar left>
+                    <v-icon>cloud</v-icon>
+                  </v-avatar>
+                  {{ shelf.number }} 号货架
+                </template>
+              </v-chip>
+            </v-chip-group>
+          </v-card>
         </v-col>
         <v-col cols="6">
-          <div class="ml-4">
-            <span>排</span>
-          </div>
-          <v-chip-group active-class="amber--text" v-model="sRow">
-            <v-chip label v-for="row in rowListData" :key="row" :value="row" @click="selectRow(row)">
-              {{ row }}
-            </v-chip>
-          </v-chip-group>
+          <v-card>
+            <v-subheader>排数</v-subheader>
+            <v-chip-group active-class="amber--text" v-model="sRow" mandatory>
+              <v-chip v-for="row in rowListData" :key="row" :value="row" @click="selectRow(row)">
+                <v-avatar left>
+                  <v-icon>view_column</v-icon>
+                </v-avatar>
+                {{ row }}
+              </v-chip>
+            </v-chip-group>
+          </v-card>
         </v-col>
         <v-col cols="3">
-          <div class="ml-4 mr-8">
-            <span>层</span>
-          </div>
-          <v-chip-group active-class="deep-orange--text" v-model="sLayer">
-            <v-chip label v-for="layer in layerListData" :key="layer" :value="layer" @click="selectLayer(layer)">
-              {{ layer }}
-            </v-chip>
-          </v-chip-group>
+          <v-card>
+            <v-subheader>层数</v-subheader>
+            <v-chip-group active-class="deep-orange--text" v-model="sLayer" mandatory>
+              <v-chip v-for="layer in layerListData" :key="layer" :value="layer" @click="selectLayer(layer)">
+                <v-avatar left>
+                  <v-icon>view_headline</v-icon>
+                </v-avatar>
+                {{ layer }}
+              </v-chip>
+            </v-chip-group>
+          </v-card>
         </v-col>
       </v-row>
 
@@ -109,6 +115,14 @@ export default {
     warehouses: function() {
       let ids = this.storeList.map(r => r.warehouseId)
       return [...new Set(ids)]
+    },
+    positionFilter() {
+      const { sShelfId, sRow, sLayer } = this
+      return {
+        sShelfId,
+        sRow,
+        sLayer
+      }
     }
   },
   watch: {
@@ -120,6 +134,9 @@ export default {
       } else {
         this.$emit('select', null, null)
       }
+    },
+    positionFilter: function() {
+      this.loadPoistions()
     }
   },
   methods: {
@@ -156,7 +173,7 @@ export default {
         warehouseName: s.warehouseName,
         trayCount: sum.trayCount,
         totalCount: sum.totalCount,
-        totalWeight: sum.totalWeight
+        totalWeight: sum.totalWeight.toFixed(4)
       }
 
       return info
@@ -208,15 +225,16 @@ export default {
     // 选择层
     selectLayer(layer) {
       this.sLayer = layer
-      this.loadPoistions()
     },
 
     // 载入选中层的仓位
     loadPoistions() {
-      let vm = this
-      position.getListInLayer({ shelfId: this.sShelfId, row: this.sRow, layer: this.sLayer }).then(res => {
-        vm.positionList = res
-      })
+      if (this.shelfId != 0 && this.sRow != 0 && this.sLayer != 0) {
+        let vm = this
+        position.getListInLayer({ shelfId: this.sShelfId, row: this.sRow, layer: this.sLayer }).then(res => {
+          vm.positionList = res
+        })
+      }
     },
 
     // 该仓位是否出库货物
