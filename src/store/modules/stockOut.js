@@ -32,8 +32,9 @@ export default {
     },
 
     // 显示出库任务信息页面
-    showTaskDetals({ commit }) {
-      commit('setTab', 'StockOutTaskDetails')
+    showTaskDetals(context, payload) {
+      context.commit('setTab', 'StockOutTaskDetails')
+      context.commit('setTaskInfo', payload)
     }
   },
 

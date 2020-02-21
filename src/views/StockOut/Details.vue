@@ -244,8 +244,7 @@ export default {
 
     // 查看入库任务
     viewTaskItem(val) {
-      this.setTaskInfo(val)
-      this.showTaskDetails()
+      this.showTaskDetails(val)
     }
   },
   mounted: function() {

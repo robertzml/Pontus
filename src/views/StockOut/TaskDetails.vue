@@ -61,8 +61,8 @@
 
             <v-card-actions>
               <v-btn color="primary" v-if="this.info.status == 81" @click.stop="showCarryOutCreate">任务下发</v-btn>
-              <v-btn color="deep-orange darken-3" v-if="this.info.status == 81" @click.stop="showFinish">出库货物确认</v-btn>
-              <v-btn color="red darken-3" v-if="info.status != 85" @click.stop="deleteDialog = true">删除出库货物</v-btn>
+              <v-btn color="deep-orange darken-3" v-if="this.info.status == 81" @click.stop="showFinishTask">出库货物确认</v-btn>
+              <v-btn color="red darken-3" v-if="info.status != 85" @click.stop="showDeleteTask">删除出库货物</v-btn>
             </v-card-actions>
           </v-card>
         </v-expansion-panel-content>
@@ -125,6 +125,9 @@
     <!-- 出库任务确认组件 -->
     <stock-out-task-finish ref="stockOutTaskFinishMod" @close="loadStockOutTask"></stock-out-task-finish>
 
+    <!-- 出库任务删除组件 -->
+    <stock-out-task-delete ref="stockOutTaskDeleteMod" @close="stockOutShowDetails(info.stockOutId)"></stock-out-task-delete>
+
     <!-- 下发搬运出库任务组件 -->
     <carry-out-create ref="carryOutCreateMod" @close="loadCarryOutTask"></carry-out-create>
 
@@ -142,18 +145,6 @@
 
     <!-- 搬运入库上架组件 -->
     <carry-in-enter ref="carryInEnterMod" @close="loadCarryInTask"></carry-in-enter>
-
-    <v-dialog v-model="deleteDialog" persistent max-width="300">
-      <v-card>
-        <v-card-title class="headline">删除入库货物</v-card-title>
-        <v-card-text>是否确认删除该入库货物？仅能删除未下发搬运任务的入库货物。</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-grey lighten-3" text @click="deleteDialog = false">取消</v-btn>
-          <v-btn color="green darken-1" text @click="deleteTask" :loading="deleteLoading">确定</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-sheet>
 </template>
 
@@ -163,6 +154,7 @@ import stockOut from '@/controllers/stockOut'
 import carryOut from '@/controllers/carryOut'
 import carryIn from '@/controllers/carryIn'
 import StockOutTaskFinish from './Dialog/FinishTask'
+import StockOutTaskDelete from './Dialog/DeleteTask'
 import CarryOutCreate from '@/components/Dialog/CarryOutCreate'
 import CarryOutDetails from '@/components/Dialog/CarryOutDetails'
 import CarryOutFinish from '@/components/Dialog/CarryOutFinish'
@@ -175,6 +167,7 @@ export default {
   props: {},
   components: {
     StockOutTaskFinish,
+    StockOutTaskDelete,
     CarryOutCreate,
     CarryOutDetails,
     CarryInDetails,
@@ -184,10 +177,6 @@ export default {
   },
   data: () => ({
     panel: [0, 1, 2],
-    viewOutDrawer: false,
-    viewInDrawer: false,
-    deleteLoading: false,
-    deleteDialog: false,
     carryOutTaskList: [],
     carryInTaskList: [],
     carryOutHeaders: [
@@ -215,15 +204,7 @@ export default {
     ...mapState({
       info: state => state.stockOut.stockOutTaskInfo,
       refreshEvent: state => state.stockOut.refreshEvent
-    }),
-    carryOutDialog: {
-      get() {
-        return this.$store.state.stockOut.carryOutDialog
-      },
-      set(val) {
-        this.setCarryOutDialog(val)
-      }
-    }
+    })
   },
   watch: {
     refreshEvent: function() {
@@ -234,8 +215,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setTaskInfo: 'stockOut/setTaskInfo',
-      setCarryOutDialog: 'stockOut/setCarryOutDialog'
+      setTaskInfo: 'stockOut/setTaskInfo'
     }),
 
     ...mapActions({
@@ -266,8 +246,13 @@ export default {
     },
 
     // 显示出库任务确认
-    showFinish() {
+    showFinishTask() {
       this.$refs.stockOutTaskFinishMod.init(this.info.id)
+    },
+
+    // 显示删除出库任务
+    showDeleteTask() {
+      this.$refs.stockOutTaskDeleteMod.init(this.info.id)
     },
 
     // 下发搬运任务
@@ -298,26 +283,6 @@ export default {
     // 确认搬运入库
     showCarryInFinish(item) {
       this.$refs.carryInFinishMod.init(item.id)
-    },
-
-    // 删除出库任务
-    deleteTask() {
-      let vm = this
-      this.$nextTick(() => {
-        this.deleteLoading = true
-      })
-
-      stockOut.deleteTask({ taskId: this.info.id }).then(res => {
-        if (res.status == 0) {
-          vm.$store.commit('alertSuccess', '删除任务成功')
-          vm.stockOutShowDetails()
-          vm.deleteLoading = false
-          vm.deleteDialog = false
-        } else {
-          vm.$store.commit('alertError', res.errorMessage)
-          vm.deleteLoading = false
-        }
-      })
     },
 
     // 删除搬运出库
