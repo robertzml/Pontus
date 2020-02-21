@@ -2,7 +2,7 @@
   <v-sheet class="transparent">
     <v-expansion-panels v-model="panel" multiple>
       <v-expansion-panel>
-        <v-expansion-panel-header ripple class="green darken-1">出库货物信息 </v-expansion-panel-header>
+        <v-expansion-panel-header ripple class="brown darken-1">出库货物信息 </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-card flat class="mx-auto">
             <v-row dense>
@@ -67,67 +67,69 @@
           </v-card>
         </v-expansion-panel-content>
       </v-expansion-panel>
+
+      <v-expansion-panel>
+        <v-expansion-panel-header ripple class="brown darken-3">搬运出库任务 </v-expansion-panel-header>
+        <v-expansion-panel-content eager>
+          <v-data-table :headers="carryOutHeaders" :items="carryOutTaskList" hide-default-footer disable-filtering disable-pagination>
+            <template v-slot:item.type="{ item }">
+              {{ item.type | carryOutTaskType }}
+            </template>
+            <template v-slot:item.status="{ item }">
+              {{ item.status | displayStatus }}
+            </template>
+            <template v-slot:item.action="{ item }">
+              <v-btn small color="primary" @click="viewCarryOutDetails(item)">
+                <v-icon left dark>pageview</v-icon>
+                查看
+              </v-btn>
+              <v-btn v-if="item.status == 81" small color="red darken-3" class="ml-2" @click="deleteCarryOut(item)">
+                <v-icon left dark>delete</v-icon>
+                删除
+              </v-btn>
+              <v-btn v-if="item.status == 84" small color="success darken-1" class="ml-2" @click="showFinishCarryOut(item)">
+                <v-icon left dark>check</v-icon>
+                确认
+              </v-btn>
+            </template>
+          </v-data-table>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+
+      <v-expansion-panel>
+        <v-expansion-panel-header ripple class="brown darken-4">搬运入库任务 </v-expansion-panel-header>
+        <v-expansion-panel-content eager>
+          <v-data-table :headers="carryInHeaders" :items="carryInTaskList" hide-default-footer disable-filtering disable-pagination>
+            <template v-slot:item.status="{ item }">
+              {{ item.status | displayStatus }}
+            </template>
+            <template v-slot:item.action="{ item }">
+              <v-btn small color="primary" @click="viewCarryInDetails(item)">
+                <v-icon left dark>pageview</v-icon>
+                查看
+              </v-btn>
+              <v-btn v-if="item.status == 74" small color="success darken-1" class="ml-2" @click="showConfirmCarryIn(item)">
+                <v-icon left dark>check</v-icon>
+                确认
+              </v-btn>
+            </template>
+          </v-data-table>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
     </v-expansion-panels>
 
-    <v-card class="mx-auto mb-2">
-      <v-card-title class="orange">
-        搬运出库任务
-      </v-card-title>
-      <v-card-text class="px-0">
-        <v-data-table :headers="carryOutHeaders" :items="carryOutTaskList" hide-default-footer disable-filtering disable-pagination>
-          <template v-slot:item.type="{ item }">
-            {{ item.type | carryOutTaskType }}
-          </template>
-          <template v-slot:item.status="{ item }">
-            {{ item.status | displayStatus }}
-          </template>
-          <template v-slot:item.action="{ item }">
-            <v-btn small color="primary" @click="viewCarryOutDetails(item)">
-              <v-icon left dark>pageview</v-icon>
-              查看
-            </v-btn>
-            <v-btn v-if="item.status == 81" small color="red darken-3" class="ml-2" @click="deleteCarryOut(item)">
-              <v-icon left dark>delete</v-icon>
-              删除
-            </v-btn>
-          </template>
-        </v-data-table>
-      </v-card-text>
-    </v-card>
-
-    <v-card class="mx-auto">
-      <v-card-title class="brown">
-        搬运入库任务
-      </v-card-title>
-      <v-card-text class="px-0">
-        <v-data-table :headers="carryInHeaders" :items="carryInTaskList" hide-default-footer disable-filtering disable-pagination>
-          <template v-slot:item.status="{ item }">
-            {{ item.status | displayStatus }}
-          </template>
-          <template v-slot:item.action="{ item }">
-            <v-btn small color="primary" @click="viewCarryInDetails(item)">
-              <v-icon left dark>pageview</v-icon>
-              查看
-            </v-btn>
-            <v-btn v-if="item.status == 74" small color="success darken-1" class="ml-2" @click="showConfirmCarryIn(item)">
-              <v-icon left dark>check</v-icon>
-              确认
-            </v-btn>
-          </template>
-        </v-data-table>
-      </v-card-text>
-    </v-card>
+    <!-- 搬运出库信息组件 -->
+    <carry-out-details ref="carryOutDetailsMod" @close="loadCarryOutTask"></carry-out-details>
 
     <!-- 搬运入库确认组件 -->
     <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>
 
+    <!-- 搬运出库确认组件 -->
+    <carry-out-finish ref="carryOutFinishMod" @close="loadCarryOutTask"></carry-out-finish>
+
     <v-dialog v-model="carryOutDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
       <carry-out-create @close="closeCarryOut"></carry-out-create>
     </v-dialog>
-
-    <v-navigation-drawer v-model="viewOutDrawer" fixed temporary right width="420">
-      <carry-out-details @close="closeCarryOutDetails"></carry-out-details>
-    </v-navigation-drawer>
 
     <v-navigation-drawer v-model="viewInDrawer" fixed temporary right width="420">
       <carry-in-details :carry-in-task="carryInTask" @close="closeCarryInDetails"></carry-in-details>
@@ -165,9 +167,10 @@ import stockOut from '@/controllers/stockOut'
 import carryOut from '@/controllers/carryOut'
 import carryIn from '@/controllers/carryIn'
 import CarryOutCreate from '../CarryOut/Create'
-import CarryOutDetails from '../CarryOut/Details'
+import CarryOutDetails from '@/components/Dialog/CarryOutDetails'
 import CarryInDetails from '../CarryIn/Details'
 import CarryInFinish from '@/components/Dialog/CarryInFinish'
+import CarryOutFinish from '@/components/Dialog/CarryOutFinish'
 
 export default {
   name: 'StockOutTaskDetails',
@@ -176,7 +179,8 @@ export default {
     CarryOutCreate,
     CarryOutDetails,
     CarryInDetails,
-    CarryInFinish
+    CarryInFinish,
+    CarryOutFinish
   },
   data: () => ({
     panel: [0, 1],
@@ -190,8 +194,9 @@ export default {
     carryInTaskList: [],
     carryOutHeaders: [
       { text: '托盘码', value: 'trayCode' },
-      { text: '搬运类型', value: 'type' },
+      { text: '在库数量', value: 'storeCount' },
       { text: '搬运数量', value: 'moveCount' },
+      { text: '在库重量(t)', value: 'storeWeight' },
       { text: '搬运重量(t)', value: 'moveWeight' },
       { text: '仓位码', value: 'positionNumber' },
       { text: '接单人', value: 'receiveUserName' },
@@ -276,17 +281,12 @@ export default {
 
     // 查看搬运出库任务
     viewCarryOutDetails(item) {
-      this.setCarryOutTaskInfo(item)
-      this.viewOutDrawer = true
+      this.$refs.carryOutDetailsMod.init(item.id)
     },
 
-    // 关闭查看搬运出库任务
-    closeCarryOutDetails(update) {
-      this.viewOutDrawer = false
-      if (update) {
-        this.loadCarryOutTask()
-        this.loadCarryInTask()
-      }
+    // 确认搬运出库任务
+    showFinishCarryOut(item) {
+      this.$refs.carryOutFinishMod.init(item.id)
     },
 
     // 查看搬运入库任务
