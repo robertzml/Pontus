@@ -185,7 +185,7 @@ export default {
         total += item.inWeight
       })
 
-      return total.toFixed(3)
+      return total.toFixed(4)
     },
     totalFee: function() {
       let total = 0

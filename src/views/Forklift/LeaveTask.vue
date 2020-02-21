@@ -257,7 +257,6 @@ export default {
               vm.storeList = res.entity
               vm.loading = false
               vm.assignMode = false
-              // this.$router.push({ name: 'forkliftReceiveOutTask' })
             } else {
               vm.$store.commit('alertError', res.errorMessage)
               vm.loading = false

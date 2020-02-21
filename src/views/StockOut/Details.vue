@@ -96,29 +96,6 @@
           </v-data-table>
         </v-expansion-panel-content>
       </v-expansion-panel>
-
-      <v-expansion-panel>
-        <v-expansion-panel-header ripple class="deep-purple darken-3">
-          搬运任务
-        </v-expansion-panel-header>
-        <v-expansion-panel-content eager>
-          <v-tabs v-model="tab" grow slider-color="yellow">
-            <v-tab>下架任务</v-tab>
-            <v-tab>上架任务</v-tab>
-          </v-tabs>
-          <v-tabs-items v-model="tab">
-            <v-tab-item> </v-tab-item>
-            <v-tab-item> </v-tab-item>
-          </v-tabs-items>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-
-      <v-expansion-panel>
-        <v-expansion-panel-header ripple class="deep-purple darken-3">
-          搬运出库任务
-        </v-expansion-panel-header>
-        <v-expansion-panel-content eager> </v-expansion-panel-content>
-      </v-expansion-panel>
     </v-expansion-panels>
 
     <!-- 编辑出库单组件 -->
@@ -158,7 +135,6 @@ export default {
   },
   data: () => ({
     panel: [0, 1],
-    tab: null,
     headers: [
       { text: '货品名称', value: 'cargoName' },
       { text: '规格', value: 'specification' },
@@ -192,7 +168,7 @@ export default {
         total += item.outWeight
       })
 
-      return total.toFixed(3)
+      return total.toFixed(4)
     }
   },
   watch: {

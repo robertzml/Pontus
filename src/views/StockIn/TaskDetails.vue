@@ -95,14 +95,14 @@
                 查看
               </v-btn>
               <v-btn v-if="item.status == 73" small color="teal darken-3" class="ml-2" @click="showCarryInEnter(item)">
-                <v-icon left dark>pageview</v-icon>
+                <v-icon left dark>rowing</v-icon>
                 上架
               </v-btn>
               <v-btn v-if="item.status == 74" small color="success darken-1" class="ml-2" @click="showCarryInFinish(item)">
                 <v-icon left dark>check</v-icon>
                 确认
               </v-btn>
-              <v-btn v-if="item.status == 72" small color="red darken-3" class="ml-2" @click="deleteCarryIn(item)">
+              <v-btn v-if="item.status == 72" small color="red darken-3" class="ml-2" @click="showCarryInDelete(item)">
                 <v-icon left dark>delete</v-icon>
                 删除
               </v-btn>
@@ -132,6 +132,9 @@
 
     <!-- 搬运入库上架组件 -->
     <carry-in-enter ref="carryInEnterMod" @close="loadCarryInTask"></carry-in-enter>
+
+    <!-- 搬运入库删除组件 -->
+    <carry-in-delete ref="carryInDeleteMod" @close="loadCarryInTask"></carry-in-delete>
   </v-sheet>
 </template>
 
@@ -146,6 +149,7 @@ import CarryInDetails from '@/components/Dialog/CarryInDetails'
 import CarryInCreate from '@/components/Dialog/CarryInCreate'
 import CarryInFinish from '@/components/Dialog/CarryInFinish'
 import CarryInEnter from '@/components/Dialog/CarryInEnter'
+import CarryInDelete from '@/components/Dialog/CarryInDelete'
 
 export default {
   name: 'StockInTaskDetails',
@@ -156,7 +160,8 @@ export default {
     CarryInCreate,
     CarryInDetails,
     CarryInFinish,
-    CarryInEnter
+    CarryInEnter,
+    CarryInDelete
   },
   data: () => ({
     panel: [0, 1],
@@ -268,24 +273,14 @@ export default {
       this.$refs.carryInEnterMod.init(item.trayCode)
     },
 
-    // 确认搬运入库
+    // 显示确认搬运入库
     showCarryInFinish(item) {
       this.$refs.carryInFinishMod.init(item.id)
     },
 
-    // 删除搬运入库
-    deleteCarryIn(item) {
-      if (confirm('是否删除该搬运任务')) {
-        let vm = this
-        carryIn.delete({ id: item.id }).then(res => {
-          if (res.status == 0) {
-            vm.$store.commit('alertSuccess', '删除搬运入库任务成功')
-            vm.loadCarryInTask()
-          } else {
-            vm.$store.commit('alertError', res.errorMessage)
-          }
-        })
-      }
+    // 显示删除搬运入库
+    showCarryInDelete(item) {
+      this.$refs.carryInDeleteMod.init(item.id)
     }
   },
   mounted: function() {

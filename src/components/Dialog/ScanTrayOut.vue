@@ -187,7 +187,7 @@ export default {
 
     // 修改出库数量
     editMoveCount(item) {
-      item.moveWeight = ((item.moveCount * item.unitWeight) / 1000).toFixed(3)
+      item.moveWeight = ((item.moveCount * item.unitWeight) / 1000).toFixed(4)
     },
 
     // 出库

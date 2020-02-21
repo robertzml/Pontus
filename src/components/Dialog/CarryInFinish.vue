@@ -78,7 +78,7 @@ export default {
           trayCode: this.carryInTask.trayCode,
           moveCount: this.carryInTask.moveCount,
           moveWeight: this.carryInTask.moveWeight,
-          remark: this.carryInTask.remark
+          remark: this.remark
         }
 
         carryIn.finishTask(model).then(res => {

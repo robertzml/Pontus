@@ -40,10 +40,9 @@ export default {
     headers: [
       { text: '托盘码', value: 'trayCode' },
       { text: '搬运类型', value: 'type' },
-      { text: '在库数量', value: 'storeCount' },
       { text: '搬运数量', value: 'moveCount' },
-      { text: '在库重量(t)', value: 'storeWeight' },
       { text: '搬运重量(t)', value: 'moveWeight' },
+      { text: '货架码', value: 'shelfCode' },
       { text: '仓位码', value: 'positionNumber' },
       { text: '接单人', value: 'receiveUserName' },
       { text: '状态', value: 'status' },
@@ -57,7 +56,7 @@ export default {
   },
   watch: {
     refreshEvent: function() {
-      this.loadCarryOutList()
+      this.loadCarryInList()
     }
   },
   methods: {

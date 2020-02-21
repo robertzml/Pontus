@@ -109,14 +109,14 @@ export default {
       let info = {
         trayCount: sum.trayCount,
         totalCount: sum.totalCount,
-        totalWeight: sum.totalWeight.toFixed(3)
+        totalWeight: sum.totalWeight.toFixed(4)
       }
 
       return info
     },
 
     totalWeight: function() {
-      return ((this.taskInfo.outCount * this.unitWeight) / 1000).toFixed(3)
+      return ((this.taskInfo.outCount * this.unitWeight) / 1000).toFixed(4)
     }
   },
   methods: {

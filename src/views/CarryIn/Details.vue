@@ -44,13 +44,7 @@
           <v-text-field label="规格" v-model="carryInInfo.specification" hide-details readonly></v-text-field>
         </v-col>
         <v-col cols="6" sm="6" md="4" lg="2">
-          <v-text-field label="批次" v-model="carryInInfo.batch" hide-details readonly></v-text-field>
-        </v-col>
-        <v-col cols="6" sm="6" md="4" lg="2">
-          <v-text-field label="产地" v-model="carryInInfo.originPlace" hide-details readonly></v-text-field>
-        </v-col>
-        <v-col cols="6" sm="6" md="4" lg="2">
-          <v-text-field label="保质期" v-model="carryInInfo.durability" suffix="月" hide-details readonly></v-text-field>
+          <v-text-field label="单位重量" v-model="carryInInfo.unitWeight" suffix="千克" hide-details readonly></v-text-field>
         </v-col>
 
         <v-col cols="6" sm="6" md="4" lg="2">

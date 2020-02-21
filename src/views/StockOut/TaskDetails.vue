@@ -109,7 +109,7 @@
                 查看
               </v-btn>
               <v-btn v-if="item.status == 73" small color="teal darken-3" class="ml-2" @click="showCarryInEnter(item)">
-                <v-icon left dark>pageview</v-icon>
+                <v-icon left dark>rowing</v-icon>
                 上架
               </v-btn>
               <v-btn v-if="item.status == 74" small color="success darken-1" class="ml-2" @click="showCarryInFinish(item)">
@@ -184,7 +184,7 @@ export default {
     CarryInEnter
   },
   data: () => ({
-    panel: [0, 1],
+    panel: [0, 1, 2],
     viewOutDrawer: false,
     viewInDrawer: false,
     deleteLoading: false,
