@@ -90,7 +90,7 @@
               {{ item.status | displayStatus }}
             </template>
             <template v-slot:item.action="{ item }">
-              <v-btn small color="primary darken-1" @click="viewCarryInDetails(item)">
+              <v-btn small color="primary darken-1" @click="showCarryInDetails(item)">
                 <v-icon left dark>pageview</v-icon>
                 查看
               </v-btn>
@@ -108,10 +108,6 @@
       </v-expansion-panel>
     </v-expansion-panels>
 
-    <v-navigation-drawer v-model="viewDrawer" fixed temporary right width="420">
-      <carry-in-details :carry-in-task="carryInTask" @close="closeCarryInDetails"></carry-in-details>
-    </v-navigation-drawer>
-
     <!-- 搬运任务下发组件 -->
     <carry-in-create ref="carryInCreateMod" :stock-in-task="taskInfo" @close="loadCarryInTask"></carry-in-create>
 
@@ -124,6 +120,10 @@
     <!-- 入库任务删除组件 -->
     <stock-in-task-delete ref="stockInTaskDeleteMod" @close="stockInShowDetails(taskInfo.stockInId)"></stock-in-task-delete>
 
+    <!-- 搬运入库任务查看组件 -->
+    <carry-in-details ref="carryInDetailsMod" @close="loadCarryInTask"></carry-in-details>
+
+    <!-- 搬运入库确认组件 -->
     <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>
   </v-sheet>
 </template>
@@ -135,7 +135,7 @@ import carryIn from '@/controllers/carryIn'
 import StockInTaskEdit from './Dialog/EditTask'
 import StockInTaskFinish from './Dialog/FinishTask'
 import StockInTaskDelete from './Dialog/DeleteTask'
-import CarryInDetails from '../CarryIn/Details'
+import CarryInDetails from '@/components/Dialog/CarryInDetails'
 import CarryInCreate from '@/components/Dialog/CarryInCreate'
 import CarryInFinish from '@/components/Dialog/CarryInFinish'
 
@@ -250,17 +250,8 @@ export default {
     },
 
     // 查看搬运入库任务信息
-    viewCarryInDetails(item) {
-      this.carryInTask = item
-      this.viewDrawer = true
-    },
-
-    // 关闭入库搬运信息
-    closeCarryInDetails(update) {
-      this.viewDrawer = false
-      if (update) {
-        this.loadCarryInTask()
-      }
+    showCarryInDetails(item) {
+      this.$refs.carryInDetailsMod.init(item.id)
     },
 
     // 确认搬运入库

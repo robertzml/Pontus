@@ -117,6 +117,6 @@ export default {
   top: 48px;
   position: sticky;
   position: -webkit-sticky;
-  z-index: 9999;
+  z-index: 3;
 }
 </style>

@@ -118,6 +118,9 @@
       </v-expansion-panel>
     </v-expansion-panels>
 
+    <!-- 出库任务确认组件 -->
+    <stock-out-task-finish ref="stockOutTaskFinishMod" @close="loadStockOutTask"></stock-out-task-finish>
+
     <!-- 搬运出库信息组件 -->
     <carry-out-details ref="carryOutDetailsMod" @close="loadCarryOutTask"></carry-out-details>
 
@@ -134,18 +137,6 @@
     <v-navigation-drawer v-model="viewInDrawer" fixed temporary right width="420">
       <carry-in-details :carry-in-task="carryInTask" @close="closeCarryInDetails"></carry-in-details>
     </v-navigation-drawer>
-
-    <v-dialog v-model="finishDialog" persistent max-width="300">
-      <v-card>
-        <v-card-title class="headline">出库货物确认</v-card-title>
-        <v-card-text>是否确认该货物已经出库完成？请确认所有搬运任务已经下架，确认后无法再下发任务。</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-grey lighten-3" text @click="finishDialog = false">取消</v-btn>
-          <v-btn color="green darken-1" text @click="finishTask" :loading="finishLoading">确定</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
 
     <v-dialog v-model="deleteDialog" persistent max-width="300">
       <v-card>
@@ -166,9 +157,10 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 import stockOut from '@/controllers/stockOut'
 import carryOut from '@/controllers/carryOut'
 import carryIn from '@/controllers/carryIn'
+import StockOutTaskFinish from './Dialog/FinishTask'
 import CarryOutCreate from '../CarryOut/Create'
 import CarryOutDetails from '@/components/Dialog/CarryOutDetails'
-import CarryInDetails from '../CarryIn/Details'
+import CarryInDetails from '@/components/Dialog/CarryInDetails'
 import CarryInFinish from '@/components/Dialog/CarryInFinish'
 import CarryOutFinish from '@/components/Dialog/CarryOutFinish'
 
@@ -176,6 +168,7 @@ export default {
   name: 'StockOutTaskDetails',
   props: {},
   components: {
+    StockOutTaskFinish,
     CarryOutCreate,
     CarryOutDetails,
     CarryInDetails,
@@ -186,8 +179,7 @@ export default {
     panel: [0, 1],
     viewOutDrawer: false,
     viewInDrawer: false,
-    finishLoading: false,
-    finishDialog: false,
+
     deleteLoading: false,
     deleteDialog: false,
     carryOutTaskList: [],
@@ -269,6 +261,11 @@ export default {
       })
     },
 
+    // 显示出库任务确认
+    showFinish() {
+      this.$refs.stockOutTaskFinishMod.init(this.info.id)
+    },
+
     // 下发搬运任务
     showCarryOut() {
       this.carryOutDialog = true
@@ -301,30 +298,6 @@ export default {
       if (update) {
         this.loadCarryInTask()
       }
-    },
-
-    showFinish() {
-      this.finishDialog = true
-    },
-
-    // 完成任务
-    finishTask() {
-      let vm = this
-      this.$nextTick(() => {
-        this.finishLoading = true
-      })
-
-      stockOut.finishTask({ taskId: this.info.id }).then(res => {
-        if (res.status == 0) {
-          vm.$store.commit('alertSuccess', '确认任务成功')
-          vm.loadStockOutTask()
-          vm.finishLoading = false
-          vm.finishDialog = false
-        } else {
-          vm.$store.commit('alertError', res.errorMessage)
-          vm.finishLoading = false
-        }
-      })
     },
 
     // 删除出库任务

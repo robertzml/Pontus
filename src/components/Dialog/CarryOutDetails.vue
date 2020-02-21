@@ -9,13 +9,13 @@
           <v-container fluid class="mx-0 px-0">
             <v-row dense>
               <v-col cols="6">
+                <v-text-field label="任务码" v-model="carryOutInfo.taskCode" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6">
                 <v-text-field label="搬运类型" :value="$util.carryOutTaskType(carryOutInfo.type)" hide-details readonly></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field label="仓位码" v-model="carryOutInfo.positionNumber" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-text-field label="任务码" v-model="carryOutInfo.taskCode" hide-details readonly></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field label="托盘码" v-model="carryOutInfo.trayCode" hide-details readonly></v-text-field>
@@ -93,28 +93,12 @@
                 <v-text-field label="备注" v-model="carryOutInfo.remark" hide-details readonly></v-text-field>
               </v-col>
             </v-row>
-
-            <v-sheet :elevation="10" color="blue-grey darken-2" class="mt-4 pa-2" v-if="carryOutInfo.status == 83">
-              <v-subheader>出库确认</v-subheader>
-              <v-row>
-                <v-col cols="6">
-                  <v-text-field label="出库数量" v-model="finishInfo.moveCount"></v-text-field>
-                </v-col>
-                <v-col cols="6">
-                  <v-text-field label="出库重量" v-model="moveWeight" suffix="吨" readonly></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field label="出库确认备注" v-model="finishInfo.remark"></v-text-field>
-                </v-col>
-              </v-row>
-            </v-sheet>
           </v-container>
         </v-form>
       </v-card-text>
 
       <v-card-actions>
         <v-btn color="blue-grey lighten-3" text @click="drawer = false">关闭</v-btn>
-        <v-btn color="success darken-1" v-if="carryOutInfo.status == 83" @click="confirmTask" :loading="submitLoading">出库确认</v-btn>
       </v-card-actions>
     </v-card>
   </v-navigation-drawer>
@@ -127,12 +111,7 @@ export default {
   name: 'CarryOutDetails',
   data: () => ({
     drawer: false,
-    carryOutInfo: {},
-    submitLoading: false,
-    finishInfo: {
-      moveCount: 0,
-      remark: ''
-    }
+    carryOutInfo: {}
   }),
   methods: {
     init(id) {
