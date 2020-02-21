@@ -6,7 +6,7 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-btn v-if="tab == 'CustomerDetails'" text color="amber accent-4" @click.stop="showList">返回</v-btn>
+          <v-btn v-if="tab == 'CarryOutDetails'" text color="amber accent-4" @click.stop="showList">返回</v-btn>
           <v-btn text @click.stop="refresh">刷新</v-btn>
         </v-toolbar-items>
       </v-toolbar>
@@ -14,9 +14,7 @@
 
     <v-col cols="12">
       <v-slide-x-transition leave-absolute>
-        <keep-alive>
-          <component v-bind:is="tab"></component>
-        </keep-alive>
+        <component v-bind:is="tab"></component>
       </v-slide-x-transition>
     </v-col>
   </v-row>
@@ -24,9 +22,15 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
+import CarryOutList from './List'
+import CarryOutDetails from './Details'
 
 export default {
   name: 'CarryOutIndex',
+  components: {
+    CarryOutList,
+    CarryOutDetails
+  },
   data: () => ({}),
   computed: {
     ...mapState({
