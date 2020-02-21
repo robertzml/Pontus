@@ -169,6 +169,15 @@ export const menuRoutes = [
     meta: { roles: [1, 2, 3, 4] }
   },
   {
+    path: '/carryout',
+    name: 'carryOut',
+    text: '搬运出库',
+    group: 'stock',
+    model: false,
+    component: () => import('@/views/CarryOut/Index.vue'),
+    meta: { roles: [1, 2, 3, 4] }
+  },
+  {
     path: '/receipt',
     name: 'receipt',
     text: '单据列表',
