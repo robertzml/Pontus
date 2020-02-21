@@ -13,6 +13,12 @@ export default {
     return res.data
   },
 
+  // 获取所有搬运入库任务
+  async getList() {
+    const res = await axios._get({ url: '/carryInTask/list' })
+    return res.data
+  },
+
   /**
    * 根据入库任务查找
    * @param {入库任务ID}} taskId

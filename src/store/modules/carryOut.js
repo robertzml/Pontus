@@ -32,7 +32,7 @@ export default {
       state.tab = tab
     },
 
-    // 设置入库单ID
+    // 设置搬运出库任务ID
     setCarryOutId: (state, id) => {
       state.carryOutId = id
     },

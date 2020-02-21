@@ -158,6 +158,16 @@ export default {
     }
   },
 
+  // 搬运入库类型
+  carryInTaskType: type => {
+    let ct = dict.carryInTaskType.find(r => r.value == type)
+    if (ct != undefined) {
+      return ct.text
+    } else {
+      return ''
+    }
+  },
+
   // 搬运出库类型
   carryOutTaskType: type => {
     let ct = dict.carryOutTaskType.find(r => r.value == type)

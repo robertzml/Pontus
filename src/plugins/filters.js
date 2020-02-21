@@ -52,6 +52,10 @@ const filters = Vue => {
     return util.shelfType(val)
   })
 
+  Vue.filter('carryInTaskType', function(val) {
+    return util.carryInTaskType(val)
+  })
+
   Vue.filter('carryOutTaskType', function(val) {
     return util.carryOutTaskType(val)
   })
