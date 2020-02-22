@@ -94,7 +94,7 @@
                 <v-icon left dark>pageview</v-icon>
                 查看
               </v-btn>
-              <v-btn v-if="item.status == 73" small color="teal darken-3" class="ml-2" @click="showCarryInEnter(item)">
+              <v-btn v-if="item.status == 72" small color="teal darken-3" class="ml-2" @click="showCarryInEnter(item)">
                 <v-icon left dark>rowing</v-icon>
                 上架
               </v-btn>

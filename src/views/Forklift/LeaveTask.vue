@@ -20,9 +20,9 @@
         </v-card-title>
 
         <v-card-text>
-          <v-row>
-            <v-col cols="12">
-              <v-form ref="form" v-model="valid" lazy-validation>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-row dense>
+              <v-col cols="5">
                 <v-text-field
                   label="托盘码"
                   prepend-icon="power_input"
@@ -35,7 +35,8 @@
                   clearable
                   autofocus
                 ></v-text-field>
-
+              </v-col>
+              <v-col cols="5">
                 <v-text-field
                   label="货架码"
                   prepend-icon="border_all"
@@ -45,13 +46,14 @@
                   ref="shelfCodeInput"
                   clearable
                 ></v-text-field>
-
+              </v-col>
+              <v-col cols="2">
                 <v-btn color="success" class="mt-4 ml-8" large :disabled="!valid" :loading="loading" @click="leave">
                   货 物 下 架
                 </v-btn>
-              </v-form>
-            </v-col>
-          </v-row>
+              </v-col>
+            </v-row>
+          </v-form>
         </v-card-text>
       </v-card>
       <v-card>
@@ -68,10 +70,13 @@
                 <template v-slot:default="props">
                   <v-row>
                     <v-col v-for="item in props.items" :key="item.id" cols="12" sm="12" md="6" lg="4">
-                      <v-card>
-                        <v-card-title class="subheading font-weight-bold">托盘码：{{ item.trayCode }}</v-card-title>
-
-                        <v-divider></v-divider>
+                      <v-card :color="checkIsCarryOut(item) ? 'green' : ''">
+                        <v-card-title class="subheading font-weight-bold">
+                          托盘码：{{ item.trayCode }}
+                          <span v-if="checkIsCarryOut(item)" class="red--text ml-2">
+                            出库任务托盘
+                          </span>
+                        </v-card-title>
 
                         <v-list dense>
                           <v-list-item>
@@ -176,6 +181,17 @@ export default {
     // 查找库存
     async findStores() {
       this.storeList = await store.findByTray(this.trayCode)
+    },
+
+    // 检查库存是否搬运出库任务
+    checkIsCarryOut(item) {
+      if (this.outPositionList.includes(item.positionNumber)) {
+        return true
+      } else if (this.outPositionList.includes(item.vicePositionNumber)) {
+        return true
+      } else {
+        return false
+      }
     },
 
     leave() {
