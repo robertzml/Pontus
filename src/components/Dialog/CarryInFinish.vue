@@ -9,6 +9,11 @@
           <v-container fluid>
             <v-row>
               <v-col cols="12">
+                <v-alert type="info">
+                  确认后库存记录变为在库。
+                </v-alert>
+              </v-col>
+              <v-col cols="12">
                 <v-text-field label="托盘码*" v-model="carryInTask.trayCode" :rules="trayCodeRules"></v-text-field>
               </v-col>
               <v-col cols="6">

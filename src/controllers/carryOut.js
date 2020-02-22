@@ -46,15 +46,6 @@ export default {
   },
 
   /**
-   * 获取用户当前接单任务
-   * @param {用户ID} userId
-   */
-  async findCurrentReceive(userId) {
-    const res = await axios._get({ url: '/carryOutTask/findCurrentReceive', params: { userId: userId } })
-    return res.data
-  },
-
-  /**
    * 根据托盘码获取当前搬运出库任务
    * @param {托盘码} trayCode
    */
@@ -64,29 +55,11 @@ export default {
   },
 
   /**
-   * 任务接单
-   * @param {任务数据} entity
-   */
-  async receiveTask(entity) {
-    const res = await axios._post({ url: '/carryOutTask/receiveTask', data: entity })
-    return res.data
-  },
-
-  /**
    * 任务下架
    * @param {任务数据} entity
    */
   async leaveTask(entity) {
     const res = await axios._post({ url: '/carryOutTask/leaveTask', data: entity })
-    return res.data
-  },
-
-  /**
-   * 出库直接下架
-   * @param {任务数据} entity
-   */
-  async leaveUnassign(entity) {
-    const res = await axios._post({ url: '/carryOutTask/leaveUnassignTask', data: entity })
     return res.data
   },
 

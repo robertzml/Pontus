@@ -10,7 +10,8 @@
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row>
             <v-col cols="12">
-              <v-text-field label="托盘码*" v-model="trayCode" :counter="6" :rules="trayCodeRules"> </v-text-field>
+              <v-text-field label="托盘码*" v-model="trayCode" :counter="6" :rules="trayCodeRules" @keyup.enter="searchTray"> </v-text-field>
+              <v-text-field v-show="false"></v-text-field>
               <v-btn color="primary" @click="searchTray" :disabled="!trayCode">搜索托盘</v-btn>
             </v-col>
 

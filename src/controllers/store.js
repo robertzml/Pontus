@@ -50,6 +50,18 @@ export default {
   },
 
   /**
+   * 按托盘码查找库存
+   * @param {托盘码} trayCode
+   */
+  async findByTray(trayCode) {
+    const res = await axios._get({
+      url: '/store/findByTray',
+      params: { trayCode: trayCode }
+    })
+    return res.data
+  },
+
+  /**
    * 按出库单查找库存
    * @param {出库单ID，货品ID} param0
    */

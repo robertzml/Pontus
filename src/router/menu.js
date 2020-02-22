@@ -284,16 +284,6 @@ export const menuRoutes = [
     meta: { roles: [6] }
   },
   {
-    // 出库接单
-    // 叉车工操作
-    path: '/forkliftreceiveouttask',
-    name: 'forkliftReceiveOutTask',
-    text: '出库接单',
-    model: false,
-    component: () => import('@/views/Forklift/ReceiveOutTask.vue'),
-    meta: { roles: [6] }
-  },
-  {
     // 出库下架
     // 叉车工操作
     path: '/forkliftleavetask',
