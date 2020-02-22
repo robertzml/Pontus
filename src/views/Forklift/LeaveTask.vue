@@ -209,6 +209,7 @@ export default {
             vm.trayCode = ''
             vm.shelfCode = ''
             this.$refs.trayCodeInput.focus()
+            vm.loadOutPositions()
             vm.loading = false
           } else {
             vm.$store.commit('alertError', res.errorMessage)

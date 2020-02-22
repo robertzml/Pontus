@@ -285,6 +285,7 @@ export default {
             this.shelfCode = ''
             this.taskList = []
             this.carryOutList = []
+            this.$refs.trayCodeInput.focus()
             vm.loading = false
           } else {
             vm.$store.commit('alertError', res.errorMessage)

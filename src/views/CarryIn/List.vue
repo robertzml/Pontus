@@ -15,6 +15,9 @@
             <template v-slot:item.status="{ item }">
               {{ item.status | displayStatus }}
             </template>
+            <template v-slot:item.moveTime="{ item }">
+              {{ item.moveTime | displayDateTime }}
+            </template>
             <template v-slot:item.action="{ item }">
               <v-btn small color="primary" @click="viewItem(item)">
                 <v-icon left dark>pageview</v-icon>
@@ -45,6 +48,7 @@ export default {
       { text: '货架码', value: 'shelfCode' },
       { text: '仓位码', value: 'positionNumber' },
       { text: '接单人', value: 'receiveUserName' },
+      { text: '上架时间', value: 'moveTime' },
       { text: '状态', value: 'status' },
       { text: '操作', value: 'action', sortable: false }
     ]
