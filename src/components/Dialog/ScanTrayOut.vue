@@ -146,6 +146,7 @@
 <script>
 // 管理员扫托盘码出库
 import stockOut from '@/controllers/stockOut'
+import stockIn from '@/controllers/stockIn'
 import carryOut from '@/controllers/carryOut'
 
 export default {
@@ -154,15 +155,23 @@ export default {
     valid: false,
     dialog: false,
     loading: false,
+    type: 0,
     stockOutInfo: {},
+    stockOutTaskInfo: {},
+    stockInTaskInfo: {},
     carryOutList: [],
     trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
     numberRules: [v => /^\d+$/.test(v) || '请输入数字'],
     trayCode: ''
   }),
   methods: {
-    init(stockOutId) {
-      this.loadStockOut(stockOutId)
+    init(type, id) {
+      if (type == 1) {
+        this.loadStockOut(id)
+      } else if (type == 2) {
+        this.loadStockOutTask(id)
+      }
+
       this.carryOutList = []
       this.trayCode = ''
       this.dialog = true
@@ -184,6 +193,16 @@ export default {
     // 载入出库单
     async loadStockOut(stockOutId) {
       this.stockOutInfo = await stockOut.get(stockOutId)
+    },
+
+    // 载入出库任务单
+    async loadStockOutTask(taskId) {
+      this.stockOutTaskInfo = await stockOut.getTask(taskId)
+    },
+
+    // 载入入库任务单
+    async loadStockInTask(taskId) {
+      this.stockInTaskInfo = await stockIn.getTask(taskId)
     },
 
     // 修改出库数量

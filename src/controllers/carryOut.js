@@ -29,6 +29,15 @@ export default {
   },
 
   /**
+   * 根据入库任务查找
+   * @param {入库任务ID}} taskId
+   */
+  async listByStockInTask(taskId) {
+    const res = await axios._get({ url: '/carryOutTask/findByStockInTask', params: { taskId: taskId } })
+    return res.data
+  },
+
+  /**
    * 获取待办出库搬运任务仓位码
    */
   async listToOut() {
