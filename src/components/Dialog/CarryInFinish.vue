@@ -4,15 +4,13 @@
       <v-card-title class="deep-orange">
         确认搬运入库任务
       </v-card-title>
+      <v-alert type="info">
+        确认后库存记录变为在库。
+      </v-alert>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-container fluid>
             <v-row>
-              <v-col cols="12">
-                <v-alert type="info">
-                  确认后库存记录变为在库。
-                </v-alert>
-              </v-col>
               <v-col cols="12">
                 <v-text-field label="托盘码*" v-model="carryInTask.trayCode" :rules="trayCodeRules"></v-text-field>
               </v-col>

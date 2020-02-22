@@ -168,7 +168,6 @@ export default {
     // 输入托盘码
     inputTrayCode() {
       if (this.trayCode.length == 6) {
-        console.log('select')
         this.$refs.shelfCodeInput.focus()
         this.findStores()
       }

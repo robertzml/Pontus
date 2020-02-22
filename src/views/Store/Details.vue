@@ -30,6 +30,9 @@
               <v-text-field v-model="storeInfo.trayCode" label="托盘码" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6" lg="2" md="3" sm="4">
+              <v-text-field v-model="storeInfo.positionNumber" label="仓位码" hide-details readonly></v-text-field>
+            </v-col>
+            <v-col cols="6" lg="2" md="3" sm="4">
               <v-text-field v-model="storeInfo.specification" label="规格" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6" lg="2" md="3" sm="4">
@@ -58,6 +61,9 @@
             </v-col>
             <v-col cols="6" lg="2" md="3" sm="4">
               <v-text-field :value="$util.displayDate(storeInfo.inTime)" label="入库时间" hide-details readonly></v-text-field>
+            </v-col>
+            <v-col cols="6" lg="2" md="3" sm="4">
+              <v-text-field :value="$util.displayDate(storeInfo.outTime)" label="出库时间" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6" lg="2" md="3" sm="4">
               <v-text-field :value="$util.displayStatus(storeInfo.status)" label="状态" hide-details readonly></v-text-field>

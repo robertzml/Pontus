@@ -264,16 +264,6 @@ export const menuRoutes = [
     meta: { roles: [5] }
   },
   {
-    // 入库接单
-    // 叉车工操作
-    path: '/forkliftreceiveintask',
-    name: 'forkliftReceiveInTask',
-    text: '入库接单',
-    model: false,
-    component: () => import('@/views/Forklift/ReceiveInTask.vue'),
-    meta: { roles: [6] }
-  },
-  {
     // 入库上架
     // 叉车工操作
     path: '/forkliftentertask',
