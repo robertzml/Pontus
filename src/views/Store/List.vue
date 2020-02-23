@@ -2,7 +2,7 @@
   <v-row dense>
     <v-col cols="12">
       <v-card flat>
-        <v-card-subtitle class="pb-2">搜索条件</v-card-subtitle>
+        <v-card-subtitle class="pb-2 light-blue darken-4">搜索条件</v-card-subtitle>
         <v-card-text class="py-0">
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-row dense>
@@ -35,7 +35,7 @@
 
     <v-col cols="12">
       <v-card flat>
-        <v-card-subtitle class="pb-2">过滤条件</v-card-subtitle>
+        <v-card-subtitle class="pb-2 light-green darken-4">过滤条件</v-card-subtitle>
         <v-card-text class="pt-0">
           <v-row dense>
             <v-col cols="3">

@@ -178,6 +178,26 @@ export default {
     }
   },
 
+  // 入库状态
+  stockInStatus: status => {
+    let st = dict.stockInStatus.find(r => r.value == status)
+    if (st != undefined) {
+      return st.text
+    } else {
+      return ''
+    }
+  },
+
+  // 出库状态
+  stockOutStatus: status => {
+    let st = dict.stockOutStatus.find(r => r.value == status)
+    if (st != undefined) {
+      return st.text
+    } else {
+      return ''
+    }
+  },
+
   // 库存状态
   storeStatus: status => {
     let st = dict.storeStatus.find(r => r.value == status)

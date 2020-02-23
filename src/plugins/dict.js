@@ -81,6 +81,24 @@ export default {
     { text: '临时搬运', value: 2 }
   ],
 
+  /** 入库状态 */
+  stockInStatus: [
+    { text: '待入库', value: 71 },
+    { text: '已清点', value: 72 },
+    { text: '已接单', value: 73 },
+    { text: '已上架', value: 74 },
+    { text: '已入库', value: 75 }
+  ],
+
+  /** 出库状态 */
+  stockOutStatus: [
+    { text: '待出库', value: 81 },
+    { text: '已接单', value: 82 },
+    { text: '已下架', value: 83 },
+    { text: '已清点', value: 84 },
+    { text: '已出库', value: 85 }
+  ],
+
   /** 库存状态 */
   storeStatus: [
     { text: '在库', value: 61 },

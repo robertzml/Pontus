@@ -1,14 +1,44 @@
 <template>
   <v-row dense>
     <v-col cols="12">
+      <v-card flat>
+        <v-card-subtitle class="pb-2 light-green darken-4">过滤条件</v-card-subtitle>
+        <v-card-text class="pt-0">
+          <v-row dense>
+            <v-col cols="3">
+              <v-select
+                v-model="filter.status"
+                :items="$dict.stockInStatus"
+                label="入库状态"
+                item-text="text"
+                item-value="value"
+                hide-details
+                clearable
+              ></v-select>
+            </v-col>
+            <v-col cols="3">
+              <v-menu v-model="timeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
+                <template v-slot:activator="{ on }">
+                  <v-text-field v-model="filter.time" label="上架日期" prepend-icon="event" clearable hide-details readonly v-on="on"></v-text-field>
+                </template>
+                <v-date-picker v-model="filter.time" :day-format="$util.pickerDayFormat" @input="timeMenu = false"></v-date-picker>
+              </v-menu>
+            </v-col>
+            <v-col cols="3">
+              <v-text-field v-model="filter.search" prepend-icon="search" label="搜索" single-line hide-details> </v-text-field>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-col>
+
+    <v-col cols="12">
       <v-card class="mx-auto">
         <v-card-title class="orange">
           搬运入库列表
-          <v-spacer></v-spacer>
-          <v-text-field v-model="search" append-icon="search" label="搜索" single-line hide-details> </v-text-field>
         </v-card-title>
         <v-card-text class="px-0">
-          <v-data-table :headers="headers" :items="carryInList" :search="search" :items-per-page="10">
+          <v-data-table :headers="headers" :items="filterData" :search="filter.search" :items-per-page="10">
             <template v-slot:item.type="{ item }">
               {{ item.type | carryInTaskType }}
             </template>
@@ -38,7 +68,12 @@ import carryIn from '@/controllers/carryIn'
 export default {
   name: 'CarryInList',
   data: () => ({
-    search: '',
+    timeMenu: false,
+    filter: {
+      status: 0,
+      time: null,
+      search: ''
+    },
     carryInList: [],
     headers: [
       { text: '托盘码', value: 'trayCode' },
@@ -56,7 +91,21 @@ export default {
   computed: {
     ...mapState({
       refreshEvent: state => state.carryIn.refreshEvent
-    })
+    }),
+    filterData() {
+      let temp = this.carryInList
+
+      if (this.filter.status) {
+        temp = temp.filter(r => r.status == this.filter.status)
+      }
+
+      if (this.filter.time) {
+        let t = this.$moment(this.filter.time)
+        temp = temp.filter(r => t.isSame(r.moveTime, 'day'))
+      }
+
+      return temp
+    }
   },
   watch: {
     refreshEvent: function() {
