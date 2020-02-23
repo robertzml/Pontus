@@ -81,6 +81,14 @@ export default {
     { text: '临时搬运', value: 2 }
   ],
 
+  /** 库存状态 */
+  storeStatus: [
+    { text: '在库', value: 61 },
+    { text: '出库', value: 62 },
+    { text: '准备移入', value: 63 },
+    { text: '准备移出', value: 64 }
+  ],
+
   /** 用户组 */
   userGroup: [
     { text: '超级管理员', value: 1 },

@@ -10,6 +10,7 @@
     return-object
     clearable
     :rules="cargoRules"
+    :hide-details="!required"
     @change="selectItem"
   >
     <template v-slot:selection="data">
@@ -42,11 +43,15 @@ export default {
     cargoData: {
       type: Array,
       required: true
+    },
+    required: {
+      type: Boolean,
+      default: true
     }
   },
   data: () => ({
     selectedCargo: null,
-    cargoRules: [v => (!!v && v.id != 0) || '请选择类别']
+    cargoRules2: [v => (!!v && v.id != 0) || '请选择类别']
   }),
   watch: {
     cargoId: function() {
@@ -55,6 +60,18 @@ export default {
       } else {
         this.selectedCargo = null
       }
+    }
+  },
+  computed: {
+    cargoRules() {
+      let rules = []
+
+      if (this.required) {
+        const rule = v => (!!v && v.id != 0) || '请选择类别'
+        rules.push(rule)
+      }
+
+      return rules
     }
   },
   methods: {

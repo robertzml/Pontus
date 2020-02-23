@@ -176,5 +176,15 @@ export default {
     } else {
       return ''
     }
+  },
+
+  // 库存状态
+  storeStatus: status => {
+    let st = dict.storeStatus.find(r => r.value == status)
+    if (st != undefined) {
+      return st.text
+    } else {
+      return ''
+    }
   }
 }

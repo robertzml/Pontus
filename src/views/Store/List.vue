@@ -2,11 +2,12 @@
   <v-row dense>
     <v-col cols="12">
       <v-card flat>
-        <v-card-text>
+        <v-card-subtitle class="pb-2">搜索条件</v-card-subtitle>
+        <v-card-text class="py-0">
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-row dense>
               <v-col cols="4">
-                <customer-select :customer-id.sync="filter.customerId" :required="true"></customer-select>
+                <customer-select :customer-id.sync="search.customerId" :required="true"></customer-select>
               </v-col>
 
               <v-col cols="4">
@@ -14,20 +15,47 @@
                   :items="contractListData"
                   label="选择合同*"
                   :rules="contractRules"
-                  :hint="`${filter.selectedContract.number}`"
+                  :hint="`${search.selectedContract.number}`"
                   item-text="name"
                   item-value="id"
-                  v-model="filter.selectedContract"
+                  v-model="search.selectedContract"
                   persistent-hint
                   return-object
                 ></v-select>
               </v-col>
 
               <v-col cols="4">
-                <v-btn color="success darken-1 mt-2" :disabled="!valid" :loading="loading" @click="search">搜索</v-btn>
+                <v-btn color="success darken-1 mt-2" :disabled="!valid" :loading="loading" @click="searchStore">搜索</v-btn>
               </v-col>
             </v-row>
           </v-form>
+        </v-card-text>
+      </v-card>
+    </v-col>
+
+    <v-col cols="12">
+      <v-card flat>
+        <v-card-subtitle class="pb-2">过滤条件</v-card-subtitle>
+        <v-card-text class="pt-0">
+          <v-row dense>
+            <v-col cols="3">
+              <v-select
+                v-model="filter.status"
+                :items="$dict.storeStatus"
+                label="库存状态"
+                item-text="text"
+                item-value="value"
+                hide-details
+                clearable
+              ></v-select>
+            </v-col>
+            <v-col cols="3">
+              <cargo-select :cargo-id.sync="filter.cargoId" :cargo-data="cargoList" :required="false"></cargo-select>
+            </v-col>
+            <v-col cols="3">
+              <v-text-field v-model="filter.search" append-icon="search" label="搜索" single-line hide-details> </v-text-field>
+            </v-col>
+          </v-row>
         </v-card-text>
       </v-card>
     </v-col>
@@ -38,7 +66,7 @@
           库存列表
         </v-card-title>
         <v-card-text class="px-0">
-          <v-data-table :headers="headers" :items="storeData" :items-per-page="10">
+          <v-data-table :headers="headers" :items="filterData" :search="filter.search" :items-per-page="10">
             <template v-slot:item.status="{ item }">
               {{ item.status | displayStatus }}
             </template>
@@ -65,40 +93,50 @@
 import { mapState, mapActions } from 'vuex'
 import store from '@/controllers/store'
 import contract from '@/controllers/contract'
+import cargo from '@/controllers/cargo'
 import CustomerSelect from '@/components/Control/CustomerSelect'
+import CargoSelect from '@/components/Control/CargoSelect'
 
 export default {
   name: 'StoreList',
   components: {
-    CustomerSelect
+    CustomerSelect,
+    CargoSelect
   },
   data: () => ({
     valid: false,
     loading: false,
-    filter: {
+    search: {
       customerId: 0,
       selectedContract: { number: '' }
     },
+    filter: {
+      status: 0,
+      cargoId: '',
+      search: ''
+    },
     contractListData: [],
     contractRules: [v => !!v.id || '请选择合同'],
+    cargoList: [],
     storeData: [],
     headers: [
       { text: '客户名称', value: 'customerName' },
       { text: '托盘码', value: 'trayCode' },
       { text: '仓位码', value: 'positionNumber' },
       { text: '货品名称', value: 'cargoName' },
+      { text: '规格', value: 'specification' },
       { text: '货品总数量', value: 'totalCount' },
-      { text: '货品总重量', value: 'totalWeight' },
+      { text: '货品总重量(t)', value: 'totalWeight' },
       { text: '入库时间', value: 'inTime' },
       { text: '出库时间', value: 'outTime' },
       { text: '状态', value: 'status' },
-      { text: '备注', value: 'remark' },
       { text: '操作', value: 'action', sortable: false }
     ]
   }),
   watch: {
-    'filter.customerId': function(val) {
+    'search.customerId': function(val) {
       this.loadContract(val)
+      this.loadCargoData(val)
     },
     refreshEvent: function() {
       this.search()
@@ -107,7 +145,20 @@ export default {
   computed: {
     ...mapState({
       refreshEvent: state => state.store.refreshEvent
-    })
+    }),
+    filterData() {
+      let temp = this.storeData
+
+      if (this.filter.status) {
+        temp = temp.filter(r => r.status == this.filter.status)
+      }
+
+      if (this.filter.cargoId) {
+        temp = temp.filter(r => r.cargoId == this.filter.cargoId)
+      }
+
+      return temp
+    }
   },
   methods: {
     ...mapActions({
@@ -123,17 +174,29 @@ export default {
       if (customerId) {
         this.contractListData = await contract.getList(customerId)
         if (this.contractListData.length > 0) {
-          this.filter.selectedContract = this.contractListData[0]
+          this.search.selectedContract = this.contractListData[0]
         }
       } else {
         this.contractListData = []
       }
     },
 
+    // 载入货品
+    loadCargoData(customerId) {
+      if (customerId) {
+        let vm = this
+        cargo.getList(customerId).then(res => {
+          vm.cargoList = res
+        })
+      } else {
+        this.cargoList = []
+      }
+    },
+
     // 搜索库存
-    async search() {
+    async searchStore() {
       if (this.$refs.form.validate()) {
-        this.storeData = await store.findByContract(this.filter.selectedContract.id)
+        this.storeData = await store.findByContract(this.search.selectedContract.id)
       }
     },
 
