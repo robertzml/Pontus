@@ -45,7 +45,7 @@
       </v-card>
     </v-col>
 
-    <v-col cols="12">
+    <v-col cols="6">
       <v-card>
         <v-card-text class="pt-0">
           <v-data-iterator :items="taskList" :disable-pagination="true" :hide-default-footer="true">
@@ -57,7 +57,7 @@
 
             <template v-slot:default="props">
               <v-row>
-                <v-col v-for="item in props.items" :key="item.taskCode" cols="12" sm="12" md="6" lg="4">
+                <v-col v-for="item in props.items" :key="item.taskCode" cols="12" sm="12" md="6">
                   <v-card>
                     <v-card-title class="subheading font-weight-bold">{{ item.taskCode }}</v-card-title>
 
@@ -90,6 +90,11 @@
                       </v-list-item>
 
                       <v-list-item>
+                        <v-list-item-content>单位重量(kg):</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.unitWeight }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
                         <v-list-item-content>搬运重量(t):</v-list-item-content>
                         <v-list-item-content class="align-end">{{ item.moveWeight }}</v-list-item-content>
                       </v-list-item>
@@ -100,18 +105,13 @@
                       </v-list-item>
 
                       <v-list-item>
-                        <v-list-item-content>产地:</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.originPlace }}</v-list-item-content>
+                        <v-list-item-content>清点人:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.checkUserName }}</v-list-item-content>
                       </v-list-item>
 
                       <v-list-item>
-                        <v-list-item-content>保质期(月):</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.durability }}</v-list-item-content>
-                      </v-list-item>
-
-                      <v-list-item>
-                        <v-list-item-content>创建时间:</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.createTime | displayDateTime }}</v-list-item-content>
+                        <v-list-item-content>清点时间:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.checkTime | displayDateTime }}</v-list-item-content>
                       </v-list-item>
                     </v-list>
                   </v-card>
@@ -123,9 +123,9 @@
       </v-card>
     </v-col>
 
-    <v-col cols="12">
+    <v-col cols="6">
       <v-card>
-        <v-card-text>
+        <v-card-text class="pt-0">
           <v-data-iterator :items="carryOutList" :disable-pagination="true" :hide-default-footer="true">
             <template v-slot:header>
               <v-toolbar color="indigo darken-5" dark flat>
@@ -135,7 +135,7 @@
 
             <template v-slot:default="props">
               <v-row>
-                <v-col v-for="item in props.items" :key="item.taskCode" cols="12" sm="12" md="6" lg="4">
+                <v-col v-for="item in props.items" :key="item.taskCode" cols="12" sm="12" md="6">
                   <v-card>
                     <v-card-title class="subheading font-weight-bold">{{ item.taskCode }}</v-card-title>
 
@@ -145,11 +145,6 @@
                       <v-list-item>
                         <v-list-item-content>客户名称:</v-list-item-content>
                         <v-list-item-content class="align-end">{{ item.customerName }}</v-list-item-content>
-                      </v-list-item>
-
-                      <v-list-item>
-                        <v-list-item-content>合同名称:</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.contractName }}</v-list-item-content>
                       </v-list-item>
 
                       <v-list-item>
@@ -163,6 +158,11 @@
                       </v-list-item>
 
                       <v-list-item>
+                        <v-list-item-content>托盘码:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.trayCode }}</v-list-item-content>
+                      </v-list-item>
+
+                      <v-list-item>
                         <v-list-item-content>规格:</v-list-item-content>
                         <v-list-item-content class="align-end">{{ item.specification }}</v-list-item-content>
                       </v-list-item>
@@ -173,28 +173,13 @@
                       </v-list-item>
 
                       <v-list-item>
-                        <v-list-item-content>库存数量:</v-list-item-content>
+                        <v-list-item-content>托盘上数量:</v-list-item-content>
                         <v-list-item-content class="align-end">{{ item.storeCount }}</v-list-item-content>
                       </v-list-item>
 
                       <v-list-item>
-                        <v-list-item-content>单位重量(kg):</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.unitWeight }}</v-list-item-content>
-                      </v-list-item>
-
-                      <v-list-item>
-                        <v-list-item-content>库存重量(t):</v-list-item-content>
+                        <v-list-item-content>托盘上重量(t):</v-list-item-content>
                         <v-list-item-content class="align-end">{{ item.storeWeight }}</v-list-item-content>
-                      </v-list-item>
-
-                      <v-list-item>
-                        <v-list-item-content>货架码:</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.shelfCode }}</v-list-item-content>
-                      </v-list-item>
-
-                      <v-list-item>
-                        <v-list-item-content>托盘码:</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.trayCode }}</v-list-item-content>
                       </v-list-item>
 
                       <v-list-item>
@@ -240,6 +225,7 @@ export default {
       if (this.trayCode.length == 6) {
         this.$refs.shelfCodeInput.focus()
         this.findStores()
+        this.searchTray()
       } else {
         this.taskList = []
         this.carryOutList = []
@@ -249,10 +235,6 @@ export default {
     // 根据托盘码查找搬运入库任务
     async findStores() {
       this.taskList = await carryIn.listByTray(this.trayCode)
-      if (this.taskList.length == 0) {
-        console.log('tray')
-        this.searchTray()
-      }
     },
 
     // 搜索托盘

@@ -66,7 +66,6 @@
               <v-btn color="indigo darken-3" v-if="this.taskInfo.status == 71 && this.taskInfo.stockInType == 2" @click.stop="showCarryInCreate">
                 任务下发
               </v-btn>
-              <v-btn color="cyan darken-2" v-if="taskInfo.status == 71" @click="showScanTray">扫托盘码出库</v-btn>
               <v-btn color="success darken-1" v-if="this.taskInfo.status == 71" @click.stop="showFinishTask">确认入库货物</v-btn>
               <v-btn color="warning" v-if="taskInfo.status != 75" @click.stop="showEditTask">编辑入库货物</v-btn>
               <v-btn color="red darken-3" v-if="taskInfo.status != 75" @click.stop="showDeleteTask">删除入库货物</v-btn>
@@ -111,38 +110,6 @@
           </v-data-table>
         </v-expansion-panel-content>
       </v-expansion-panel>
-
-      <v-expansion-panel v-if="this.taskInfo.stockInType == 2">
-        <v-expansion-panel-header ripple class="green darken-4">
-          <template v-slot:default="">
-            搬运出库任务
-            <v-spacer></v-spacer>
-            <span class="subtitle-2">托盘数量: {{ totalOutTray }}</span>
-            <span class="subtitle-2 ml-4">搬运数量: {{ totalMoveOutCount }}</span>
-            <span class="subtitle-2 ml-4">搬运重量: {{ totalMoveOutWeight }} 吨</span>
-          </template>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content eager>
-          <v-data-table :headers="carryOutTaskHeaders" :items="carryOutTaskList" hide-default-footer disable-filtering disable-pagination>
-            <template v-slot:item.type="{ item }">
-              {{ item.type | carryOutTaskType }}
-            </template>
-            <template v-slot:item.status="{ item }">
-              {{ item.status | displayStatus }}
-            </template>
-            <template v-slot:item.action="{ item }">
-              <v-btn small color="primary" @click="viewCarryOutDetails(item)">
-                <v-icon left dark>pageview</v-icon>
-                查看
-              </v-btn>
-              <v-btn v-if="item.status == 84" small color="success darken-1" class="ml-2" @click="showCarryOutFinish(item)">
-                <v-icon left dark>check</v-icon>
-                确认
-              </v-btn>
-            </template>
-          </v-data-table>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
     </v-expansion-panels>
 
     <!-- 搬运任务下发组件 -->
@@ -168,12 +135,6 @@
 
     <!-- 搬运入库删除组件 -->
     <carry-in-delete ref="carryInDeleteMod" @close="loadCarryInTask"></carry-in-delete>
-
-    <!-- 搬运出库信息组件 -->
-    <carry-out-details ref="carryOutDetailsMod" @close="loadCarryOutTask"></carry-out-details>
-
-    <!-- 扫托盘码出库组件 -->
-    <scan-tray-out ref="scanMod" @close="closeScanTrayOut"></scan-tray-out>
   </v-sheet>
 </template>
 
@@ -181,7 +142,6 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import carryIn from '@/controllers/carryIn'
-import carryOut from '@/controllers/carryOut'
 import StockInTaskEdit from './Dialog/EditTask'
 import StockInTaskFinish from './Dialog/FinishTask'
 import StockInTaskDelete from './Dialog/DeleteTask'
@@ -190,8 +150,6 @@ import CarryInCreate from '@/components/Dialog/CarryInCreate'
 import CarryInFinish from '@/components/Dialog/CarryInFinish'
 import CarryInEnter from '@/components/Dialog/CarryInEnter'
 import CarryInDelete from '@/components/Dialog/CarryInDelete'
-import CarryOutDetails from '@/components/Dialog/CarryOutDetails'
-import ScanTrayOut from '@/components/Dialog/ScanTrayOut'
 
 export default {
   name: 'StockInTaskDetails',
@@ -203,29 +161,15 @@ export default {
     CarryInDetails,
     CarryInFinish,
     CarryInEnter,
-    CarryInDelete,
-    CarryOutDetails,
-    ScanTrayOut
+    CarryInDelete
   },
   data: () => ({
     panel: [0, 1],
     viewDrawer: false,
     carryInTaskList: [],
-    carryOutTaskList: [],
     carryInTaskHeaders: [
       { text: '托盘码', value: 'trayCode' },
       { text: '搬运数量', value: 'moveCount' },
-      { text: '搬运重量(t)', value: 'moveWeight' },
-      { text: '仓位码', value: 'positionNumber' },
-      { text: '接单人', value: 'receiveUserName' },
-      { text: '状态', value: 'status' },
-      { text: '操作', value: 'action', sortable: false }
-    ],
-    carryOutTaskHeaders: [
-      { text: '托盘码', value: 'trayCode' },
-      { text: '在库数量', value: 'storeCount' },
-      { text: '搬运数量', value: 'moveCount' },
-      { text: '在库重量(t)', value: 'storeWeight' },
       { text: '搬运重量(t)', value: 'moveWeight' },
       { text: '仓位码', value: 'positionNumber' },
       { text: '接单人', value: 'receiveUserName' },
@@ -260,32 +204,12 @@ export default {
       })
 
       return total.toFixed(4)
-    },
-    totalOutTray: function() {
-      return this.carryOutTaskList.length
-    },
-    totalMoveOutCount: function() {
-      let total = 0
-      this.carryOutTaskList.forEach(item => {
-        total += item.moveCount
-      })
-
-      return total
-    },
-    totalMoveOutWeight: function() {
-      let total = 0
-      this.carryOutTaskList.forEach(item => {
-        total += item.moveWeight
-      })
-
-      return total.toFixed(4)
     }
   },
   watch: {
     refreshEvent: function() {
       this.loadStockInTask()
       this.loadCarryInTask()
-      this.loadCarryOutTask()
     }
   },
   methods: {
@@ -310,14 +234,6 @@ export default {
       let vm = this
       carryIn.listByStockInTask(this.taskInfo.id).then(res => {
         vm.carryInTaskList = res
-      })
-    },
-
-    // 载入搬运出库任务
-    loadCarryOutTask() {
-      let vm = this
-      carryOut.listByStockInTask(this.taskInfo.id).then(res => {
-        vm.carryOutTaskList = res
       })
     },
 
@@ -347,17 +263,6 @@ export default {
       this.$refs.carryInCreateMod.init()
     },
 
-    // 显示扫托盘码出库
-    showScanTray() {
-      // this.$refs.scanMod.init(this.stockOutId)
-    },
-
-    // 关闭扫托盘码出库
-    closeScanTrayOut() {
-      this.loadCarryInTask()
-      this.loadCarryOutTask()
-    },
-
     // 查看搬运入库任务信息
     showCarryInDetails(item) {
       this.$refs.carryInDetailsMod.init(item.id)
@@ -376,16 +281,10 @@ export default {
     // 显示删除搬运入库
     showCarryInDelete(item) {
       this.$refs.carryInDeleteMod.init(item.id)
-    },
-
-    // 查看搬运出库任务
-    viewCarryOutDetails(item) {
-      this.$refs.carryOutDetailsMod.init(item.id)
     }
   },
   mounted: function() {
     this.loadCarryInTask()
-    this.loadCarryOutTask()
   }
 }
 </script>
