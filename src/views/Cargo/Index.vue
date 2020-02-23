@@ -28,9 +28,11 @@
       <v-card class="mx-auto">
         <v-card-title class="teal">
           货品列表
+          <v-spacer></v-spacer>
+          <v-text-field v-model="search" append-icon="search" label="搜索" single-line hide-details> </v-text-field>
         </v-card-title>
         <v-card-text class="px-0">
-          <v-data-table :headers="headers" :items="cargoListData" :items-per-page="10">
+          <v-data-table :headers="headers" :items="cargoListData" :search="search" :items-per-page="10">
             <template v-slot:item.registerTime="{ item }">
               {{ item.registerTime | displayDate }}
             </template>
@@ -39,17 +41,22 @@
                 <v-icon left dark>pageview</v-icon>
                 查看
               </v-btn>
-              <v-btn small color="warning" @click="editItem(item)">
+              <v-btn small color="warning" @click="editItem(item)" class="mr-2">
                 <v-icon left dark>edit</v-icon>
                 编辑
+              </v-btn>
+              <v-btn small color="error" @click="deleteItem(item)">
+                <v-icon left dark>delete</v-icon>
+                删除
               </v-btn>
             </template>
           </v-data-table>
         </v-card-text>
 
-        <cargo-create ref="cargoCreateMod" @update="submit"></cargo-create>
+        <cargo-create ref="cargoCreateMod" @close="submit"></cargo-create>
         <cargo-edit ref="cargoEditMod"></cargo-edit>
         <cargo-details ref="cargoDetailsMod" @update="submit"></cargo-details>
+        <cargo-delete ref="cargoDeleteMod" @close="submit"></cargo-delete>
       </v-card>
     </v-col>
   </v-row>
@@ -60,6 +67,7 @@ import CustomerSelect from '@/components/Control/CustomerSelect'
 import CargoCreate from './Create'
 import CargoEdit from './Edit'
 import CargoDetails from './Details'
+import CargoDelete from './Delete'
 import cargo from '@/controllers/cargo'
 
 export default {
@@ -68,10 +76,12 @@ export default {
     CustomerSelect,
     CargoCreate,
     CargoEdit,
-    CargoDetails
+    CargoDetails,
+    CargoDelete
   },
   data: () => ({
     valid: true,
+    search: '',
     customerId: 0,
     contractListData: [],
     cargoListData: [],
@@ -113,6 +123,10 @@ export default {
 
     editItem(val) {
       this.$refs.cargoEditMod.init(this.customerId, val.id)
+    },
+
+    deleteItem(val) {
+      this.$refs.cargoDeleteMod.init(val.id)
     }
   },
   mounted: function() {

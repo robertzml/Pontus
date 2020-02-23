@@ -26,5 +26,11 @@ export default {
   async update(entity) {
     const res = await axios._post({ url: '/cargo/update', data: entity })
     return res.data
+  },
+
+  // 删除货品
+  async delete(data) {
+    const res = await axios._postqs({ url: '/cargo/delete', params: data })
+    return res.data
   }
 }

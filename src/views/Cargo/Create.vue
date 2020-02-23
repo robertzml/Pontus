@@ -95,7 +95,7 @@ export default {
         cargo.create(this.cargoInfo).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加货品成功')
-            vm.$emit('update')
+            vm.$emit('close')
             vm.loading = false
             vm.dialog = false
           } else {
