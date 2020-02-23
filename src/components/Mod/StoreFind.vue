@@ -26,7 +26,7 @@
           <v-card>
             <v-subheader>货架</v-subheader>
 
-            <v-chip-group active-class="primary--text" v-model="sShelfId" mandatory>
+            <v-chip-group active-class="purple--text" v-model="sShelfId" mandatory>
               <v-chip v-for="shelf in shelfListData" :key="shelf.id" :value="shelf.id" @click="selectShelf(shelf.id)">
                 <template v-if="shelf.type == 1">
                   <v-avatar left>
@@ -245,6 +245,10 @@ export default {
 
     // 仓位颜色
     positionColor(pos) {
+      if (pos.shelfType == 3) {
+        return 'primary'
+      }
+
       if (pos.status == 2) {
         return 'grey darken-4'
       } else if (pos.status == 31) {

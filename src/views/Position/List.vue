@@ -5,7 +5,7 @@
         仓位信息
         <v-spacer></v-spacer>
         <v-btn text color="blue-grey lighten-3" v-if="positionInfo != null" @click="showEdit">编辑仓位</v-btn>
-        <v-btn text color="blue-grey lighten-4" v-if="shelfInfo.type == 2" @click="showSheet">生成仓位</v-btn>
+        <v-btn text color="blue-grey lighten-4" v-if="shelfInfo.type == 2 || shelfInfo.type == 3" @click="showSheet">生成仓位</v-btn>
       </v-card-title>
 
       <v-card-text>

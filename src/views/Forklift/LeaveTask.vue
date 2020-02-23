@@ -131,7 +131,7 @@
 
                           <v-list-item>
                             <v-list-item-content>入库时间:</v-list-item-content>
-                            <v-list-item-content class="align-end">{{ item.InTime | displayDateTime }}</v-list-item-content>
+                            <v-list-item-content class="align-end">{{ item.inTime | displayDate }}</v-list-item-content>
                           </v-list-item>
                         </v-list>
                       </v-card>

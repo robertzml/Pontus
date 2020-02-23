@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-sheet v-model="dialog" persistent fullscreen scrollable>
+  <v-dialog v-model="dialog" persistent fullscreen hide-overlay transition="dialog-bottom-transition">
     <v-card>
       <v-card-title class="deep-orange darken-2">
         扫托盘码出库
@@ -16,12 +16,7 @@
             </v-col>
 
             <v-col cols="12">
-              <v-data-iterator
-                :items="carryOutList"
-                :disable-pagination="true"
-                :hide-default-footer="true"
-                style="height: 600px; overflow-y:scroll; overflow-x:hidden;"
-              >
+              <v-data-iterator :items="carryOutList" :disable-pagination="true" :hide-default-footer="true">
                 <template v-slot:header>
                   <v-toolbar color="indigo darken-5" dark flat>
                     <v-toolbar-title>货物情况</v-toolbar-title>
@@ -140,7 +135,7 @@
         <v-btn color="success darken-1" :disabled="!valid || carryOutList.length == 0" :loading="loading" @click="addTask">出库</v-btn>
       </v-card-actions>
     </v-card>
-  </v-bottom-sheet>
+  </v-dialog>
 </template>
 
 <script>
