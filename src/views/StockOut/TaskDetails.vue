@@ -60,8 +60,9 @@
             </v-row>
 
             <v-card-actions>
-              <v-btn color="primary" v-if="this.taskInfo.status == 81" @click.stop="showCarryOutCreate">任务下发</v-btn>
-              <v-btn color="deep-orange darken-3" v-if="this.taskInfo.status == 81" @click.stop="showFinishTask">出库货物确认</v-btn>
+              <v-btn color="primary" v-if="taskInfo.status == 81" @click.stop="showCarryOutCreate">任务下发</v-btn>
+              <v-btn color="cyan darken-2" v-if="taskInfo.status == 81" @click="showScanTray">扫托盘码出库</v-btn>
+              <v-btn color="deep-orange darken-3" v-if="taskInfo.status == 81" @click.stop="showFinishTask">出库货物确认</v-btn>
               <v-btn color="red darken-3" v-if="taskInfo.status != 85" @click.stop="showDeleteTask">删除出库货物</v-btn>
             </v-card-actions>
           </v-card>
@@ -140,17 +141,20 @@
     <!-- 出库任务删除组件 -->
     <stock-out-task-delete ref="stockOutTaskDeleteMod" @close="stockOutShowDetails(taskInfo.stockOutId)"></stock-out-task-delete>
 
+    <!-- 扫托盘码出库组件 -->
+    <scan-tray-out ref="scanMod" @close="loadCarryOutTask"></scan-tray-out>
+
     <!-- 下发搬运出库任务组件 -->
     <carry-out-create ref="carryOutCreateMod" @close="loadCarryOutTask"></carry-out-create>
 
     <!-- 搬运出库信息组件 -->
     <carry-out-details ref="carryOutDetailsMod" @close="loadCarryOutTask"></carry-out-details>
 
-    <!-- 搬运入库信息组件 -->
-    <carry-in-details ref="carryInDetailsMod" @close="loadCarryInTask"></carry-in-details>
-
     <!-- 搬运出库确认组件 -->
     <carry-out-finish ref="carryOutFinishMod" @close="loadCarryOutTask"></carry-out-finish>
+
+    <!-- 搬运入库信息组件 -->
+    <carry-in-details ref="carryInDetailsMod" @close="loadCarryInTask"></carry-in-details>
 
     <!-- 搬运入库确认组件 -->
     <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>
@@ -167,6 +171,7 @@ import carryOut from '@/controllers/carryOut'
 import carryIn from '@/controllers/carryIn'
 import StockOutTaskFinish from './Dialog/FinishTask'
 import StockOutTaskDelete from './Dialog/DeleteTask'
+import ScanTrayOut from '@/components/Dialog/ScanTrayOut'
 import CarryOutCreate from '@/components/Dialog/CarryOutCreate'
 import CarryOutDetails from '@/components/Dialog/CarryOutDetails'
 import CarryOutFinish from '@/components/Dialog/CarryOutFinish'
@@ -180,6 +185,7 @@ export default {
   components: {
     StockOutTaskFinish,
     StockOutTaskDelete,
+    ScanTrayOut,
     CarryOutCreate,
     CarryOutDetails,
     CarryInDetails,
@@ -303,6 +309,11 @@ export default {
     // 显示删除出库任务
     showDeleteTask() {
       this.$refs.stockOutTaskDeleteMod.init(this.taskInfo.id)
+    },
+
+    // 显示扫码出库
+    showScanTray() {
+      this.$refs.scanMod.init(this.taskInfo.stockOutId)
     },
 
     // 下发搬运任务

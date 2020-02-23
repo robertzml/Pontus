@@ -105,8 +105,8 @@
                       </v-list-item>
 
                       <v-list-item>
-                        <v-list-item-content>清点人:</v-list-item-content>
-                        <v-list-item-content class="align-end">{{ item.checkUserName }}</v-list-item-content>
+                        <v-list-item-content>状态:</v-list-item-content>
+                        <v-list-item-content class="align-end">{{ item.status | displayStatus }}</v-list-item-content>
                       </v-list-item>
 
                       <v-list-item>
