@@ -24,6 +24,19 @@
             <v-row dense>
               <v-col cols="5">
                 <v-text-field
+                  label="货架码"
+                  prepend-icon="border_all"
+                  v-model="shelfCode"
+                  :counter="12"
+                  :rules="shelfCodeRules"
+                  ref="shelfCodeInput"
+                  @input="inputShelfCode"
+                  clearable
+                  autofocus
+                ></v-text-field>
+              </v-col>
+              <v-col cols="5">
+                <v-text-field
                   label="托盘码"
                   prepend-icon="power_input"
                   v-model="trayCode"
@@ -32,18 +45,6 @@
                   :counter="6"
                   @input="inputTrayCode"
                   ref="trayCodeInput"
-                  clearable
-                  autofocus
-                ></v-text-field>
-              </v-col>
-              <v-col cols="5">
-                <v-text-field
-                  label="货架码"
-                  prepend-icon="border_all"
-                  v-model="shelfCode"
-                  :counter="12"
-                  :rules="shelfCodeRules"
-                  ref="shelfCodeInput"
                   clearable
                 ></v-text-field>
               </v-col>
@@ -163,7 +164,6 @@ export default {
     shelfCodeRules: [v => !!v || '请输入货架码', v => (v && v.length == 12) || '请输入正确货架码'],
     trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入正确托盘码']
   }),
-  directives: {},
   methods: {
     // 载入待出库仓位
     async loadOutPositions() {
@@ -172,15 +172,32 @@ export default {
 
     // 输入托盘码
     inputTrayCode() {
-      if (this.trayCode.length == 6) {
-        this.$refs.shelfCodeInput.focus()
-        this.findStores()
+      if (this.trayCode == null || this.trayCode.length != 6) {
+        return
       }
+
+      this.$refs.shelfCodeInput.focus()
+      this.findStores()
+    },
+
+    // 输入货架码
+    inputShelfCode() {
+      if (this.shelfCode == null || this.shelfCode.length != 12) {
+        return
+      }
+
+      this.$refs.trayCodeInput.focus()
+      this.findOutside()
     },
 
     // 查找库存
     async findStores() {
       this.storeList = await store.findByTray(this.trayCode)
+    },
+
+    // 按货架查找库存
+    async findOutside() {
+      this.storeList = await store.findOutside(this.shelfCode)
     },
 
     // 检查库存是否搬运出库任务
@@ -208,7 +225,7 @@ export default {
             vm.$store.commit('alertSuccess', '出库下架成功')
             vm.trayCode = ''
             vm.shelfCode = ''
-            this.$refs.trayCodeInput.focus()
+            this.$refs.shelfCodeInput.focus()
             vm.loadOutPositions()
             vm.loading = false
           } else {

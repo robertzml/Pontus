@@ -62,6 +62,18 @@ export default {
   },
 
   /**
+   * 按货架码查找最外侧库存
+   * @param {货架码} shelfCode
+   */
+  async findOutside(shelfCode) {
+    const res = await axios._get({
+      url: '/store/findOutside',
+      params: { shelfCode: shelfCode }
+    })
+    return res.data
+  },
+
+  /**
    * 按出库单查找库存
    * @param {出库单ID，货品ID} param0
    */

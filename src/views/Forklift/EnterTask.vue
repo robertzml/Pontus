@@ -239,7 +239,7 @@ export default {
 
     // 搜索托盘
     async searchTray() {
-      if (this.trayCode.length != 6) {
+      if (this.trayCode == null || this.trayCode.length != 6) {
         return
       }
 

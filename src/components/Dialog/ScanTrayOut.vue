@@ -9,10 +9,21 @@
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row>
-            <v-col cols="12">
-              <v-text-field label="托盘码*" v-model="trayCode" :counter="6" :rules="trayCodeRules" @keyup.enter="searchTray"> </v-text-field>
+            <v-col cols="10">
+              <v-text-field
+                label="托盘码*"
+                v-model="trayCode"
+                :counter="6"
+                autofocus
+                @input="searchTray"
+                :rules="trayCodeRules"
+                @keyup.enter="searchTray"
+              >
+              </v-text-field>
               <v-text-field v-show="false"></v-text-field>
-              <v-btn color="primary" @click="searchTray" :disabled="!trayCode">搜索托盘</v-btn>
+            </v-col>
+            <v-col cols="2">
+              <v-btn color="primary" class="mt-2" @click="searchTray" :disabled="!trayCode">搜索托盘</v-btn>
             </v-col>
 
             <v-col cols="12">
@@ -169,7 +180,7 @@ export default {
 
     // 搜索托盘
     async searchTray() {
-      if (this.trayCode.length != 6) {
+      if (this.trayCode == null || this.trayCode.length != 6) {
         return
       }
 
