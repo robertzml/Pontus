@@ -1,10 +1,10 @@
 <template>
   <v-card class="px-2 mt-2">
     <v-subheader class="subtitle-1 teal--text text--lighten-2">
-      入库货物列表
+      出库货物列表
       <v-spacer></v-spacer>
-      <span class="subtitle-2 ml-4">入库总数量: {{ totalCount }}</span>
-      <span class="subtitle-2 ml-4">入库总重量: {{ totalWeight }} 吨</span>
+      <span class="subtitle-2 ml-4">出库总数量: {{ totalCount }}</span>
+      <span class="subtitle-2 ml-4">出库总重量: {{ totalWeight }} 吨</span>
     </v-subheader>
     <v-data-table :headers="headers" :items="taskInfoList" hide-default-footer disable-pagination>
       <template v-slot:item.status="{ item }">
@@ -20,21 +20,20 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
-import stockIn from '@/controllers/stockIn'
+import { mapState, mapActions } from 'vuex'
+import stockOut from '@/controllers/stockOut'
 
 export default {
-  name: 'KeeperStockInTaskList',
+  name: 'KeeperStockOutTaskList',
   data: () => ({
     headers: [
       { text: '货品名称', value: 'cargoName' },
-      { text: '类别名称', value: 'categoryName' },
-      { text: '入库数量', value: 'inCount' },
+      { text: '规格', value: 'specification' },
+      { text: '在库数量', value: 'storeCount' },
+      { text: '出库数量', value: 'outCount' },
       { text: '单位重量(kg)', value: 'unitWeight' },
-      { text: '总重量(t)', value: 'inWeight' },
-      { text: '批次', value: 'batch' },
-      { text: '产地', value: 'originPlace' },
-      { text: '保质期(月)', value: 'durability' },
+      { text: '在库重量(t)', value: 'storeWeight' },
+      { text: '出库重量(t)', value: 'outWeight' },
       { text: '状态', value: 'status' },
       { text: '操作', value: 'action', sortable: false }
     ],
@@ -42,13 +41,13 @@ export default {
   }),
   computed: {
     ...mapState({
-      stockInId: state => state.keeper.stockInId,
+      stockOutId: state => state.keeper.stockOutId,
       refreshEvent: state => state.keeper.refreshEvent
     }),
     totalCount: function() {
       let total = 0
       this.taskInfoList.forEach(item => {
-        total += item.inCount
+        total += item.outCount
       })
 
       return total
@@ -56,14 +55,14 @@ export default {
     totalWeight: function() {
       let total = 0
       this.taskInfoList.forEach(item => {
-        total += item.inWeight
+        total += item.outWeight
       })
 
       return total.toFixed(4)
     }
   },
   watch: {
-    stockInId: function() {
+    stockOutId: function() {
       this.loadTaskList()
     },
     refreshEvent: function() {
@@ -72,25 +71,21 @@ export default {
   },
   methods: {
     ...mapActions({
-      showStockInTaskDetails: 'keeper/showStockInTaskDetails'
+      showStockOutTaskDetails: 'keeper/showStockOutTaskDetails'
     }),
 
-    ...mapMutations({
-      setStockInTaskId: 'keeper/setStockInTaskId'
-    }),
-
-    // 载入入库任务列表
+    // 载入出库任务列表
     loadTaskList() {
-      if (this.stockInId) {
+      if (this.stockOutId) {
         let vm = this
-        stockIn.getTaskList(this.stockInId).then(res => {
+        stockOut.getTaskList(this.stockOutId).then(res => {
           vm.taskInfoList = res
         })
       }
     },
 
     viewTaskItem(item) {
-      this.showStockInTaskDetails(item.id)
+      this.showStockOutTaskDetails(item.id)
     }
   },
   mounted: function() {

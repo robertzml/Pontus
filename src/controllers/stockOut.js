@@ -24,6 +24,14 @@ export default {
   },
 
   /**
+   * 获取未完成出库单
+   */
+  async getUnfinish() {
+    const res = await axios._get({ url: '/stockOut/listUnfinish' })
+    return res.data
+  },
+
+  /**
    * 按出库日期获取出库单
    * @param {出库日期}} outTime
    */

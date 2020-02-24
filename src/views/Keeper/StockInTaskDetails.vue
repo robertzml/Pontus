@@ -7,6 +7,9 @@
         <v-card-text>
           <v-row dense>
             <v-col cols="3" md="4" sm="6">
+              <v-text-field v-model="taskInfo.taskCode" label="入库任务码" hide-details readonly></v-text-field>
+            </v-col>
+            <v-col cols="3" md="4" sm="6">
               <v-text-field v-model="taskInfo.cargoName" label="货品名称" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="3" md="4" sm="6">
