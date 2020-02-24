@@ -90,7 +90,7 @@
                 <v-icon left dark>pageview</v-icon>
                 查看
               </v-btn>
-              <v-btn v-if="item.status == 81" small color="red darken-3" class="ml-2" @click="deleteCarryOut(item)">
+              <v-btn v-if="item.status == 81" small color="red darken-3" class="ml-2" @click="showCarryOutDelete(item)">
                 <v-icon left dark>delete</v-icon>
                 删除
               </v-btn>
@@ -153,6 +153,9 @@
     <!-- 搬运出库确认组件 -->
     <carry-out-finish ref="carryOutFinishMod" @close="loadCarryOutTask"></carry-out-finish>
 
+    <!-- 搬运出库删除组件 -->
+    <carry-out-delete ref="carryOutDeleteMod" @close="refresh"></carry-out-delete>
+
     <!-- 搬运入库信息组件 -->
     <carry-in-details ref="carryInDetailsMod" @close="loadCarryInTask"></carry-in-details>
 
@@ -175,6 +178,7 @@ import ScanTrayOut from '@/components/Dialog/ScanTrayOut'
 import CarryOutCreate from '@/components/Dialog/CarryOutCreate'
 import CarryOutDetails from '@/components/Dialog/CarryOutDetails'
 import CarryOutFinish from '@/components/Dialog/CarryOutFinish'
+import CarryOutDelete from '@/components/Dialog/CarryOutDelete'
 import CarryInDetails from '@/components/Dialog/CarryInDetails'
 import CarryInFinish from '@/components/Dialog/CarryInFinish'
 import CarryInEnter from '@/components/Dialog/CarryInEnter'
@@ -188,6 +192,7 @@ export default {
     ScanTrayOut,
     CarryOutCreate,
     CarryOutDetails,
+    CarryOutDelete,
     CarryInDetails,
     CarryInFinish,
     CarryOutFinish,
@@ -271,7 +276,8 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setTaskInfo: 'stockOut/setTaskInfo'
+      setTaskInfo: 'stockOut/setTaskInfo',
+      refresh: 'stockOut/refresh'
     }),
 
     ...mapActions({
@@ -331,6 +337,11 @@ export default {
       this.$refs.carryOutFinishMod.init(item.id)
     },
 
+    // 删除搬运出库任务
+    showCarryOutDelete(item) {
+      this.$refs.carryOutDeleteMod.init(item.id)
+    },
+
     // 查看搬运入库任务
     viewCarryInDetails(item) {
       this.$refs.carryInDetailsMod.init(item.id)
@@ -344,21 +355,6 @@ export default {
     // 确认搬运入库
     showCarryInFinish(item) {
       this.$refs.carryInFinishMod.init(item.id)
-    },
-
-    // 删除搬运出库
-    deleteCarryOut(item) {
-      if (confirm('是否删除该搬运任务')) {
-        let vm = this
-        carryOut.delete({ id: item.id }).then(res => {
-          if (res.status == 0) {
-            vm.$store.commit('alertSuccess', '删除搬运出库任务成功')
-            vm.loadCarryOutTask()
-          } else {
-            vm.$store.commit('alertError', res.errorMessage)
-          }
-        })
-      }
     }
   },
   mounted: function() {
