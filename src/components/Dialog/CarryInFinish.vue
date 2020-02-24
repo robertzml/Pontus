@@ -5,20 +5,31 @@
         确认搬运入库任务
       </v-card-title>
       <v-alert type="info">
-        确认后库存记录变为在库。
+        确认后库存记录变为在库。临时搬运无法修改数量、重量。
       </v-alert>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-container fluid>
             <v-row>
               <v-col cols="12">
-                <v-text-field label="托盘码*" v-model="carryInTask.trayCode" :rules="trayCodeRules"></v-text-field>
+                <v-text-field label="托盘码*" v-model="carryInTask.trayCode" :readonly="carryInTask.type == 2" :rules="trayCodeRules"></v-text-field>
               </v-col>
               <v-col cols="6">
-                <v-text-field label="入库数量*" v-model="carryInTask.moveCount" :rules="moveCountRules"></v-text-field>
+                <v-text-field
+                  label="入库数量*"
+                  v-model="carryInTask.moveCount"
+                  :readonly="carryInTask.type == 2"
+                  :rules="moveCountRules"
+                ></v-text-field>
               </v-col>
               <v-col cols="6">
-                <v-text-field label="总重量*" v-model="carryInTask.moveWeight" :rules="moveWeightRules" suffix="吨"></v-text-field>
+                <v-text-field
+                  label="总重量*"
+                  v-model="carryInTask.moveWeight"
+                  :readonly="carryInTask.type == 2"
+                  :rules="moveWeightRules"
+                  suffix="吨"
+                ></v-text-field>
               </v-col>
 
               <v-col cols="12" md="12">

@@ -121,8 +121,10 @@ export default {
   },
   methods: {
     init(outInfo) {
+      this.clearTask()
       this.dialog = true
       this.stockOutInfo = outInfo
+
       this.loadCargoData()
 
       this.$nextTick(() => {
@@ -136,6 +138,18 @@ export default {
         cargo.getList(this.stockOutInfo.customerId).then(res => {
           vm.cargoListData = res
         })
+      }
+    },
+
+    clearTask() {
+      this.taskInfo = {
+        stockOutId: '',
+        cargoId: '',
+        storeCount: 0,
+        outCount: 0,
+        storeWeight: 0.0,
+        outWeight: 0.0,
+        remark: ''
       }
     },
 

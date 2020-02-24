@@ -56,9 +56,6 @@ import CargoSelect from '@/components/Control/CargoSelect'
 
 export default {
   name: 'StockInTaskCreate',
-  props: {
-    stockInInfo: Object
-  },
   components: {
     CargoSelect
   },
@@ -97,8 +94,9 @@ export default {
     }
   },
   methods: {
-    init() {
+    init(inInfo) {
       this.clearTask()
+      this.stockInInfo = inInfo
       this.dialog = true
       this.loadCargoData()
 
@@ -130,8 +128,6 @@ export default {
         userId: 0,
         userName: ''
       }
-      this.cargoListData = []
-      this.cargoId = ''
     },
 
     selectCargo(val) {

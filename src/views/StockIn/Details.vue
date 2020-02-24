@@ -115,10 +115,18 @@
     </v-expansion-panels>
 
     <stock-in-edit-billing ref="bllingMod" @close="loadBilling"></stock-in-edit-billing>
+
+    <!-- 编辑入库单组件 -->
     <stock-in-edit ref="stockInEditMod" @close="loadInfo"></stock-in-edit>
+
+    <!-- 确认入库单组件 -->
     <stock-in-finish ref="stockInFinishMod" @close="loadInfo"></stock-in-finish>
+
+    <!-- 删除入库单组件 -->
     <stock-in-delete ref="stockInDeleteMod" @close="refresh"></stock-in-delete>
-    <stock-in-task-create ref="createTaskMod" :stockInInfo="info" @update="loadTaskList"></stock-in-task-create>
+
+    <!-- 添加入库任务组件 -->
+    <stock-in-task-create ref="createTaskMod" @update="loadTaskList"></stock-in-task-create>
   </v-sheet>
 </template>
 
@@ -256,7 +264,7 @@ export default {
     // 显示添加入库任务
     showAddTask() {
       if (this.stockInId) {
-        this.$refs.createTaskMod.init()
+        this.$refs.createTaskMod.init(this.info)
       }
     },
 

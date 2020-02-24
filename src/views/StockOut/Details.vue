@@ -104,7 +104,7 @@
     <!-- 删除出库单组件 -->
     <stock-out-delete ref="stockOutDeleteMod" @close="refresh"></stock-out-delete>
 
-    <!-- 删除出库单组件 -->
+    <!-- 确认出库单组件 -->
     <stock-out-finish ref="stockOutFinishMod" @close="loadInfo"></stock-out-finish>
 
     <!-- 添加出库任务组件 -->
