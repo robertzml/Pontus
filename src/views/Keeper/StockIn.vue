@@ -82,7 +82,8 @@
           </v-card-actions>
         </v-card>
 
-        <stock-in-task-create v-if="stockInInfo" ref="createTaskMod" @update="refresh"></stock-in-task-create>
+        <!-- 下发入库任务 -->
+        <stock-in-task-create v-if="stockInInfo" ref="createTaskMod" @close="refresh"></stock-in-task-create>
 
         <v-slide-x-transition leave-absolute>
           <component v-bind:is="tab"></component>

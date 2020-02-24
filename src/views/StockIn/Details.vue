@@ -126,7 +126,7 @@
     <stock-in-delete ref="stockInDeleteMod" @close="refresh"></stock-in-delete>
 
     <!-- 添加入库任务组件 -->
-    <stock-in-task-create ref="createTaskMod" @update="loadTaskList"></stock-in-task-create>
+    <stock-in-task-create ref="createTaskMod" @close="loadTaskList"></stock-in-task-create>
   </v-sheet>
 </template>
 

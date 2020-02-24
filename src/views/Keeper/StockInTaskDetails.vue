@@ -52,7 +52,8 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-btn color="primary" v-if="this.taskInfo.status == 71" @click.stop="showAddCarryIn">任务下发</v-btn>
+          <v-btn color="primary" v-if="this.taskInfo.status == 71" @click.stop="showCarryInCreate">任务下发</v-btn>
+          <v-btn color="success darken-1" v-if="this.taskInfo.status == 71" @click.stop="showFinishTask">确认入库货物</v-btn>
           <v-btn color="error" v-if="this.taskInfo.status != 75" @click.stop="showDeleteTask">删除入库货物</v-btn>
         </v-card-actions>
       </v-card>
@@ -90,8 +91,11 @@
     <!-- 入库任务删除组件 -->
     <stock-in-task-delete ref="stockInTaskDeleteMod" @close="showStockInTaskList"></stock-in-task-delete>
 
+    <!-- 入库任务确认组件 -->
+    <stock-in-task-finish ref="stockInTaskFinishMod" @close="loadStockInTask"></stock-in-task-finish>
+
     <!-- 搬运任务下发组件 -->
-    <carry-in-create ref="carryInMod" :stockInTask="taskInfo" @close="loadCarryInList"></carry-in-create>
+    <carry-in-create ref="carryInCreateMod" @close="loadCarryInList"></carry-in-create>
 
     <!-- 搬运入库确认组件 -->
     <carry-in-finish ref="carryInFinishMod" @close="loadCarryInList"></carry-in-finish>
@@ -105,6 +109,7 @@
 import { mapState, mapActions } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import carryIn from '@/controllers/carryIn'
+import StockInTaskFinish from '@/components/Dialog/StockInTaskFinish'
 import StockInTaskDelete from '@/components/Dialog/StockInTaskDelete'
 import CarryInCreate from '@/components/Dialog/CarryInCreate'
 import CarryInFinish from '@/components/Dialog/CarryInFinish'
@@ -113,6 +118,7 @@ import CarryInDelete from '@/components/Dialog/CarryInDelete'
 export default {
   name: 'StockInTaskDetails',
   components: {
+    StockInTaskFinish,
     StockInTaskDelete,
     CarryInCreate,
     CarryInFinish,
@@ -184,14 +190,19 @@ export default {
       })
     },
 
+    // 显示确认入库任务
+    showFinishTask() {
+      this.$refs.stockInTaskFinishMod.init(this.stockInTaskId)
+    },
+
     // 显示删除入库任务
     showDeleteTask() {
       this.$refs.stockInTaskDeleteMod.init(this.stockInTaskId)
     },
 
     // 下发任务
-    showAddCarryIn() {
-      this.$refs.carryInMod.init()
+    showCarryInCreate() {
+      this.$refs.carryInCreateMod.init(this.taskInfo)
     },
 
     // 显示确认搬运入库

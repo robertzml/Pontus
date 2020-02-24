@@ -113,7 +113,7 @@
     </v-expansion-panels>
 
     <!-- 搬运任务下发组件 -->
-    <carry-in-create ref="carryInCreateMod" :stock-in-task="taskInfo" @close="loadCarryInTask"></carry-in-create>
+    <carry-in-create ref="carryInCreateMod" @close="loadCarryInTask"></carry-in-create>
 
     <!-- 入库任务编辑组件 -->
     <stock-in-task-edit ref="stockInTaskEditMod" :customer-id="taskInfo.customerId" @close="closeEditTask"></stock-in-task-edit>
@@ -143,7 +143,7 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import carryIn from '@/controllers/carryIn'
 import StockInTaskEdit from './Dialog/EditTask'
-import StockInTaskFinish from './Dialog/FinishTask'
+import StockInTaskFinish from '@/components/Dialog/StockInTaskFinish'
 import StockInTaskDelete from '@/components/Dialog/StockInTaskDelete'
 import CarryInDetails from '@/components/Dialog/CarryInDetails'
 import CarryInCreate from '@/components/Dialog/CarryInCreate'
@@ -260,7 +260,7 @@ export default {
 
     // 任务下发
     showCarryInCreate() {
-      this.$refs.carryInCreateMod.init()
+      this.$refs.carryInCreateMod.init(this.taskInfo)
     },
 
     // 查看搬运入库任务信息

@@ -40,15 +40,11 @@ import carryIn from '@/controllers/carryIn'
 
 export default {
   name: 'CarryInCreate',
-  props: {
-    stockInTask: {
-      type: Object
-    }
-  },
   data: () => ({
     valid: false,
     dialog: false,
     loading: false,
+    stockInTask: {},
     carryInInfo: {
       trayCode: '',
       moveCount: 0,
@@ -64,7 +60,8 @@ export default {
     }
   },
   methods: {
-    init() {
+    init(task) {
+      this.stockInTask = task
       this.clearTask()
       this.dialog = true
 

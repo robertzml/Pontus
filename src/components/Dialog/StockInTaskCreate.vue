@@ -166,7 +166,7 @@ export default {
         stockIn.addTask(this.taskInfo).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加任务成功')
-            vm.$emit('update')
+            vm.$emit('close')
             vm.submitLoading = false
             vm.dialog = false
           } else {
