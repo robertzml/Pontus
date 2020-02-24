@@ -84,7 +84,7 @@
         </v-card>
 
         <!-- 添加出库任务组件 -->
-        <stock-out-task-create ref="createTaskMod" @close="loadStockOutList"></stock-out-task-create>
+        <stock-out-task-create ref="createTaskMod" @close="refresh"></stock-out-task-create>
 
         <!-- 扫托盘码出库组件 -->
         <scan-tray-out ref="scanMod" @close="refresh"></scan-tray-out>

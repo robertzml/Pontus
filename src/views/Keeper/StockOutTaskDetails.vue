@@ -109,6 +109,12 @@
       </v-card>
     </v-col>
 
+    <!-- 出库任务确认组件 -->
+    <stock-out-task-finish ref="stockOutTaskFinishMod" @close="loadStockOutTask"></stock-out-task-finish>
+
+    <!-- 出库任务删除组件 -->
+    <stock-out-task-delete ref="stockOutTaskDeleteMod" @close="showStockOutTaskList"></stock-out-task-delete>
+
     <!-- 下发搬运出库任务组件 -->
     <carry-out-create ref="carryOutCreateMod" @close="loadCarryOutList"></carry-out-create>
 
@@ -117,6 +123,9 @@
 
     <!-- 搬运出库删除组件 -->
     <carry-out-delete ref="carryOutDeleteMod" @close="loadCarryOutList"></carry-out-delete>
+
+    <!-- 搬运入库确认组件 -->
+    <carry-in-finish ref="carryInFinishMod" @close="loadCarryInList"></carry-in-finish>
   </v-row>
 </template>
 
@@ -125,16 +134,22 @@ import { mapState, mapActions } from 'vuex'
 import stockOut from '@/controllers/stockOut'
 import carryOut from '@/controllers/carryOut'
 import carryIn from '@/controllers/carryIn'
+import StockOutTaskFinish from '@/components/Dialog/StockOutTaskFinish'
+import StockOutTaskDelete from '@/components/Dialog/StockOutTaskDelete'
 import CarryOutCreate from '@/components/Dialog/CarryOutCreate'
 import CarryOutFinish from '@/components/Dialog/CarryOutFinish'
 import CarryOutDelete from '@/components/Dialog/CarryOutDelete'
+import CarryInFinish from '@/components/Dialog/CarryInFinish'
 
 export default {
   name: 'StockOutTaskDetails',
   components: {
+    StockOutTaskFinish,
+    StockOutTaskDelete,
     CarryOutCreate,
     CarryOutFinish,
-    CarryOutDelete
+    CarryOutDelete,
+    CarryInFinish
   },
   data: () => ({
     taskInfo: {},
@@ -237,19 +252,19 @@ export default {
     // 载入临时搬运入库任务
     loadCarryInList() {
       let vm = this
-      carryIn.listByStockOutTask(this.taskInfo.id).then(res => {
+      carryIn.listByStockOutTask(this.stockOutTaskId).then(res => {
         vm.carryInTaskList = res
       })
     },
 
-    // 显示确认出库任务
+    // 显示出库任务确认
     showFinishTask() {
-      this.$refs.stockInTaskFinishMod.init(this.stockOutTaskId)
+      this.$refs.stockOutTaskFinishMod.init(this.stockOutTaskId)
     },
 
     // 显示删除出库任务
     showDeleteTask() {
-      this.$refs.stockInTaskDeleteMod.init(this.stockOutTaskId)
+      this.$refs.stockOutTaskDeleteMod.init(this.stockOutTaskId)
     },
 
     // 下发搬运任务
@@ -267,7 +282,7 @@ export default {
       this.$refs.carryOutDeleteMod.init(item.id)
     },
 
-    // 显示确认搬运出库
+    // 确认搬运入库
     showCarryInFinish(item) {
       this.$refs.carryInFinishMod.init(item.id)
     }
