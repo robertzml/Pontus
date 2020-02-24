@@ -1,6 +1,11 @@
 <template>
   <v-card class="px-2 mt-2">
-    <v-subheader class="subtitle-1 teal--text text--lighten-2">入库货物列表</v-subheader>
+    <v-subheader class="subtitle-1 teal--text text--lighten-2">
+      入库货物列表
+      <v-spacer></v-spacer>
+      <span class="subtitle-2 ml-4">入库总数量: {{ totalCount }}</span>
+      <span class="subtitle-2 ml-4">入库总重量: {{ totalWeight }} 吨</span>
+    </v-subheader>
     <v-data-table :headers="headers" :items="taskInfoList" hide-default-footer disable-pagination>
       <template v-slot:item.status="{ item }">
         {{ item.status | displayStatus }}
@@ -39,7 +44,23 @@ export default {
     ...mapState({
       stockInId: state => state.keeper.stockInId,
       refreshEvent: state => state.keeper.refreshEvent
-    })
+    }),
+    totalCount: function() {
+      let total = 0
+      this.taskInfoList.forEach(item => {
+        total += item.inCount
+      })
+
+      return total
+    },
+    totalWeight: function() {
+      let total = 0
+      this.taskInfoList.forEach(item => {
+        total += item.inWeight
+      })
+
+      return total.toFixed(4)
+    }
   },
   watch: {
     stockInId: function() {

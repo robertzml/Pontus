@@ -29,7 +29,7 @@
     </v-app-bar>
 
     <v-content>
-      <v-container fluid style="height:100px;" class="px-4" v-if="userInfo.userGroupId == 5">
+      <v-container fluid style="height:80px;" class="px-4 pb-0" v-if="userInfo.userGroupId == 5">
         <keeper-menu></keeper-menu>
       </v-container>
       <v-container fluid style="height:80px;" class="px-4 pb-0" v-if="userInfo.userGroupId == 6">

@@ -22,37 +22,37 @@
         <v-card class="px-2 blue-grey darken-3">
           <v-subheader class="subtitle-1 teal--text text--lighten-2">入库单信息</v-subheader>
           <v-row dense>
-            <v-col cols="3" md="3" sm="6">
+            <v-col cols="3" lg="2" md="3" sm="6">
               <v-text-field :value="$util.displayDate(stockInInfo.inTime)" label="入库时间" hide-details readonly></v-text-field>
             </v-col>
-            <v-col cols="3" md="3" sm="6">
+            <v-col cols="3" lg="2" md="3" sm="6">
               <v-text-field v-model="stockInInfo.flowNumber" label="流水单号" hide-details readonly></v-text-field>
             </v-col>
-            <v-col cols="3" md="3" sm="6">
+            <v-col cols="3" lg="2" md="3" sm="6">
               <v-text-field :value="$util.stockInType(stockInInfo.type)" label="入库类型" hide-details readonly></v-text-field>
             </v-col>
-            <v-col cols="3" md="3" sm="6">
+            <v-col cols="3" lg="2" md="3" sm="6">
               <v-text-field v-model="stockInInfo.vehicleNumber" label="车牌号" hide-details readonly></v-text-field>
             </v-col>
-            <v-col cols="3" md="3" sm="6">
+            <v-col cols="3" lg="2" md="3" sm="6">
               <v-text-field v-model="stockInInfo.customerNumber" label="客户编号" hide-details readonly></v-text-field>
             </v-col>
-            <v-col cols="3" md="3" sm="6">
+            <v-col cols="3" lg="2" md="3" sm="6">
               <v-text-field v-model="stockInInfo.customerName" label="客户名称" hide-details readonly></v-text-field>
             </v-col>
-            <v-col cols="3" md="3" sm="6">
+            <v-col cols="3" lg="2" md="3" sm="6">
               <v-text-field v-model="stockInInfo.contractNumber" label="合同编号" hide-details readonly></v-text-field>
             </v-col>
-            <v-col cols="3" md="3" sm="6">
+            <v-col cols="3" lg="2" md="3" sm="6">
               <v-text-field v-model="stockInInfo.contractName" label="合同名称" hide-details readonly></v-text-field>
             </v-col>
-            <v-col cols="3" md="3" sm="6">
+            <v-col cols="3" lg="2" md="3" sm="6">
               <v-text-field :value="$util.contractType(stockInInfo.contractType)" label="合同类型" hide-details readonly></v-text-field>
             </v-col>
-            <v-col cols="3" md="3" sm="6">
+            <v-col cols="3" lg="2" md="3" sm="6">
               <v-text-field :value="$util.billingType(stockInInfo.billingType)" label="计费方式" hide-details readonly></v-text-field>
             </v-col>
-            <v-col cols="3" md="3" sm="6">
+            <v-col cols="3" lg="2" md="3" sm="6">
               <v-text-field
                 v-model="stockInInfo.unitPrice"
                 label="冷藏费单价"
@@ -61,16 +61,16 @@
                 readonly
               ></v-text-field>
             </v-col>
-            <v-col cols="3" md="3" sm="6">
+            <v-col cols="3" lg="2" md="3" sm="6">
               <v-text-field v-model="stockInInfo.userName" label="登记人" hide-details readonly></v-text-field>
             </v-col>
-            <v-col cols="3" md="3" sm="6">
+            <v-col cols="3" lg="2" md="3" sm="6">
               <v-text-field :value="$util.displayDateTime(stockInInfo.createTime)" label="创建时间" hide-details readonly></v-text-field>
             </v-col>
-            <v-col cols="3" md="3" sm="6">
+            <v-col cols="3" lg="2" md="3" sm="6">
               <v-text-field :value="$util.displayStatus(stockInInfo.status)" label="状态" hide-details readonly></v-text-field>
             </v-col>
-            <v-col cols="6" md="6" sm="6">
+            <v-col cols="6" lg="4" md="6" sm="6">
               <v-text-field label="备注" :value="stockInInfo.remark" hide-details readonly> </v-text-field>
             </v-col>
           </v-row>
@@ -82,7 +82,7 @@
           </v-card-actions>
         </v-card>
 
-        <stock-in-task-create v-if="stockInInfo" ref="createTaskMod" :stockInInfo="stockInInfo" @update="refresh"></stock-in-task-create>
+        <stock-in-task-create v-if="stockInInfo" ref="createTaskMod" @update="refresh"></stock-in-task-create>
 
         <v-slide-x-transition leave-absolute>
           <component v-bind:is="tab"></component>
@@ -161,7 +161,7 @@ export default {
     // 显示添加入库任务
     showAddTask() {
       if (this.model) {
-        this.$refs.createTaskMod.init()
+        this.$refs.createTaskMod.init(this.stockInInfo)
       }
     }
   },

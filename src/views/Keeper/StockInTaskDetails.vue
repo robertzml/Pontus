@@ -53,21 +53,31 @@
 
         <v-card-actions>
           <v-btn color="primary" v-if="this.taskInfo.status == 71" @click.stop="showAddCarryIn">任务下发</v-btn>
-          <v-btn color="error" v-if="this.taskInfo.status != 75" @click.stop="deleteDialog = true">删除入库货物</v-btn>
+          <v-btn color="error" v-if="this.taskInfo.status != 75" @click.stop="showDeleteTask">删除入库货物</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
 
     <v-col cols="7">
       <v-card class="mb-2">
-        <v-subheader class="subtitle-1 purple--text text--lighten-2">搬运入库任务</v-subheader>
+        <v-subheader class="subtitle-1 purple--text text--lighten-2">
+          搬运入库任务
+          <v-spacer></v-spacer>
+          <span class="subtitle-2">托盘数量: {{ totalInTray }}</span>
+          <span class="subtitle-2 ml-4">搬运数量: {{ totalMoveInCount }}</span>
+          <span class="subtitle-2 ml-4">搬运重量: {{ totalMoveInWeight }} 吨</span>
+        </v-subheader>
         <v-card-text class="px-0">
-          <v-data-table :headers="carryInTaskHeaders" :items="carryInTaskList" hide-default-footer disable-filtering disable-pagination>
+          <v-data-table :headers="carryInTaskHeaders" :items="carryInTaskList" disable-filtering :items-per-page="10">
             <template v-slot:item.status="{ item }">
               {{ item.status | displayStatus }}
             </template>
             <template v-slot:item.action="{ item }">
-              <v-btn v-if="item.status == 72" small color="red darken-3" class="ml-2" @click="deleteCarryIn(item)">
+              <v-btn v-if="item.status == 74" small color="success darken-1" class="ml-2" @click="showCarryInFinish(item)">
+                <v-icon left dark>check</v-icon>
+                确认
+              </v-btn>
+              <v-btn v-if="item.status == 72" small color="red darken-3" class="ml-2" @click="showCarryInDelete(item)">
                 <v-icon left dark>delete</v-icon>
                 删除
               </v-btn>
@@ -77,19 +87,17 @@
       </v-card>
     </v-col>
 
-    <v-dialog v-model="deleteDialog" persistent max-width="300">
-      <v-card>
-        <v-card-title class="headline">删除入库货物</v-card-title>
-        <v-card-text>是否确认删除该入库货物？仅能删除未下发搬运任务的入库货物。</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-grey lighten-3" text @click="deleteDialog = false">取消</v-btn>
-          <v-btn color="green darken-1" text :loading="deleteLoading" @click="deleteTask">确定</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <!-- 入库任务删除组件 -->
+    <stock-in-task-delete ref="stockInTaskDeleteMod" @close="showStockInTaskList"></stock-in-task-delete>
 
+    <!-- 搬运任务下发组件 -->
     <carry-in-create ref="carryInMod" :stockInTask="taskInfo" @close="loadCarryInList"></carry-in-create>
+
+    <!-- 搬运入库确认组件 -->
+    <carry-in-finish ref="carryInFinishMod" @close="loadCarryInList"></carry-in-finish>
+
+    <!-- 搬运入库删除组件 -->
+    <carry-in-delete ref="carryInDeleteMod" @close="loadCarryInList"></carry-in-delete>
   </v-row>
 </template>
 
@@ -97,16 +105,20 @@
 import { mapState, mapActions } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import carryIn from '@/controllers/carryIn'
+import StockInTaskDelete from '@/components/Dialog/StockInTaskDelete'
 import CarryInCreate from '@/components/Dialog/CarryInCreate'
+import CarryInFinish from '@/components/Dialog/CarryInFinish'
+import CarryInDelete from '@/components/Dialog/CarryInDelete'
 
 export default {
   name: 'StockInTaskDetails',
   components: {
-    CarryInCreate
+    StockInTaskDelete,
+    CarryInCreate,
+    CarryInFinish,
+    CarryInDelete
   },
   data: () => ({
-    deleteDialog: false,
-    deleteLoading: false,
     taskInfo: {},
     carryInTaskList: [],
     carryInTaskHeaders: [
@@ -130,7 +142,26 @@ export default {
       // 传入入库任务ID
       stockInTaskId: state => state.keeper.stockInTaskId,
       refreshEvent: state => state.keeper.refreshEvent
-    })
+    }),
+    totalInTray: function() {
+      return this.carryInTaskList.length
+    },
+    totalMoveInCount: function() {
+      let total = 0
+      this.carryInTaskList.forEach(item => {
+        total += item.moveCount
+      })
+
+      return total
+    },
+    totalMoveInWeight: function() {
+      let total = 0
+      this.carryInTaskList.forEach(item => {
+        total += item.moveWeight
+      })
+
+      return total.toFixed(4)
+    }
   },
   methods: {
     ...mapActions({
@@ -153,24 +184,9 @@ export default {
       })
     },
 
-    // 删除入库任务
-    deleteTask() {
-      let vm = this
-      this.$nextTick(() => {
-        this.deleteLoading = true
-      })
-
-      stockIn.deleteTask({ taskId: this.taskInfo.id }).then(res => {
-        if (res.status == 0) {
-          vm.$store.commit('alertSuccess', '删除任务成功')
-          vm.showStockInTaskList()
-          vm.deleteLoading = false
-          vm.deleteDialog = false
-        } else {
-          vm.$store.commit('alertError', res.errorMessage)
-          vm.deleteLoading = false
-        }
-      })
+    // 显示删除入库任务
+    showDeleteTask() {
+      this.$refs.stockInTaskDeleteMod.init(this.stockInTaskId)
     },
 
     // 下发任务
@@ -178,19 +194,14 @@ export default {
       this.$refs.carryInMod.init()
     },
 
-    // 删除搬运入库
-    deleteCarryIn(item) {
-      if (confirm('是否删除该搬运任务')) {
-        let vm = this
-        carryIn.delete({ id: item.id }).then(res => {
-          if (res.status == 0) {
-            vm.$store.commit('alertSuccess', '删除搬运入库任务成功')
-            vm.loadCarryInList()
-          } else {
-            vm.$store.commit('alertError', res.errorMessage)
-          }
-        })
-      }
+    // 显示确认搬运入库
+    showCarryInFinish(item) {
+      this.$refs.carryInFinishMod.init(item.id)
+    },
+
+    // 显示删除搬运入库任务
+    showCarryInDelete(item) {
+      this.$refs.carryInDeleteMod.init(item.id)
     }
   },
   mounted: function() {
