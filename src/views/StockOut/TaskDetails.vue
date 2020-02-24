@@ -62,7 +62,7 @@
             <v-card-actions>
               <v-btn color="primary" v-if="taskInfo.status == 81" @click.stop="showCarryOutCreate">任务下发</v-btn>
               <v-btn color="cyan darken-2" v-if="taskInfo.status == 81" @click="showScanTray">扫托盘码出库</v-btn>
-              <v-btn color="deep-orange darken-3" v-if="taskInfo.status == 81" @click.stop="showFinishTask">出库货物确认</v-btn>
+              <v-btn color="success darken-1" v-if="taskInfo.status == 81" @click.stop="showFinishTask">出库货物确认</v-btn>
               <v-btn color="red darken-3" v-if="taskInfo.status != 85" @click.stop="showDeleteTask">删除出库货物</v-btn>
             </v-card-actions>
           </v-card>
@@ -142,7 +142,7 @@
     <stock-out-task-delete ref="stockOutTaskDeleteMod" @close="stockOutShowDetails(taskInfo.stockOutId)"></stock-out-task-delete>
 
     <!-- 扫托盘码出库组件 -->
-    <scan-tray-out ref="scanMod" @close="loadCarryOutTask"></scan-tray-out>
+    <scan-tray-out ref="scanMod" @close="refresh"></scan-tray-out>
 
     <!-- 下发搬运出库任务组件 -->
     <carry-out-create ref="carryOutCreateMod" @close="loadCarryOutTask"></carry-out-create>
