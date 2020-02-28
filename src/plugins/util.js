@@ -119,6 +119,7 @@ export default {
     }
   },
 
+  // 计费单价
   billingTypeUnit: type => {
     let bt = dict.billingType.find(r => r.value == type)
     if (bt != undefined) {

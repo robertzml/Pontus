@@ -63,8 +63,8 @@
                 required
               ></v-text-field>
             </v-col>
-            <v-col cols="6" md="6" sm="6">
-              <v-text-field label="最短天数" v-model="contractInfo.parameter1"></v-text-field>
+            <v-col cols="6" md="6" sm="6" v-if="contractInfo.type == 1">
+              <v-text-field label="最短天数" v-model="contractInfo.parameter1" :rules="parameter1Rules"></v-text-field>
             </v-col>
             <v-col cols="12" md="12" sm="12">
               <v-text-field label="备注" v-model="contractInfo.remark"></v-text-field>
@@ -110,8 +110,21 @@ export default {
       remark: ''
     },
     nameRules: [v => !!v || '请输入合同名称'],
-    priceRule: [v => /^[0-9]+(.[0-9]{1,2})?$/.test(v) || '请输入正确冷藏费']
+    priceRule: [v => /^[0-9]+(.[0-9]{1,2})?$/.test(v) || '请输入正确冷藏费'],
+    digitalRules: [v => /^\d+$/.test(v) || '请输入数字']
   }),
+  computed: {
+    parameter1Rules() {
+      let rules = []
+
+      if (this.contractInfo.type == 1) {
+        const rule = v => /^\d+$/.test(v) || '请输入数字'
+        rules.push(rule)
+      }
+
+      return rules
+    }
+  },
   methods: {
     init: function(id) {
       this.contractId = id

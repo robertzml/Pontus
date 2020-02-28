@@ -54,6 +54,7 @@ export default {
       { text: '关闭日期', value: 'closeDate' },
       { text: '计费方式', value: 'billingType' },
       { text: '冷藏费单价', value: 'unitPrice' },
+      { text: '最短天数', value: 'parameter1' },
       { text: '操作', value: 'action', sortable: false }
     ]
   }),

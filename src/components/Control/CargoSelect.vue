@@ -50,8 +50,7 @@ export default {
     }
   },
   data: () => ({
-    selectedCargo: null,
-    cargoRules2: [v => (!!v && v.id != 0) || '请选择类别']
+    selectedCargo: null
   }),
   watch: {
     cargoId: function() {
