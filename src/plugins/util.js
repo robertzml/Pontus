@@ -207,5 +207,15 @@ export default {
     } else {
       return ''
     }
+  },
+
+  // 流水类型
+  flowType: type => {
+    let ct = dict.flowType.find(r => r.value == type)
+    if (ct != undefined) {
+      return ct.text
+    } else {
+      return ''
+    }
   }
 }

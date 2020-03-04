@@ -107,6 +107,16 @@ export default {
     { text: '准备移出', value: 64 }
   ],
 
+  /** 流水类型 */
+  flowType: [
+    { text: '无', value: 0 },
+    { text: '入库', value: 1 },
+    { text: '出库', value: 2 },
+    { text: '移库', value: 3 },
+    { text: '移入', value: 4 },
+    { text: '移出', value: 5 }
+  ],
+
   /** 用户组 */
   userGroup: [
     { text: '超级管理员', value: 1 },

@@ -214,6 +214,15 @@ export const menuRoutes = [
     meta: { roles: [1, 2, 3] }
   },
   {
+    path: '/dailycoldfee',
+    name: 'dailyColdFee',
+    text: '冷藏费清单',
+    group: 'expense',
+    model: false,
+    component: () => import('@/views/Expense/DailyColdFee.vue'),
+    meta: { roles: [1, 2, 3, 4] }
+  },
+  {
     path: '/user',
     name: 'user',
     text: '用户列表',

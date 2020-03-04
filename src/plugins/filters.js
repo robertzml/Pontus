@@ -59,6 +59,10 @@ const filters = Vue => {
   Vue.filter('carryOutTaskType', function(val) {
     return util.carryOutTaskType(val)
   })
+
+  Vue.filter('flowType', function(val) {
+    return util.flowType(val)
+  })
 }
 
 export default filters
