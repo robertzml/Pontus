@@ -218,7 +218,7 @@ export default {
         })
 
         let vm = this
-        let req = { trayCode: this.trayCode, shelfCode: this.shelfCode, userId: this.$store.state.user.id }
+        let req = { trayCode: this.trayCode, shelfCode: this.shelfCode.toUpperCase(), userId: this.$store.state.user.id }
 
         carryOut.leaveTask(req).then(res => {
           if (res.status == 0) {
