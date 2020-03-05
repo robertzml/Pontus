@@ -12,7 +12,7 @@
             <v-col cols="4" md="4" sm="4">
               <v-menu v-model="timeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
-                  <v-text-field v-model="filter.time" label="入库日期" prepend-icon="event" clearable hide-details readonly v-on="on"></v-text-field>
+                  <v-text-field v-model="filter.time" label="出库日期" prepend-icon="event" clearable hide-details readonly v-on="on"></v-text-field>
                 </template>
                 <v-date-picker v-model="filter.time" :day-format="$util.pickerDayFormat" @input="timeMenu = false"></v-date-picker>
               </v-menu>
@@ -28,16 +28,16 @@
 
     <v-col cols="12">
       <v-card flat>
-        <v-card-title class="blue">
-          入库单
+        <v-card-title class="deep-purple">
+          出库单
         </v-card-title>
 
-        <v-data-table :headers="stockInHeaders" :items="stockInFilterData" :search="filter.text" :items-per-page="10">
-          <template v-slot:item.inTime="{ item }">
-            {{ item.inTime | displayDate }}
+        <v-data-table :headers="stockOutHeaders" :items="stockOutFilterData" :search="filter.text" :items-per-page="10">
+          <template v-slot:item.outTime="{ item }">
+            {{ item.outTime | displayDate }}
           </template>
           <template v-slot:item.type="{ item }">
-            {{ $util.stockInType(item.type) }}
+            {{ $util.stockOutType(item.type) }}
           </template>
           <template v-slot:item.status="{ item }">
             {{ item.status | displayStatus }}
@@ -56,11 +56,11 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import stockIn from '@/controllers/stockIn'
+import stockOut from '@/controllers/stockOut'
 import CustomerSelect from '@/components/Control/CustomerSelect'
 
 export default {
-  name: 'ReceiptStockInList',
+  name: 'ReceiptStockOutList',
   components: {
     CustomerSelect
   },
@@ -71,11 +71,11 @@ export default {
       time: null,
       text: ''
     },
-    stockInListData: [],
-    stockInHeaders: [
+    stockOutListData: [],
+    stockOutHeaders: [
       { text: '编号', value: 'flowNumber', align: 'left' },
-      { text: '入库时间', value: 'inTime' },
-      { text: '入库类型', value: 'type' },
+      { text: '出库时间', value: 'outTime' },
+      { text: '出库类型', value: 'type' },
       { text: '客户编号', value: 'customerNumber' },
       { text: '客户名称', value: 'customerName' },
       { text: '合同名称', value: 'contractName' },
@@ -88,9 +88,9 @@ export default {
     ...mapState({
       refreshEvent: state => state.receipt.stockInRefreshEvent
     }),
-    // 过滤后入库单列表
-    stockInFilterData() {
-      let temp = this.stockInListData
+    // 过滤后出库单列表
+    stockOutFilterData() {
+      let temp = this.stockOutListData
 
       if (this.filter.customerId != 0) {
         temp = temp.filter(r => r.customerId == this.filter.customerId)
@@ -98,7 +98,7 @@ export default {
 
       if (this.filter.time) {
         let t = this.$moment(this.filter.time)
-        temp = temp.filter(r => t.isSame(r.inTime))
+        temp = temp.filter(r => t.isSame(r.outTime))
       }
 
       return temp
@@ -111,13 +111,13 @@ export default {
   },
   methods: {
     ...mapActions({
-      showStockInDetails: 'receipt/showStockInDetails'
+      showStockOutDetails: 'receipt/showStockOutDetails'
     }),
 
-    loadStockInList() {
+    loadStockOutList() {
       let vm = this
-      stockIn.getList().then(res => {
-        vm.stockInListData = res
+      stockOut.getList().then(res => {
+        vm.stockOutListData = res
       })
     },
 
@@ -126,11 +126,11 @@ export default {
     },
 
     viewItem(item) {
-      this.showStockInDetails(item.id)
+      this.showStockOutDetails(item.id)
     }
   },
   mounted: function() {
-    this.loadStockInList()
+    this.loadStockOutList()
   }
 }
 </script>
