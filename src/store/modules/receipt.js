@@ -11,7 +11,7 @@ export default {
     stockInId: '',
 
     // 刷新事件
-    refreshEvent: false
+    stockInRefreshEvent: false
   },
 
   actions: {
@@ -39,8 +39,8 @@ export default {
     },
 
     // 刷新操作
-    refresh: state => {
-      state.refreshEvent = !state.refreshEvent
+    refreshStockIn: state => {
+      state.stockInRefreshEvent = !state.stockInRefreshEvent
     }
   }
 }

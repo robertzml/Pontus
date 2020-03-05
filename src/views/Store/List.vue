@@ -139,7 +139,7 @@ export default {
       this.loadCargoData(val)
     },
     refreshEvent: function() {
-      this.search()
+      this.searchStore()
     }
   },
   computed: {

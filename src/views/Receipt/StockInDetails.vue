@@ -1,8 +1,8 @@
 <template>
-  <v-sheet class="transparent d-flex" tile>
-    <v-expansion-panels v-model="panel" hover multiple>
+  <v-sheet class="transparent">
+    <v-expansion-panels v-model="panel" multiple>
       <v-expansion-panel>
-        <v-expansion-panel-header ripple>入库单信息</v-expansion-panel-header>
+        <v-expansion-panel-header ripple class="cyan darken-1">入库单信息</v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-card flat>
             <v-row dense>
@@ -70,7 +70,7 @@
       </v-expansion-panel>
 
       <v-expansion-panel>
-        <v-expansion-panel-header ripple>入库货物</v-expansion-panel-header>
+        <v-expansion-panel-header ripple class="cyan darken-4">入库货物</v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="headers" :items="taskInfoList" :items-per-page="5">
             <template v-slot:item.status="{ item }">
@@ -153,7 +153,7 @@ export default {
   }),
   computed: {
     ...mapState({
-      refreshEvent: state => state.receipt.refreshEvent,
+      refreshEvent: state => state.receipt.stockInRefreshEvent,
       stockInId: state => state.receipt.stockInId
     })
   },

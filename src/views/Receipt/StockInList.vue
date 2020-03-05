@@ -2,10 +2,8 @@
   <v-row dense>
     <v-col cols="12">
       <v-card flat>
-        <v-card-subtitle>
-          筛选
-        </v-card-subtitle>
-        <v-card-text>
+        <v-card-subtitle class="pb-2 light-green darken-4">过滤条件</v-card-subtitle>
+        <v-card-text class="pt-0">
           <v-row dense>
             <v-col cols="4" md="4" sm="4">
               <customer-select :customer-id.sync="filter.customerId" :required="false"></customer-select>
@@ -99,7 +97,7 @@ export default {
   }),
   computed: {
     ...mapState({
-      refreshEvent: state => state.receipt.refreshEvent
+      refreshEvent: state => state.receipt.stockInRefreshEvent
     }),
     // 过滤后入库单列表
     stockInFilterData() {

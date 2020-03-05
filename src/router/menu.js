@@ -187,13 +187,22 @@ export const menuRoutes = [
     meta: { roles: [1, 2, 3, 4] }
   },
   {
-    path: '/receipt',
-    name: 'receipt',
-    text: '单据列表',
+    path: '/receiptstockin',
+    name: 'receiptStockIn',
+    text: '入库单据',
     group: 'receipt',
     model: false,
-    component: () => import('@/views/Receipt/Index.vue'),
-    meta: { roles: [1, 2, 3] }
+    component: () => import('@/views/Receipt/StockIn.vue'),
+    meta: { roles: [1, 2, 3, 4] }
+  },
+  {
+    path: '/receiptstockout',
+    name: 'receiptStockOut',
+    text: '出库单据',
+    group: 'receipt',
+    model: false,
+    component: () => import('@/views/Receipt/StockOut.vue'),
+    meta: { roles: [1, 2, 3, 4] }
   },
   {
     path: '/storeposition',
