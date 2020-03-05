@@ -202,7 +202,7 @@ export const menuRoutes = [
     group: 'store',
     model: false,
     component: () => import('@/views/StorePosition/Index.vue'),
-    meta: { roles: [1, 2, 3] }
+    meta: { roles: [1, 2, 3, 4] }
   },
   {
     path: '/store',
@@ -211,7 +211,16 @@ export const menuRoutes = [
     group: 'store',
     model: false,
     component: () => import('@/views/Store/Index.vue'),
-    meta: { roles: [1, 2, 3] }
+    meta: { roles: [1, 2, 3, 4] }
+  },
+  {
+    path: '/storesnapshot',
+    name: 'storeSnapshot',
+    text: '库存快照',
+    group: 'store',
+    model: false,
+    component: () => import('@/views/Store/Snapshot.vue'),
+    meta: { roles: [1, 2, 3, 4] }
   },
   {
     path: '/dailycoldfee',

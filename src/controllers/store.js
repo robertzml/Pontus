@@ -83,5 +83,17 @@ export default {
       params: { stockOutId: stockOutId, cargoId: cargoId }
     })
     return res.data
+  },
+
+  /**
+   * 获取指定日合同库存记录
+   * @param {合同ID，日期} param0
+   */
+  async findInDay({ contractId, date }) {
+    const res = await axios._get({
+      url: '/store/getInDay',
+      params: { contractId: contractId, date: date }
+    })
+    return res.data
   }
 }
