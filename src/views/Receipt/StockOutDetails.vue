@@ -80,7 +80,10 @@
                 信息
               </v-btn>
               <v-btn small color="success" class="ml-2" @click="viewCarryIn(item)">
-                搬运
+                搬入
+              </v-btn>
+              <v-btn small color="success" class="ml-2" @click="viewCarryOut(item)">
+                搬出
               </v-btn>
             </template>
           </v-data-table>
@@ -89,12 +92,46 @@
     </v-expansion-panels>
 
     <stock-out-task-details ref="stockOutTaskDetailsMod"></stock-out-task-details>
+
+    <v-bottom-sheet v-model="bottomIn" scrollable>
+      <v-card flat>
+        <v-card-title class="lime darken-3">搬运入库列表</v-card-title>
+        <v-card-text style="height: 300px">
+          <v-data-table :headers="carryInTaskHeaders" :items="carryInTaskList" hide-default-footer disable-filtering disable-pagination>
+            <template v-slot:item.status="{ item }">
+              {{ item.status | displayStatus }}
+            </template>
+            <template v-slot:item.moveTime="{ item }">
+              {{ item.moveTime | displayDateTime }}
+            </template>
+          </v-data-table>
+        </v-card-text>
+      </v-card>
+    </v-bottom-sheet>
+
+    <v-bottom-sheet v-model="bottomOut" scrollable>
+      <v-card flat>
+        <v-card-title class="purple darken-3">搬运出库列表</v-card-title>
+        <v-card-text style="height: 300px">
+          <v-data-table :headers="carryOutTaskHeaders" :items="carryOutTaskList" hide-default-footer disable-filtering disable-pagination>
+            <template v-slot:item.status="{ item }">
+              {{ item.status | displayStatus }}
+            </template>
+            <template v-slot:item.moveTime="{ item }">
+              {{ item.moveTime | displayDateTime }}
+            </template>
+          </v-data-table>
+        </v-card-text>
+      </v-card>
+    </v-bottom-sheet>
   </v-sheet>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import stockOut from '@/controllers/stockOut'
+import carryIn from '@/controllers/carryIn'
+import carryOut from '@/controllers/carryOut'
 import StockOutTaskDetails from './StockOutTaskDetails'
 
 export default {
@@ -116,7 +153,34 @@ export default {
       { text: '状态', value: 'status' },
       { text: '操作', value: 'action', sortable: false }
     ],
-    taskInfoList: []
+    taskInfoList: [],
+    bottomIn: false,
+    carryInTaskList: [],
+    carryInTaskHeaders: [
+      { text: '托盘码', value: 'trayCode' },
+      { text: '货架码', value: 'shelfCode' },
+      { text: '搬运数量', value: 'moveCount' },
+      { text: '搬运重量(t)', value: 'moveWeight' },
+      { text: '仓位码', value: 'positionNumber' },
+      { text: '清点人', value: 'checkUserName' },
+      { text: '接单人', value: 'receiveUserName' },
+      { text: '移入时间', value: 'moveTime' },
+      { text: '状态', value: 'status' }
+    ],
+    bottomOut: false,
+    carryOutTaskList: [],
+    carryOutTaskHeaders: [
+      { text: '托盘码', value: 'trayCode' },
+      { text: '在库数量', value: 'storeCount' },
+      { text: '搬运数量', value: 'moveCount' },
+      { text: '在库重量(t)', value: 'storeWeight' },
+      { text: '搬运重量(t)', value: 'moveWeight' },
+      { text: '仓位码', value: 'positionNumber' },
+      { text: '清点人', value: 'checkUserName' },
+      { text: '接单人', value: 'receiveUserName' },
+      { text: '移出时间', value: 'moveTime' },
+      { text: '状态', value: 'status' }
+    ]
   }),
   computed: {
     ...mapState({
@@ -128,7 +192,6 @@ export default {
     refreshEvent: function() {
       this.loadStockOut()
       this.loadTaskList()
-      // this.stockInTaskInfo = {}
     }
   },
   methods: {
@@ -157,12 +220,31 @@ export default {
     // 查看出库任务信息
     viewTaskItem(item) {
       this.$refs.stockOutTaskDetailsMod.init(item.id)
+    },
+
+    // 查看搬运清单
+    viewCarryIn(item) {
+      let vm = this
+      carryIn.listByStockOutTask(item.id).then(res => {
+        vm.carryInTaskList = res
+      })
+
+      this.bottomIn = true
+    },
+
+    // 查看搬运出库清点
+    viewCarryOut(item) {
+      let vm = this
+      carryOut.listByStockOutTask(item.id).then(res => {
+        vm.carryOutTaskList = res
+      })
+
+      this.bottomOut = true
     }
   },
   activated: function() {
     this.loadStockOut()
     this.loadTaskList()
-    // this.stockInTaskInfo = {}
   }
 }
 </script>
