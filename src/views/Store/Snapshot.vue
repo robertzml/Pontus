@@ -78,6 +78,28 @@
         </v-card-text>
       </v-card>
     </v-col>
+
+    <v-col cols="12">
+      <v-card>
+        <v-card-title class="green darken-3">
+          入库记录
+        </v-card-title>
+        <v-card-text class="px-0">
+          <v-data-table :headers="stockInHeaders" :items="stockInTaskData" :items-per-page="10"> </v-data-table>
+        </v-card-text>
+      </v-card>
+    </v-col>
+
+    <v-col cols="12">
+      <v-card>
+        <v-card-title class="light-green darken-3">
+          出库记录
+        </v-card-title>
+        <v-card-text class="px-0">
+          <v-data-table :headers="stockOutHeaders" :items="stockOutTaskData" :items-per-page="10"> </v-data-table>
+        </v-card-text>
+      </v-card>
+    </v-col>
   </v-row>
 </template>
 
@@ -85,6 +107,8 @@
 import moment from 'moment'
 import contract from '@/controllers/contract'
 import store from '@/controllers/store'
+import stockIn from '@/controllers/stockIn'
+import stockOut from '@/controllers/stockOut'
 import CustomerSelect from '@/components/Control/CustomerSelect'
 
 export default {
@@ -116,7 +140,26 @@ export default {
       { text: '入库时间', value: 'inTime' },
       { text: '出库时间', value: 'outTime' }
     ],
-    storeListData: []
+    storeListData: [],
+    stockInHeaders: [
+      { text: '货品名称', value: 'cargoName' },
+      { text: '类别名称', value: 'categoryName' },
+      { text: '入库数量', value: 'inCount' },
+      { text: '单位重量(kg)', value: 'unitWeight' },
+      { text: '总重量(t)', value: 'inWeight' },
+      { text: '批次', value: 'batch' },
+      { text: '产地', value: 'originPlace' },
+      { text: '保质期(月)', value: 'durability' }
+    ],
+    stockInTaskData: [],
+    stockOutHeaders: [
+      { text: '货品名称', value: 'cargoName' },
+      { text: '规格', value: 'specification' },
+      { text: '出库数量', value: 'outCount' },
+      { text: '单位重量(kg)', value: 'unitWeight' },
+      { text: '出库重量(t)', value: 'outWeight' }
+    ],
+    stockOutTaskData: []
   }),
   watch: {
     'search.customerId': function(val) {
@@ -137,10 +180,27 @@ export default {
     },
 
     // 搜索库存记录
-    async searchStore() {
+    searchStore() {
       if (this.$refs.form.validate()) {
-        this.storeListData = await store.findInDay({ contractId: this.search.selectedContract.id, date: this.search.date })
+        this.getStore()
+        this.getStockIn()
+        this.getStockOut()
       }
+    },
+
+    // 获取在库库存
+    async getStore() {
+      this.storeListData = await store.findInDay({ contractId: this.search.selectedContract.id, date: this.search.date })
+    },
+
+    // 获取入库任务
+    async getStockIn() {
+      this.stockInTaskData = await stockIn.getTaskByDate({ date: this.search.date, contractId: this.search.selectedContract.id })
+    },
+
+    // 获取出库任务
+    async getStockOut() {
+      this.stockOutTaskData = await stockOut.getTaskByDate({ date: this.search.date, contractId: this.search.selectedContract.id })
     }
   }
 }

@@ -101,6 +101,15 @@ export default {
     return res.data
   },
 
+  /**
+   * 按日期获取入库任务
+   * @param {日期，合同ID} param0
+   */
+  async getTaskByDate({ date, contractId }) {
+    const res = await axios._get({ url: '/stockIn/findTaskByDate', params: { date: date, contractId: contractId } })
+    return res.data
+  },
+
   // 添加入库任务
   async addTask(entity) {
     const res = await axios._post({ url: '/stockIn/addTask', data: entity })
