@@ -106,6 +106,70 @@
         </v-card>
       </v-expansion-panel-content>
     </v-expansion-panel>
+
+    <v-expansion-panel>
+      <v-expansion-panel-header ripple class="teal darken-1">库存记录变动</v-expansion-panel-header>
+      <v-expansion-panel-content eager>
+        <v-timeline dense>
+          <v-timeline-item v-for="(item, index) in orderInfo" :key="item.id">
+            <v-card class="elevation-2">
+              <v-card-title class="title pb-1 purple lighten-2">#{{ index + 1 }}</v-card-title>
+              <v-card-text>
+                <v-list>
+                  <v-row dense>
+                    <v-col cols="3">
+                      <v-list-item>
+                        <v-list-item-title>入库日期</v-list-item-title>
+                        <v-list-item-subtitle class="text-right">
+                          {{ item.inTime | displayDate }}
+                        </v-list-item-subtitle>
+                      </v-list-item>
+
+                      <v-list-item>
+                        <v-list-item-title>出库日期</v-list-item-title>
+                        <v-list-item-subtitle class="text-right">
+                          {{ item.outTime | displayDate }}
+                        </v-list-item-subtitle>
+                      </v-list-item>
+                    </v-col>
+
+                    <v-divider inset vertical></v-divider>
+
+                    <v-col cols="3">
+                      <v-list-item>
+                        <v-list-item-title>在库数量</v-list-item-title>
+                        <v-list-item-subtitle class="text-right">
+                          {{ item.storeCount }}
+                        </v-list-item-subtitle>
+                      </v-list-item>
+                      <v-list-item>
+                        <v-list-item-title>在库重量</v-list-item-title>
+                        <v-list-item-subtitle class="text-right"> {{ item.storeWeight }} t </v-list-item-subtitle>
+                      </v-list-item>
+                    </v-col>
+
+                    <v-divider inset vertical></v-divider>
+
+                    <v-col cols="3">
+                      <v-list-item>
+                        <v-list-item-title>托盘码</v-list-item-title>
+                        <v-list-item-subtitle class="text-right">
+                          {{ item.trayCode }}
+                        </v-list-item-subtitle>
+                      </v-list-item>
+                      <v-list-item>
+                        <v-list-item-title>仓位码</v-list-item-title>
+                        <v-list-item-subtitle class="text-right"> {{ item.positionNumber }}</v-list-item-subtitle>
+                      </v-list-item>
+                    </v-col>
+                  </v-row>
+                </v-list>
+              </v-card-text>
+            </v-card>
+          </v-timeline-item>
+        </v-timeline>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
   </v-expansion-panels>
 </template>
 
@@ -119,7 +183,8 @@ export default {
   data: () => ({
     panel: [0, 1],
     storeInfo: {},
-    coldFeeInfo: {}
+    coldFeeInfo: {},
+    orderInfo: []
   }),
   computed: {
     ...mapState({
@@ -131,20 +196,29 @@ export default {
     refreshEvent: function() {
       this.loadStore()
       this.loadColdFee()
+      this.loadInOrder()
     }
   },
   methods: {
     async loadStore() {
       this.storeInfo = await store.get(this.storeId)
     },
+
+    // 获取冷藏费
     async loadColdFee() {
       const now = this.$moment().format('YYYY-MM-DD')
       this.coldFeeInfo = await coldFee.getByStore(this.storeId, now)
+    },
+
+    // 获取库存记录链表
+    async loadInOrder() {
+      this.orderInfo = await store.findInOrder(this.storeId)
     }
   },
   activated: function() {
     this.loadStore()
     this.loadColdFee()
+    this.loadInOrder()
   }
 }
 </script>

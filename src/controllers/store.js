@@ -86,6 +86,18 @@ export default {
   },
 
   /**
+   * 获取库存记录链表
+   * @param {库存ID} id
+   */
+  async findInOrder(id) {
+    const res = await axios._get({
+      url: '/store/getInOrder',
+      params: { id: id }
+    })
+    return res.data
+  },
+
+  /**
    * 获取指定日合同库存记录
    * @param {合同ID，日期} param0
    */
