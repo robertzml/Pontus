@@ -38,15 +38,7 @@
               <v-col cols="3">
                 <v-menu v-model="dateMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                   <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="search.date"
-                      label="库存日期"
-                      prepend-icon="event"
-                      clearable
-                      hide-details
-                      readonly
-                      v-on="on"
-                    ></v-text-field>
+                    <v-text-field v-model="search.date" label="库存日期" prepend-icon="event" hide-details readonly v-on="on"></v-text-field>
                   </template>
                   <v-date-picker v-model="search.date" :day-format="$util.pickerDayFormat" @input="dateMenu = false"></v-date-picker>
                 </v-menu>
@@ -65,6 +57,9 @@
       <v-card>
         <v-card-title class="deep-purple">
           库存记录
+          <v-spacer></v-spacer>
+          <span class="subtitle-2 ml-4">库存总数量: {{ totalCount }}</span>
+          <span class="subtitle-2 ml-4">库存总重量: {{ totalWeight }} 吨</span>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="storeListData" :items-per-page="10">
@@ -83,6 +78,9 @@
       <v-card>
         <v-card-title class="green darken-3">
           入库记录
+          <v-spacer></v-spacer>
+          <span class="subtitle-2 ml-4">入库总数量: {{ totalMoveInCount }}</span>
+          <span class="subtitle-2 ml-4">入库总重量: {{ totalMoveInWeight }} 吨</span>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="stockInHeaders" :items="stockInTaskData" :items-per-page="10"> </v-data-table>
@@ -94,6 +92,9 @@
       <v-card>
         <v-card-title class="light-green darken-3">
           出库记录
+          <v-spacer></v-spacer>
+          <span class="subtitle-2 ml-4">出库总数量: {{ totalMoveOutCount }}</span>
+          <span class="subtitle-2 ml-4">出库总重量: {{ totalMoveOutWeight }} 吨</span>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="stockOutHeaders" :items="stockOutTaskData" :items-per-page="10"> </v-data-table>
@@ -142,6 +143,7 @@ export default {
     ],
     storeListData: [],
     stockInHeaders: [
+      { text: '客户名称', value: 'customerName' },
       { text: '货品名称', value: 'cargoName' },
       { text: '类别名称', value: 'categoryName' },
       { text: '入库数量', value: 'inCount' },
@@ -153,6 +155,7 @@ export default {
     ],
     stockInTaskData: [],
     stockOutHeaders: [
+      { text: '客户名称', value: 'customerName' },
       { text: '货品名称', value: 'cargoName' },
       { text: '规格', value: 'specification' },
       { text: '出库数量', value: 'outCount' },
@@ -164,6 +167,38 @@ export default {
   watch: {
     'search.customerId': function(val) {
       this.loadContract(val)
+    }
+  },
+  computed: {
+    // 库存总数量
+    totalCount: function() {
+      return this.storeListData.reduce(function(acc, cur) {
+        return acc + cur.totalCount
+      }, 0)
+    },
+    // 库存总重量
+    totalWeight: function() {
+      return this.storeListData
+        .reduce(function(acc, cur) {
+          return acc + cur.totalWeight
+        }, 0.0)
+        .toFixed(4)
+    },
+    // 入库总数量
+    totalMoveInCount: function() {
+      return this.stockInTaskData.reduce((acc, cur) => acc + cur.inCount, 0)
+    },
+    // 入库总重量
+    totalMoveInWeight: function() {
+      return this.stockInTaskData.reduce((acc, cur) => acc + cur.inWeight, 0).toFixed(4)
+    },
+    // 出库总数量
+    totalMoveOutCount: function() {
+      return this.stockOutTaskData.reduce((acc, cur) => acc + cur.outCount, 0)
+    },
+    // 出库总重量
+    totalMoveOutWeight: function() {
+      return this.stockOutTaskData.reduce((acc, cur) => acc + cur.outWeight, 0).toFixed(4)
     }
   },
   methods: {

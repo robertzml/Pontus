@@ -76,6 +76,7 @@ export default {
     },
     carryInList: [],
     headers: [
+      { text: '所属客户', value: 'customerName' },
       { text: '托盘码', value: 'trayCode' },
       { text: '搬运类型', value: 'type' },
       { text: '搬运数量', value: 'moveCount' },

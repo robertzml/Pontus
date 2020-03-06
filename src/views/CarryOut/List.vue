@@ -76,6 +76,7 @@ export default {
     },
     carryOutList: [],
     headers: [
+      { text: '所属客户', value: 'customerName' },
       { text: '托盘码', value: 'trayCode' },
       { text: '搬运类型', value: 'type' },
       { text: '在库数量', value: 'storeCount' },
