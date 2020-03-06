@@ -6,6 +6,9 @@
         <v-card-text class="pt-0">
           <v-row dense>
             <v-col cols="3">
+              <customer-select :customer-id.sync="filter.customerId" :required="false"></customer-select>
+            </v-col>
+            <v-col cols="3">
               <v-select
                 v-model="filter.status"
                 :items="$dict.stockOutStatus"
@@ -64,12 +67,17 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import carryOut from '@/controllers/carryOut'
+import CustomerSelect from '@/components/Control/CustomerSelect'
 
 export default {
   name: 'CarryOutList',
+  components: {
+    CustomerSelect
+  },
   data: () => ({
     timeMenu: false,
     filter: {
+      customerId: 0,
       status: 0,
       time: null,
       search: ''
@@ -104,6 +112,10 @@ export default {
       if (this.filter.time) {
         let t = this.$moment(this.filter.time)
         temp = temp.filter(r => t.isSame(r.moveTime, 'day'))
+      }
+
+      if (this.filter.customerId) {
+        temp = temp.filter(r => r.customerId == this.filter.customerId)
       }
 
       return temp
