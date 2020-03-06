@@ -104,6 +104,9 @@
             <template v-slot:item.moveTime="{ item }">
               {{ item.moveTime | displayDateTime }}
             </template>
+            <template v-slot:item.inTime="{ item }">
+              {{ item.inTime | displayDate }}
+            </template>
           </v-data-table>
         </v-card-text>
       </v-card>
@@ -119,6 +122,9 @@
             </template>
             <template v-slot:item.moveTime="{ item }">
               {{ item.moveTime | displayDateTime }}
+            </template>
+            <template v-slot:item.outTime="{ item }">
+              {{ item.outTime | displayDate }}
             </template>
           </v-data-table>
         </v-card-text>
@@ -165,6 +171,7 @@ export default {
       { text: '清点人', value: 'checkUserName' },
       { text: '接单人', value: 'receiveUserName' },
       { text: '移入时间', value: 'moveTime' },
+      { text: '入库日期', value: 'inTime' },
       { text: '状态', value: 'status' }
     ],
     bottomOut: false,
@@ -179,6 +186,7 @@ export default {
       { text: '清点人', value: 'checkUserName' },
       { text: '接单人', value: 'receiveUserName' },
       { text: '移出时间', value: 'moveTime' },
+      { text: '出库日期', value: 'outTime' },
       { text: '状态', value: 'status' }
     ]
   }),

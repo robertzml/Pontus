@@ -204,19 +204,19 @@ export default {
     carryInHeaders: [
       { text: '所属客户', value: 'customerName' },
       { text: '托盘码', value: 'trayCode' },
+      { text: '货品名称', value: 'cargoName' },
       { text: '搬运类型', value: 'type' },
       { text: '搬运数量', value: 'moveCount' },
       { text: '搬运重量(t)', value: 'moveWeight' },
-      { text: '货架码', value: 'shelfCode' },
       { text: '仓位码', value: 'positionNumber' },
       { text: '接单人', value: 'receiveUserName' },
-      { text: '上架时间', value: 'moveTime' },
-      { text: '状态', value: 'status' }
+      { text: '上架时间', value: 'moveTime' }
     ],
     carryInListData: [],
     carryOutHeaders: [
       { text: '所属客户', value: 'customerName' },
       { text: '托盘码', value: 'trayCode' },
+      { text: '货品名称', value: 'cargoName' },
       { text: '搬运类型', value: 'type' },
       { text: '在库数量', value: 'storeCount' },
       { text: '搬运数量', value: 'moveCount' },
@@ -224,8 +224,7 @@ export default {
       { text: '搬运重量(t)', value: 'moveWeight' },
       { text: '仓位码', value: 'positionNumber' },
       { text: '接单人', value: 'receiveUserName' },
-      { text: '下架时间', value: 'moveTime' },
-      { text: '状态', value: 'status' }
+      { text: '下架时间', value: 'moveTime' }
     ],
     carryOutListData: []
   }),
