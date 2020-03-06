@@ -45,7 +45,7 @@
               </v-col>
 
               <v-col cols="2">
-                <v-btn color="success darken-1 mt-2" :disabled="!valid" :loading="loading" @click="searchStore">搜索</v-btn>
+                <v-btn color="success darken-1 mt-2" :disabled="!valid" @click="searchStore">搜索</v-btn>
               </v-col>
             </v-row>
           </v-form>
@@ -101,6 +101,42 @@
         </v-card-text>
       </v-card>
     </v-col>
+
+    <v-col cols="12">
+      <v-tabs grow background-color="brown darken-3" v-model="tab">
+        <v-tab>搬入任务</v-tab>
+        <v-tab>搬出任务</v-tab>
+      </v-tabs>
+
+      <v-tabs-items v-model="tab">
+        <v-tab-item>
+          <v-data-table :headers="carryInHeaders" :items="carryInListData" :items-per-page="10">
+            <template v-slot:item.type="{ item }">
+              {{ item.type | carryInTaskType }}
+            </template>
+            <template v-slot:item.status="{ item }">
+              {{ item.status | displayStatus }}
+            </template>
+            <template v-slot:item.moveTime="{ item }">
+              {{ item.moveTime | displayDateTime }}
+            </template>
+          </v-data-table>
+        </v-tab-item>
+        <v-tab-item>
+          <v-data-table :headers="carryOutHeaders" :items="carryOutListData" :items-per-page="10">
+            <template v-slot:item.type="{ item }">
+              {{ item.type | carryOutTaskType }}
+            </template>
+            <template v-slot:item.status="{ item }">
+              {{ item.status | displayStatus }}
+            </template>
+            <template v-slot:item.moveTime="{ item }">
+              {{ item.moveTime | displayDateTime }}
+            </template>
+          </v-data-table>
+        </v-tab-item>
+      </v-tabs-items>
+    </v-col>
   </v-row>
 </template>
 
@@ -110,6 +146,8 @@ import contract from '@/controllers/contract'
 import store from '@/controllers/store'
 import stockIn from '@/controllers/stockIn'
 import stockOut from '@/controllers/stockOut'
+import carryIn from '@/controllers/carryIn'
+import carryOut from '@/controllers/carryOut'
 import CustomerSelect from '@/components/Control/CustomerSelect'
 
 export default {
@@ -119,7 +157,6 @@ export default {
   },
   data: () => ({
     valid: false,
-    loading: false,
     dateMenu: false,
     search: {
       customerId: 0,
@@ -162,7 +199,35 @@ export default {
       { text: '单位重量(kg)', value: 'unitWeight' },
       { text: '出库重量(t)', value: 'outWeight' }
     ],
-    stockOutTaskData: []
+    stockOutTaskData: [],
+    tab: null,
+    carryInHeaders: [
+      { text: '所属客户', value: 'customerName' },
+      { text: '托盘码', value: 'trayCode' },
+      { text: '搬运类型', value: 'type' },
+      { text: '搬运数量', value: 'moveCount' },
+      { text: '搬运重量(t)', value: 'moveWeight' },
+      { text: '货架码', value: 'shelfCode' },
+      { text: '仓位码', value: 'positionNumber' },
+      { text: '接单人', value: 'receiveUserName' },
+      { text: '上架时间', value: 'moveTime' },
+      { text: '状态', value: 'status' }
+    ],
+    carryInListData: [],
+    carryOutHeaders: [
+      { text: '所属客户', value: 'customerName' },
+      { text: '托盘码', value: 'trayCode' },
+      { text: '搬运类型', value: 'type' },
+      { text: '在库数量', value: 'storeCount' },
+      { text: '搬运数量', value: 'moveCount' },
+      { text: '在库重量(t)', value: 'storeWeight' },
+      { text: '搬运重量(t)', value: 'moveWeight' },
+      { text: '仓位码', value: 'positionNumber' },
+      { text: '接单人', value: 'receiveUserName' },
+      { text: '下架时间', value: 'moveTime' },
+      { text: '状态', value: 'status' }
+    ],
+    carryOutListData: []
   }),
   watch: {
     'search.customerId': function(val) {
@@ -220,6 +285,8 @@ export default {
         this.getStore()
         this.getStockIn()
         this.getStockOut()
+        this.getCarryIn()
+        this.getCarryOut()
       }
     },
 
@@ -236,6 +303,16 @@ export default {
     // 获取出库任务
     async getStockOut() {
       this.stockOutTaskData = await stockOut.getTaskByDate({ date: this.search.date, contractId: this.search.selectedContract.id })
+    },
+
+    // 获取搬运入库任务
+    async getCarryIn() {
+      this.carryInListData = await carryIn.listByInTime({ contractId: this.search.selectedContract.id, inTime: this.search.date })
+    },
+
+    // 获取搬运出库任务
+    async getCarryOut() {
+      this.carryOutListData = await carryOut.listByOutTime({ contractId: this.search.selectedContract.id, outTime: this.search.date })
     }
   }
 }

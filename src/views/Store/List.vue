@@ -25,7 +25,7 @@
               </v-col>
 
               <v-col cols="4">
-                <v-btn color="success darken-1 mt-2" :disabled="!valid" :loading="loading" @click="searchStore">搜索</v-btn>
+                <v-btn color="success darken-1 mt-2" :disabled="!valid" @click="searchStore">搜索</v-btn>
               </v-col>
             </v-row>
           </v-form>
@@ -105,7 +105,6 @@ export default {
   },
   data: () => ({
     valid: false,
-    loading: false,
     search: {
       customerId: 0,
       selectedContract: { number: '' }

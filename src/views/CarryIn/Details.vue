@@ -48,6 +48,13 @@
         </v-col>
 
         <v-col cols="6" sm="6" md="4" lg="2">
+          <v-text-field label="库存入库时间" :value="$util.displayDate(carryInInfo.inTime)" hide-details readonly></v-text-field>
+        </v-col>
+        <v-col cols="6" sm="6" md="4" lg="2">
+          <v-text-field label="库存出库时间" :value="$util.displayDate(carryInInfo.outTime)" hide-details readonly></v-text-field>
+        </v-col>
+
+        <v-col cols="6" sm="6" md="4" lg="2">
           <v-text-field label="清点人" v-model="carryInInfo.checkUserName" hide-details readonly></v-text-field>
         </v-col>
         <v-col cols="6" sm="6" md="4" lg="2">

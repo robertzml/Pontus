@@ -63,10 +63,21 @@
         </v-col>
 
         <v-col cols="6" sm="6" md="4" lg="2">
+          <v-text-field label="库存入库时间" :value="$util.displayDate(carryOutInfo.inTime)" hide-details readonly></v-text-field>
+        </v-col>
+        <v-col cols="6" sm="6" md="4" lg="2">
+          <v-text-field label="库存出库时间" :value="$util.displayDate(carryOutInfo.outTime)" hide-details readonly></v-text-field>
+        </v-col>
+
+        <v-col cols="6" sm="6" md="4" lg="2">
           <v-text-field label="接单人" v-model="carryOutInfo.receiveUserName" hide-details readonly></v-text-field>
         </v-col>
         <v-col cols="6" sm="6" md="4" lg="2">
           <v-text-field label="接单时间" :value="$util.displayDateTime(carryOutInfo.receiveTime)" hide-details readonly></v-text-field>
+        </v-col>
+
+        <v-col cols="6" sm="6" md="4" lg="2">
+          <v-text-field label="下架时间" :value="$util.displayDateTime(carryOutInfo.moveTime)" hide-details readonly></v-text-field>
         </v-col>
 
         <v-col cols="6" sm="6" md="4" lg="2">
@@ -76,9 +87,6 @@
           <v-text-field label="清点时间" :value="$util.displayDateTime(carryOutInfo.checkTime)" hide-details readonly></v-text-field>
         </v-col>
 
-        <v-col cols="6" sm="6" md="4" lg="2">
-          <v-text-field label="下架时间" :value="$util.displayDateTime(carryOutInfo.moveTime)" hide-details readonly></v-text-field>
-        </v-col>
         <v-col cols="6" sm="6" md="4" lg="2">
           <v-text-field label="确认时间" :value="$util.displayDateTime(carryOutInfo.finishTime)" hide-details readonly></v-text-field>
         </v-col>

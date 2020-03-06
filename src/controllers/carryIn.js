@@ -47,6 +47,24 @@ export default {
   },
 
   /**
+   * 按库存入库时间查找
+   * @param {合同ID，入库时间} param0
+   */
+  async listByInTime({ contractId, inTime }) {
+    const res = await axios._get({ url: '/carryInTask/findByInTime', params: { contractId: contractId, inTime: inTime } })
+    return res.data
+  },
+
+  /**
+   * 按库存出库时间查找
+   * @param {合同ID，出库时间} param0
+   */
+  async listByOutTime({ contractId, outTime }) {
+    const res = await axios._get({ url: '/carryInTask/findByOutTime', params: { contractId: contractId, outTime: outTime } })
+    return res.data
+  },
+
+  /**
    * 任务上架
    * @param {任务数据} entity
    */
