@@ -32,6 +32,13 @@
                 <v-text-field label="保质期" v-model="taskInfo.durability" suffix="月"></v-text-field>
               </v-col>
 
+              <v-col cols="6" md="4" sm="6" v-if="stockInInfo.type == 1">
+                <v-select :items="warehouseList" label="存放仓库" item-text="name" item-value="id" v-model="taskInfo.warehouseId"></v-select>
+              </v-col>
+              <v-col cols="6" md="8" sm="6" v-if="stockInInfo.type == 1">
+                <v-text-field label="存放位置" v-model="taskInfo.place"></v-text-field>
+              </v-col>
+
               <v-col cols="12" md="12" sm="12">
                 <v-text-field label="备注" v-model="taskInfo.remark"></v-text-field>
               </v-col>
@@ -52,6 +59,7 @@
 <script>
 import stockIn from '@/controllers/stockIn'
 import cargo from '@/controllers/cargo'
+import warehouse from '@/controllers/warehouse'
 import CargoSelect from '@/components/Control/CargoSelect'
 
 export default {
@@ -63,9 +71,11 @@ export default {
     dialog: false,
     submitLoading: false,
     valid: false,
+    stockInInfo: {},
     cargoId: '',
     unitWeight: 0.0,
     cargoListData: [],
+    warehouseList: [],
     taskInfo: {
       stockInId: '',
       cargoId: '',
@@ -75,6 +85,8 @@ export default {
       batch: '',
       originPlace: '',
       durability: 0,
+      warehouseId: 0,
+      place: '',
       remark: ''
     }
   }),
@@ -100,9 +112,18 @@ export default {
       this.dialog = true
       this.loadCargoData()
 
+      if (this.stockInInfo.type == 1) {
+        this.loadWarehouse()
+      }
+
       this.$nextTick(() => {
         this.$refs.form.resetValidation()
       })
+    },
+
+    // 载入仓库
+    async loadWarehouse() {
+      this.warehouseList = await warehouse.getList(1)
     },
 
     loadCargoData() {
@@ -124,6 +145,8 @@ export default {
         batch: '',
         originPlace: '',
         durability: 0,
+        warehouseId: 0,
+        place: '',
         remark: '',
         userId: 0,
         userName: ''
@@ -147,6 +170,11 @@ export default {
 
         if (this.taskInfo.inCount <= 0) {
           this.$store.commit('alertError', '请输入正确入库数量')
+          return
+        }
+
+        if (this.stockInInfo.type == 1 && this.taskInfo.warehouseId == 0) {
+          this.$store.commit('alertError', '请选择仓库')
           return
         }
 
