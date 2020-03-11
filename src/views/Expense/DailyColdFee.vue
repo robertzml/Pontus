@@ -105,7 +105,7 @@
           冷藏费列表
         </v-card-title>
         <v-card-text class="px-0">
-          <v-data-table :headers="headers" :items="coldFeeListData" :items-per-page="10">
+          <v-data-table :headers="headers" :items="coldFeeListData" :items-per-page="10" disable-sort>
             <template v-slot:item.recordDate="{ item }">
               {{ item.recordDate | displayDate }}
             </template>
