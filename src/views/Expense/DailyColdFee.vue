@@ -46,15 +46,7 @@
                   min-width="290px"
                 >
                   <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="search.startTime"
-                      label="开始日期"
-                      prepend-icon="event"
-                      clearable
-                      hide-details
-                      readonly
-                      v-on="on"
-                    ></v-text-field>
+                    <v-text-field v-model="search.startTime" label="开始日期" prepend-icon="event" hide-details readonly v-on="on"></v-text-field>
                   </template>
                   <v-date-picker v-model="search.startTime" :day-format="$util.pickerDayFormat" @input="startTimeMenu = false"></v-date-picker>
                 </v-menu>
@@ -70,15 +62,7 @@
                   min-width="290px"
                 >
                   <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="search.endTime"
-                      label="结束日期"
-                      prepend-icon="event"
-                      clearable
-                      hide-details
-                      readonly
-                      v-on="on"
-                    ></v-text-field>
+                    <v-text-field v-model="search.endTime" label="结束日期" prepend-icon="event" hide-details readonly v-on="on"></v-text-field>
                   </template>
                   <v-date-picker v-model="search.endTime" :day-format="$util.pickerDayFormat" @input="endTimeMenu = false"></v-date-picker>
                 </v-menu>
@@ -192,6 +176,9 @@ export default {
 
     searchStore() {
       if (this.$refs.form.validate()) {
+        this.$nextTick(() => {
+          this.loading = true
+        })
         let vm = this
 
         let model = {
@@ -201,11 +188,22 @@ export default {
           endTime: this.search.endTime
         }
         expense.dailyCodeFee(model).then(res => {
-          vm.coldFeeListData = res
-          vm.loading = false
+          if (res.status == 0) {
+            vm.coldFeeListData = res.entity
+            vm.loading = false
+          } else {
+            vm.$store.commit('alertError', res.errorMessage)
+            vm.loading = false
+          }
         })
       }
     }
+  },
+  mounted: function() {
+    this.search.startTime = this.$moment()
+      .startOf('month')
+      .format('YYYY-MM-DD')
+    this.search.endTime = this.$moment().format('YYYY-MM-DD')
   }
 }
 </script>

@@ -48,6 +48,9 @@
               <v-col cols="3" md="3" sm="6">
                 <v-text-field v-model="taskInfo.durability" label="保质期" suffix="月" hide-details readonly></v-text-field>
               </v-col>
+              <v-col cols="3" md="3" sm="6" v-if="taskInfo.stockInType == 1">
+                <v-text-field v-model="taskInfo.place" label="存放位置" hide-details readonly></v-text-field>
+              </v-col>
               <v-col cols="3" md="3" sm="6">
                 <v-text-field v-model="taskInfo.userName" label="创建人" hide-details readonly></v-text-field>
               </v-col>
