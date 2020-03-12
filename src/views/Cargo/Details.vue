@@ -6,37 +6,31 @@
       </v-card-title>
 
       <v-card-text>
-        <v-form ref="form" lazy-validation>
-          <v-row dense>
-            <v-col cols="4" md="4" sm="4">
-              <v-text-field label="货品名称" v-model="cargoInfo.name" readonly></v-text-field>
-            </v-col>
+        <v-row dense>
+          <v-col cols="4" md="4" sm="4">
+            <v-text-field label="货品名称" v-model="cargoInfo.name" readonly></v-text-field>
+          </v-col>
 
-            <v-col cols="4" md="4" sm="4">
-              <v-text-field label="客户名称" v-model="cargoInfo.customerName" readonly></v-text-field>
-            </v-col>
+          <v-col cols="4" md="4" sm="4">
+            <v-text-field label="客户名称" v-model="cargoInfo.customerName" readonly></v-text-field>
+          </v-col>
 
-            <v-col cols="4" md="4" sm="4">
-              <v-text-field label="客户代码" v-model="cargoInfo.customerNumber" readonly></v-text-field>
-            </v-col>
+          <v-col cols="4" md="4" sm="4">
+            <v-text-field label="客户代码" v-model="cargoInfo.customerNumber" readonly></v-text-field>
+          </v-col>
 
-            <v-col cols="4" md="4" sm="4">
-              <v-text-field label="类别名称" v-model="cargoInfo.categoryName" readonly></v-text-field>
-            </v-col>
+          <v-col cols="4" md="4" sm="4">
+            <v-text-field label="类别名称" v-model="cargoInfo.categoryName" readonly></v-text-field>
+          </v-col>
 
-            <v-col cols="4" md="4" sm="4">
-              <v-text-field label="类别代码" v-model="cargoInfo.categoryNumber" readonly></v-text-field>
-            </v-col>
+          <v-col cols="4" md="4" sm="4">
+            <v-text-field label="类别代码" v-model="cargoInfo.categoryNumber" readonly></v-text-field>
+          </v-col>
 
-            <v-col cols="4" md="4" sm="4">
-              <v-text-field label="单位重量" v-model="cargoInfo.unitWeight" suffix="千克" readonly></v-text-field>
-            </v-col>
-
-            <v-col cols="6" md="6" sm="6">
-              <v-text-field label="备注" v-model="cargoInfo.remark" readonly></v-text-field>
-            </v-col>
-          </v-row>
-        </v-form>
+          <v-col cols="4" md="4" sm="4">
+            <v-text-field label="备注" v-model="cargoInfo.remark" readonly></v-text-field>
+          </v-col>
+        </v-row>
       </v-card-text>
 
       <v-card-actions>

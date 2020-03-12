@@ -91,7 +91,6 @@ export default {
       { text: '货品名称', value: 'name' },
       { text: '客户编号', value: 'customerNumber' },
       { text: '客户名称', value: 'customerName' },
-      { text: '单位重量(kg)', value: 'unitWeight' },
       { text: '规格', value: 'specification' },
       { text: '登记时间', value: 'registerTime' },
       { text: '操作', value: 'action', sortable: false }

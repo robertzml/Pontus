@@ -6,7 +6,7 @@
       </v-card-title>
 
       <v-card-text>
-        <v-alert dense type="info" class="mt-2 body-2">名称、单位重量、规格不能完全相同，可修改名称、规格、备注。</v-alert>
+        <v-alert dense type="info" class="mt-2 body-2">名称、规格不能完全相同，可修改名称、规格、备注。</v-alert>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-container fluid>
             <v-row>
@@ -19,14 +19,10 @@
               </v-col>
 
               <v-col cols="6" md="6" sm="6">
-                <v-text-field label="单位重量*" v-model="cargoInfo.unitWeight" suffix="千克" readonly></v-text-field>
-              </v-col>
-
-              <v-col cols="6" md="6" sm="6">
                 <v-text-field label="规格" v-model="cargoInfo.specification"></v-text-field>
               </v-col>
 
-              <v-col cols="12" md="12" sm="12">
+              <v-col cols="6" md="6" sm="6">
                 <v-text-field label="备注" v-model="cargoInfo.remark"></v-text-field>
               </v-col>
             </v-row>
@@ -62,7 +58,6 @@ export default {
       name: '',
       customerId: 0,
       categoryId: 0,
-      unitWeight: 0,
       specification: '',
       remark: ''
     },
