@@ -12,7 +12,7 @@
                 <cargo-select ref="cargoSelect" :cargo-id.sync="cargoId" :cargo-data="cargoListData"></cargo-select>
               </v-col>
               <v-col cols="3" md="6" sm="6">
-                <v-text-field label="单位重量*" v-model="unitWeight" suffix="千克" readonly></v-text-field>
+                <v-text-field label="单位重量*" v-model="taskInfo.unitWeight" suffix="千克"></v-text-field>
               </v-col>
 
               <v-col cols="6" md="4" sm="6">
@@ -61,20 +61,9 @@ export default {
     valid: false,
     taskId: '',
     cargoId: '',
-    unitWeight: 0.0,
     cargoListData: [],
     taskInfo: {}
   }),
-  watch: {
-    cargoId: function(val) {
-      var find = this.cargoListData.find(r => r.id == val)
-      if (find != undefined) {
-        this.unitWeight = find.unitWeight
-      } else {
-        this.unitWeight = 0.0
-      }
-    }
-  },
   computed: {
     totalWeight: function() {
       return (this.taskInfo.inCount * this.unitWeight) / 1000
@@ -98,14 +87,6 @@ export default {
       this.cargoId = this.taskInfo.cargoId
     },
 
-    selectCargo(val) {
-      if (val == null) {
-        this.unitWeight = 0
-      } else {
-        this.unitWeight = val.unitWeight
-      }
-    },
-
     updateTask() {
       if (this.$refs.form.validate()) {
         if (this.cargoId == '') {
@@ -120,11 +101,10 @@ export default {
         let vm = this
 
         this.taskInfo.cargoId = this.cargoId
-        this.taskInfo.unitWeight = this.unitWeight
 
         stockIn.updateTask(this.taskInfo).then(res => {
           if (res.status == 0) {
-            vm.$store.commit('alertSuccess', '添加任务成功')
+            vm.$store.commit('alertSuccess', '编辑任务成功')
             vm.$emit('close')
             vm.loading = false
             vm.dialog = false

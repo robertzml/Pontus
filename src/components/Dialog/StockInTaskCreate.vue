@@ -16,10 +16,10 @@
                 <v-text-field label="入库数量*" v-model="taskInfo.inCount"></v-text-field>
               </v-col>
               <v-col cols="6" md="4" sm="6">
-                <v-text-field label="单位重量*" v-model="unitWeight" suffix="千克" readonly></v-text-field>
+                <v-text-field label="单位重量*" v-model="taskInfo.unitWeight" suffix="千克"></v-text-field>
               </v-col>
               <v-col cols="6" md="4" sm="6">
-                <v-text-field label="总重量*" v-model="totalWeight" suffix="吨"></v-text-field>
+                <v-text-field label="总重量*" v-model="totalWeight" suffix="吨" readonly></v-text-field>
               </v-col>
 
               <v-col cols="6" md="4" sm="6">
@@ -73,7 +73,6 @@ export default {
     valid: false,
     stockInInfo: {},
     cargoId: '',
-    unitWeight: 0.0,
     cargoListData: [],
     warehouseList: [],
     taskInfo: {
@@ -90,27 +89,18 @@ export default {
       remark: ''
     }
   }),
-  watch: {
-    cargoId: function(val) {
-      var find = this.cargoListData.find(r => r.id == val)
-      if (find != undefined) {
-        this.unitWeight = find.unitWeight
-      } else {
-        this.unitWeight = 0.0
-      }
-    }
-  },
   computed: {
     totalWeight: function() {
-      return ((this.taskInfo.inCount * this.unitWeight) / 1000).toFixed(4)
+      return ((this.taskInfo.inCount * this.taskInfo.unitWeight) / 1000).toFixed(4)
     }
   },
   methods: {
     init(inInfo) {
-      this.clearTask()
       this.stockInInfo = inInfo
       this.dialog = true
       this.loadCargoData()
+      this.clearTask()
+      this.cargoId = ''
 
       if (this.stockInInfo.type == 1) {
         this.loadWarehouse()
@@ -153,14 +143,6 @@ export default {
       }
     },
 
-    selectCargo(val) {
-      if (val == null) {
-        this.unitWeight = 0
-      } else {
-        this.unitWeight = val.unitWeight
-      }
-    },
-
     addTask() {
       if (this.$refs.form.validate()) {
         if (this.cargoId == '') {
@@ -185,7 +167,6 @@ export default {
         let vm = this
 
         this.taskInfo.cargoId = this.cargoId
-        this.taskInfo.unitWeight = this.unitWeight
         this.taskInfo.inWeight = this.totalWeight
         this.taskInfo.stockInId = this.stockInInfo.id
         this.taskInfo.userId = this.$store.state.user.id

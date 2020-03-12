@@ -53,6 +53,10 @@
             </v-col>
 
             <v-col cols="6">
+              <v-text-field label="单位重量" v-model="carryInTask.unitWeight" suffix="千克" hide-details readonly></v-text-field>
+            </v-col>
+
+            <v-col cols="6">
               <v-text-field label="清点人" v-model="carryInTask.checkUserName" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6">
