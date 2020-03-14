@@ -238,7 +238,7 @@ export default {
       }
     },
     'editedItem.moveCount': function(val) {
-      this.editedItem.moveWeight = (val * this.editedItem.unitWeight) / 1000
+      this.editedItem.moveWeight = ((val * this.editedItem.unitWeight) / 1000).toFixed(4)
     }
   },
   computed: {

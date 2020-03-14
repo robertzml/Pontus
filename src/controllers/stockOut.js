@@ -95,6 +95,12 @@ export default {
     return res.data
   },
 
+  // 添加出库任务
+  async addOutStore(data) {
+    const res = await axios._post({ url: '/stockOut/addOutStore', data: data })
+    return res.data
+  },
+
   // 确认出库任务
   async finishTask(data) {
     const res = await axios._postqs({ url: '/stockOut/finishTask', params: data })
