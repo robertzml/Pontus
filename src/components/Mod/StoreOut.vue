@@ -127,6 +127,7 @@ export default {
 
       let task = {
         storeId: item.id,
+        cargoId: item.cargoId,
         storeCount: item.storeCount,
         moveCount: item.storeCount,
         unitWeight: item.unitWeight,

@@ -232,7 +232,13 @@ export default {
         })
 
         let vm = this
-        stockOut.addOutStore(taskList).then(res => {
+        let data = {
+          stockOutId: this.stockOutInfo.id,
+          tasks: taskList,
+          userId: this.$store.state.user.id
+        }
+
+        stockOut.addOutStore(data).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加出库成功')
             this.$emit('close')
