@@ -173,8 +173,8 @@ export default {
       { text: '货品名称', value: 'cargoName' },
       { text: '规格', value: 'specification' },
       { text: '批次', value: 'batch' },
-      { text: '货品总数量', value: 'totalCount' },
-      { text: '货品总重量(t)', value: 'totalWeight' },
+      { text: '货品总数量', value: 'storeCount' },
+      { text: '货品总重量(t)', value: 'storeWeight' },
       { text: '入库时间', value: 'inTime' },
       { text: '出库时间', value: 'outTime' }
     ],
@@ -237,14 +237,14 @@ export default {
     // 库存总数量
     totalCount: function() {
       return this.storeListData.reduce(function(acc, cur) {
-        return acc + cur.totalCount
+        return acc + cur.storeCount
       }, 0)
     },
     // 库存总重量
     totalWeight: function() {
       return this.storeListData
         .reduce(function(acc, cur) {
-          return acc + cur.totalWeight
+          return acc + cur.storeWeight
         }, 0.0)
         .toFixed(4)
     },

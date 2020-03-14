@@ -108,6 +108,9 @@
     <stock-out-finish ref="stockOutFinishMod" @close="loadInfo"></stock-out-finish>
 
     <!-- 添加出库任务组件 -->
+    <stock-out-task-search ref="taskSearchMod" @close="loadTaskList"></stock-out-task-search>
+
+    <!-- 添加出库任务组件 -->
     <stock-out-task-create ref="createTaskMod" @close="loadTaskList"></stock-out-task-create>
 
     <!-- 扫托盘码出库组件 -->
@@ -121,6 +124,7 @@ import stockOut from '@/controllers/stockOut'
 import StockOutEdit from './Dialog/Edit'
 import StockOutDelete from './Dialog/Delete'
 import StockOutFinish from './Dialog/Finish'
+import StockOutTaskSearch from '@/components/Dialog/StockOutTaskSearch'
 import StockOutTaskCreate from '@/components/Dialog/StockOutTaskCreate'
 import ScanTrayOut from '@/components/Dialog/ScanTrayOut'
 
@@ -130,6 +134,7 @@ export default {
     StockOutEdit,
     StockOutDelete,
     StockOutFinish,
+    StockOutTaskSearch,
     StockOutTaskCreate,
     ScanTrayOut
   },
@@ -218,7 +223,8 @@ export default {
     // 显示添加入库任务
     showAddTask() {
       if (this.stockOutId) {
-        this.$refs.createTaskMod.init(this.info)
+        // this.$refs.createTaskMod.init(this.info)
+        this.$refs.taskSearchMod.init(this.info)
       }
     },
 

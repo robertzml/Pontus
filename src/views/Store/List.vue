@@ -70,6 +70,9 @@
             <template v-slot:item.status="{ item }">
               {{ item.status | displayStatus }}
             </template>
+            <template v-slot:item.initialTime="{ item }">
+              {{ item.initialTime | displayDate }}
+            </template>
             <template v-slot:item.inTime="{ item }">
               {{ item.inTime | displayDate }}
             </template>
@@ -124,8 +127,9 @@ export default {
       { text: '仓位码', value: 'positionNumber' },
       { text: '货品名称', value: 'cargoName' },
       { text: '规格', value: 'specification' },
-      { text: '货品总数量', value: 'totalCount' },
-      { text: '货品总重量(t)', value: 'totalWeight' },
+      { text: '在库总数量', value: 'storeCount' },
+      { text: '在库总重量(t)', value: 'storeWeight' },
+      { text: '初始时间', value: 'initialTime' },
       { text: '入库时间', value: 'inTime' },
       { text: '出库时间', value: 'outTime' },
       { text: '状态', value: 'status' },

@@ -24,9 +24,6 @@
               <v-text-field :value="`${storeInfo.categoryNumber} - ${storeInfo.categoryName}`" label="类别" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.unitWeight" label="单位重量" suffix="千克" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
               <v-text-field v-model="storeInfo.trayCode" label="托盘码" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6" lg="2" md="3" sm="4">
@@ -45,19 +42,19 @@
               <v-text-field v-model="storeInfo.durability" label="保质期" suffix="月" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.totalCount" label="货品总数量" hide-details readonly></v-text-field>
+              <v-text-field v-model="storeInfo.unitWeight" label="单位重量" suffix="千克" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6" lg="2" md="3" sm="4">
               <v-text-field v-model="storeInfo.storeCount" label="在库数量" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.totalWeight" label="货品总重量" suffix="吨" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6" lg="2" md="3" sm="4">
               <v-text-field v-model="storeInfo.storeWeight" label="在库重量" suffix="吨" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6" lg="2" md="3" sm="4">
               <v-text-field v-model="storeInfo.shelfCode" label="上货货架码" hide-details readonly></v-text-field>
+            </v-col>
+            <v-col cols="6" lg="2" md="3" sm="4">
+              <v-text-field :value="$util.displayDate(storeInfo.initialTime)" label="初始时间" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6" lg="2" md="3" sm="4">
               <v-text-field :value="$util.displayDate(storeInfo.inTime)" label="入库时间" hide-details readonly></v-text-field>
@@ -176,7 +173,6 @@
 <script>
 import { mapState } from 'vuex'
 import store from '@/controllers/store'
-import coldFee from '@/controllers/coldFee'
 
 export default {
   name: 'StoreDetails',
@@ -206,8 +202,8 @@ export default {
 
     // 获取冷藏费
     async loadColdFee() {
-      const now = this.$moment().format('YYYY-MM-DD')
-      this.coldFeeInfo = await coldFee.getByStore(this.storeId, now)
+      //const now = this.$moment().format('YYYY-MM-DD')
+      //this.coldFeeInfo = await coldFee.getByStore(this.storeId, now)
     },
 
     // 获取库存记录链表
