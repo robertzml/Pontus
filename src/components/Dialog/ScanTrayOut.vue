@@ -4,6 +4,7 @@
       <v-card-title class="deep-orange darken-2">
         扫托盘码出库
         <v-spacer></v-spacer>
+        <v-btn color="success darken-1" :disabled="!valid || carryOutList.length == 0" :loading="loading" @click="addTask">出库</v-btn>
         <v-btn text @click="dialog = false">取消</v-btn>
       </v-card-title>
       <v-card-text>

@@ -134,6 +134,11 @@
                             <v-list-item-content>入库时间:</v-list-item-content>
                             <v-list-item-content class="align-end">{{ item.inTime | displayDate }}</v-list-item-content>
                           </v-list-item>
+
+                          <v-list-item>
+                            <v-list-item-content>状态:</v-list-item-content>
+                            <v-list-item-content class="align-end">{{ item.status | displayStatus }}</v-list-item-content>
+                          </v-list-item>
                         </v-list>
                       </v-card>
                     </v-col>

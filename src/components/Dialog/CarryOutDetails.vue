@@ -53,6 +53,9 @@
               </v-col>
 
               <v-col cols="6">
+                <v-text-field label="单位重量" v-model="carryOutInfo.unitWeight" suffix="千克" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6">
                 <v-text-field label="规格" v-model="carryOutInfo.specification" hide-details readonly></v-text-field>
               </v-col>
               <v-col cols="6">

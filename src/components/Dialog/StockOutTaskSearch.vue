@@ -128,6 +128,7 @@ export default {
   data: () => ({
     dialog: false,
     valid: true,
+    loading: false,
     stockOutInfo: {},
     cargoId: '',
     cargoListData: [],
@@ -176,6 +177,7 @@ export default {
     init(outInfo) {
       this.clear()
       this.dialog = true
+      this.loading = false
       this.stockOutInfo = outInfo
 
       this.loadCargoData()
@@ -206,7 +208,7 @@ export default {
     // 搜索库存
     async searchStore() {
       if (this.cargoId) {
-        this.storeListData = await store.findByCargo({ contractId: this.stockOutInfo.contractId, cargoId: this.cargoId })
+        this.storeListData = await store.findForStockOut({ contractId: this.stockOutInfo.contractId, cargoId: this.cargoId })
       }
     },
 
