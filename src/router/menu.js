@@ -223,6 +223,15 @@ export const menuRoutes = [
     meta: { roles: [1, 2, 3, 4] }
   },
   {
+    path: '/normalstore',
+    name: 'normalStore',
+    text: '普通库存',
+    group: 'store',
+    model: false,
+    component: () => import('@/views/NormalStore/Index.vue'),
+    meta: { roles: [1, 2, 3, 4] }
+  },
+  {
     path: '/storesnapshot',
     name: 'storeSnapshot',
     text: '库存快照',

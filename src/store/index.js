@@ -13,6 +13,7 @@ import carryIn from './modules/carryIn'
 import carryOut from './modules/carryOut'
 import receipt from './modules/receipt'
 import store from './modules/store'
+import normalStore from './modules/normalStore'
 import storePosition from './modules/storePosition'
 import expenseItem from './modules/expenseItem'
 import keeper from './modules/keeper'
@@ -34,6 +35,7 @@ export default new Vuex.Store({
     carryOut,
     receipt,
     store,
+    normalStore,
     storePosition,
     expenseItem,
     keeper
