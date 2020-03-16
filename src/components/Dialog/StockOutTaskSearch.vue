@@ -10,7 +10,7 @@
           <v-spacer></v-spacer>
         </v-toolbar>
 
-        <v-card-text>
+        <v-card-text class="pt-1">
           <v-container fluid class="px-0">
             <v-row dense>
               <v-col cols="6">

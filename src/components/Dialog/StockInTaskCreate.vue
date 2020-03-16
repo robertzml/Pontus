@@ -33,7 +33,14 @@
               </v-col>
 
               <v-col cols="6" md="4" sm="6" v-if="stockInInfo.type == 1">
-                <v-select :items="warehouseList" label="存放仓库" item-text="name" item-value="id" v-model="taskInfo.warehouseId"></v-select>
+                <v-select
+                  :items="warehouseList"
+                  label="存放仓库"
+                  item-text="name"
+                  item-value="id"
+                  :rules="warehouseRules"
+                  v-model="taskInfo.warehouseId"
+                ></v-select>
               </v-col>
               <v-col cols="6" md="8" sm="6" v-if="stockInInfo.type == 1">
                 <v-text-field label="存放位置" v-model="taskInfo.place"></v-text-field>
@@ -87,7 +94,8 @@ export default {
       warehouseId: 0,
       place: '',
       remark: ''
-    }
+    },
+    warehouseRules: [v => !!v || '请选择仓库']
   }),
   computed: {
     totalWeight: function() {
@@ -152,11 +160,6 @@ export default {
 
         if (this.taskInfo.inCount <= 0) {
           this.$store.commit('alertError', '请输入正确入库数量')
-          return
-        }
-
-        if (this.stockInInfo.type == 1 && this.taskInfo.warehouseId == 0) {
-          this.$store.commit('alertError', '请选择仓库')
           return
         }
 

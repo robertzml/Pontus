@@ -5,10 +5,7 @@
         <v-toolbar-title>冷藏费清单</v-toolbar-title>
         <v-spacer></v-spacer>
 
-        <v-toolbar-items>
-          <v-btn text color="amber accent-4">返回</v-btn>
-          <v-btn text @click.stop="refresh">刷新</v-btn>
-        </v-toolbar-items>
+        <v-toolbar-items> </v-toolbar-items>
       </v-toolbar>
     </v-col>
 
@@ -91,7 +88,7 @@
               </v-col>
 
               <v-col cols="2">
-                <v-btn color="success darken-1 mt-2" :disabled="!valid" :loading="loading" @click="searchStore">搜索</v-btn>
+                <v-btn color="success darken-1 mt-2" :disabled="!valid" :loading="loading" @click="searchColdFee">搜索</v-btn>
               </v-col>
             </v-row>
           </v-form>
@@ -174,7 +171,8 @@ export default {
       }
     },
 
-    searchStore() {
+    // 获取冷藏费记录
+    searchColdFee() {
       if (this.$refs.form.validate()) {
         this.$nextTick(() => {
           this.loading = true
