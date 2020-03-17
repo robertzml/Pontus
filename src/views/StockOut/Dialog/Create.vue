@@ -139,6 +139,18 @@ export default {
 
     submit() {
       if (this.$refs.form.validate()) {
+        if (this.stockOutInfo.type == 3 && this.selectedContract.type != 3) {
+          this.$store.commit('alertError', '冷冻库出库请使用冷冻合同')
+          this.loading = false
+          return
+        }
+
+        if (this.stockOutInfo.type != 3 && this.selectedContract.type == 3) {
+          this.$store.commit('alertError', '冷冻库出库请使用冷冻合同')
+          this.loading = false
+          return
+        }
+
         this.$nextTick(() => {
           this.loading = true
         })

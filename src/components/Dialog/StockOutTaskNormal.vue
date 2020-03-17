@@ -6,7 +6,7 @@
           <v-btn icon dark @click="dialog = false">
             <v-icon>close</v-icon>
           </v-btn>
-          <v-toolbar-title>仓位库出库货物查找</v-toolbar-title>
+          <v-toolbar-title>普通库出库货物查找</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
 
@@ -112,15 +112,16 @@
 </template>
 
 <script>
-import store from '@/controllers/store'
+import normalStore from '@/controllers/normalStore'
 import cargo from '@/controllers/cargo'
 import warehouse from '@/controllers/warehouse'
 import stockOut from '@/controllers/stockOut'
 import CargoSelect from '@/components/Control/CargoSelect'
 import StoreOut from '@/components/Mod/StoreOut'
 
+// 普通库出库添加
 export default {
-  name: 'StockOutTaskSearch',
+  name: 'StockOutTaskNormal',
   components: {
     CargoSelect,
     StoreOut
@@ -142,8 +143,8 @@ export default {
       search: ''
     },
     headers: [
-      { text: '托盘码', value: 'trayCode' },
-      { text: '仓位码', value: 'positionNumber' },
+      { text: '所在仓库', value: 'warehouseName' },
+      { text: '存放位置', value: 'place' },
       { text: '货品名称', value: 'cargoName' },
       { text: '规格', value: 'specification' },
       { text: '批次', value: 'batch' },
@@ -202,13 +203,13 @@ export default {
 
     // 载入仓库
     async loadWarehouse() {
-      this.warehouseList = await warehouse.getList(2)
+      this.warehouseList = await warehouse.getList(1)
     },
 
     // 搜索库存
     async searchStore() {
       if (this.cargoId) {
-        this.storeListData = await store.findForStockOut({ contractId: this.stockOutInfo.contractId, cargoId: this.cargoId })
+        this.storeListData = await normalStore.findForStockOut({ contractId: this.stockOutInfo.contractId, cargoId: this.cargoId })
       }
     },
 

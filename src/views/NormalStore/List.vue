@@ -62,7 +62,7 @@
 
     <v-col cols="12">
       <v-card>
-        <v-card-title class="orange">
+        <v-card-title class="amber darken-3">
           库存列表
         </v-card-title>
         <v-card-text class="px-0">

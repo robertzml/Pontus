@@ -110,6 +110,9 @@
     <!-- 添加出库任务组件 -->
     <stock-out-task-search ref="taskSearchMod" @close="loadTaskList"></stock-out-task-search>
 
+    <!-- 添加普通库出库任务组件 -->
+    <stock-out-task-normal ref="taskNormalMod" @close="loadTaskList"></stock-out-task-normal>
+
     <!-- 添加出库任务组件 -->
     <stock-out-task-create ref="createTaskMod" @close="loadTaskList"></stock-out-task-create>
 
@@ -125,6 +128,7 @@ import StockOutEdit from './Dialog/Edit'
 import StockOutDelete from './Dialog/Delete'
 import StockOutFinish from './Dialog/Finish'
 import StockOutTaskSearch from '@/components/Dialog/StockOutTaskSearch'
+import StockOutTaskNormal from '@/components/Dialog/StockOutTaskNormal'
 import StockOutTaskCreate from '@/components/Dialog/StockOutTaskCreate'
 import ScanTrayOut from '@/components/Dialog/ScanTrayOut'
 
@@ -135,6 +139,7 @@ export default {
     StockOutDelete,
     StockOutFinish,
     StockOutTaskSearch,
+    StockOutTaskNormal,
     StockOutTaskCreate,
     ScanTrayOut
   },
@@ -223,8 +228,12 @@ export default {
     // 显示添加入库任务
     showAddTask() {
       if (this.stockOutId) {
-        // this.$refs.createTaskMod.init(this.info)
-        this.$refs.taskSearchMod.init(this.info)
+        if (this.info.type == 1) {
+          this.$refs.taskNormalMod.init(this.info)
+        } else if (this.info.type == 2) {
+          // this.$refs.createTaskMod.init(this.info)
+          this.$refs.taskSearchMod.init(this.info)
+        }
       }
     },
 
