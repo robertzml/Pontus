@@ -107,6 +107,12 @@ export default {
     return res.data
   },
 
+  // 编辑出库任务
+  async editTask(data) {
+    const res = await axios._post({ url: '/stockOut/editTask', data: data })
+    return res.data
+  },
+
   // 确认出库任务
   async finishTask(data) {
     const res = await axios._postqs({ url: '/stockOut/finishTask', params: data })

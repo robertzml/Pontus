@@ -65,6 +65,7 @@
             <v-card-actions>
               <v-btn color="cyan darken-2" v-if="taskInfo.stockOutType == 2 && taskInfo.status == 81" @click="showScanTray">扫托盘码出库</v-btn>
               <v-btn color="success darken-1" v-if="taskInfo.status == 81" @click.stop="showFinishTask">出库货物确认</v-btn>
+              <v-btn color="warning" v-if="taskInfo.stockOutType == 1 && taskInfo.status == 81" @click.stop="showEditTask">编辑出库货物</v-btn>
               <v-btn color="red darken-3" v-if="taskInfo.status != 85" @click.stop="showDeleteTask">删除出库货物</v-btn>
             </v-card-actions>
           </v-card>
@@ -140,6 +141,9 @@
     <!-- 出库任务确认组件 -->
     <stock-out-task-finish ref="stockOutTaskFinishMod" @close="loadStockOutTask"></stock-out-task-finish>
 
+    <!-- 出库任务编辑组件 -->
+    <stock-out-task-edit ref="stockOutTaskEditMod" @close="loadStockOutTask"></stock-out-task-edit>
+
     <!-- 出库任务删除组件 -->
     <stock-out-task-delete ref="stockOutTaskDeleteMod" @close="stockOutShowDetails(taskInfo.stockOutId)"></stock-out-task-delete>
 
@@ -175,6 +179,7 @@ import stockOut from '@/controllers/stockOut'
 import carryOut from '@/controllers/carryOut'
 import carryIn from '@/controllers/carryIn'
 import StockOutTaskFinish from '@/components/Dialog/StockOutTaskFinish'
+import StockOutTaskEdit from '@/components/Dialog/StockOutTaskEdit'
 import StockOutTaskDelete from '@/components/Dialog/StockOutTaskDelete'
 import ScanTrayOut from '@/components/Dialog/ScanTrayOut'
 import CarryOutCreate from '@/components/Dialog/CarryOutCreate'
@@ -190,6 +195,7 @@ export default {
   props: {},
   components: {
     StockOutTaskFinish,
+    StockOutTaskEdit,
     StockOutTaskDelete,
     ScanTrayOut,
     CarryOutCreate,
@@ -314,6 +320,11 @@ export default {
     // 显示出库任务确认
     showFinishTask() {
       this.$refs.stockOutTaskFinishMod.init(this.taskInfo.id)
+    },
+
+    // 显示编辑出库任务
+    showEditTask() {
+      this.$refs.stockOutTaskEditMod.init(this.taskInfo.id)
     },
 
     // 显示删除出库任务

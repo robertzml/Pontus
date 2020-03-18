@@ -24,7 +24,7 @@
             </v-col>
 
             <v-col cols="6" md="6" sm="6">
-              <v-select :items="$dict.stockOutType" label="出库类型*" v-model="stockOutInfo.type"></v-select>
+              <v-text-field label="出库类型" :value="$util.stockOutType(stockOutInfo.type)" readonly></v-text-field>
             </v-col>
 
             <v-col cols="6" md="6" sm="6">
