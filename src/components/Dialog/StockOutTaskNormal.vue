@@ -97,7 +97,7 @@
               <v-col cols="12">
                 <v-card-subtitle class="pb-2 cyan darken-4">出库货物</v-card-subtitle>
                 <!-- 待出库货物组件 -->
-                <store-out ref="storeOutMod"></store-out>
+                <normal-store-out ref="storeOutMod"></normal-store-out>
               </v-col>
             </v-row>
           </v-container>
@@ -117,14 +117,14 @@ import cargo from '@/controllers/cargo'
 import warehouse from '@/controllers/warehouse'
 import stockOut from '@/controllers/stockOut'
 import CargoSelect from '@/components/Control/CargoSelect'
-import StoreOut from '@/components/Mod/StoreOut'
+import NormalStoreOut from '@/components/Mod/NormalStoreOut'
 
 // 普通库出库添加
 export default {
   name: 'StockOutTaskNormal',
   components: {
     CargoSelect,
-    StoreOut
+    NormalStoreOut
   },
   data: () => ({
     dialog: false,
@@ -241,7 +241,7 @@ export default {
           userId: this.$store.state.user.id
         }
 
-        stockOut.addOutStore(data).then(res => {
+        stockOut.addNormalOut(data).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加出库成功')
             this.$emit('close')

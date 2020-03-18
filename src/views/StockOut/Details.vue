@@ -67,7 +67,7 @@
 
             <v-card-actions>
               <v-btn color="indigo darken-3" v-if="info.status == 81" @click="showAddTask">添加货物</v-btn>
-              <v-btn color="cyan darken-2" v-if="info.status == 81" @click="showScanTray">扫托盘码出库</v-btn>
+              <v-btn color="cyan darken-2" v-if="info.type == 2 && info.status == 81" @click="showScanTray">扫托盘码出库</v-btn>
               <v-btn color="success darken-1" v-if="info.status == 81" @click.stop="showFinish">确认出库单</v-btn>
               <v-btn color="warning" v-if="stockOutId && info.status != 85" @click.stop="showEdit">编辑出库单</v-btn>
               <v-btn color="red darken-3" v-if="stockOutId && info.status != 85" @click.stop="showDelete">删除出库单</v-btn>

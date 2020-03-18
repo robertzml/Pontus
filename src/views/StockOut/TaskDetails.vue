@@ -63,7 +63,7 @@
             </v-row>
 
             <v-card-actions>
-              <v-btn color="cyan darken-2" v-if="taskInfo.status == 81" @click="showScanTray">扫托盘码出库</v-btn>
+              <v-btn color="cyan darken-2" v-if="taskInfo.stockOutType == 2 && taskInfo.status == 81" @click="showScanTray">扫托盘码出库</v-btn>
               <v-btn color="success darken-1" v-if="taskInfo.status == 81" @click.stop="showFinishTask">出库货物确认</v-btn>
               <v-btn color="red darken-3" v-if="taskInfo.status != 85" @click.stop="showDeleteTask">删除出库货物</v-btn>
             </v-card-actions>
@@ -71,7 +71,7 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
 
-      <v-expansion-panel>
+      <v-expansion-panel v-if="this.taskInfo.stockOutType == 2">
         <v-expansion-panel-header ripple class="brown darken-3">
           搬运出库任务
           <v-spacer></v-spacer>
@@ -105,7 +105,7 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
 
-      <v-expansion-panel>
+      <v-expansion-panel v-if="this.taskInfo.stockOutType == 2">
         <v-expansion-panel-header ripple class="brown darken-4">
           搬运入库任务
           <v-spacer></v-spacer>
@@ -272,8 +272,10 @@ export default {
   watch: {
     refreshEvent: function() {
       this.loadStockOutTask()
-      this.loadCarryOutTask()
-      this.loadCarryInTask()
+      if (this.taskInfo.stockOutType == 2) {
+        this.loadCarryOutTask()
+        this.loadCarryInTask()
+      }
     }
   },
   methods: {
@@ -360,8 +362,10 @@ export default {
     }
   },
   mounted: function() {
-    this.loadCarryOutTask()
-    this.loadCarryInTask()
+    if (this.taskInfo.stockOutType == 2) {
+      this.loadCarryOutTask()
+      this.loadCarryInTask()
+    }
   }
 }
 </script>

@@ -19,13 +19,13 @@
           <v-container>
             <v-row dense>
               <v-col cols="12" sm="6" md="4">
-                <v-text-field v-model="editedItem.trayCode" label="托盘码" readonly></v-text-field>
+                <v-text-field v-model="editedItem.warehouseName" label="所在仓库" readonly></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field v-model="editedItem.storeCount" label="在库数量" readonly></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
-                <v-text-field v-model="editedItem.moveCount" label="移出数量"></v-text-field>
+                <v-text-field v-model="editedItem.outCount" label="移出数量"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field v-model="editedItem.unitWeight" label="单位重量(kg)" readonly></v-text-field>
@@ -34,10 +34,7 @@
                 <v-text-field v-model="editedItem.storeWeight" label="在库重量(t)" readonly></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
-                <v-text-field v-model="editedItem.moveWeight" label="移出重量(t)"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-select v-model="editedItem.shelfCode" :items="editShelfCodes" label="货架码"></v-select>
+                <v-text-field v-model="editedItem.outWeight" label="移出重量(t)"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field v-model="editedItem.remark" label="备注"></v-text-field>
@@ -57,52 +54,47 @@
 </template>
 
 <script>
-import position from '@/controllers/position'
-
 export default {
-  name: 'StoreOut',
+  name: 'NormalStoreOut',
   data: () => ({
     stockOutInfo: {},
     taskHeaders: [
-      { text: '托盘码', value: 'trayCode' },
+      { text: '所在仓库', value: 'warehouseName' },
+      { text: '存放位置', value: 'place' },
       { text: '在库数量', value: 'storeCount' },
-      { text: '出库数量', value: 'moveCount' },
+      { text: '出库数量', value: 'outCount' },
       { text: '单位重量(kg)', value: 'unitWeight' },
       { text: '在库重量(t)', value: 'storeWeight' },
-      { text: '出库重量(t)', value: 'moveWeight' },
-      { text: '货架码', value: 'shelfCode' },
+      { text: '出库重量(t)', value: 'outWeight' },
       { text: '备注', value: 'remark' },
       { text: '操作', value: 'action', sortable: false }
     ],
     taskInfoList: [],
     taskEditDialog: false,
-    positionInfo: null,
     editedItem: {
-      trayCode: '',
-      shelfCode: '',
+      warehouseName: '',
       storeCount: 0,
-      moveCount: 0,
+      outCount: 0,
       unitWeight: 0,
       storeWeight: 0,
-      moveWeight: 0,
+      outWeight: 0,
       remark: ''
     },
     defaultItem: {
-      trayCode: '',
-      shelfCode: '',
+      warehouseName: '',
       storeCount: 0,
-      moveCount: 0,
+      outCount: 0,
       unitWeight: 0,
       storeWeight: 0,
-      moveWeight: 0,
+      outWeight: 0,
       remark: ''
     },
     editShelfCodes: [],
     editedIndex: -1
   }),
   watch: {
-    'editedItem.moveCount': function(val) {
-      this.editedItem.moveWeight = ((val * this.editedItem.unitWeight) / 1000).toFixed(4)
+    'editedItem.outCount': function(val) {
+      this.editedItem.outWeight = ((val * this.editedItem.unitWeight) / 1000).toFixed(4)
     }
   },
   methods: {
@@ -129,13 +121,13 @@ export default {
         storeId: item.id,
         cargoId: item.cargoId,
         storeCount: item.storeCount,
-        moveCount: item.storeCount,
+        outCount: item.storeCount,
         unitWeight: item.unitWeight,
         storeWeight: item.storeWeight,
-        moveWeight: item.storeWeight,
-        trayCode: item.trayCode,
-        shelfCode: item.shelfCode,
-        positionId: item.positionId,
+        outWeight: item.storeWeight,
+        warehouseId: item.warehouseId,
+        warehouseName: item.warehouseName,
+        place: item.place,
         remark: ''
       }
 
@@ -145,17 +137,6 @@ export default {
     editItem(item) {
       this.editedIndex = this.taskInfoList.indexOf(item)
       this.editedItem = Object.assign({}, item)
-
-      position.getById(item.positionId).then(res => {
-        this.positionInfo = res
-
-        if (this.positionInfo.viceShelfCode) {
-          this.editShelfCodes = [this.positionInfo.shelfCode, this.positionInfo.viceShelfCode]
-        } else {
-          this.editShelfCodes = [this.positionInfo.shelfCode]
-        }
-      })
-
       this.taskEditDialog = true
     },
 

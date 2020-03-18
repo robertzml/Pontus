@@ -215,7 +215,9 @@ export default {
   watch: {
     refreshEvent: function() {
       this.loadStockInTask()
-      this.loadCarryInTask()
+      if (this.taskInfo.stockInType == 2) {
+        this.loadCarryInTask()
+      }
     }
   },
   methods: {
@@ -290,7 +292,9 @@ export default {
     }
   },
   mounted: function() {
-    this.loadCarryInTask()
+    if (this.taskInfo.stockInType == 2) {
+      this.loadCarryInTask()
+    }
   }
 }
 </script>

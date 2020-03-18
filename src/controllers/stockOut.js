@@ -101,6 +101,12 @@ export default {
     return res.data
   },
 
+  // 添加普通出库任务
+  async addNormalOut(data) {
+    const res = await axios._post({ url: '/stockOut/addNormalOut', data: data })
+    return res.data
+  },
+
   // 确认出库任务
   async finishTask(data) {
     const res = await axios._postqs({ url: '/stockOut/finishTask', params: data })
