@@ -7,6 +7,7 @@
       <v-toolbar-items>
         <v-btn v-if="tab != 'StockOutDetails'" text color="amber accent-4" @click.stop="toList">返回</v-btn>
         <v-btn v-if="tab == 'StockOutDetails'" text @click.stop="showCreate">新建出库单</v-btn>
+        <v-btn v-if="tab == 'StockOutDetails' && stockOutInfo.status == 85" text @click.stop="showRevert">撤回出库单</v-btn>
         <v-btn text @click.stop="refresh">刷新</v-btn>
         <v-menu v-model="outTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290">
           <template v-slot:activator="{ on }">
@@ -39,7 +40,11 @@
       </v-col>
 
       <v-col cols="12">
+        <!-- 新建出库组件 -->
         <stock-out-create ref="stockOutCreateMod" @close="refresh"></stock-out-create>
+
+        <!-- 撤回出库组件 -->
+        <stock-out-revert ref="stockOutRevertMod" @close="refresh"></stock-out-revert>
       </v-col>
     </v-row>
   </v-sheet>
@@ -49,6 +54,7 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import StockOutMonth from './Month'
 import StockOutCreate from './Dialog/Create'
+import StockOutRevert from './Dialog/Revert'
 import StockOutDetails from './Details'
 import StockOutTaskDetails from './TaskDetails'
 
@@ -57,6 +63,7 @@ export default {
   components: {
     StockOutMonth,
     StockOutCreate,
+    StockOutRevert,
     StockOutDetails,
     StockOutTaskDetails
   },
@@ -66,7 +73,8 @@ export default {
   computed: {
     ...mapState({
       tab: state => state.stockOut.tab,
-      stockOutId: state => state.stockOut.stockOutId
+      stockOutId: state => state.stockOut.stockOutId,
+      stockOutInfo: state => state.stockOut.stockOutInfo
     }),
     monthTime: {
       get() {
@@ -96,6 +104,11 @@ export default {
     // 显示货品出库
     showCreate() {
       this.$refs.stockOutCreateMod.init()
+    },
+
+    // 显示撤回出库单
+    showRevert() {
+      this.$refs.stockOutRevertMod.init(this.stockOutId)
     }
   }
 }

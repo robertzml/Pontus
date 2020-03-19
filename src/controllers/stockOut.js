@@ -62,6 +62,12 @@ export default {
     return res.data
   },
 
+  // 撤回出库单
+  async revert(data) {
+    const res = await axios._postqs({ url: '/stockOut/revert', params: data })
+    return res.data
+  },
+
   // 删除出库单
   async deleteStockOut(data) {
     const res = await axios._postqs({ url: '/stockOut/delete', params: data })
