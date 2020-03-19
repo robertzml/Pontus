@@ -30,5 +30,17 @@ export default {
       params: { contractId: contractId, cargoId: cargoId }
     })
     return res.data
+  },
+
+  /**
+   * 获取库存记录链表
+   * @param {库存ID} id
+   */
+  async findInOrder(id) {
+    const res = await axios._get({
+      url: '/normalStore/getInOrder',
+      params: { id: id }
+    })
+    return res.data
   }
 }

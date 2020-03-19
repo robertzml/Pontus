@@ -146,14 +146,14 @@
 
                     <v-col cols="3">
                       <v-list-item>
-                        <v-list-item-title>托盘码</v-list-item-title>
+                        <v-list-item-title>所在仓库</v-list-item-title>
                         <v-list-item-subtitle class="text-right">
-                          {{ item.trayCode }}
+                          {{ item.warehouseName }}
                         </v-list-item-subtitle>
                       </v-list-item>
                       <v-list-item>
-                        <v-list-item-title>仓位码</v-list-item-title>
-                        <v-list-item-subtitle class="text-right"> {{ item.positionNumber }}</v-list-item-subtitle>
+                        <v-list-item-title>存放位置</v-list-item-title>
+                        <v-list-item-subtitle class="text-right"> {{ item.place }}</v-list-item-subtitle>
                       </v-list-item>
                     </v-col>
                   </v-row>
@@ -189,7 +189,7 @@ export default {
     refreshEvent: function() {
       this.loadStore()
       //this.loadColdFee()
-      //this.loadInOrder()
+      this.loadInOrder()
     }
   },
   methods: {
@@ -202,12 +202,12 @@ export default {
 
     // 获取库存记录链表
     async loadInOrder() {
-      //this.orderInfo = await store.findInOrder(this.storeId)
+      this.orderInfo = await normalStore.findInOrder(this.storeId)
     }
   },
   activated: function() {
     this.loadStore()
-    this.loadColdFee()
+    // this.loadColdFee()
     this.loadInOrder()
   }
 }
