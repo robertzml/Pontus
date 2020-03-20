@@ -1,6 +1,6 @@
 <template>
   <v-row dense>
-    <v-col cols="5">
+    <v-col :cols="taskInfo.stockOutType == 1 ? 12 : 5">
       <v-card class="mb-2">
         <v-subheader class="subtitle-1 orange--text text--lighten-2">出库货物信息</v-subheader>
         <v-card-text>
@@ -32,6 +32,12 @@
             <v-col cols="3" md="4" sm="6">
               <v-text-field v-model="taskInfo.outWeight" label="出库重量" suffix="吨" hide-details readonly></v-text-field>
             </v-col>
+            <v-col cols="3" md="4" sm="6" v-if="taskInfo.stockOutType == 1">
+              <v-text-field v-model="taskInfo.warehouseName" label="所在仓库" hide-details readonly></v-text-field>
+            </v-col>
+            <v-col cols="3" md="4" sm="6" v-if="taskInfo.stockOutType == 1">
+              <v-text-field v-model="taskInfo.place" label="存放位置" hide-details readonly></v-text-field>
+            </v-col>
             <v-col cols="3" md="4" sm="6">
               <v-text-field v-model="taskInfo.userName" label="创建人" hide-details readonly></v-text-field>
             </v-col>
@@ -50,14 +56,14 @@
           </v-row>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="primary" v-if="taskInfo.status == 81" @click.stop="showCarryOutCreate">任务下发</v-btn>
-          <v-btn color="deep-orange darken-3" v-if="taskInfo.status == 81" @click.stop="showFinishTask">出库货物确认</v-btn>
+          <v-btn color="primary" v-if="taskInfo.status == 81 && taskInfo.stockOutType == 2" @click.stop="showCarryOutCreate">任务下发</v-btn>
+          <v-btn color="success darken-1" v-if="taskInfo.status == 81" @click.stop="showFinishTask">出库货物确认</v-btn>
           <v-btn color="red darken-3" v-if="taskInfo.status != 85" @click.stop="showDeleteTask">删除出库货物</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
 
-    <v-col cols="7">
+    <v-col cols="7" v-if="taskInfo.stockOutType == 2">
       <v-card class="mb-2">
         <v-subheader class="subtitle-1 purple--text text--lighten-2">
           搬运出库任务

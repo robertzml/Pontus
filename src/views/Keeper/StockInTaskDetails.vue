@@ -1,6 +1,6 @@
 <template>
   <v-row dense>
-    <v-col cols="5">
+    <v-col :cols="taskInfo.stockInType == 1 ? 12 : 5">
       <v-card class="mb-2">
         <v-subheader class="subtitle-1 orange--text text--lighten-2">入库货物信息</v-subheader>
 
@@ -36,6 +36,12 @@
             <v-col cols="3" md="4" sm="6">
               <v-text-field v-model="taskInfo.durability" label="保质期" suffix="月" hide-details readonly></v-text-field>
             </v-col>
+            <v-col cols="3" md="4" sm="6" v-if="taskInfo.stockInType == 1">
+              <v-text-field v-model="taskInfo.warehouseName" label="所在仓库" hide-details readonly></v-text-field>
+            </v-col>
+            <v-col cols="3" md="4" sm="6" v-if="taskInfo.stockInType == 1">
+              <v-text-field v-model="taskInfo.place" label="存放位置" hide-details readonly></v-text-field>
+            </v-col>
             <v-col cols="3" md="4" sm="6">
               <v-text-field v-model="taskInfo.userName" label="创建人" hide-details readonly></v-text-field>
             </v-col>
@@ -55,14 +61,14 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-btn color="primary" v-if="this.taskInfo.status == 71" @click.stop="showCarryInCreate">任务下发</v-btn>
-          <v-btn color="success darken-1" v-if="this.taskInfo.status == 71" @click.stop="showFinishTask">确认入库货物</v-btn>
-          <v-btn color="error" v-if="this.taskInfo.status != 75" @click.stop="showDeleteTask">删除入库货物</v-btn>
+          <v-btn color="primary" v-if="taskInfo.status == 71 && taskInfo.stockInType == 2" @click.stop="showCarryInCreate">任务下发</v-btn>
+          <v-btn color="success darken-1" v-if="taskInfo.status == 71" @click.stop="showFinishTask">确认入库货物</v-btn>
+          <v-btn color="error" v-if="taskInfo.status != 75" @click.stop="showDeleteTask">删除入库货物</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
 
-    <v-col cols="7">
+    <v-col cols="7" v-if="taskInfo.stockInType == 2">
       <v-card class="mb-2">
         <v-subheader class="subtitle-1 purple--text text--lighten-2">
           搬运入库任务
