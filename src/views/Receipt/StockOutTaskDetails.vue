@@ -46,6 +46,13 @@
             <v-text-field v-model="taskInfo.outWeight" label="出库重量" suffix="吨" hide-details readonly></v-text-field>
           </v-col>
 
+          <v-col cols="3" md="3" sm="6" v-if="taskInfo.stockOutType == 1">
+            <v-text-field v-model="taskInfo.warehouseName" label="所在仓库" hide-details readonly></v-text-field>
+          </v-col>
+          <v-col cols="3" md="3" sm="6" v-if="taskInfo.stockOutType == 1">
+            <v-text-field v-model="taskInfo.place" label="存放位置" hide-details readonly></v-text-field>
+          </v-col>
+
           <v-col cols="3" md="3" sm="6">
             <v-text-field v-model="taskInfo.userName" label="创建人" hide-details readonly></v-text-field>
           </v-col>
