@@ -129,6 +129,16 @@ export default {
     }
   },
 
+  // 计费计量
+  billingTypeMeter: type => {
+    let bt = dict.billingType.find(r => r.value == type)
+    if (bt != undefined) {
+      return bt.meter
+    } else {
+      return ''
+    }
+  },
+
   // 费用计算方式
   expenseItemType: type => {
     let et = dict.expenseItemType.find(r => r.value == type)

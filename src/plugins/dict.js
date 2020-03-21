@@ -40,11 +40,11 @@ export default {
    * 计费类型
    */
   billingType: [
-    { text: '件重', value: 1, unit: '元/(吨*天)' },
-    { text: '计数', value: 2, unit: '元/(件*天)' },
-    { text: '非等重', value: 3, unit: '元/(吨*天)' },
-    { text: '仓位', value: 4, unit: '元/(仓位*天)' },
-    { text: '板位', value: 5, unit: '元/(板位*天)' }
+    { text: '件重', value: 1, unit: '元/(吨*天)', meter: '吨' },
+    { text: '计数', value: 2, unit: '元/(件*天)', meter: '件' },
+    { text: '非等重', value: 3, unit: '元/(吨*天)', meter: '吨' },
+    { text: '仓位', value: 4, unit: '元/(仓位*天)', meter: '仓位' },
+    { text: '板位', value: 5, unit: '元/(板位*天)', meter: '板位' }
   ],
 
   /**

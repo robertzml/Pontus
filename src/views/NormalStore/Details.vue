@@ -76,25 +76,34 @@
         <v-card>
           <v-row dense>
             <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field :value="$util.displayDate(coldFeeInfo.startDate)" label="起始日期" hide-details readonly></v-text-field>
+              <v-text-field :value="$util.displayDate(coldFeeInfo.startTime)" label="起始日期" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field :value="$util.displayDate(coldFeeInfo.endDate)" label="结束日期" hide-details readonly></v-text-field>
+              <v-text-field :value="$util.displayDate(coldFeeInfo.endTime)" label="结束日期" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6" lg="2" md="3" sm="4">
               <v-text-field v-model="coldFeeInfo.days" label="天数" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="coldFeeInfo.unitPrice" label="单价" hide-details readonly></v-text-field>
+              <v-text-field
+                v-model="coldFeeInfo.unitPrice"
+                label="单价"
+                :suffix="$util.billingTypeUnit(storeInfo.billingType)"
+                hide-details
+                readonly
+              ></v-text-field>
             </v-col>
             <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="coldFeeInfo.count" label="数量" hide-details readonly></v-text-field>
+              <v-text-field
+                v-model="coldFeeInfo.totalMeter"
+                label="计量"
+                :suffix="$util.billingTypeMeter(storeInfo.billingType)"
+                hide-details
+                readonly
+              ></v-text-field>
             </v-col>
             <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="coldFeeInfo.amount" suffix="元" label="费用" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field :value="$util.displayStatus(coldFeeInfo.status)" label="状态" hide-details readonly></v-text-field>
+              <v-text-field v-model="coldFeeInfo.coldFee" suffix="元" label="费用" hide-details readonly></v-text-field>
             </v-col>
           </v-row>
         </v-card>
@@ -170,6 +179,7 @@
 <script>
 import { mapState } from 'vuex'
 import normalStore from '@/controllers/normalStore'
+import expense from '@/controllers/expense'
 
 export default {
   name: 'NormalStoreDetails',
@@ -187,28 +197,20 @@ export default {
   },
   watch: {
     refreshEvent: function() {
-      this.loadStore()
-      //this.loadColdFee()
-      this.loadInOrder()
+      this.loadData()
     }
   },
   methods: {
-    async loadStore() {
+    async loadData() {
+      const now = this.$moment().format('YYYY-MM-DD')
+
       this.storeInfo = await normalStore.get(this.storeId)
-    },
-
-    // 获取冷藏费
-    async loadColdFee() {},
-
-    // 获取库存记录链表
-    async loadInOrder() {
+      this.coldFeeInfo = await expense.getStoreColdFee({ storeId: this.storeId, current: now, storeType: 1 })
       this.orderInfo = await normalStore.findInOrder(this.storeId)
     }
   },
   activated: function() {
-    this.loadStore()
-    // this.loadColdFee()
-    this.loadInOrder()
+    this.loadData()
   }
 }
 </script>
