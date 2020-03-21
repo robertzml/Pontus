@@ -91,6 +91,14 @@
                 </v-data-table>
                 <v-btn class="primary mt-n12" @click="addToOut">添加出库</v-btn>
               </v-col>
+
+              <v-col cols="12">
+                <v-chip-group column class="d-flex justify-space-between">
+                  <v-chip label v-for="pos in positionList" :key="pos.id" :value="pos" :color="positionColor(pos)">
+                    {{ pos.number }}
+                  </v-chip>
+                </v-chip-group>
+              </v-col>
             </v-row>
 
             <v-row dense>
@@ -115,6 +123,7 @@
 import store from '@/controllers/store'
 import cargo from '@/controllers/cargo'
 import warehouse from '@/controllers/warehouse'
+import position from '@/controllers/position'
 import stockOut from '@/controllers/stockOut'
 import CargoSelect from '@/components/Control/CargoSelect'
 import StoreOut from '@/components/Mod/StoreOut'
@@ -155,6 +164,7 @@ export default {
       { text: '初始入库时间', value: 'initialTime' },
       { text: '操作', value: 'action', sortable: false }
     ],
+    positionList: [],
     selectedStores: []
   }),
   computed: {
@@ -179,6 +189,7 @@ export default {
       this.dialog = true
       this.loading = false
       this.stockOutInfo = outInfo
+      this.positionList = []
 
       this.loadCargoData()
       this.loadWarehouse()
@@ -209,6 +220,26 @@ export default {
     async searchStore() {
       if (this.cargoId) {
         this.storeListData = await store.findForStockOut({ contractId: this.stockOutInfo.contractId, cargoId: this.cargoId })
+      }
+    },
+
+    // 查看当前一层存放情况
+    async viewItem(item) {
+      this.positionList = await position.getListInLayer({ shelfId: item.shelfId, row: item.row, layer: item.layer })
+    },
+
+    // 仓位颜色
+    positionColor(pos) {
+      if (pos.shelfType == 3) {
+        return 'primary'
+      }
+
+      if (pos.status == 2) {
+        return 'grey darken-4' //禁用
+      } else if (pos.status == 31) {
+        return '' // 空置
+      } else {
+        return 'primary' // 有货
       }
     },
 

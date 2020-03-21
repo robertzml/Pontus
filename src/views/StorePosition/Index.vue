@@ -188,7 +188,7 @@ export default {
 
     loadWarehouse() {
       let vm = this
-      warehouse.getList().then(res => {
+      warehouse.getList(2).then(res => {
         vm.warehouseListData = res
       })
     },
