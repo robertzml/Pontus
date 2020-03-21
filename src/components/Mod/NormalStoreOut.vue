@@ -113,7 +113,8 @@ export default {
       if (item == null || item == undefined) {
         return
       }
-      if (this.taskInfoList.findIndex(r => r.trayCode == item.trayCode) != -1) {
+
+      if (this.taskInfoList.findIndex(r => r.storeId == item.id) != -1) {
         return
       }
 

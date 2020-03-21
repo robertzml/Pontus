@@ -82,12 +82,6 @@
                   <template v-slot:item.initialTime="{ item }">
                     {{ item.initialTime | displayDate }}
                   </template>
-                  <template v-slot:item.action="{ item }">
-                    <v-btn small color="primary" @click="viewItem(item)">
-                      <v-icon left dark>pageview</v-icon>
-                      查看
-                    </v-btn>
-                  </template>
                 </v-data-table>
                 <v-btn class="primary mt-n12" @click="addToOut">添加出库</v-btn>
               </v-col>
@@ -153,8 +147,7 @@ export default {
       { text: '单位重量(kg)', value: 'unitWeight' },
       { text: '在库总数量', value: 'storeCount' },
       { text: '在库总重量(t)', value: 'storeWeight' },
-      { text: '初始入库时间', value: 'initialTime' },
-      { text: '操作', value: 'action', sortable: false }
+      { text: '初始入库时间', value: 'initialTime' }
     ],
     selectedStores: []
   }),
@@ -210,6 +203,7 @@ export default {
     async searchStore() {
       if (this.cargoId) {
         this.storeListData = await normalStore.findForStockOut({ contractId: this.stockOutInfo.contractId, cargoId: this.cargoId })
+        this.selectedStores = []
       }
     },
 
