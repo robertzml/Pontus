@@ -9,9 +9,6 @@ export default {
     // 当前库存ID
     storeId: '',
 
-    // 当前仓位信息
-    positionInfo: {},
-
     refreshEvent: false
   },
 
@@ -37,11 +34,6 @@ export default {
     // 设置库存记录
     setStoreId: (state, id) => {
       state.storeId = id
-    },
-
-    // 设置仓位信息
-    setPosition: (state, payload) => {
-      state.positionInfo = payload
     },
 
     // 刷新操作

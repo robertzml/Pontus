@@ -18,7 +18,6 @@
           >
             <template v-slot:selection="{ item }"> {{ item.number }} - {{ item.name }} </template>
           </v-select>
-          <v-btn text @click.stop="refresh">刷新</v-btn>
         </v-toolbar-items>
       </v-toolbar>
     </v-col>
@@ -99,7 +98,7 @@
               </v-sheet>
             </v-col>
             <v-col cols="6">
-              <store-position-info ref="detailsMod" class="sticky-card"></store-position-info>
+              <store-position-info ref="detailsMod" :position-info="sPosition" :store-list="storeList" class="sticky-card"></store-position-info>
             </v-col>
           </v-row>
         </v-container>
@@ -109,10 +108,10 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
 import warehouse from '@/controllers/warehouse'
 import shelf from '@/controllers/shelf'
 import position from '@/controllers/position'
+import store from '@/controllers/store'
 import StorePositionInfo from './Info'
 
 export default {
@@ -127,7 +126,8 @@ export default {
     sShelfId: 0,
     sRow: 0,
     currentShelf: {},
-    sPosition: {}
+    sPosition: {},
+    storeList: []
   }),
   watch: {
     sShelfId(val) {
@@ -173,15 +173,9 @@ export default {
       }
 
       return arr
-    },
-
-    ...mapState({
-      positionInfo: state => state.store.positionInfo
-    })
+    }
   },
   methods: {
-    ...mapMutations({ setPosition: 'store/setPosition' }),
-
     init() {
       this.loadWarehouse()
     },
@@ -201,6 +195,7 @@ export default {
       })
     },
 
+    // 载入一列中的仓位
     loadPosition() {
       let vm = this
       position.getList({ shelfId: this.sShelfId, row: this.sRow }).then(res => {
@@ -214,11 +209,9 @@ export default {
     },
 
     // 查看仓位详情
-    viewDetails(layer, depth) {
-      let vm = this
-      position.get({ shelfId: this.sShelfId, row: this.sRow, layer: layer, depth: depth }).then(res => {
-        vm.setPosition(res)
-      })
+    async viewDetails(layer, depth) {
+      this.sPosition = await position.get({ shelfId: this.sShelfId, row: this.sRow, layer: layer, depth: depth })
+      this.storeList = await store.findStoreIn(this.sPosition.id)
     },
 
     // 根据状态显示仓位颜色
@@ -230,9 +223,7 @@ export default {
       } else {
         return 'primary'
       }
-    },
-
-    refresh() {}
+    }
   },
   mounted: function() {
     this.init()

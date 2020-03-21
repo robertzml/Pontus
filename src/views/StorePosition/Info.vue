@@ -32,7 +32,7 @@
 
     <v-divider class="mx-4"></v-divider>
 
-    <v-card-text class="pb-1" v-for="item in storeInfo" :key="item.id">
+    <v-card-text class="pb-1" v-for="item in storeList" :key="item.id">
       <div class="title text--primary">库存信息</div>
       <v-form>
         <v-container class="px-1">
@@ -102,31 +102,16 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import store from '@/controllers/store'
-
 export default {
   name: 'StorePositionInfo',
-  data: () => ({
-    storeInfo: []
-  }),
-  computed: {
-    ...mapState({
-      positionInfo: state => state.store.positionInfo
-    })
-  },
-  watch: {
-    positionInfo: function() {
-      this.loadStore()
+  props: {
+    positionInfo: {
+      type: Object
+    },
+    storeList: {
+      type: Array
     }
   },
-  methods: {
-    loadStore() {
-      let vm = this
-      store.findStoreIn(this.positionInfo.id).then(res => {
-        vm.storeInfo = res
-      })
-    }
-  }
+  data: () => ({})
 }
 </script>

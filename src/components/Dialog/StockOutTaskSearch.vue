@@ -220,6 +220,7 @@ export default {
     async searchStore() {
       if (this.cargoId) {
         this.storeListData = await store.findForStockOut({ contractId: this.stockOutInfo.contractId, cargoId: this.cargoId })
+        this.selectedStores = []
       }
     },
 
