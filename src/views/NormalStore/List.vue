@@ -40,6 +40,17 @@
           <v-row dense>
             <v-col cols="3">
               <v-select
+                :items="warehouseList"
+                label="存放仓库"
+                item-text="name"
+                item-value="id"
+                v-model="filter.warehouseId"
+                hide-details
+                clearable
+              ></v-select>
+            </v-col>
+            <v-col cols="3">
+              <v-select
                 v-model="filter.status"
                 :items="$dict.storeStatus"
                 label="库存状态"
@@ -97,6 +108,7 @@ import { mapState, mapActions } from 'vuex'
 import normalStore from '@/controllers/normalStore'
 import contract from '@/controllers/contract'
 import cargo from '@/controllers/cargo'
+import warehouse from '@/controllers/warehouse'
 import CustomerSelect from '@/components/Control/CustomerSelect'
 import CargoSelect from '@/components/Control/CargoSelect'
 
@@ -113,12 +125,14 @@ export default {
       selectedContract: { number: '' }
     },
     filter: {
+      warehouseId: 0,
       status: 0,
       cargoId: '',
       search: ''
     },
     contractListData: [],
     contractRules: [v => !!v.id || '请选择合同'],
+    warehouseList: [],
     cargoList: [],
     storeData: [],
     headers: [
@@ -152,6 +166,10 @@ export default {
     filterData() {
       let temp = this.storeData
 
+      if (this.filter.warehouseId) {
+        temp = temp.filter(r => r.warehouseId == this.filter.warehouseId)
+      }
+
       if (this.filter.status) {
         temp = temp.filter(r => r.status == this.filter.status)
       }
@@ -168,8 +186,9 @@ export default {
       showDetails: 'normalStore/showDetails'
     }),
 
-    async loadStore() {
-      this.storeData = await store.list()
+    // 载入仓库
+    async loadWarehouse() {
+      this.warehouseList = await warehouse.getList(1)
     },
 
     // 载入合同
@@ -209,7 +228,7 @@ export default {
     }
   },
   mounted: function() {
-    // this.loadStore()
+    this.loadWarehouse()
   }
 }
 </script>

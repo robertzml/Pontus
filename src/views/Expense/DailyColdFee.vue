@@ -144,9 +144,9 @@ export default {
       { text: '货品名称', value: 'cargoName' },
       { text: '流水类型', value: 'flowType' },
       { text: '流水数量', value: 'count' },
-      { text: '单位重量', value: 'unitMeter' },
-      { text: '出入库重量', value: 'flowMeter' },
-      { text: '在库重量', value: 'totalMeter' },
+      { text: '单位重量(kg)', value: 'unitMeter' },
+      { text: '出入库重量(t)', value: 'flowMeter' },
+      { text: '在库重量(t)', value: 'totalMeter' },
       { text: '日冷藏费(元)', value: 'dailyFee' },
       { text: '冷藏费累计(元)', value: 'totalFee' }
     ],
@@ -155,7 +155,6 @@ export default {
   watch: {
     'search.customerId': function(val) {
       this.loadContract(val)
-      // this.loadCargoData(val)
     }
   },
   methods: {
