@@ -95,8 +95,11 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="carryInTaskHeaders" :items="carryInTaskList" hide-default-footer disable-filtering disable-pagination>
+            <template v-slot:item.checkTime="{ item }">
+              {{ item.checkTime | displayDateTime }}
+            </template>
             <template v-slot:item.status="{ item }">
-              {{ item.status | displayStatus }}
+              <span :class="{ 'green--text': item.status == 75 }">{{ item.status | displayStatus }}</span>
             </template>
             <template v-slot:item.action="{ item }">
               <v-btn small color="primary darken-1" @click="showCarryInDetails(item)">
@@ -182,6 +185,7 @@ export default {
       { text: '搬运重量(t)', value: 'moveWeight' },
       { text: '仓位码', value: 'positionNumber' },
       { text: '接单人', value: 'receiveUserName' },
+      { text: '清点时间', value: 'checkTime' },
       { text: '状态', value: 'status' },
       { text: '操作', value: 'action', sortable: false }
     ],

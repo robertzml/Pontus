@@ -147,7 +147,8 @@ export default {
       { text: '单位重量(kg)', value: 'unitWeight' },
       { text: '在库总数量', value: 'storeCount' },
       { text: '在库总重量(t)', value: 'storeWeight' },
-      { text: '初始入库时间', value: 'initialTime' }
+      { text: '初始入库时间', value: 'initialTime' },
+      { text: '备注', value: 'remark' }
     ],
     selectedStores: []
   }),
