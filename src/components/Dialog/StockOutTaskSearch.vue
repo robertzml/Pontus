@@ -162,6 +162,7 @@ export default {
       { text: '在库总数量', value: 'storeCount' },
       { text: '在库总重量(t)', value: 'storeWeight' },
       { text: '初始入库时间', value: 'initialTime' },
+      { text: '备注', value: 'remark' },
       { text: '操作', value: 'action', sortable: false }
     ],
     positionList: [],

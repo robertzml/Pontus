@@ -31,10 +31,6 @@
                   suffix="吨"
                 ></v-text-field>
               </v-col>
-
-              <v-col cols="12" md="12">
-                <v-text-field label="备注" v-model="remark" hint="库存备注" persistent-hint></v-text-field>
-              </v-col>
             </v-row>
           </v-container>
         </v-form>
@@ -59,7 +55,6 @@ export default {
     dialog: false,
     loading: false,
     carryInTask: {},
-    remark: '',
     trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
     moveCountRules: [v => !!v || '请输入入库数量'],
     moveWeightRules: [v => !!v || '请输入入库重量']
@@ -91,8 +86,7 @@ export default {
           userId: this.$store.state.user.id,
           trayCode: this.carryInTask.trayCode,
           moveCount: this.carryInTask.moveCount,
-          moveWeight: this.carryInTask.moveWeight,
-          remark: this.remark
+          moveWeight: this.carryInTask.moveWeight
         }
 
         carryIn.finishTask(model).then(res => {
