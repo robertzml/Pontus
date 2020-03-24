@@ -5,7 +5,7 @@
       <v-list-item-group v-model="model" color="primary" mandatory>
         <v-list-item v-for="item in stockOutList" :key="item.id" :value="item.id">
           <v-list-item-content>
-            <v-list-item-title v-text="item.flowNumber"></v-list-item-title>
+            <v-list-item-title v-text="item.flowNumber" :class="{ 'orange--text': item.status != 85 }"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
