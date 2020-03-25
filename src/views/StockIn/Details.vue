@@ -4,76 +4,15 @@
       <v-expansion-panel>
         <v-expansion-panel-header ripple class="primary">入库单信息 </v-expansion-panel-header>
         <v-expansion-panel-content eager>
-          <v-card flat class="mx-auto">
-            <v-row dense>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.displayDate(info.inTime)" label="入库时间" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="info.monthTime" label="入库月份" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="info.flowNumber" label="流水单号" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.stockInType(info.type)" label="入库类型" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="info.customerNumber" label="客户编号" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="info.customerName" label="客户名称" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="info.contractNumber" label="合同编号" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="info.contractName" label="合同名称" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.contractType(info.contractType)" label="合同类型" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.billingType(info.billingType)" label="计费方式" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field
-                  v-model="info.unitPrice"
-                  label="冷藏费单价"
-                  :suffix="$util.billingTypeUnit(info.billingType)"
-                  hide-details
-                  readonly
-                ></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="info.vehicleNumber" label="车牌号" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="info.userName" label="登记人" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.displayDateTime(info.createTime)" label="创建时间" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.displayDateTime(info.confirmTime)" label="确认时间" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.displayStatus(info.status)" label="状态" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="6" md="6" sm="6">
-                <v-text-field label="备注" :value="info.remark" hide-details readonly> </v-text-field>
-              </v-col>
-              <v-col cols="6" md="6" sm="6"> </v-col>
-            </v-row>
-
-            <v-card-actions>
+          <stock-in-details-view :info="info">
+            <template v-slot:action>
               <v-btn color="indigo darken-3" v-if="info.status == 71" @click="showAddTask">添加货物</v-btn>
               <v-btn color="purple darken-3" v-if="info.status == 71" @click="showBilling">设置入库费用</v-btn>
               <v-btn color="success darken-1" v-if="info.status == 71" @click.stop="showFinish">确认入库单</v-btn>
               <v-btn color="warning" v-if="stockInId && info.status != 75" @click.stop="showEdit">编辑入库单</v-btn>
               <v-btn color="red darken-3" v-if="stockInId && info.status != 75" @click.stop="showDelete">删除入库单</v-btn>
-            </v-card-actions>
-          </v-card>
+            </template>
+          </stock-in-details-view>
         </v-expansion-panel-content>
       </v-expansion-panel>
 
@@ -114,6 +53,7 @@
       </v-expansion-panel>
     </v-expansion-panels>
 
+    <!-- 设置入库费用组件 -->
     <stock-in-edit-billing ref="bllingMod" @close="loadBilling"></stock-in-edit-billing>
 
     <!-- 编辑入库单组件 -->
@@ -134,6 +74,7 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import StockInTaskCreate from '@/components/Dialog/StockInTaskCreate'
+import StockInDetailsView from '@/components/View/StockInDetailsView'
 import StockInEdit from './Dialog/Edit'
 import StockInFinish from './Dialog/Finish'
 import StockInDelete from './Dialog/Delete'
@@ -142,6 +83,7 @@ import StockInEditBilling from './Dialog/EditBilling'
 export default {
   name: 'StockInDetails',
   components: {
+    StockInDetailsView,
     StockInTaskCreate,
     StockInEdit,
     StockInFinish,

@@ -4,68 +4,7 @@
       <v-expansion-panel>
         <v-expansion-panel-header ripple class="cyan darken-1">入库单信息</v-expansion-panel-header>
         <v-expansion-panel-content eager>
-          <v-card flat>
-            <v-row dense>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.displayDate(stockInInfo.inTime)" label="入库时间" readonly hide-details></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="stockInInfo.monthTime" label="入库月份" readonly hide-details></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="stockInInfo.flowNumber" label="流水单号" readonly hide-details></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.stockInType(stockInInfo.type)" label="入库类型" readonly hide-details></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="stockInInfo.customerNumber" label="客户编号" readonly hide-details></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="stockInInfo.customerName" label="客户名称" readonly hide-details></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="stockInInfo.contractNumber" label="合同编号" readonly hide-details></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="stockInInfo.contractName" label="合同名称" readonly hide-details></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.contractType(stockInInfo.contractType)" label="合同类型" readonly hide-details></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.billingType(stockInInfo.billingType)" label="计费方式" readonly hide-details></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field
-                  v-model="stockInInfo.unitPrice"
-                  label="冷藏费单价"
-                  :suffix="$util.billingTypeUnit(stockInInfo.billingType)"
-                  readonly
-                  hide-details
-                ></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="stockInInfo.vehicleNumber" label="车牌号" readonly hide-details></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="stockInInfo.userName" label="登记人" readonly hide-details></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.displayDateTime(stockInInfo.createTime)" label="创建时间" readonly hide-details></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.displayDateTime(stockInInfo.confirmTime)" label="确认时间" readonly hide-details></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.displayStatus(stockInInfo.status)" label="状态" readonly hide-details></v-text-field>
-              </v-col>
-              <v-col cols="6" md="6" sm="6">
-                <v-text-field label="备注" :value="stockInInfo.remark" readonly hide-details> </v-text-field>
-              </v-col>
-              <v-col cols="6" md="6" sm="6"> </v-col>
-            </v-row>
-          </v-card>
+          <stock-in-details-view :info="stockInInfo"> </stock-in-details-view>
         </v-expansion-panel-content>
       </v-expansion-panel>
 
@@ -117,11 +56,13 @@ import { mapState } from 'vuex'
 import stockIn from '@/controllers/stockIn'
 import carryIn from '@/controllers/carryIn'
 import StockInTaskDetails from './StockInTaskDetails'
+import StockInDetailsView from '@/components/View/StockInDetailsView'
 
 export default {
   name: 'ReceiptStockInDetails',
   components: {
-    StockInTaskDetails
+    StockInTaskDetails,
+    StockInDetailsView
   },
   data: () => ({
     panel: [0, 1],

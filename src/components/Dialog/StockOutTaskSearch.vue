@@ -105,7 +105,7 @@
               <v-col cols="12">
                 <v-card-subtitle class="pb-2 cyan darken-4">出库货物</v-card-subtitle>
                 <!-- 待出库货物组件 -->
-                <store-out ref="storeOutMod"></store-out>
+                <position-store-out ref="storeOutMod"></position-store-out>
               </v-col>
             </v-row>
           </v-container>
@@ -126,13 +126,13 @@ import warehouse from '@/controllers/warehouse'
 import position from '@/controllers/position'
 import stockOut from '@/controllers/stockOut'
 import CargoSelect from '@/components/Control/CargoSelect'
-import StoreOut from '@/components/Mod/StoreOut'
+import PositionStoreOut from '@/components/Mod/PositionStoreOut'
 
 export default {
   name: 'StockOutTaskSearch',
   components: {
     CargoSelect,
-    StoreOut
+    PositionStoreOut
   },
   data: () => ({
     dialog: false,

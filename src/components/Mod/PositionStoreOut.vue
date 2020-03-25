@@ -60,7 +60,7 @@
 import position from '@/controllers/position'
 
 export default {
-  name: 'StoreOut',
+  name: 'PositionStoreOut',
   data: () => ({
     stockOutInfo: {},
     taskHeaders: [
