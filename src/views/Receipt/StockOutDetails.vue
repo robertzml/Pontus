@@ -4,67 +4,7 @@
       <v-expansion-panel>
         <v-expansion-panel-header ripple class="deep-purple darken-1">出库单信息</v-expansion-panel-header>
         <v-expansion-panel-content eager>
-          <v-card flat class="mx-auto">
-            <v-row dense>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.displayDate(stockOutInfo.outTime)" label="出库时间" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="stockOutInfo.monthTime" label="出库月份" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="stockOutInfo.flowNumber" label="流水单号" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.stockOutType(stockOutInfo.type)" label="出库类型" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="stockOutInfo.customerNumber" label="客户编号" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="stockOutInfo.customerName" label="客户名称" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="stockOutInfo.contractNumber" label="合同编号" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="stockOutInfo.contractName" label="合同名称" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.contractType(stockOutInfo.contractType)" label="合同类型" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.billingType(stockOutInfo.billingType)" label="计费方式" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field
-                  v-model="stockOutInfo.unitPrice"
-                  label="冷藏费单价"
-                  :suffix="$util.billingTypeUnit(stockOutInfo.billingType)"
-                  hide-details
-                  readonly
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6" md="3" sm="6">
-                <v-text-field label="车牌号" :value="stockOutInfo.vehicleNumber" hide-details readonly> </v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field v-model="stockOutInfo.userName" label="登记人" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.displayDateTime(stockOutInfo.createTime)" label="创建时间" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.displayDateTime(stockOutInfo.confirmTime)" label="确认时间" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="$util.displayStatus(stockOutInfo.status)" label="状态" hide-details readonly></v-text-field>
-              </v-col>
-              <v-col cols="6" md="6" sm="6">
-                <v-text-field label="备注" :value="stockOutInfo.remark" hide-details readonly> </v-text-field>
-              </v-col>
-            </v-row>
-          </v-card>
+          <stock-out-details-view :info="stockOutInfo"> </stock-out-details-view>
         </v-expansion-panel-content>
       </v-expansion-panel>
 
@@ -138,11 +78,13 @@ import { mapState } from 'vuex'
 import stockOut from '@/controllers/stockOut'
 import carryIn from '@/controllers/carryIn'
 import carryOut from '@/controllers/carryOut'
+import StockOutDetailsView from '@/components/View/StockOutDetailsView'
 import StockOutTaskDetails from './StockOutTaskDetails'
 
 export default {
   name: 'ReceiptStockInDetails',
   components: {
+    StockOutDetailsView,
     StockOutTaskDetails
   },
   data: () => ({

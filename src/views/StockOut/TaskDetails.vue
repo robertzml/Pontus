@@ -159,7 +159,7 @@
     <scan-tray-out ref="scanMod" @close="refresh"></scan-tray-out>
 
     <!-- 搬运出库信息组件 -->
-    <carry-out-details ref="carryOutDetailsMod" @close="loadCarryOutTask"></carry-out-details>
+    <carry-out-details ref="carryOutDetailsMod"></carry-out-details>
 
     <!-- 搬运出库确认组件 -->
     <carry-out-finish ref="carryOutFinishMod" @close="loadCarryOutTask"></carry-out-finish>
@@ -168,7 +168,7 @@
     <carry-out-delete ref="carryOutDeleteMod" @close="refresh"></carry-out-delete>
 
     <!-- 搬运入库信息组件 -->
-    <carry-in-details ref="carryInDetailsMod" @close="loadCarryInTask"></carry-in-details>
+    <carry-in-details ref="carryInDetailsMod"></carry-in-details>
 
     <!-- 搬运入库确认组件 -->
     <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>

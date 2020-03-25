@@ -26,7 +26,7 @@
         <v-expansion-panel-content eager>
           <v-data-table :headers="headers" :items="taskInfoList" hide-default-footer disable-pagination>
             <template v-slot:item.status="{ item }">
-              <span :class="{ 'green--text': item.status == 75 }">{{ item.status | displayStatus }}</span>
+              <span :class="{ 'orange--text': item.status != 75 }">{{ item.status | displayStatus }}</span>
             </template>
             <template v-slot:item.action="{ item }">
               <v-btn small color="primary" @click="viewTaskItem(item)">

@@ -137,7 +137,7 @@
     <stock-in-task-delete ref="stockInTaskDeleteMod" @close="stockInShowDetails(taskInfo.stockInId)"></stock-in-task-delete>
 
     <!-- 搬运入库任务查看组件 -->
-    <carry-in-details ref="carryInDetailsMod" @close="loadCarryInTask"></carry-in-details>
+    <carry-in-details ref="carryInDetailsMod"></carry-in-details>
 
     <!-- 搬运入库确认组件 -->
     <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>
