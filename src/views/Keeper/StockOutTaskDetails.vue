@@ -56,7 +56,6 @@
           </v-row>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="primary" v-if="taskInfo.status == 81 && taskInfo.stockOutType == 2" @click.stop="showCarryOutCreate">任务下发</v-btn>
           <v-btn color="success darken-1" v-if="taskInfo.status == 81" @click.stop="showFinishTask">出库货物确认</v-btn>
           <v-btn color="red darken-3" v-if="taskInfo.status != 85" @click.stop="showDeleteTask">删除出库货物</v-btn>
         </v-card-actions>
@@ -121,9 +120,6 @@
     <!-- 出库任务删除组件 -->
     <stock-out-task-delete ref="stockOutTaskDeleteMod" @close="showStockOutTaskList"></stock-out-task-delete>
 
-    <!-- 下发搬运出库任务组件 -->
-    <carry-out-create ref="carryOutCreateMod" @close="loadCarryOutList"></carry-out-create>
-
     <!-- 搬运出库确认组件 -->
     <carry-out-finish ref="carryOutFinishMod" @close="loadCarryOutList"></carry-out-finish>
 
@@ -142,7 +138,6 @@ import carryOut from '@/controllers/carryOut'
 import carryIn from '@/controllers/carryIn'
 import StockOutTaskFinish from '@/components/Dialog/StockOutTaskFinish'
 import StockOutTaskDelete from '@/components/Dialog/StockOutTaskDelete'
-import CarryOutCreate from '@/components/Dialog/CarryOutCreate'
 import CarryOutFinish from '@/components/Dialog/CarryOutFinish'
 import CarryOutDelete from '@/components/Dialog/CarryOutDelete'
 import CarryInFinish from '@/components/Dialog/CarryInFinish'
@@ -152,7 +147,6 @@ export default {
   components: {
     StockOutTaskFinish,
     StockOutTaskDelete,
-    CarryOutCreate,
     CarryOutFinish,
     CarryOutDelete,
     CarryInFinish
@@ -271,11 +265,6 @@ export default {
     // 显示删除出库任务
     showDeleteTask() {
       this.$refs.stockOutTaskDeleteMod.init(this.stockOutTaskId)
-    },
-
-    // 下发搬运任务
-    showCarryOutCreate() {
-      this.$refs.carryOutCreateMod.init(this.stockOutTaskId)
     },
 
     // 确认搬运出库任务

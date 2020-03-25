@@ -84,9 +84,6 @@
         </v-card>
 
         <!-- 添加出库任务组件 -->
-        <stock-out-task-create ref="createTaskMod" @close="refresh"></stock-out-task-create>
-
-        <!-- 添加出库任务组件 -->
         <stock-out-task-search ref="taskSearchMod" @close="refresh"></stock-out-task-search>
 
         <!-- 添加普通库出库任务组件 -->
@@ -108,7 +105,6 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 import stockOut from '@/controllers/stockOut'
 import StockOutTaskList from './StockOutTaskList'
 import StockOutTaskDetails from './StockOutTaskDetails'
-import StockOutTaskCreate from '@/components/Dialog/StockOutTaskCreate'
 import StockOutTaskSearch from '@/components/Dialog/StockOutTaskSearch'
 import StockOutTaskNormal from '@/components/Dialog/StockOutTaskNormal'
 import ScanTrayOut from '@/components/Dialog/ScanTrayOut'
@@ -118,7 +114,6 @@ export default {
   components: {
     StockOutTaskList,
     StockOutTaskDetails,
-    StockOutTaskCreate,
     StockOutTaskSearch,
     StockOutTaskNormal,
     ScanTrayOut
@@ -177,15 +172,10 @@ export default {
 
     // 显示添加出库任务
     showAddTask() {
-      /*if (this.model) {
-        this.$refs.createTaskMod.init(this.stockOutInfo)
-      }*/
-
       if (this.model) {
         if (this.stockOutInfo.type == 1) {
           this.$refs.taskNormalMod.init(this.stockOutInfo)
         } else if (this.stockOutInfo.type == 2) {
-          // this.$refs.createTaskMod.init(this.info)
           this.$refs.taskSearchMod.init(this.stockOutInfo)
         }
       }

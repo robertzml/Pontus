@@ -273,7 +273,7 @@ export default {
           userId: this.$store.state.user.id
         }
 
-        stockOut.addOutStore(data).then(res => {
+        stockOut.addPositionOut(data).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加出库成功')
             this.$emit('close')

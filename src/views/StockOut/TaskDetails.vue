@@ -158,9 +158,6 @@
     <!-- 扫托盘码出库组件 -->
     <scan-tray-out ref="scanMod" @close="refresh"></scan-tray-out>
 
-    <!-- 下发搬运出库任务组件 -->
-    <carry-out-create ref="carryOutCreateMod" @close="loadCarryOutTask"></carry-out-create>
-
     <!-- 搬运出库信息组件 -->
     <carry-out-details ref="carryOutDetailsMod" @close="loadCarryOutTask"></carry-out-details>
 
@@ -190,7 +187,6 @@ import StockOutTaskFinish from '@/components/Dialog/StockOutTaskFinish'
 import StockOutTaskEdit from '@/components/Dialog/StockOutTaskEdit'
 import StockOutTaskDelete from '@/components/Dialog/StockOutTaskDelete'
 import ScanTrayOut from '@/components/Dialog/ScanTrayOut'
-import CarryOutCreate from '@/components/Dialog/CarryOutCreate'
 import CarryOutDetails from '@/components/Dialog/CarryOutDetails'
 import CarryOutFinish from '@/components/Dialog/CarryOutFinish'
 import CarryOutDelete from '@/components/Dialog/CarryOutDelete'
@@ -206,7 +202,6 @@ export default {
     StockOutTaskEdit,
     StockOutTaskDelete,
     ScanTrayOut,
-    CarryOutCreate,
     CarryOutDetails,
     CarryOutDelete,
     CarryInDetails,
@@ -343,11 +338,6 @@ export default {
     // 显示扫码出库
     showScanTray() {
       this.$refs.scanMod.init(this.taskInfo.stockOutId)
-    },
-
-    // 下发搬运任务
-    showCarryOutCreate() {
-      this.$refs.carryOutCreateMod.init(this.taskInfo.id)
     },
 
     // 查看搬运出库任务

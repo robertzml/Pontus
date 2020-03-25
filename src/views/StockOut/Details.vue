@@ -129,7 +129,6 @@ import StockOutDelete from './Dialog/Delete'
 import StockOutFinish from './Dialog/Finish'
 import StockOutTaskSearch from '@/components/Dialog/StockOutTaskSearch'
 import StockOutTaskNormal from '@/components/Dialog/StockOutTaskNormal'
-import StockOutTaskCreate from '@/components/Dialog/StockOutTaskCreate'
 import ScanTrayOut from '@/components/Dialog/ScanTrayOut'
 
 export default {
@@ -140,7 +139,6 @@ export default {
     StockOutFinish,
     StockOutTaskSearch,
     StockOutTaskNormal,
-    StockOutTaskCreate,
     ScanTrayOut
   },
   data: () => ({
@@ -231,7 +229,6 @@ export default {
         if (this.info.type == 1) {
           this.$refs.taskNormalMod.init(this.info)
         } else if (this.info.type == 2) {
-          // this.$refs.createTaskMod.init(this.info)
           this.$refs.taskSearchMod.init(this.info)
         }
       }

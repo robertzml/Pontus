@@ -96,14 +96,8 @@ export default {
   },
 
   // 添加出库任务
-  async addTask(entity) {
-    const res = await axios._post({ url: '/stockOut/addTask', data: entity })
-    return res.data
-  },
-
-  // 添加出库任务
-  async addOutStore(data) {
-    const res = await axios._post({ url: '/stockOut/addOutStore', data: data })
+  async addPositionOut(data) {
+    const res = await axios._post({ url: '/stockOut/addPositionOut', data: data })
     return res.data
   },
 
