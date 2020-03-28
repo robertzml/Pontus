@@ -8,11 +8,18 @@
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-container fluid>
             <v-row>
-              <v-col cols="6" md="6" sm="6">
+              <v-col cols="12" md="12" sm="12">
                 <cargo-select ref="cargoSelect" :cargo-id.sync="cargoId" :cargo-data="cargoListData"></cargo-select>
               </v-col>
-              <v-col cols="3" md="6" sm="6">
-                <v-text-field label="单位重量*" v-model="taskInfo.unitWeight" suffix="千克"></v-text-field>
+
+              <v-col cols="6" md="4" sm="6" v-if="taskInfo.stockInType == 1">
+                <v-text-field label="入库数量" v-model="taskInfo.inCount"></v-text-field>
+              </v-col>
+              <v-col cols="6" md="4" sm="6">
+                <v-text-field label="单位重量" v-model="taskInfo.unitWeight" suffix="千克"></v-text-field>
+              </v-col>
+              <v-col cols="6" md="4" sm="6" v-if="taskInfo.stockInType == 1">
+                <v-text-field label="总重量" v-model="totalWeight" suffix="吨" readonly></v-text-field>
               </v-col>
 
               <v-col cols="6" md="4" sm="6">
@@ -66,7 +73,7 @@ export default {
   }),
   computed: {
     totalWeight: function() {
-      return (this.taskInfo.inCount * this.unitWeight) / 1000
+      return (this.taskInfo.inCount * this.taskInfo.unitWeight) / 1000
     }
   },
   methods: {
@@ -101,6 +108,7 @@ export default {
         let vm = this
 
         this.taskInfo.cargoId = this.cargoId
+        this.taskInfo.inWeight = this.totalWeight
 
         stockIn.updateTask(this.taskInfo).then(res => {
           if (res.status == 0) {
