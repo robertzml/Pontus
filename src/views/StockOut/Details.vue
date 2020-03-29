@@ -11,6 +11,7 @@
               <v-btn color="success darken-1" v-if="info.status == 81" @click.stop="showFinish">确认出库单</v-btn>
               <v-btn color="warning" v-if="stockOutId && info.status != 85" @click.stop="showEdit">编辑出库单</v-btn>
               <v-btn color="red darken-3" v-if="stockOutId && info.status != 85" @click.stop="showDelete">删除出库单</v-btn>
+              <v-btn color="indigo darken-1" v-if="stockOutId && info.status != 85" @click.stop="setDiffCold">计算冷藏费差价</v-btn>
             </template>
           </stock-out-details-view>
         </v-expansion-panel-content>
@@ -36,6 +37,21 @@
           </v-data-table>
         </v-expansion-panel-content>
       </v-expansion-panel>
+
+      <v-expansion-panel>
+        <v-expansion-panel-header ripple class="deep-purple darken-4">
+          出库费用
+          <v-spacer></v-spacer>
+          <span class="subtitle-2 ml-4">费用合计: {{ totalFee }} 元</span>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content eager>
+          <v-data-table :headers="billingHeaders" :items="billingItems" hide-default-footer disable-pagination>
+            <template v-slot:item.unitPrice="{ item }">
+              {{ item.unitPrice == 0 ? '' : item.unitPrice }}
+            </template>
+          </v-data-table>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
     </v-expansion-panels>
 
     <!-- 编辑出库单组件 -->
@@ -52,9 +68,6 @@
 
     <!-- 添加普通库出库任务组件 -->
     <stock-out-task-normal ref="taskNormalMod" @close="loadTaskList"></stock-out-task-normal>
-
-    <!-- 添加出库任务组件 -->
-    <stock-out-task-create ref="createTaskMod" @close="loadTaskList"></stock-out-task-create>
 
     <!-- 扫托盘码出库组件 -->
     <scan-tray-out ref="scanMod" @close="loadTaskList"></scan-tray-out>
@@ -96,7 +109,16 @@ export default {
       { text: '状态', value: 'status' },
       { text: '操作', value: 'action', sortable: false }
     ],
-    taskInfoList: []
+    taskInfoList: [],
+    billingHeaders: [
+      { text: '费用代码', value: 'code' },
+      { text: '费用项目', value: 'name' },
+      { text: '单价(吨/元)', value: 'unitPrice' },
+      { text: '数量(吨)', value: 'count' },
+      { text: '总价(元)', value: 'amount' },
+      { text: '参数', value: 'parameter1' }
+    ],
+    billingItems: []
   }),
   computed: {
     ...mapState({
@@ -119,16 +141,26 @@ export default {
       })
 
       return total.toFixed(4)
+    },
+    totalFee: function() {
+      let total = 0
+      this.billingItems.forEach(item => {
+        total += item.amount
+      })
+
+      return total.toFixed(3)
     }
   },
   watch: {
     stockOutId: function() {
       this.loadInfo()
       this.loadTaskList()
+      this.loadBilling()
     },
     refreshEvent: function() {
       this.loadInfo()
       this.loadTaskList()
+      this.loadBilling()
     }
   },
   methods: {
@@ -165,6 +197,15 @@ export default {
       }
     },
 
+    // 载入出库计费
+    async loadBilling() {
+      if (this.stockOutId) {
+        this.billingItems = await stockOut.getBilling(this.stockOutId)
+      } else {
+        this.billingItems = []
+      }
+    },
+
     // 显示添加入库任务
     showAddTask() {
       if (this.stockOutId) {
@@ -196,7 +237,19 @@ export default {
       this.$refs.stockOutFinishMod.init(this.stockOutId)
     },
 
-    // 查看入库任务
+    // 设置冷藏费差价
+    setDiffCold() {
+      let vm = this
+      stockOut.setDiffCold({ stockOutId: this.stockOutId }).then(res => {
+        if (res.status == 0) {
+          vm.loadBilling()
+        } else {
+          vm.$store.commit('alertError', res.errorMessage)
+        }
+      })
+    },
+
+    // 查看出库任务
     viewTaskItem(val) {
       this.showTaskDetails(val)
     }
@@ -204,6 +257,7 @@ export default {
   mounted: function() {
     this.loadInfo()
     this.loadTaskList()
+    this.loadBilling()
   }
 }
 </script>

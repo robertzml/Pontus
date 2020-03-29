@@ -74,6 +74,18 @@ export default {
     return res.data
   },
 
+  // 获取入库计费
+  async getBilling(stockOutId) {
+    const res = await axios._get({ url: '/stockOut/getBillings', params: { stockOutId: stockOutId } })
+    return res.data
+  },
+
+  // 设置冷藏费差价
+  async setDiffCold(data) {
+    const res = await axios._postqs({ url: '/stockOut/setDiffCold', params: data })
+    return res.data
+  },
+
   // 出库任务列表
   async getTaskList(stockOutId) {
     const res = await axios._get({ url: '/stockOut/taskList', params: { stockOutId: stockOutId } })
