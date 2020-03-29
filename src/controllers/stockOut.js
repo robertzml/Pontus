@@ -74,9 +74,15 @@ export default {
     return res.data
   },
 
-  // 获取入库计费
+  // 获取出库计费
   async getBilling(stockOutId) {
     const res = await axios._get({ url: '/stockOut/getBillings', params: { stockOutId: stockOutId } })
+    return res.data
+  },
+
+  // 设置出库费用
+  async setBilling(entity) {
+    const res = await axios._post({ url: '/stockOut/setBilling', data: entity })
     return res.data
   },
 

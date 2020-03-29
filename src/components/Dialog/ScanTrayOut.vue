@@ -56,7 +56,7 @@
                               ></v-text-field>
                             </v-list-item-content>
                             <v-list-item-content class="align-end">
-                              <v-text-field label="出库重量" v-model="item.moveWeight" class="pr-4" readonly></v-text-field>
+                              <v-text-field label="出库重量" v-model="item.moveWeight" class="pr-4" suffix="吨" readonly></v-text-field>
                             </v-list-item-content>
                           </v-list-item>
 

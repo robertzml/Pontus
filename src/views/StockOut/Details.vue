@@ -11,7 +11,8 @@
               <v-btn color="success darken-1" v-if="info.status == 81" @click.stop="showFinish">确认出库单</v-btn>
               <v-btn color="warning" v-if="stockOutId && info.status != 85" @click.stop="showEdit">编辑出库单</v-btn>
               <v-btn color="red darken-3" v-if="stockOutId && info.status != 85" @click.stop="showDelete">删除出库单</v-btn>
-              <v-btn color="indigo darken-1" v-if="stockOutId && info.status != 85" @click.stop="setDiffCold">计算冷藏费差价</v-btn>
+              <v-btn color="purple darken-3" v-if="info.status == 81" @click="showBilling">设置出库费用</v-btn>
+              <v-btn color="indigo darken-1" v-if="stockOutId && info.status == 81" @click.stop="setDiffCold">计算冷藏费差价</v-btn>
             </template>
           </stock-out-details-view>
         </v-expansion-panel-content>
@@ -54,6 +55,9 @@
       </v-expansion-panel>
     </v-expansion-panels>
 
+    <!-- 设置出库费用组件 -->
+    <stock-out-edit-billing ref="bllingMod" @close="loadBilling"></stock-out-edit-billing>
+
     <!-- 编辑出库单组件 -->
     <stock-out-edit ref="stockOutEditMod" @close="loadInfo"></stock-out-edit>
 
@@ -80,6 +84,7 @@ import stockOut from '@/controllers/stockOut'
 import StockOutEdit from './Dialog/Edit'
 import StockOutDelete from './Dialog/Delete'
 import StockOutFinish from './Dialog/Finish'
+import StockOutEditBilling from './Dialog/EditBilling'
 import StockOutDetailsView from '@/components/View/StockOutDetailsView'
 import StockOutTaskSearch from '@/components/Dialog/StockOutTaskSearch'
 import StockOutTaskNormal from '@/components/Dialog/StockOutTaskNormal'
@@ -92,6 +97,7 @@ export default {
     StockOutEdit,
     StockOutDelete,
     StockOutFinish,
+    StockOutEditBilling,
     StockOutTaskSearch,
     StockOutTaskNormal,
     ScanTrayOut
@@ -115,8 +121,7 @@ export default {
       { text: '费用项目', value: 'name' },
       { text: '单价(吨/元)', value: 'unitPrice' },
       { text: '数量(吨)', value: 'count' },
-      { text: '总价(元)', value: 'amount' },
-      { text: '参数', value: 'parameter1' }
+      { text: '总价(元)', value: 'amount' }
     ],
     billingItems: []
   }),
@@ -235,6 +240,11 @@ export default {
     // 显示确认出库单
     showFinish() {
       this.$refs.stockOutFinishMod.init(this.stockOutId)
+    },
+
+    // 显示出库计费
+    showBilling() {
+      this.$refs.bllingMod.init(this.stockOutId)
     },
 
     // 设置冷藏费差价

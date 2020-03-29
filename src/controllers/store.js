@@ -74,18 +74,6 @@ export default {
   },
 
   /**
-   * 按出库单查找库存
-   * @param {出库单ID，货品ID} param0
-   */
-  async findByStockOut({ stockOutId, cargoId }) {
-    const res = await axios._get({
-      url: '/store/findByStockOut',
-      params: { stockOutId: stockOutId, cargoId: cargoId }
-    })
-    return res.data
-  },
-
-  /**
    * 出库时查找库存
    * @param {合同ID，货品ID} param0
    */
