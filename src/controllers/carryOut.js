@@ -59,6 +59,15 @@ export default {
   },
 
   /**
+   * 根据托盘码搜索未确认的搬运出库任务
+   * @param {托盘码} trayCode
+   */
+  async listByTray(trayCode) {
+    const res = await axios._get({ url: '/carryOutTask/listByTray', params: { trayCode: trayCode } })
+    return res.data
+  },
+
+  /**
    * 按库存入库时间查找
    * @param {合同ID，入库时间} param0
    */
