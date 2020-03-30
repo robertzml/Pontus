@@ -187,6 +187,15 @@ export const menuRoutes = [
     meta: { roles: [1, 2, 3, 4] }
   },
   {
+    path: '/trayfind',
+    name: 'trayFind',
+    text: '托盘查找',
+    group: 'stock',
+    model: false,
+    component: () => import('@/views/Tray/Find.vue'),
+    meta: { roles: [1, 2, 3, 4] }
+  },
+  {
     path: '/receiptstockin',
     name: 'receiptStockIn',
     text: '入库单据',
