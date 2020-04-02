@@ -59,11 +59,11 @@ export default {
   },
 
   /**
-   * 根据托盘码搜索未确认的搬运出库任务
+   * 根据托盘码查找进行中的搬运任务
    * @param {托盘码} trayCode
    */
-  async listByTray(trayCode) {
-    const res = await axios._get({ url: '/carryOutTask/listByTray', params: { trayCode: trayCode } })
+  async findWorking(trayCode) {
+    const res = await axios._get({ url: '/carryOutTask/findWorking', params: { trayCode: trayCode } })
     return res.data
   },
 

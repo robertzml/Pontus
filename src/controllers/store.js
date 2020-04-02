@@ -107,11 +107,5 @@ export default {
       params: { contractId: contractId, date: date }
     })
     return res.data
-  },
-
-  // 确认出库任务
-  async findTray(data) {
-    const res = await axios._postqs({ url: '/store/findTray', params: data })
-    return res.data
   }
 }

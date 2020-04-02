@@ -38,11 +38,20 @@ export default {
   },
 
   /**
-   * 根据托盘码搜索入库任务
+   * 查找已清点的入库任务
    * @param {托盘码} trayCode
    */
-  async listByTray(trayCode) {
-    const res = await axios._get({ url: '/carryInTask/findByTray', params: { trayCode: trayCode } })
+  async findInCheck(trayCode) {
+    const res = await axios._get({ url: '/carryInTask/findInCheck', params: { trayCode: trayCode } })
+    return res.data
+  },
+
+  /**
+   * 根据托盘码查找进行中的搬运任务
+   * @param {托盘码} trayCode
+   */
+  async findWorking(trayCode) {
+    const res = await axios._get({ url: '/carryInTask/findWorking', params: { trayCode: trayCode } })
     return res.data
   },
 

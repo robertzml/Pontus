@@ -234,7 +234,7 @@ export default {
 
     // 根据托盘码查找搬运入库任务
     async findStores() {
-      this.taskList = await carryIn.listByTray(this.trayCode)
+      this.taskList = await carryIn.findInCheck(this.trayCode)
     },
 
     // 搜索托盘
