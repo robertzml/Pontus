@@ -14,5 +14,14 @@ export default {
       params: { storeId: storeId, current: current, storeType: storeType }
     })
     return res.data
+  },
+
+  // 获取入库费用
+  async getPeriodInBilling({ contractId, startTime, endTime }) {
+    const res = await axios._get({
+      url: '/expense/getPeriodInBilling',
+      params: { contractId: contractId, startTime: startTime, endTime: endTime }
+    })
+    return res.data
   }
 }

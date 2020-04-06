@@ -14,7 +14,7 @@
             <v-row dense>
               <v-col cols="6">
                 <v-text-field
-                  label="托盘码*"
+                  label="托盘码"
                   v-model="trayCode"
                   :counter="6"
                   clearable
