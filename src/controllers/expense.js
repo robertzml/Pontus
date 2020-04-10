@@ -23,5 +23,14 @@ export default {
       params: { contractId: contractId, startTime: startTime, endTime: endTime }
     })
     return res.data
+  },
+
+  // 获取出库费用
+  async getPeriodOutBilling({ contractId, startTime, endTime }) {
+    const res = await axios._get({
+      url: '/expense/getPeriodOutBilling',
+      params: { contractId: contractId, startTime: startTime, endTime: endTime }
+    })
+    return res.data
   }
 }
