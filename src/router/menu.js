@@ -157,7 +157,7 @@ export const menuRoutes = [
     group: 'stock',
     model: false,
     component: () => import('@/views/StockIn/Index.vue'),
-    meta: { roles: [1, 2, 3, 4] }
+    meta: { roles: [1, 2, 3, 4, 5] }
   },
   {
     path: '/stockout',
@@ -166,7 +166,7 @@ export const menuRoutes = [
     group: 'stock',
     model: false,
     component: () => import('@/views/StockOut/Index.vue'),
-    meta: { roles: [1, 2, 3, 4] }
+    meta: { roles: [1, 2, 3, 4, 5] }
   },
   {
     path: '/carryin',
@@ -175,7 +175,7 @@ export const menuRoutes = [
     group: 'stock',
     model: false,
     component: () => import('@/views/CarryIn/Index.vue'),
-    meta: { roles: [1, 2, 3, 4] }
+    meta: { roles: [1, 2, 3, 4, 5] }
   },
   {
     path: '/carryout',
@@ -184,7 +184,7 @@ export const menuRoutes = [
     group: 'stock',
     model: false,
     component: () => import('@/views/CarryOut/Index.vue'),
-    meta: { roles: [1, 2, 3, 4] }
+    meta: { roles: [1, 2, 3, 4, 5] }
   },
   {
     path: '/trayfind',
@@ -193,7 +193,7 @@ export const menuRoutes = [
     group: 'stock',
     model: false,
     component: () => import('@/views/Tray/Find.vue'),
-    meta: { roles: [1, 2, 3, 4] }
+    meta: { roles: [1, 2, 3, 4, 5] }
   },
   {
     path: '/receiptstockin',
@@ -302,20 +302,6 @@ export const menuRoutes = [
     model: false,
     component: () => import('@/views/ExpenseItem/Index.vue'),
     meta: { roles: [1, 2] }
-  },
-  {
-    path: '/keeperstockin',
-    name: 'keeperStockIn',
-    text: '货品入库',
-    component: () => import('@/views/Keeper/StockIn.vue'),
-    meta: { roles: [5] }
-  },
-  {
-    path: '/keeperstockout',
-    name: 'keeperStockOut',
-    text: '货品出库',
-    component: () => import('@/views/Keeper/StockOut.vue'),
-    meta: { roles: [5] }
   },
   {
     // 入库上架

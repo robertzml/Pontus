@@ -16,7 +16,6 @@ import store from './modules/store'
 import normalStore from './modules/normalStore'
 import storePosition from './modules/storePosition'
 import expenseItem from './modules/expenseItem'
-import keeper from './modules/keeper'
 
 Vue.use(Vuex)
 
@@ -37,7 +36,6 @@ export default new Vuex.Store({
     store,
     normalStore,
     storePosition,
-    expenseItem,
-    keeper
+    expenseItem
   }
 })

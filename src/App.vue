@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-if="isLogin && userInfo.userGroupId < 5" v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" :width="220" app>
+    <v-navigation-drawer v-if="isLogin && userInfo.userGroupId < 6" v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" :width="220" app>
       <navigation-bar></navigation-bar>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app dense color="blue darken-3">
@@ -29,9 +29,6 @@
     </v-app-bar>
 
     <v-content>
-      <v-container fluid style="height:80px;" class="px-4 pb-0" v-if="userInfo.userGroupId == 5">
-        <keeper-menu></keeper-menu>
-      </v-container>
       <v-container fluid style="height:80px;" class="px-4 pb-0" v-if="userInfo.userGroupId == 6">
         <forklift-menu></forklift-menu>
       </v-container>
@@ -52,14 +49,12 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import NavigationBar from '@/components/NavigationBar'
-import KeeperMenu from '@/components/KeeperMenu'
 import ForkliftMenu from '@/components/ForkliftMenu'
 
 export default {
   name: 'App',
   components: {
     NavigationBar,
-    KeeperMenu,
     ForkliftMenu
   },
   data: () => ({
