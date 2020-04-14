@@ -223,7 +223,7 @@ export default {
         }
 
         let vm = this
-        stockOut.addCarryOut(data).then(res => {
+        stockOut.scanCarryOut(data).then(res => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '出库提交成功')
             vm.$emit('close')

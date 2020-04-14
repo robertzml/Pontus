@@ -143,9 +143,9 @@ export default {
     return res.data
   },
 
-  // 添加搬运出库到出库任务
-  async addCarryOut(data) {
-    const res = await axios._post({ url: '/stockOut/addCarryOut', data: data })
+  // 扫托盘码出库
+  async scanCarryOut(data) {
+    const res = await axios._post({ url: '/stockOut/scanCarryOut', data: data })
     return res.data
   }
 }

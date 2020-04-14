@@ -94,7 +94,7 @@
               {{ item.type | carryOutTaskType }}
             </template>
             <template v-slot:item.status="{ item }">
-              {{ item.status | displayStatus }}
+              <span :class="{ 'orange--text': item.status != 85 }">{{ item.status | displayStatus }}</span>
             </template>
             <template v-slot:item.action="{ item }">
               <v-btn small color="primary" @click="viewCarryOutDetails(item)">
