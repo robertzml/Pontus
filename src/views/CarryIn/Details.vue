@@ -83,28 +83,16 @@
       </v-row>
     </v-card-text>
 
-    <v-card-actions>
-      <v-btn v-if="carryInInfo.status == 74" color="success darken-1" @click="showCarryInFinish">
-        <v-icon left dark>check</v-icon>
-        确认
-      </v-btn>
-    </v-card-actions>
-
-    <!-- 搬运入库确认组件 -->
-    <carry-in-finish ref="carryInFinishMod" @close="loadCarryIn"></carry-in-finish>
+    <v-card-actions> </v-card-actions>
   </v-card>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import carryIn from '@/controllers/carryIn'
-import CarryInFinish from '@/components/Dialog/CarryInFinish'
 
 export default {
   name: 'CarryInDetails',
-  components: {
-    CarryInFinish
-  },
   data: () => ({
     carryInInfo: {}
   }),

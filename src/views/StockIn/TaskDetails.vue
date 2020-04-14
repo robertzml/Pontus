@@ -110,10 +110,6 @@
                 <v-icon left dark>rowing</v-icon>
                 上架
               </v-btn>
-              <v-btn v-if="item.status == 74" small color="success darken-1" class="ml-2" @click="showCarryInFinish(item)">
-                <v-icon left dark>check</v-icon>
-                确认
-              </v-btn>
               <v-btn v-if="item.status == 72" small color="red darken-3" class="ml-2" @click="showCarryInDelete(item)">
                 <v-icon left dark>delete</v-icon>
                 删除
@@ -139,9 +135,6 @@
     <!-- 搬运入库任务查看组件 -->
     <carry-in-details ref="carryInDetailsMod"></carry-in-details>
 
-    <!-- 搬运入库确认组件 -->
-    <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>
-
     <!-- 搬运入库上架组件 -->
     <carry-in-enter ref="carryInEnterMod" @close="loadCarryInTask"></carry-in-enter>
 
@@ -159,7 +152,6 @@ import StockInTaskFinish from '@/components/Dialog/StockInTaskFinish'
 import StockInTaskDelete from '@/components/Dialog/StockInTaskDelete'
 import CarryInDetails from '@/components/Dialog/CarryInDetails'
 import CarryInCreate from '@/components/Dialog/CarryInCreate'
-import CarryInFinish from '@/components/Dialog/CarryInFinish'
 import CarryInEnter from '@/components/Dialog/CarryInEnter'
 import CarryInDelete from '@/components/Dialog/CarryInDelete'
 
@@ -171,7 +163,6 @@ export default {
     StockInTaskDelete,
     CarryInCreate,
     CarryInDetails,
-    CarryInFinish,
     CarryInEnter,
     CarryInDelete
   },
@@ -286,11 +277,6 @@ export default {
     // 显示搬运入库上架
     showCarryInEnter(item) {
       this.$refs.carryInEnterMod.init(item.trayCode)
-    },
-
-    // 显示确认搬运入库
-    showCarryInFinish(item) {
-      this.$refs.carryInFinishMod.init(item.id)
     },
 
     // 显示删除搬运入库

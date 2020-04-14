@@ -136,10 +136,6 @@
                 <v-icon left dark>rowing</v-icon>
                 上架
               </v-btn>
-              <v-btn v-if="item.status == 74" small color="success darken-1" class="ml-2" @click="showCarryInFinish(item)">
-                <v-icon left dark>check</v-icon>
-                确认
-              </v-btn>
             </template>
           </v-data-table>
         </v-expansion-panel-content>
@@ -170,9 +166,6 @@
     <!-- 搬运入库信息组件 -->
     <carry-in-details ref="carryInDetailsMod"></carry-in-details>
 
-    <!-- 搬运入库确认组件 -->
-    <carry-in-finish ref="carryInFinishMod" @close="loadCarryInTask"></carry-in-finish>
-
     <!-- 搬运入库上架组件 -->
     <carry-in-enter ref="carryInEnterMod" @close="loadCarryInTask"></carry-in-enter>
   </v-sheet>
@@ -191,7 +184,6 @@ import CarryOutDetails from '@/components/Dialog/CarryOutDetails'
 import CarryOutFinish from '@/components/Dialog/CarryOutFinish'
 import CarryOutDelete from '@/components/Dialog/CarryOutDelete'
 import CarryInDetails from '@/components/Dialog/CarryInDetails'
-import CarryInFinish from '@/components/Dialog/CarryInFinish'
 import CarryInEnter from '@/components/Dialog/CarryInEnter'
 
 export default {
@@ -205,7 +197,6 @@ export default {
     CarryOutDetails,
     CarryOutDelete,
     CarryInDetails,
-    CarryInFinish,
     CarryOutFinish,
     CarryInEnter
   },
@@ -363,11 +354,6 @@ export default {
     // 显示搬运入库上架
     showCarryInEnter(item) {
       this.$refs.carryInEnterMod.init(item.trayCode)
-    },
-
-    // 确认搬运入库
-    showCarryInFinish(item) {
-      this.$refs.carryInFinishMod.init(item.id)
     }
   },
   mounted: function() {

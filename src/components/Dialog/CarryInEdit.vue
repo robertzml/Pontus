@@ -2,11 +2,8 @@
   <v-dialog v-model="dialog" persistent max-width="600px">
     <v-card>
       <v-card-title class="deep-orange">
-        确认搬运入库任务
+        编辑搬运入库任务
       </v-card-title>
-      <v-alert type="info">
-        确认后库存记录变为在库。临时搬运无法修改数量、重量。
-      </v-alert>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-container fluid>
@@ -49,7 +46,7 @@
 import carryIn from '@/controllers/carryIn'
 
 export default {
-  name: 'CarryInFinish',
+  name: 'CarryInEdit',
   data: () => ({
     valid: false,
     dialog: false,
@@ -76,11 +73,11 @@ export default {
 
     finish() {
       if (this.$refs.form.validate()) {
-        let vm = this
         this.$nextTick(() => {
           this.loading = true
         })
 
+        /*
         let model = {
           taskId: this.carryInTask.id,
           userId: this.$store.state.user.id,
@@ -88,18 +85,7 @@ export default {
           moveCount: this.carryInTask.moveCount,
           moveWeight: this.carryInTask.moveWeight
         }
-
-        carryIn.finishTask(model).then(res => {
-          if (res.status == 0) {
-            vm.$store.commit('alertSuccess', '任务确认成功')
-            vm.loading = false
-            vm.$emit('close')
-            vm.dialog = false
-          } else {
-            vm.$store.commit('alertError', res.errorMessage)
-            this.loading = false
-          }
-        })
+*/
       }
     }
   }
