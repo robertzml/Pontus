@@ -110,6 +110,10 @@
                 <v-icon left dark>rowing</v-icon>
                 上架
               </v-btn>
+              <v-btn v-if="taskInfo.status != 75" small color="warning" class="ml-2" @click="showCarryInEdit(item)">
+                <v-icon left dark>edit</v-icon>
+                编辑
+              </v-btn>
               <v-btn v-if="item.status == 72" small color="red darken-3" class="ml-2" @click="showCarryInDelete(item)">
                 <v-icon left dark>delete</v-icon>
                 删除
@@ -138,6 +142,9 @@
     <!-- 搬运入库上架组件 -->
     <carry-in-enter ref="carryInEnterMod" @close="loadCarryInTask"></carry-in-enter>
 
+    <!-- 搬运入库编辑组件 -->
+    <carry-in-edit ref="carryInEditMod" @close="loadCarryInTask"></carry-in-edit>
+
     <!-- 搬运入库删除组件 -->
     <carry-in-delete ref="carryInDeleteMod" @close="loadCarryInTask"></carry-in-delete>
   </v-sheet>
@@ -153,6 +160,7 @@ import StockInTaskDelete from '@/components/Dialog/StockInTaskDelete'
 import CarryInDetails from '@/components/Dialog/CarryInDetails'
 import CarryInCreate from '@/components/Dialog/CarryInCreate'
 import CarryInEnter from '@/components/Dialog/CarryInEnter'
+import CarryInEdit from '@/components/Dialog/CarryInEdit'
 import CarryInDelete from '@/components/Dialog/CarryInDelete'
 
 export default {
@@ -164,6 +172,7 @@ export default {
     CarryInCreate,
     CarryInDetails,
     CarryInEnter,
+    CarryInEdit,
     CarryInDelete
   },
   data: () => ({
@@ -277,6 +286,11 @@ export default {
     // 显示搬运入库上架
     showCarryInEnter(item) {
       this.$refs.carryInEnterMod.init(item.trayCode)
+    },
+
+    // 显示搬运入库编辑
+    showCarryInEdit(item) {
+      this.$refs.carryInEditMod.init(item.id)
     },
 
     // 显示删除搬运入库

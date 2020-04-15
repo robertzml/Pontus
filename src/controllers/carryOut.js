@@ -94,15 +94,6 @@ export default {
     return res.data
   },
 
-  /**
-   * 任务确认
-   * @param {任务数据} entity
-   */
-  async finishTask(entity) {
-    const res = await axios._post({ url: '/carryOutTask/finishTask', data: entity })
-    return res.data
-  },
-
   // 删除搬运入库任务
   async delete(data) {
     const res = await axios._postqs({ url: '/carryOutTask/delete', params: data })
