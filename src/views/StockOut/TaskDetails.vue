@@ -105,10 +105,6 @@
                 <v-icon left dark>delete</v-icon>
                 删除
               </v-btn>
-              <v-btn v-if="item.status == 84" small color="success darken-1" class="ml-2" @click="showCarryOutFinish(item)">
-                <v-icon left dark>check</v-icon>
-                确认
-              </v-btn>
             </template>
           </v-data-table>
         </v-expansion-panel-content>
@@ -157,9 +153,6 @@
     <!-- 搬运出库信息组件 -->
     <carry-out-details ref="carryOutDetailsMod"></carry-out-details>
 
-    <!-- 搬运出库确认组件 -->
-    <carry-out-finish ref="carryOutFinishMod" @close="loadCarryOutTask"></carry-out-finish>
-
     <!-- 搬运出库删除组件 -->
     <carry-out-delete ref="carryOutDeleteMod" @close="refresh"></carry-out-delete>
 
@@ -181,7 +174,6 @@ import StockOutTaskEdit from '@/components/Dialog/StockOutTaskEdit'
 import StockOutTaskDelete from '@/components/Dialog/StockOutTaskDelete'
 import ScanTrayOut from '@/components/Dialog/ScanTrayOut'
 import CarryOutDetails from '@/components/Dialog/CarryOutDetails'
-import CarryOutFinish from '@/components/Dialog/CarryOutFinish'
 import CarryOutDelete from '@/components/Dialog/CarryOutDelete'
 import CarryInDetails from '@/components/Dialog/CarryInDetails'
 import CarryInEnter from '@/components/Dialog/CarryInEnter'
@@ -197,7 +189,6 @@ export default {
     CarryOutDetails,
     CarryOutDelete,
     CarryInDetails,
-    CarryOutFinish,
     CarryInEnter
   },
   data: () => ({
@@ -334,11 +325,6 @@ export default {
     // 查看搬运出库任务
     viewCarryOutDetails(item) {
       this.$refs.carryOutDetailsMod.init(item.id)
-    },
-
-    // 确认搬运出库任务
-    showCarryOutFinish(item) {
-      this.$refs.carryOutFinishMod.init(item.id)
     },
 
     // 删除搬运出库任务

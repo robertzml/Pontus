@@ -100,28 +100,16 @@
       </v-row>
     </v-card-text>
 
-    <v-card-actions>
-      <v-btn v-if="carryOutInfo.status == 84" color="success darken-1" @click="showCarryOutFinish">
-        <v-icon left dark>check</v-icon>
-        确认
-      </v-btn>
-    </v-card-actions>
-
-    <!-- 搬运出库确认组件 -->
-    <carry-out-finish ref="carryOutFinishMod" @close="loadCarryOut"></carry-out-finish>
+    <v-card-actions> </v-card-actions>
   </v-card>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import carryOut from '@/controllers/carryOut'
-import CarryOutFinish from '@/components/Dialog/CarryOutFinish'
 
 export default {
   name: 'CarryOutDetails',
-  components: {
-    CarryOutFinish
-  },
   data: () => ({
     carryOutInfo: {}
   }),
@@ -139,11 +127,6 @@ export default {
   methods: {
     async loadCarryOut() {
       this.carryOutInfo = await carryOut.get(this.carryOutId)
-    },
-
-    // 显示确认
-    showCarryOutFinish() {
-      this.$refs.carryOutFinishMod.init(this.carryOutInfo.id)
     }
   },
   mounted: function() {
