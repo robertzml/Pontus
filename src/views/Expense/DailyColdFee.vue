@@ -139,22 +139,46 @@ export default {
     },
     contractListData: [],
     contractRules: [v => !!v.id || '请选择合同'],
-    headers: [
-      { text: '日期', value: 'recordDate' },
-      { text: '货品名称', value: 'cargoName' },
-      { text: '流水类型', value: 'flowType' },
-      { text: '流水数量', value: 'count' },
-      { text: '单位重量(kg)', value: 'unitMeter' },
-      { text: '出入库重量(t)', value: 'flowMeter' },
-      { text: '在库重量(t)', value: 'totalMeter' },
-      { text: '日冷藏费(元)', value: 'dailyFee' },
-      { text: '冷藏费累计(元)', value: 'totalFee' }
-    ],
     coldFeeListData: []
   }),
   watch: {
     'search.customerId': function(val) {
       this.loadContract(val)
+    }
+  },
+  computed: {
+    headers: function() {
+      if (this.search.selectedContract == null) {
+        return []
+      }
+
+      if (this.search.selectedContract.billingType == 1) {
+        return [
+          { text: '日期', value: 'recordDate' },
+          { text: '货品名称', value: 'cargoName' },
+          { text: '流水类型', value: 'flowType' },
+          { text: '流水数量', value: 'count' },
+          { text: '单位重量(kg)', value: 'unitMeter' },
+          { text: '出入库重量(t)', value: 'flowMeter' },
+          { text: '在库重量(t)', value: 'totalMeter' },
+          { text: '日冷藏费(元)', value: 'dailyFee' },
+          { text: '冷藏费累计(元)', value: 'totalFee' }
+        ]
+      } else if (this.search.selectedContract.billingType == 2) {
+        return [
+          { text: '日期', value: 'recordDate' },
+          { text: '货品名称', value: 'cargoName' },
+          { text: '流水类型', value: 'flowType' },
+          { text: '流水数量', value: 'count' },
+          { text: '单位计量', value: 'unitMeter' },
+          { text: '出入库计量(件)', value: 'flowMeter' },
+          { text: '在库计量(件)', value: 'totalMeter' },
+          { text: '日冷藏费(元)', value: 'dailyFee' },
+          { text: '冷藏费累计(元)', value: 'totalFee' }
+        ]
+      } else {
+        return []
+      }
     }
   },
   methods: {
