@@ -21,6 +21,7 @@
           入库货物
           <v-spacer></v-spacer>
           <span class="subtitle-2 ml-4">入库总数量: {{ totalCount }}</span>
+          <span class="subtitle-2 ml-4">已确认数量: {{ finishCount }}</span>
           <span class="subtitle-2 ml-4">入库总重量: {{ totalWeight }} 吨</span>
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
@@ -121,6 +122,16 @@ export default {
       info: state => state.stockIn.stockInInfo,
       refreshEvent: state => state.stockIn.refreshEvent
     }),
+    finishCount: function() {
+      let total = 0
+      this.taskInfoList.forEach(item => {
+        if (item.status == 75) {
+          total += item.inCount
+        }
+      })
+
+      return total
+    },
     totalCount: function() {
       let total = 0
       this.taskInfoList.forEach(item => {
