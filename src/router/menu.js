@@ -54,7 +54,7 @@ export const topRoutes = [
     meta: { roles: [1, 2, 3, 4] }
   },
   {
-    name: 'report',
+    name: 'statistic',
     icon: 'bar_chart',
     'icon-alt': 'bar_chart',
     text: '统计报表',
@@ -265,6 +265,15 @@ export const menuRoutes = [
     group: 'expense',
     model: false,
     component: () => import('@/views/Expense/DailyColdFee.vue'),
+    meta: { roles: [1, 2, 3, 4] }
+  },
+  {
+    path: '/statistic-expense',
+    name: 'statisticExpense',
+    text: '费用报表',
+    group: 'statistic',
+    model: false,
+    component: () => import('@/views/Statistic/Expense.vue'),
     meta: { roles: [1, 2, 3, 4] }
   },
   {
