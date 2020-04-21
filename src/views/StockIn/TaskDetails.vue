@@ -90,6 +90,7 @@
             <v-spacer></v-spacer>
             <span class="subtitle-2">托盘数量: {{ totalInTray }}</span>
             <span class="subtitle-2 ml-4">搬运数量: {{ totalMoveInCount }}</span>
+            <span class="subtitle-2 ml-4">已入库数量: {{ finishMoveInCount }}</span>
             <span class="subtitle-2 ml-4">搬运重量: {{ totalMoveInWeight }} 吨</span>
           </template>
         </v-expansion-panel-header>
@@ -201,6 +202,16 @@ export default {
     }),
     totalInTray: function() {
       return this.carryInTaskList.length
+    },
+    finishMoveInCount: function() {
+      let total = 0
+      this.carryInTaskList.forEach(item => {
+        if (item.status == 75) {
+          total += item.moveCount
+        }
+      })
+
+      return total
     },
     totalMoveInCount: function() {
       let total = 0
