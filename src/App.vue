@@ -4,11 +4,11 @@
       <navigation-bar></navigation-bar>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app dense color="blue darken-3">
-      <v-toolbar-title style="width: 300px" class="ml-0 pl-0">
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="isLogin && userInfo.userGroupId < 5"></v-app-bar-nav-icon>
+      <v-toolbar-title style="width: 300px" v-if="userInfo.userGroupId < 6" class="ml-0 pl-0">
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="isLogin && userInfo.userGroupId < 6"></v-app-bar-nav-icon>
         <span class="hidden-sm-and-down">海安润思达食品有限公司</span>
       </v-toolbar-title>
-      <v-spacer></v-spacer>
+      <v-spacer v-if="userInfo.userGroupId < 6"></v-spacer>
       <v-chip color="transparent">
         {{ userInfo.name }}
       </v-chip>
@@ -29,7 +29,7 @@
     </v-app-bar>
 
     <v-content>
-      <v-container fluid style="height:80px;" class="px-4 pb-0" v-if="userInfo.userGroupId == 6">
+      <v-container fluid style="height:50px;" class="px-4 pb-0" v-if="userInfo.userGroupId == 6">
         <forklift-menu></forklift-menu>
       </v-container>
       <v-container fluid class="px-1">

@@ -2,14 +2,16 @@
   <v-row dense>
     <v-col cols="12">
       <v-card class="mx-auto">
-        <v-card-title class="light-blue lighten-2">
+        <v-subheader>
           入库上架
-        </v-card-title>
+          <v-spacer></v-spacer>
+          <v-btn depressed class="primary" @click="refresh">新上架</v-btn>
+        </v-subheader>
 
-        <v-card-text>
+        <v-card-text class="pt-0">
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-row dense>
-              <v-col cols="5">
+              <v-col cols="6" sm="6" md="5">
                 <v-text-field
                   label="托盘码"
                   prepend-icon="power_input"
@@ -23,7 +25,7 @@
                   clearable
                 ></v-text-field>
               </v-col>
-              <v-col cols="5">
+              <v-col cols="6" sm="6" md="5">
                 <v-text-field
                   label="货架码"
                   prepend-icon="border_all"
@@ -32,12 +34,19 @@
                   :counter="12"
                   :rules="shelfCodeRules"
                   ref="shelfCodeInput"
+                  @keyup.enter="enter"
                 ></v-text-field>
               </v-col>
-              <v-col cols="2">
+              <v-col cols="4" sm="4" md="2">
                 <v-btn color="success" class="mt-4 ml-4" large :disabled="!valid" :loading="loading" @click="enter">
                   货 物 上 架
                 </v-btn>
+              </v-col>
+              <v-col cols="8" sm="8" md="6">
+                <div class="subtitle-1">
+                  上架仓位: <br />
+                  {{ enterPosition }}
+                </div>
               </v-col>
             </v-row>
           </v-form>
@@ -45,7 +54,7 @@
       </v-card>
     </v-col>
 
-    <v-col cols="6">
+    <v-col cols="12" sm="12" md="6">
       <v-card>
         <v-card-text class="pt-0">
           <v-data-iterator :items="taskList" :disable-pagination="true" :hide-default-footer="true">
@@ -123,7 +132,7 @@
       </v-card>
     </v-col>
 
-    <v-col cols="6">
+    <v-col cols="12" sm="12" md="6">
       <v-card>
         <v-card-text class="pt-0">
           <v-data-iterator :items="carryOutList" :disable-pagination="true" :hide-default-footer="true">
@@ -217,7 +226,8 @@ export default {
     taskList: [],
     carryOutList: [],
     trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
-    shelfCodeRules: [v => !!v || '请输入货架码', v => (v && v.length == 12) || '请输入正确货架码']
+    shelfCodeRules: [v => !!v || '请输入货架码', v => (v && v.length == 12) || '请输入正确货架码'],
+    enterPosition: ''
   }),
   methods: {
     // 输入托盘码
@@ -246,6 +256,18 @@ export default {
       this.carryOutList = await carryOut.findByTray(this.trayCode)
     },
 
+    refresh() {
+      this.valid = false
+      this.loading = false
+      this.trayCode = ''
+      this.shelfCode = ''
+      this.taskList = []
+      this.carryOutList = []
+      this.enterPosition = ''
+
+      this.$refs.trayCodeInput.focus()
+    },
+
     // 货物上架
     enter() {
       if (this.$refs.form.validate()) {
@@ -267,6 +289,7 @@ export default {
             this.shelfCode = ''
             this.taskList = []
             this.carryOutList = []
+            this.enterPosition = res.entity.number
             this.$refs.trayCodeInput.focus()
             vm.loading = false
           } else {
@@ -277,6 +300,8 @@ export default {
       }
     }
   },
-  mounted: function() {}
+  mounted: function() {
+    this.refresh()
+  }
 }
 </script>

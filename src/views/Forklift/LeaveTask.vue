@@ -1,6 +1,6 @@
 <template>
   <v-row dense>
-    <v-col cols="2">
+    <v-col cols="2" class="d-none d-sm-flex">
       <v-card>
         <v-list shaped>
           <v-subheader class="subtitle-1 teal--text text--lighten-2">待出库仓位</v-subheader>
@@ -13,16 +13,16 @@
         </v-list>
       </v-card>
     </v-col>
-    <v-col cols="10">
+    <v-col cols="12" sm="12" md="10">
       <v-card class="mx-auto">
-        <v-card-title class="light-blue lighten-2">
-          扫码
-        </v-card-title>
+        <v-subheader>
+          扫码下架
+        </v-subheader>
 
-        <v-card-text>
+        <v-card-text class="pt-0">
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-row dense>
-              <v-col cols="5">
+              <v-col cols="6" sm="6" md="5">
                 <v-text-field
                   label="货架码"
                   prepend-icon="border_all"
@@ -35,7 +35,7 @@
                   autofocus
                 ></v-text-field>
               </v-col>
-              <v-col cols="5">
+              <v-col cols="6" sm="6" md="5">
                 <v-text-field
                   label="托盘码"
                   prepend-icon="power_input"
@@ -46,9 +46,10 @@
                   @input="inputTrayCode"
                   ref="trayCodeInput"
                   clearable
+                  @keyup.enter="leave"
                 ></v-text-field>
               </v-col>
-              <v-col cols="2">
+              <v-col cols="6" sm="6" md="2">
                 <v-btn color="success" class="mt-4 ml-8" large :disabled="!valid" :loading="loading" @click="leave">
                   货 物 下 架
                 </v-btn>
@@ -242,7 +243,16 @@ export default {
     }
   },
   mounted: function() {
+    this.valid = false
+    this.loading = false
+    this.outPositionList = []
+    this.trayCode = ''
+    this.shelfCode = ''
+    this.storeList = []
+
     this.loadOutPositions()
+
+    this.$refs.shelfCodeInput.focus()
   }
 }
 </script>
