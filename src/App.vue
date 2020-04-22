@@ -12,7 +12,7 @@
       <v-chip color="transparent">
         {{ userInfo.name }}
       </v-chip>
-      <v-btn icon v-if="isLogin">
+      <v-btn icon v-if="isLogin" @click="toHome">
         <v-icon>apps</v-icon>
       </v-btn>
       <v-btn icon v-if="isLogin">
@@ -69,6 +69,9 @@ export default {
     logout() {
       this.$store.dispatch('logout')
       this.$router.push({ name: 'login' })
+    },
+    toHome() {
+      this.$router.push({ name: 'home' })
     }
   },
   mounted: function() {
