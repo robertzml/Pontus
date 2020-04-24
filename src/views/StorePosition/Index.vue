@@ -86,8 +86,8 @@
                             <v-btn text x-small color="lime" @click="viewDetails(layer, depth)">
                               View
                             </v-btn>
-                            <v-btn text x-small color="orange">
-                              More
+                            <v-btn text x-small color="orange" @click="moveTray(layer, depth)">
+                              Move
                             </v-btn>
                           </v-card-text>
                         </v-card>
@@ -212,6 +212,15 @@ export default {
     async viewDetails(layer, depth) {
       this.sPosition = await position.get({ shelfId: this.sShelfId, row: this.sRow, layer: layer, depth: depth })
       this.storeList = await store.findStoreIn(this.sPosition.id)
+    },
+
+    // 移动托盘
+    moveTray(layer, depth) {
+      const pos = this.positionListData.find(r => r.row == this.sRow && r.layer == layer && r.depth == depth)
+      if (pos.status != 32) {
+        this.$store.commit('alertError', '该仓位无托盘，无法移动')
+        return
+      }
     },
 
     // 根据状态显示仓位颜色
