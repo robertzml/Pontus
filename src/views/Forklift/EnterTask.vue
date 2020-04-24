@@ -34,7 +34,6 @@
                   :counter="12"
                   :rules="shelfCodeRules"
                   ref="shelfCodeInput"
-                  @keyup.enter="enter"
                 ></v-text-field>
               </v-col>
               <v-col cols="4" sm="4" md="2">
@@ -282,21 +281,26 @@ export default {
 
         let vm = this
         let req = { trayCode: this.trayCode, shelfCode: this.shelfCode.toUpperCase(), userId: this.$store.state.user.id }
-        carryIn.enterTask(req).then(res => {
-          if (res.status == 0) {
-            vm.$store.commit('alertSuccess', '入库上架成功')
-            this.trayCode = ''
-            this.shelfCode = ''
-            this.taskList = []
-            this.carryOutList = []
-            this.enterPosition = res.entity.number
-            this.$refs.trayCodeInput.focus()
+        carryIn
+          .enterTask(req)
+          .then(res => {
+            if (res.status == 0) {
+              vm.$store.commit('alertSuccess', '入库上架成功')
+              this.trayCode = ''
+              this.shelfCode = ''
+              this.taskList = []
+              this.carryOutList = []
+              this.enterPosition = res.entity.number
+              this.$refs.trayCodeInput.focus()
+              vm.loading = false
+            } else {
+              vm.$store.commit('alertError', res.errorMessage)
+              vm.loading = false
+            }
+          })
+          .catch(() => {
             vm.loading = false
-          } else {
-            vm.$store.commit('alertError', res.errorMessage)
-            vm.loading = false
-          }
-        })
+          })
       }
     }
   },

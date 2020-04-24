@@ -46,7 +46,6 @@
                   @input="inputTrayCode"
                   ref="trayCodeInput"
                   clearable
-                  @keyup.enter="leave"
                 ></v-text-field>
               </v-col>
               <v-col cols="6" sm="6" md="2">
@@ -226,19 +225,24 @@ export default {
         let vm = this
         let req = { trayCode: this.trayCode, shelfCode: this.shelfCode.toUpperCase(), userId: this.$store.state.user.id }
 
-        carryOut.leaveTask(req).then(res => {
-          if (res.status == 0) {
-            vm.$store.commit('alertSuccess', '出库下架成功')
-            vm.trayCode = ''
-            vm.shelfCode = ''
-            this.$refs.shelfCodeInput.focus()
-            vm.loadOutPositions()
+        carryOut
+          .leaveTask(req)
+          .then(res => {
+            if (res.status == 0) {
+              vm.$store.commit('alertSuccess', '出库下架成功')
+              vm.trayCode = ''
+              vm.shelfCode = ''
+              this.$refs.shelfCodeInput.focus()
+              vm.loadOutPositions()
+              vm.loading = false
+            } else {
+              vm.$store.commit('alertError', res.errorMessage)
+              vm.loading = false
+            }
+          })
+          .catch(() => {
             vm.loading = false
-          } else {
-            vm.$store.commit('alertError', res.errorMessage)
-            vm.loading = false
-          }
-        })
+          })
       }
     }
   },

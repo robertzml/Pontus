@@ -25,9 +25,19 @@ export default {
 
   /** 初始化字典 */
   initDict({ commit }) {
-    axios._get({ url: '/utility/getEntityStatus' }).then(res => {
-      commit('entityStatus', res.data)
-    })
+    axios
+      ._get({ url: '/utility/getEntityStatus' })
+      .then(
+        res => {
+          commit('entityStatus', res.data)
+        },
+        err => {
+          console.log('dict' + err)
+        }
+      )
+      .catch(err => {
+        console.log(err)
+      })
   },
 
   /**
