@@ -95,6 +95,8 @@
                     </v-row>
                   </v-container>
                 </div>
+
+                <tray-move ref="trayMoveMod" @close="loadPosition"></tray-move>
               </v-sheet>
             </v-col>
             <v-col cols="6">
@@ -113,11 +115,13 @@ import shelf from '@/controllers/shelf'
 import position from '@/controllers/position'
 import store from '@/controllers/store'
 import StorePositionInfo from './Info'
+import TrayMove from '@/components/Dialog/TrayMove'
 
 export default {
   name: 'StorePositionIndex',
   components: {
-    StorePositionInfo
+    StorePositionInfo,
+    TrayMove
   },
   data: () => ({
     warehouseListData: [],
@@ -221,6 +225,8 @@ export default {
         this.$store.commit('alertError', '该仓位无托盘，无法移动')
         return
       }
+
+      this.$refs.trayMoveMod.init(pos)
     },
 
     // 根据状态显示仓位颜色

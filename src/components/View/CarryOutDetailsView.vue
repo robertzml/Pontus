@@ -10,7 +10,17 @@
       <v-text-field label="仓位码" v-model="carryOutInfo.positionNumber" hide-details readonly></v-text-field>
     </v-col>
     <v-col :cols="col">
+      <v-text-field label="下货货架码" v-model="carryOutInfo.shelfCode" hide-details readonly></v-text-field>
+    </v-col>
+    <v-col :cols="col">
       <v-text-field label="托盘码" v-model="carryOutInfo.trayCode" hide-details readonly></v-text-field>
+    </v-col>
+
+    <v-col :cols="col">
+      <v-text-field label="客户名称" v-model="carryOutInfo.customerName" hide-details readonly></v-text-field>
+    </v-col>
+    <v-col :cols="col">
+      <v-text-field label="合同名称" v-model="carryOutInfo.contractName" hide-details readonly></v-text-field>
     </v-col>
 
     <v-col :cols="col">
@@ -26,12 +36,6 @@
       <v-text-field label="移出重量" v-model="carryOutInfo.moveWeight" suffix="吨" hide-details readonly></v-text-field>
     </v-col>
 
-    <v-col :cols="col">
-      <v-text-field label="客户名称" v-model="carryOutInfo.customerName" hide-details readonly></v-text-field>
-    </v-col>
-    <v-col :cols="col">
-      <v-text-field label="合同名称" v-model="carryOutInfo.contractName" hide-details readonly></v-text-field>
-    </v-col>
     <v-col :cols="col">
       <v-text-field label="货品名称" v-model="carryOutInfo.cargoName" hide-details readonly></v-text-field>
     </v-col>

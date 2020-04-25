@@ -72,13 +72,15 @@ export default {
   /** 入库搬运类型 */
   carryInTaskType: [
     { text: '入库搬运', value: 1 },
-    { text: '临时搬运', value: 2 }
+    { text: '临时搬运', value: 2 },
+    { text: '系统搬运', value: 3 }
   ],
 
   /** 出库搬运类型 */
   carryOutTaskType: [
     { text: '出库搬运', value: 1 },
-    { text: '临时搬运', value: 2 }
+    { text: '临时搬运', value: 2 },
+    { text: '系统搬运', value: 3 }
   ],
 
   /** 入库状态 */

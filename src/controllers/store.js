@@ -86,6 +86,18 @@ export default {
   },
 
   /**
+   * 获取指定仓位托盘码
+   * @param {仓位ID} positionId
+   */
+  async getPositionTray(positionId) {
+    const res = await axios._get({
+      url: '/store/getPositionTray',
+      params: { positionId: positionId }
+    })
+    return res.data
+  },
+
+  /**
    * 获取库存记录链表
    * @param {库存ID} id
    */
@@ -106,6 +118,15 @@ export default {
       url: '/store/getInDay',
       params: { contractId: contractId, date: date }
     })
+    return res.data
+  },
+
+  /**
+   * 托盘移动
+   * @param {任务数据} entity
+   */
+  async moveTray(entity) {
+    const res = await axios._post({ url: '/store/moveTray', data: entity })
     return res.data
   }
 }
