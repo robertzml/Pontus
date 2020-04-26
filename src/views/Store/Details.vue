@@ -119,7 +119,11 @@
         <v-timeline dense>
           <v-timeline-item v-for="(item, index) in orderInfo" :key="item.id">
             <v-card class="elevation-2">
-              <v-card-title class="title pb-1 purple lighten-2">#{{ index + 1 }}</v-card-title>
+              <v-card-title class="title pb-1 purple lighten-2">
+                #{{ index + 1 }}
+                <v-spacer></v-spacer>
+                <v-btn text @click="showCarryInfo(item)">搬运情况</v-btn>
+              </v-card-title>
               <v-card-text>
                 <v-list>
                   <v-row dense>
@@ -174,6 +178,7 @@
             </v-card>
           </v-timeline-item>
         </v-timeline>
+        <store-carry-info ref="carryInfoMod"></store-carry-info>
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
@@ -183,9 +188,13 @@
 import { mapState } from 'vuex'
 import store from '@/controllers/store'
 import expense from '@/controllers/expense'
+import StoreCarryInfo from './Dialog/CarryInfo'
 
 export default {
   name: 'StoreDetails',
+  components: {
+    StoreCarryInfo
+  },
   data: () => ({
     panel: [0, 1],
     storeInfo: {},
@@ -210,6 +219,10 @@ export default {
       this.storeInfo = await store.get(this.storeId)
       this.coldFeeInfo = await expense.getStoreColdFee({ storeId: this.storeId, current: now, storeType: 2 })
       this.orderInfo = await store.findInOrder(this.storeId)
+    },
+
+    showCarryInfo(item) {
+      this.$refs.carryInfoMod.init(item.carryInTaskId, item.carryOutTaskId)
     }
   },
   activated: function() {

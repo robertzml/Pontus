@@ -64,7 +64,7 @@
               <cargo-select :cargo-id.sync="filter.cargoId" :cargo-data="cargoList" :required="false"></cargo-select>
             </v-col>
             <v-col cols="3">
-              <v-text-field v-model="filter.search" append-icon="search" label="搜索" single-line hide-details> </v-text-field>
+              <v-text-field v-model="filter.search" append-icon="search" label="搜索" clearable single-line hide-details> </v-text-field>
             </v-col>
           </v-row>
         </v-card-text>
