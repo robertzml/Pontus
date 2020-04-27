@@ -7,6 +7,11 @@
         </v-btn>
         <v-btn small color="warning" @click="deleteItem(item)">删除</v-btn>
       </template>
+
+      <template v-slot:footer>
+        <span class="ml-4">出库托盘数量：{{ taskInfoList.length }}</span>
+        <span class="ml-4">出库数量合计: {{ totalMoveCount }} </span>
+      </template>
     </v-data-table>
 
     <v-dialog v-model="taskEditDialog" max-width="600px">
@@ -65,6 +70,8 @@ export default {
     stockOutInfo: {},
     taskHeaders: [
       { text: '托盘码', value: 'trayCode' },
+      { text: '货品名称', value: 'cargoName' },
+      { text: '规格', value: 'specification' },
       { text: '在库数量', value: 'storeCount' },
       { text: '出库数量', value: 'moveCount' },
       { text: '单位重量(kg)', value: 'unitWeight' },
@@ -100,6 +107,13 @@ export default {
     editShelfCodes: [],
     editedIndex: -1
   }),
+  computed: {
+    totalMoveCount: function() {
+      return this.taskInfoList.reduce(function(acc, cur) {
+        return acc + parseInt(cur.moveCount)
+      }, 0)
+    }
+  },
   watch: {
     'editedItem.moveCount': function(val) {
       this.editedItem.moveWeight = ((val * this.editedItem.unitWeight) / 1000).toFixed(4)
@@ -128,6 +142,8 @@ export default {
       let task = {
         storeId: item.id,
         cargoId: item.cargoId,
+        cargoName: item.cargoName,
+        specification: item.specification,
         storeCount: item.storeCount,
         moveCount: item.storeCount,
         unitWeight: item.unitWeight,

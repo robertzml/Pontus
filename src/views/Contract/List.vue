@@ -48,6 +48,7 @@ export default {
     headers: [
       { text: '编号', value: 'number', align: 'left' },
       { text: '合同名称', value: 'name' },
+      { text: '客户代码', value: 'customerNumber' },
       { text: '所属客户', value: 'customerName' },
       { text: '合同类型', value: 'type' },
       { text: '签订日期', value: 'signDate' },

@@ -103,7 +103,7 @@
 
             <v-row dense>
               <v-col cols="12">
-                <v-card-subtitle class="pb-2 cyan darken-4">出库货物</v-card-subtitle>
+                <v-card-subtitle class="pb-2 cyan darken-4">出库货物 </v-card-subtitle>
                 <!-- 待出库货物组件 -->
                 <position-store-out ref="storeOutMod"></position-store-out>
               </v-col>
