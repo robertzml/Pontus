@@ -5,11 +5,15 @@
         <v-card-subtitle class="pb-2 light-green darken-4">过滤条件</v-card-subtitle>
         <v-card-text class="pt-0">
           <v-row dense>
-            <v-col cols="4" md="4" sm="4">
+            <v-col cols="3" md="3" sm="6">
               <customer-select :customer-id.sync="filter.customerId" :required="false"></customer-select>
             </v-col>
 
-            <v-col cols="4" md="4" sm="4">
+            <v-col cols="3" md="3" sm="6">
+              <v-select :items="$dict.stockOutType" label="出库类型*" v-model="filter.stockOutType" clearable></v-select>
+            </v-col>
+
+            <v-col cols="3" md="3" sm="6">
               <v-menu v-model="timeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
                   <v-text-field v-model="filter.time" label="出库日期" prepend-icon="event" clearable hide-details readonly v-on="on"></v-text-field>
@@ -18,7 +22,7 @@
               </v-menu>
             </v-col>
 
-            <v-col cols="4" md="4" sm="4">
+            <v-col cols="3" md="3" sm="6">
               <v-text-field v-model="filter.text" append-icon="search" label="搜索" clearable single-line hide-details> </v-text-field>
             </v-col>
           </v-row>
@@ -67,6 +71,7 @@ export default {
   data: () => ({
     timeMenu: false,
     filter: {
+      stockOutType: 0,
       customerId: 0,
       time: null,
       text: ''
@@ -94,6 +99,10 @@ export default {
 
       if (this.filter.customerId != 0) {
         temp = temp.filter(r => r.customerId == this.filter.customerId)
+      }
+
+      if (this.filter.stockOutType) {
+        temp = temp.filter(r => r.type == this.filter.stockOutType)
       }
 
       if (this.filter.time) {

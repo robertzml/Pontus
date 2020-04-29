@@ -65,6 +65,9 @@
             <v-col cols="6" lg="2" md="3" sm="4">
               <v-text-field v-model="storeInfo.remark" label="备注" hide-details readonly></v-text-field>
             </v-col>
+            <v-col cols="6" lg="2" md="3" sm="4">
+              <v-text-field :value="$util.displayDateTime(storeInfo.createTime)" label="库存创建时间" hide-details readonly></v-text-field>
+            </v-col>
           </v-row>
         </v-card>
       </v-expansion-panel-content>

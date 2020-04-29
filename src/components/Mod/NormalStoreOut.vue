@@ -59,6 +59,8 @@ export default {
   data: () => ({
     stockOutInfo: {},
     taskHeaders: [
+      { text: '货品名称', value: 'cargoName' },
+      { text: '规格', value: 'specification' },
       { text: '所在仓库', value: 'warehouseName' },
       { text: '存放位置', value: 'place' },
       { text: '在库数量', value: 'storeCount' },
@@ -121,6 +123,8 @@ export default {
       let task = {
         storeId: item.id,
         cargoId: item.cargoId,
+        cargoName: item.cargoName,
+        specification: item.specification,
         storeCount: item.storeCount,
         outCount: item.storeCount,
         unitWeight: item.unitWeight,

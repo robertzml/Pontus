@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto">
-    <v-list shaped>
+    <v-list shaped max-height="700" style="overflow-y:scroll;">
       <v-subheader class="subtitle-1 teal--text text--lighten-2">出库单列表</v-subheader>
       <v-list-item-group v-model="model" color="primary" mandatory>
         <v-list-item v-for="item in stockOutList" :key="item.id" :value="item.id">

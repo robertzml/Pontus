@@ -9,7 +9,12 @@
       </v-expansion-panel>
 
       <v-expansion-panel>
-        <v-expansion-panel-header ripple class="deep-purple darken-4">出库货物</v-expansion-panel-header>
+        <v-expansion-panel-header ripple class="deep-purple darken-4">
+          出库货物
+          <v-spacer></v-spacer>
+          <span class="subtitle-2 ml-4">出库总数量: {{ totalCount }}</span>
+          <span class="subtitle-2 ml-4">出库总重量: {{ totalWeight }} 吨</span>
+        </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="headers" :items="taskInfoList" :items-per-page="5">
             <template v-slot:item.status="{ item }">
@@ -136,7 +141,21 @@ export default {
     ...mapState({
       refreshEvent: state => state.receipt.stockOutRefreshEvent,
       stockOutId: state => state.receipt.stockOutId
-    })
+    }),
+    // 出库总数量
+    totalCount: function() {
+      return this.taskInfoList.reduce(function(acc, cur) {
+        return acc + cur.outCount
+      }, 0)
+    },
+    // 出库总重量
+    totalWeight: function() {
+      return this.taskInfoList
+        .reduce(function(acc, cur) {
+          return acc + cur.outWeight
+        }, 0.0)
+        .toFixed(4)
+    }
   },
   watch: {
     refreshEvent: function() {
