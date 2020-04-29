@@ -36,12 +36,12 @@
                   ref="shelfCodeInput"
                 ></v-text-field>
               </v-col>
-              <v-col cols="4" sm="4" md="2">
+              <v-col cols="6" sm="6" md="2">
                 <v-btn color="success" class="mt-4 ml-4" large :disabled="!valid" :loading="loading" @click="enter">
                   货 物 上 架
                 </v-btn>
               </v-col>
-              <v-col cols="8" sm="8" md="6">
+              <v-col cols="6" sm="6" md="6">
                 <div class="subtitle-1">
                   上架仓位: <br />
                   {{ enterPosition }}
