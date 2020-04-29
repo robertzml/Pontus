@@ -313,6 +313,15 @@ export const menuRoutes = [
     meta: { roles: [1, 2] }
   },
   {
+    path: '/system',
+    name: 'system',
+    text: '系统功能',
+    group: 'setting',
+    model: false,
+    component: () => import('@/views/System/Index.vue'),
+    meta: { roles: [1] }
+  },
+  {
     // 入库上架
     // 叉车工操作
     path: '/forkliftentertask',
