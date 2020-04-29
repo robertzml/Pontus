@@ -16,7 +16,7 @@
           <span class="subtitle-2 ml-4">入库总重量: {{ totalWeight }} 吨</span>
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
-          <v-data-table :headers="headers" :items="taskInfoList" :items-per-page="5">
+          <v-data-table :headers="headers" :items="taskInfoList" :items-per-page="10">
             <template v-slot:item.status="{ item }">
               {{ item.status | displayStatus }}
             </template>

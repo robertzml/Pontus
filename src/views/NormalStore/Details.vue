@@ -119,7 +119,11 @@
         <v-timeline dense>
           <v-timeline-item v-for="(item, index) in orderInfo" :key="item.id">
             <v-card class="elevation-2">
-              <v-card-title class="title pb-1 purple lighten-2">#{{ index + 1 }}</v-card-title>
+              <v-card-title class="title pb-1 purple lighten-2">
+                #{{ index + 1 }}
+                <v-spacer></v-spacer>
+                <v-btn text @click="showTaskInfo(item)">出入库情况</v-btn>
+              </v-card-title>
               <v-card-text>
                 <v-list>
                   <v-row dense>
@@ -174,6 +178,7 @@
             </v-card>
           </v-timeline-item>
         </v-timeline>
+        <normal-store-task-info ref="taskInfoMod"></normal-store-task-info>
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
@@ -183,9 +188,13 @@
 import { mapState } from 'vuex'
 import normalStore from '@/controllers/normalStore'
 import expense from '@/controllers/expense'
+import NormalStoreTaskInfo from './Dialog/TaskInfo'
 
 export default {
   name: 'NormalStoreDetails',
+  components: {
+    NormalStoreTaskInfo
+  },
   data: () => ({
     panel: [0, 1],
     storeInfo: {},
@@ -210,6 +219,10 @@ export default {
       this.storeInfo = await normalStore.get(this.storeId)
       this.coldFeeInfo = await expense.getStoreColdFee({ storeId: this.storeId, current: now, storeType: 1 })
       this.orderInfo = await normalStore.findInOrder(this.storeId)
+    },
+
+    showTaskInfo(item) {
+      this.$refs.taskInfoMod.init(item.stockInTaskId, item.stockOutTaskId)
     }
   },
   activated: function() {
