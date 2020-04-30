@@ -14,7 +14,6 @@
               <v-col cols="6" sm="6" md="5">
                 <v-text-field
                   label="托盘码"
-                  prepend-icon="power_input"
                   :counter="6"
                   autocomplete="off"
                   v-model="trayCode"
@@ -26,15 +25,7 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="6" sm="6" md="5">
-                <v-text-field
-                  label="货架码"
-                  prepend-icon="border_all"
-                  v-model="shelfCode"
-                  clearable
-                  :counter="12"
-                  :rules="shelfCodeRules"
-                  ref="shelfCodeInput"
-                ></v-text-field>
+                <v-text-field label="货架码" v-model="shelfCode" clearable :counter="12" :rules="shelfCodeRules" ref="shelfCodeInput"></v-text-field>
               </v-col>
               <v-col cols="6" sm="6" md="2">
                 <v-btn color="success" class="mt-4 ml-4" large :disabled="!valid" :loading="loading" @click="enter">

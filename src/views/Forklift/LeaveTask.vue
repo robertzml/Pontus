@@ -25,7 +25,6 @@
               <v-col cols="6" sm="6" md="5">
                 <v-text-field
                   label="货架码"
-                  prepend-icon="border_all"
                   v-model="shelfCode"
                   :counter="12"
                   :rules="shelfCodeRules"
@@ -38,7 +37,6 @@
               <v-col cols="6" sm="6" md="5">
                 <v-text-field
                   label="托盘码"
-                  prepend-icon="power_input"
                   v-model="trayCode"
                   autocomplete="off"
                   :rules="trayCodeRules"
