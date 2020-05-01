@@ -227,5 +227,15 @@ export default {
     } else {
       return ''
     }
+  },
+
+  // 缴费方式
+  paidType: type => {
+    let ct = dict.paidType.find(r => r.value == type)
+    if (ct != undefined) {
+      return ct.text
+    } else {
+      return ''
+    }
   }
 }

@@ -63,6 +63,10 @@ const filters = Vue => {
   Vue.filter('flowType', function(val) {
     return util.flowType(val)
   })
+
+  Vue.filter('paidType', function(val) {
+    return util.paidType(val)
+  })
 }
 
 export default filters

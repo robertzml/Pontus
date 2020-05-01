@@ -119,6 +119,16 @@ export default {
     { text: '移出', value: 5 }
   ],
 
+  /** 缴费类型 */
+  paidType: [
+    { text: '现金', value: 1 },
+    { text: '刷卡', value: 2 },
+    { text: '转账', value: 3 },
+    { text: '支票', value: 4 },
+    { text: '微信', value: 5 },
+    { text: '支付宝', value: 6 }
+  ],
+
   /** 用户组 */
   userGroup: [
     { text: '超级管理员', value: 1 },
