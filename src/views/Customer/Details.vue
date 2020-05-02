@@ -41,14 +41,6 @@
           </v-card-text>
         </v-card>
       </v-col>
-
-      <v-col cols="12">
-        <v-card class="mx-auto">
-          <v-card-title class="green">
-            合同信息
-          </v-card-title>
-        </v-card>
-      </v-col>
     </v-row>
   </v-container>
 </template>

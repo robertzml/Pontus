@@ -10,7 +10,7 @@
             </v-col>
 
             <v-col cols="3" md="3" sm="6">
-              <v-select :items="$dict.stockInType" label="入库类型*" v-model="filter.stockInType" clearable></v-select>
+              <v-select :items="$dict.stockInType" label="入库类型" v-model="filter.stockInType" clearable></v-select>
             </v-col>
 
             <v-col cols="3" md="3" sm="6">

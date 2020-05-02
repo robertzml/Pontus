@@ -22,20 +22,22 @@
     </v-col>
 
     <v-col cols="12">
-      <payment-create ref="paymentCreateMod"></payment-create>
+      <payment-create ref="paymentCreateMod" @close="refresh"></payment-create>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import PaymentList from './List'
+import PaymentDetails from './Details'
 import PaymentCreate from './Create'
 
 export default {
   name: 'PaymentIndex',
   components: {
     PaymentList,
+    PaymentDetails,
     PaymentCreate
   },
   data: () => ({}),
@@ -47,6 +49,10 @@ export default {
   methods: {
     ...mapMutations({
       refresh: 'payment/refresh'
+    }),
+
+    ...mapActions({
+      showList: 'payment/showList'
     }),
 
     showCreate() {

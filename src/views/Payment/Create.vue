@@ -14,7 +14,7 @@
               <v-text-field label="票号" v-model="paymentInfo.ticketNumber"></v-text-field>
             </v-col>
             <v-col cols="6" md="6" sm="6">
-              <v-text-field label="缴费金额" v-model="paymentInfo.paidFee" :suffix="元"></v-text-field>
+              <v-text-field label="缴费金额" v-model="paymentInfo.paidFee" suffix="元"></v-text-field>
             </v-col>
             <v-col cols="6" md="6" sm="6">
               <v-menu
