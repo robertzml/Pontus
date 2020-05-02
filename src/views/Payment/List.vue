@@ -154,7 +154,7 @@ export default {
       this.showDetails(item.id)
     }
   },
-  mounted: function() {
+  activated: function() {
     this.loadList()
   }
 }

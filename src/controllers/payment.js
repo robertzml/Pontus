@@ -19,5 +19,11 @@ export default {
   async create(entity) {
     const res = await axios._post({ url: '/payment/create', data: entity })
     return res.data
+  },
+
+  // 删除缴费记录
+  async delete(data) {
+    const res = await axios._postqs({ url: '/payment/delete', params: data })
+    return res.data
   }
 }
