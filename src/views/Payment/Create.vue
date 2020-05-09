@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" persistent eager max-width="800px">
     <v-card>
       <v-card-title>
-        <span class="headline">缴费信息</span>
+        <span class="headline">添加缴费信息</span>
       </v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>

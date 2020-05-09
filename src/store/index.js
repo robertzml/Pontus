@@ -16,6 +16,7 @@ import store from './modules/store'
 import normalStore from './modules/normalStore'
 import storePosition from './modules/storePosition'
 import expenseItem from './modules/expenseItem'
+import settlement from './modules/settlement'
 import payment from './modules/payment'
 
 Vue.use(Vuex)
@@ -38,6 +39,7 @@ export default new Vuex.Store({
     normalStore,
     storePosition,
     expenseItem,
+    settlement,
     payment
   }
 })

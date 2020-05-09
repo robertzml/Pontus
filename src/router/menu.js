@@ -268,6 +268,15 @@ export const menuRoutes = [
     meta: { roles: [1, 2, 3, 4] }
   },
   {
+    path: '/settlement',
+    name: 'settlement',
+    text: '结算管理',
+    group: 'expense',
+    model: false,
+    component: () => import('@/views/Settlement/Index.vue'),
+    meta: { roles: [1, 2, 3, 4] }
+  },
+  {
     path: '/payment',
     name: 'payment',
     text: '缴费管理',

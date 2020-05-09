@@ -42,13 +42,13 @@
       <v-col cols="12">
         <v-card>
           <v-card-title class="orange">
-            缴费列表
+            结算列表
             <v-spacer></v-spacer>
-            <span class="subtitle-2 ml-4">缴费总记录: {{ paymentFilterData.length }} 条</span>
+            <span class="subtitle-2 ml-4">缴费总记录: {{ settlementFilterData.length }} 条</span>
             <span class="subtitle-2 ml-4">缴费总金额: {{ totalFee }} 元</span>
           </v-card-title>
           <v-card-text class="px-0">
-            <v-data-table :headers="headers" :items="paymentFilterData" :search="filter.text" :items-per-page="10">
+            <v-data-table :headers="headers" :items="settlementFilterData" :search="filter.text" :items-per-page="10">
               <template v-slot:item.paidType="{ item }">
                 {{ item.paidType | paidType }}
               </template>
@@ -74,11 +74,11 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import payment from '@/controllers/payment'
+import settlement from '@/controllers/settlement'
 import CustomerSelect from '@/components/Control/CustomerSelect'
 
 export default {
-  name: 'PaymentList',
+  name: 'SettlementList',
   components: {
     CustomerSelect
   },
@@ -90,7 +90,7 @@ export default {
       time: null,
       text: ''
     },
-    paymentListData: [],
+    settlementListData: [],
     headers: [
       { text: '票号', value: 'ticketNumber', align: 'left' },
       { text: '客户代码', value: 'customerNumber' },
@@ -108,9 +108,9 @@ export default {
     ...mapState({
       refreshEvent: state => state.payment.refreshEvent
     }),
-    // 过滤后缴费列表
-    paymentFilterData() {
-      let temp = this.paymentListData
+    // 过滤后结算列表
+    settlementFilterData() {
+      let temp = this.settlementListData
 
       if (this.filter.customerId != 0) {
         temp = temp.filter(r => r.customerId == this.filter.customerId)
@@ -128,9 +128,9 @@ export default {
       return temp
     },
 
-    // 缴费总金额
+    // 结算总金额
     totalFee: function() {
-      return this.paymentFilterData
+      return this.settlementFilterData
         .reduce(function(acc, cur) {
           return acc + cur.paidFee
         }, 0.0)
@@ -144,11 +144,11 @@ export default {
   },
   methods: {
     ...mapActions({
-      showDetails: 'payment/showDetails'
+      showDetails: 'settlement/showDetails'
     }),
 
     async loadList() {
-      this.paymentListData = await payment.getList()
+      this.settlementListData = await settlement.getList()
     },
     viewItem(item) {
       this.showDetails(item.id)
