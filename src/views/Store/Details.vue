@@ -3,75 +3,77 @@
     <v-expansion-panel>
       <v-expansion-panel-header ripple class="cyan darken-1">库存信息</v-expansion-panel-header>
       <v-expansion-panel-content eager>
-        <v-card>
-          <v-row dense>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.customerNumber" label="客户编号" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.customerName" label="客户名称" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.contractNumber" label="合同编号" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.contractName" label="合同名称" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.cargoName" label="货品名称" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field :value="`${storeInfo.categoryNumber} - ${storeInfo.categoryName}`" label="类别" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.trayCode" label="托盘码" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.positionNumber" label="仓位码" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.specification" label="规格" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.batch" label="批次" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.originPlace" label="产地" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.durability" label="保质期" suffix="月" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.unitWeight" label="单位重量" suffix="千克" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.storeCount" label="在库数量" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.storeWeight" label="在库重量" suffix="吨" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.shelfCode" label="上货货架码" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field :value="$util.displayDate(storeInfo.initialTime)" label="初始时间" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field :value="$util.displayDate(storeInfo.inTime)" label="入库时间" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field :value="$util.displayDate(storeInfo.outTime)" label="出库时间" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field :value="$util.displayStatus(storeInfo.status)" label="状态" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field v-model="storeInfo.remark" label="备注" hide-details readonly></v-text-field>
-            </v-col>
-            <v-col cols="6" lg="2" md="3" sm="4">
-              <v-text-field :value="$util.displayDateTime(storeInfo.createTime)" label="库存创建时间" hide-details readonly></v-text-field>
-            </v-col>
-          </v-row>
+        <v-card flat>
+          <v-card-text class="pa-0">
+            <v-row dense>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field v-model="storeInfo.customerNumber" label="客户编号" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field v-model="storeInfo.customerName" label="客户名称" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field v-model="storeInfo.contractNumber" label="合同编号" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field v-model="storeInfo.contractName" label="合同名称" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field v-model="storeInfo.cargoName" label="货品名称" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field :value="`${storeInfo.categoryNumber} - ${storeInfo.categoryName}`" label="类别" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field v-model="storeInfo.trayCode" label="托盘码" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field v-model="storeInfo.positionNumber" label="仓位码" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field v-model="storeInfo.specification" label="规格" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field v-model="storeInfo.batch" label="批次" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field v-model="storeInfo.originPlace" label="产地" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field v-model="storeInfo.durability" label="保质期" suffix="月" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field v-model="storeInfo.unitWeight" label="单位重量" suffix="千克" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field v-model="storeInfo.storeCount" label="在库数量" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field v-model="storeInfo.storeWeight" label="在库重量" suffix="吨" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field v-model="storeInfo.shelfCode" label="上货货架码" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field :value="$util.displayDate(storeInfo.initialTime)" label="初始时间" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field :value="$util.displayDate(storeInfo.inTime)" label="入库时间" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field :value="$util.displayDate(storeInfo.outTime)" label="出库时间" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field :value="$util.displayStatus(storeInfo.status)" label="状态" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field v-model="storeInfo.remark" label="备注" hide-details readonly></v-text-field>
+              </v-col>
+              <v-col cols="6" lg="2" md="3" sm="4">
+                <v-text-field :value="$util.displayDateTime(storeInfo.createTime)" label="库存创建时间" hide-details readonly></v-text-field>
+              </v-col>
+            </v-row>
+          </v-card-text>
         </v-card>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -130,7 +132,7 @@
               <v-card-text>
                 <v-list>
                   <v-row dense>
-                    <v-col cols="3">
+                    <v-col cols="2">
                       <v-list-item>
                         <v-list-item-title>入库日期</v-list-item-title>
                         <v-list-item-subtitle class="text-right">
@@ -173,6 +175,23 @@
                       <v-list-item>
                         <v-list-item-title>仓位码</v-list-item-title>
                         <v-list-item-subtitle class="text-right"> {{ item.positionNumber }}</v-list-item-subtitle>
+                      </v-list-item>
+                    </v-col>
+
+                    <v-divider inset vertical></v-divider>
+
+                    <v-col cols="3">
+                      <v-list-item>
+                        <v-list-item-title>状态</v-list-item-title>
+                        <v-list-item-subtitle class="text-right">
+                          {{ item.status | displayStatus }}
+                        </v-list-item-subtitle>
+                      </v-list-item>
+                      <v-list-item>
+                        <v-list-item-title>创建时间</v-list-item-title>
+                        <v-list-item-subtitle class="text-right">
+                          {{ item.createTime | displayDateTime }}
+                        </v-list-item-subtitle>
                       </v-list-item>
                     </v-col>
                   </v-row>
