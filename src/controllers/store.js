@@ -128,5 +128,11 @@ export default {
   async moveTray(entity) {
     const res = await axios._post({ url: '/store/moveTray', data: entity })
     return res.data
+  },
+
+  // 强制删除库存
+  async forceDelete(data) {
+    const res = await axios._postqs({ url: '/store/forceDelete', params: data })
+    return res.data
   }
 }

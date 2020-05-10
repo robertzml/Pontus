@@ -74,6 +74,23 @@
               </v-col>
             </v-row>
           </v-card-text>
+          <v-card-actions>
+            <v-btn v-if="userInfo.userGroupId == 1" @click="dialog = true">删除库存记录</v-btn>
+          </v-card-actions>
+
+          <v-dialog v-model="dialog" persistent max-width="300">
+            <v-card>
+              <v-card-title class="headline">删除库存记录</v-card-title>
+              <v-card-text>
+                是否确认删除该库存记录？该库存关联库存，搬运任务均被删除，初始入库货物合计数重新计算。 占用仓位状态需手动修改。
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue-grey lighten-3" text @click="dialog = false">取消</v-btn>
+                <v-btn color="green darken-1" text :loading="loading" @click="forceDelete">确定</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-card>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -207,7 +224,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 import store from '@/controllers/store'
 import expense from '@/controllers/expense'
 import StoreCarryInfo from './Dialog/CarryInfo'
@@ -218,6 +235,8 @@ export default {
     StoreCarryInfo
   },
   data: () => ({
+    dialog: false,
+    loading: false,
     panel: [0, 1],
     storeInfo: {},
     coldFeeInfo: {},
@@ -227,7 +246,8 @@ export default {
     ...mapState({
       storeId: state => state.store.storeId,
       refreshEvent: state => state.store.refreshEvent
-    })
+    }),
+    ...mapGetters(['userInfo'])
   },
   watch: {
     refreshEvent: function() {
@@ -235,6 +255,10 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      showList: 'store/showList'
+    }),
+
     async loadData() {
       const now = this.$moment().format('YYYY-MM-DD')
 
@@ -245,6 +269,26 @@ export default {
 
     showCarryInfo(item) {
       this.$refs.carryInfoMod.init(item.carryInTaskId, item.carryOutTaskId)
+    },
+
+    // 删除库存记录
+    forceDelete() {
+      this.$nextTick(() => {
+        this.loading = true
+      })
+
+      let vm = this
+      store.forceDelete({ id: this.storeId }).then(res => {
+        if (res.status == 0) {
+          vm.$store.commit('alertSuccess', '删除库存记录成功')
+          vm.loading = false
+          vm.dialog = false
+          vm.showList()
+        } else {
+          vm.$store.commit('alertError', res.errorMessage)
+          vm.loading = false
+        }
+      })
     }
   },
   activated: function() {
