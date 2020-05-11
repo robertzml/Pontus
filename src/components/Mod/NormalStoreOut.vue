@@ -7,6 +7,11 @@
         </v-btn>
         <v-btn small color="warning" @click="deleteItem(item)">删除</v-btn>
       </template>
+
+      <template v-slot:footer>
+        <span class="ml-4">出库货物数量：{{ taskInfoList.length }}</span>
+        <span class="ml-4">出库数量合计: {{ totalOutCount }} </span>
+      </template>
     </v-data-table>
 
     <v-dialog v-model="taskEditDialog" max-width="600px">
@@ -94,6 +99,13 @@ export default {
     editShelfCodes: [],
     editedIndex: -1
   }),
+  computed: {
+    totalOutCount: function() {
+      return this.taskInfoList.reduce(function(acc, cur) {
+        return acc + parseInt(cur.outCount)
+      }, 0)
+    }
+  },
   watch: {
     'editedItem.outCount': function(val) {
       this.editedItem.outWeight = ((val * this.editedItem.unitWeight) / 1000).toFixed(4)

@@ -274,7 +274,7 @@ export const menuRoutes = [
     group: 'expense',
     model: false,
     component: () => import('@/views/Settlement/Index.vue'),
-    meta: { roles: [1, 2, 3, 4] }
+    meta: { roles: [1, 2] }
   },
   {
     path: '/payment',
@@ -283,7 +283,7 @@ export const menuRoutes = [
     group: 'expense',
     model: false,
     component: () => import('@/views/Payment/Index.vue'),
-    meta: { roles: [1, 2, 3, 4] }
+    meta: { roles: [1, 2] }
   },
   {
     path: '/statistic-expense',

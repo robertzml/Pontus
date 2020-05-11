@@ -21,18 +21,22 @@
       </v-slide-x-transition>
     </v-col>
 
-    <v-col cols="12"> </v-col>
+    <v-col cols="12">
+      <settlement-create ref="settlementCreateMod" @close="refresh"></settlement-create>
+    </v-col>
   </v-row>
 </template>
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import SettlementList from './List'
+import SettlementCreate from './Create'
 
 export default {
   name: 'SettlementIndex',
   components: {
-    SettlementList
+    SettlementList,
+    SettlementCreate
   },
   data: () => ({}),
   computed: {
@@ -50,7 +54,7 @@ export default {
     }),
 
     showCreate() {
-      this.$refs.paymentCreateMod.init()
+      this.$refs.settlementCreateMod.init()
     }
   }
 }
