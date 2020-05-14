@@ -43,7 +43,7 @@
               </v-menu>
             </v-col>
             <v-col cols="3">
-              <v-btn color="cyan darken-4">开始结算</v-btn>
+              <v-btn color="cyan darken-4" class="mt-2" @click="startSettle">开始结算</v-btn>
             </v-col>
 
             <v-col cols="6" md="6" sm="6">
@@ -78,6 +78,7 @@ export default {
     startTimeMenu: false,
     endTimeMenu: false,
     settlementInfo: {
+      customerId: 0,
       startTime: null,
       endTime: null,
       discount: 0.0,
@@ -89,13 +90,22 @@ export default {
       remark: ''
     },
     numberRules: [v => !!v || '请输入客户编号'],
-    nameRules: [v => !!v || '请输入客户名称']
+    nameRules: [v => !!v || '请输入客户名称'],
+    inBillingData: [],
+    outBillingData: []
   }),
   methods: {
     init() {
       this.settlementInfo = {
-        startTime: this.$moment().format('YYYY-MM-DD'),
+        customerId: 0,
+        startTime: this.$moment()
+          .startOf('month')
+          .format('YYYY-MM-DD'),
         endTime: this.$moment().format('YYYY-MM-DD'),
+        discount: 0.0,
+        remission: 0.0,
+        dueFee: 0,
+        settlementTime: null,
         userId: 0,
         userName: '',
         remark: ''
@@ -106,6 +116,27 @@ export default {
       this.$nextTick(() => {
         this.$refs.form.resetValidation()
       })
+    },
+
+    async startSettle() {
+      if (this.$refs.form.validate()) {
+        this.$nextTick(() => {
+          this.loading = true
+        })
+
+        const model = {
+          customerId: this.settlementInfo.customerId,
+          startTime: this.settlementInfo.startTime,
+          endTime: this.settlementInfo.endTime
+        }
+
+        this.inBillingData = await settlement.getPeriodInBilling({ customerId: model.customerId, startTime: model.startTime, endTime: model.endTime })
+        this.outBillingData = await settlement.getPeriodOutBilling({
+          customerId: model.customerId,
+          startTime: model.startTime,
+          endTime: model.endTime
+        })
+      }
     },
 
     submit2() {

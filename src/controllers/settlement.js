@@ -25,5 +25,23 @@ export default {
   async delete(data) {
     const res = await axios._postqs({ url: '/settlement/delete', params: data })
     return res.data
+  },
+
+  // 获取入库费用
+  async getPeriodInBilling({ customerId, startTime, endTime }) {
+    const res = await axios._get({
+      url: '/settlement/getPeriodInBilling',
+      params: { customerId: customerId, startTime: startTime, endTime: endTime }
+    })
+    return res.data
+  },
+
+  // 获取出库费用
+  async getPeriodOutBilling({ customerId, startTime, endTime }) {
+    const res = await axios._get({
+      url: '/settlement/getPeriodOutBilling',
+      params: { customerId: customerId, startTime: startTime, endTime: endTime }
+    })
+    return res.data
   }
 }
