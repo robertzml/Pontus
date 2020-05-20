@@ -7,6 +7,7 @@
         <v-btn text @click="dialog = false">取消</v-btn>
       </v-card-title>
       <v-card-text>
+        <v-card-subtitle class="pb-2 mt-1 light-green darken-4">用户信息</v-card-subtitle>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row dense>
             <v-col cols="3">
@@ -45,8 +46,78 @@
             <v-col cols="3">
               <v-btn color="cyan darken-4" class="mt-2" @click="startSettle">开始结算</v-btn>
             </v-col>
+          </v-row>
+        </v-form>
+      </v-card-text>
 
-            <v-col cols="6" md="6" sm="6">
+      <v-card-text>
+        <v-card-subtitle class="pb-2 cyan darken-3">费用清单</v-card-subtitle>
+        <v-tabs v-model="tab" grow>
+          <v-tab> 入库费用 </v-tab>
+          <v-tab> 出库费用 </v-tab>
+        </v-tabs>
+
+        <v-tabs-items v-model="tab">
+          <v-tab-item>
+            <v-data-table :headers="inBillingHeaders" :items="inBillingData" :items-per-page="10" disable-sort>
+              <template v-slot:item.inTime="{ item }">
+                {{ item.inTime | displayDate }}
+              </template>
+              <template v-slot:item.unitPrice="{ item }">
+                {{ item.type == 2 ? item.unitPrice : '' }}
+              </template>
+            </v-data-table>
+          </v-tab-item>
+
+          <v-tab-item>
+            <v-data-table :headers="outBillingHeaders" :items="outBillingData" :items-per-page="10" disable-sort>
+              <template v-slot:item.outTime="{ item }">
+                {{ item.outTime | displayDate }}
+              </template>
+              <template v-slot:item.unitPrice="{ item }">
+                {{ item.type == 2 ? item.unitPrice : '' }}
+              </template>
+            </v-data-table>
+          </v-tab-item>
+        </v-tabs-items>
+      </v-card-text>
+
+      <v-card-text>
+        <v-card-subtitle class="pb-2 teal darken-4">结算信息</v-card-subtitle>
+        <v-form ref="form2" v-model="valid2" lazy-validation>
+          <v-row dense>
+            <v-col cols="3">
+              <v-text-field v-model="sumFee" label="费用合计" readonly suffix="元"></v-text-field>
+            </v-col>
+            <v-col cols="3">
+              <v-text-field v-model="settlementInfo.discount" label="折扣率" suffix="%"></v-text-field>
+            </v-col>
+            <v-col cols="3">
+              <v-text-field v-model="settlementInfo.remission" label="减免费用" suffix="元"></v-text-field>
+            </v-col>
+            <v-col cols="3">
+              <v-text-field v-model="settlementInfo.dueFee" label="应付款" readonly suffix="元"></v-text-field>
+            </v-col>
+            <v-col cols="3">
+              <v-menu
+                v-model="settleTimeMenu"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field v-model="settlementInfo.settleTime" label="结算时间" prepend-icon="event" readonly v-on="on"></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="settlementInfo.settleTime"
+                  :day-format="$util.pickerDayFormat"
+                  @input="settleTimeMenu = false"
+                ></v-date-picker>
+              </v-menu>
+            </v-col>
+            <v-col cols="6">
               <v-text-field label="备注" v-model="settlementInfo.remark"></v-text-field>
             </v-col>
           </v-row>
@@ -73,18 +144,22 @@ export default {
   },
   data: () => ({
     valid: true,
+    valid2: true,
     loading: false,
     dialog: false,
     startTimeMenu: false,
     endTimeMenu: false,
+    settleTimeMenu: false,
+    tab: null,
     settlementInfo: {
       customerId: 0,
       startTime: null,
       endTime: null,
+      sumFee: 0.0,
       discount: 0.0,
       remission: 0.0,
       dueFee: 0,
-      settlementTime: null,
+      settleTime: null,
       userId: 0,
       userName: '',
       remark: ''
@@ -92,8 +167,40 @@ export default {
     numberRules: [v => !!v || '请输入客户编号'],
     nameRules: [v => !!v || '请输入客户名称'],
     inBillingData: [],
-    outBillingData: []
+    inBillingHeaders: [
+      { text: '日期', value: 'inTime' },
+      { text: '流水单', value: 'flowNumber' },
+      { text: '费用代码', value: 'code' },
+      { text: '费用名称', value: 'name' },
+      { text: '单价', value: 'unitPrice' },
+      { text: '数量(吨)', value: 'count' },
+      { text: '费用(元)', value: 'amount' }
+    ],
+    outBillingData: [],
+    outBillingHeaders: [
+      { text: '日期', value: 'outTime' },
+      { text: '流水单', value: 'flowNumber' },
+      { text: '费用代码', value: 'code' },
+      { text: '费用名称', value: 'name' },
+      { text: '单价', value: 'unitPrice' },
+      { text: '数量(吨)', value: 'count' },
+      { text: '费用(元)', value: 'amount' }
+    ]
   }),
+  computed: {
+    sumFee: function() {
+      let total = 0.0
+      this.inBillingData.forEach(item => {
+        total += item.amount
+      })
+
+      this.outBillingData.forEach(item => {
+        total += item.amount
+      })
+
+      return total.toFixed(3)
+    }
+  },
   methods: {
     init() {
       this.settlementInfo = {
@@ -102,10 +209,11 @@ export default {
           .startOf('month')
           .format('YYYY-MM-DD'),
         endTime: this.$moment().format('YYYY-MM-DD'),
+        sumFee: 0.0,
         discount: 0.0,
         remission: 0.0,
         dueFee: 0,
-        settlementTime: null,
+        settleTime: this.$moment().format('YYYY-MM-DD'),
         userId: 0,
         userName: '',
         remark: ''
@@ -118,12 +226,9 @@ export default {
       })
     },
 
+    // 开始结算
     async startSettle() {
       if (this.$refs.form.validate()) {
-        this.$nextTick(() => {
-          this.loading = true
-        })
-
         const model = {
           customerId: this.settlementInfo.customerId,
           startTime: this.settlementInfo.startTime,
@@ -139,8 +244,8 @@ export default {
       }
     },
 
-    submit2() {
-      if (this.$refs.form.validate()) {
+    submit() {
+      if (this.$refs.form2.validate()) {
         this.$nextTick(() => {
           this.loading = true
         })
