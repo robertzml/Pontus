@@ -30,13 +30,15 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import SettlementList from './List'
+import SettlementDetails from './Details'
 import SettlementCreate from './Create'
 
 export default {
   name: 'SettlementIndex',
   components: {
     SettlementList,
-    SettlementCreate
+    SettlementCreate,
+    SettlementDetails
   },
   data: () => ({}),
   computed: {
