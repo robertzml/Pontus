@@ -56,12 +56,12 @@
 
       <v-dialog v-model="dialog" persistent max-width="300">
         <v-card>
-          <v-card-title class="headline">删除缴费记录</v-card-title>
-          <v-card-text>是否确认删除该缴费记录？</v-card-text>
+          <v-card-title class="headline">删除结算记录</v-card-title>
+          <v-card-text>是否确认删除该结算记录？</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue-grey lighten-3" text @click="dialog = false">取消</v-btn>
-            <v-btn color="green darken-1" text :loading="loading" @click="deletePayment">确定</v-btn>
+            <v-btn color="green darken-1" text :loading="loading" @click="deleteSettlement">确定</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -101,15 +101,15 @@ export default {
       this.settlementInfo = await settlement.get(this.settlementId)
     },
 
-    deletePayment() {
+    deleteSettlement() {
       this.$nextTick(() => {
         this.loading = true
       })
 
       let vm = this
-      payment.delete({ id: this.paymentId }).then(res => {
+      settlement.delete({ id: this.settlementId }).then(res => {
         if (res.status == 0) {
-          vm.$store.commit('alertSuccess', '删除缴费记录成功')
+          vm.$store.commit('alertSuccess', '删除结算记录成功')
           vm.loading = false
           vm.dialog = false
           vm.showList()
