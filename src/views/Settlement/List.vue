@@ -6,20 +6,16 @@
           <v-card-subtitle class="pb-2 light-green darken-4">过滤条件</v-card-subtitle>
           <v-card-text class="pt-0">
             <v-row dense>
-              <v-col cols="3" md="3" sm="6">
+              <v-col cols="4">
                 <customer-select :customer-id.sync="filter.customerId" :required="false"></customer-select>
               </v-col>
 
-              <v-col cols="3" md="3" sm="6">
-                <v-select :items="$dict.paidType" label="缴费方式" v-model="filter.paidType" clearable></v-select>
-              </v-col>
-
-              <v-col cols="3" md="3" sm="6">
+              <v-col cols="4">
                 <v-menu v-model="timeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="filter.time"
-                      label="缴费日期"
+                      label="结算日期"
                       prepend-icon="event"
                       clearable
                       hide-details
@@ -31,7 +27,7 @@
                 </v-menu>
               </v-col>
 
-              <v-col cols="3" md="3" sm="6">
+              <v-col cols="4">
                 <v-text-field v-model="filter.text" append-icon="search" label="搜索" clearable single-line hide-details> </v-text-field>
               </v-col>
             </v-row>
@@ -44,19 +40,22 @@
           <v-card-title class="orange">
             结算列表
             <v-spacer></v-spacer>
-            <span class="subtitle-2 ml-4">缴费总记录: {{ settlementFilterData.length }} 条</span>
-            <span class="subtitle-2 ml-4">缴费总金额: {{ totalFee }} 元</span>
+            <span class="subtitle-2 ml-4">结算总记录: {{ settlementFilterData.length }} 条</span>
+            <span class="subtitle-2 ml-4">应付款总金额: {{ totalFee }} 元</span>
           </v-card-title>
           <v-card-text class="px-0">
             <v-data-table :headers="headers" :items="settlementFilterData" :search="filter.text" :items-per-page="10">
               <template v-slot:item.paidType="{ item }">
                 {{ item.paidType | paidType }}
               </template>
-              <template v-slot:item.paidTime="{ item }">
-                {{ item.paidTime | displayDate }}
+              <template v-slot:item.startTime="{ item }">
+                {{ item.startTime | displayDate }}
               </template>
-              <template v-slot:item.createTime="{ item }">
-                {{ item.createTime | displayDateTime }}
+              <template v-slot:item.endTime="{ item }">
+                {{ item.endTime | displayDate }}
+              </template>
+              <template v-slot:item.settleTime="{ item }">
+                {{ item.settleTime | displayDate }}
               </template>
               <template v-slot:item.action="{ item }">
                 <v-btn small color="success" @click="viewItem(item)">
@@ -85,28 +84,27 @@ export default {
   data: () => ({
     timeMenu: false,
     filter: {
-      paidType: 0,
       customerId: 0,
       time: null,
       text: ''
     },
     settlementListData: [],
     headers: [
-      { text: '票号', value: 'ticketNumber', align: 'left' },
+      { text: '结算单号', value: 'number', align: 'left' },
       { text: '客户代码', value: 'customerNumber' },
       { text: '客户名称', value: 'customerName' },
-      { text: '缴费金额(元)', value: 'paidFee' },
-      { text: '缴费日期', value: 'paidTime' },
-      { text: '缴费方式', value: 'paidType' },
+      { text: '开始日期', value: 'startTime' },
+      { text: '结束日期', value: 'endTime' },
+      { text: '应付款(元)', value: 'dueFee' },
+      { text: '结算时间', value: 'settleTime' },
       { text: '登记人', value: 'userName' },
-      { text: '登记时间', value: 'createTime' },
       { text: '备注', value: 'remark' },
       { text: '操作', value: 'action', sortable: false }
     ]
   }),
   computed: {
     ...mapState({
-      refreshEvent: state => state.payment.refreshEvent
+      refreshEvent: state => state.settlement.refreshEvent
     }),
     // 过滤后结算列表
     settlementFilterData() {
@@ -116,13 +114,9 @@ export default {
         temp = temp.filter(r => r.customerId == this.filter.customerId)
       }
 
-      if (this.filter.paidType) {
-        temp = temp.filter(r => r.paidType == this.filter.paidType)
-      }
-
       if (this.filter.time) {
         let t = this.$moment(this.filter.time)
-        temp = temp.filter(r => t.isSame(r.paidTime))
+        temp = temp.filter(r => t.isSame(r.settleTime))
       }
 
       return temp
@@ -132,7 +126,7 @@ export default {
     totalFee: function() {
       return this.settlementFilterData
         .reduce(function(acc, cur) {
-          return acc + cur.paidFee
+          return acc + cur.dueFee
         }, 0.0)
         .toFixed(3)
     }

@@ -96,7 +96,7 @@
               <v-text-field v-model="settlementInfo.remission" label="减免费用" suffix="元"></v-text-field>
             </v-col>
             <v-col cols="3">
-              <v-text-field v-model="settlementInfo.dueFee" label="应付款" readonly suffix="元"></v-text-field>
+              <v-text-field v-model="dueFee" label="应付款" readonly suffix="元"></v-text-field>
             </v-col>
             <v-col cols="3">
               <v-menu
@@ -156,7 +156,7 @@ export default {
       startTime: null,
       endTime: null,
       sumFee: 0.0,
-      discount: 0.0,
+      discount: 100.0,
       remission: 0.0,
       dueFee: 0,
       settleTime: null,
@@ -199,6 +199,11 @@ export default {
       })
 
       return total.toFixed(3)
+    },
+
+    dueFee: function() {
+      let fee = ((this.sumFee * this.settlementInfo.discount) / 100.0 - this.settlementInfo.remission).toFixed(3)
+      return fee
     }
   },
   methods: {
@@ -210,7 +215,7 @@ export default {
           .format('YYYY-MM-DD'),
         endTime: this.$moment().format('YYYY-MM-DD'),
         sumFee: 0.0,
-        discount: 0.0,
+        discount: 100.0,
         remission: 0.0,
         dueFee: 0,
         settleTime: this.$moment().format('YYYY-MM-DD'),
@@ -218,6 +223,9 @@ export default {
         userName: '',
         remark: ''
       }
+
+      this.inBillingData = []
+      this.outBillingData = []
 
       this.loading = false
       this.dialog = true
@@ -251,6 +259,7 @@ export default {
         })
 
         let vm = this
+        this.settlementInfo.sumFee = this.sumFee
         this.settlementInfo.userId = this.$store.state.user.id
         this.settlementInfo.userName = this.$store.state.user.name
 
