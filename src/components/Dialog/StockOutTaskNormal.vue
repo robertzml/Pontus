@@ -225,6 +225,11 @@ export default {
           return
         }
 
+        if (!taskList.every(r => r.outCount > 0)) {
+          this.$store.commit('alertError', '请确认出库数量大于0')
+          return
+        }
+
         this.$nextTick(() => {
           this.loading = true
         })
