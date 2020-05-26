@@ -295,6 +295,15 @@ export const menuRoutes = [
     meta: { roles: [1, 2, 3, 4] }
   },
   {
+    path: '/statistic-stockflow',
+    name: 'statisticStockFlow',
+    text: '出入库报表',
+    group: 'statistic',
+    model: false,
+    component: () => import('@/views/Statistic/StockFlow.vue'),
+    meta: { roles: [1, 2, 3, 4] }
+  },
+  {
     path: '/user',
     name: 'user',
     text: '用户列表',
