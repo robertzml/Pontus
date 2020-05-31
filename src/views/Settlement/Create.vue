@@ -53,11 +53,23 @@
       <v-card-text>
         <v-card-subtitle class="pb-2 cyan darken-3">费用清单</v-card-subtitle>
         <v-tabs v-model="tab" grow>
+          <v-tab> 冷藏费用 </v-tab>
           <v-tab> 入库费用 </v-tab>
           <v-tab> 出库费用 </v-tab>
         </v-tabs>
 
         <v-tabs-items v-model="tab">
+          <v-tab-item>
+            <v-data-table :headers="coldFeeHeaders" :items="coldFeeData" :items-per-page="10" disable-sort>
+              <template v-slot:item.startTime="{ item }">
+                {{ item.startTime | displayDate }}
+              </template>
+              <template v-slot:item.endTime="{ item }">
+                {{ item.endTime | displayDate }}
+              </template>
+            </v-data-table>
+          </v-tab-item>
+
           <v-tab-item>
             <v-data-table :headers="inBillingHeaders" :items="inBillingData" :items-per-page="10" disable-sort>
               <template v-slot:item.inTime="{ item }">
@@ -185,6 +197,14 @@ export default {
       { text: '单价', value: 'unitPrice' },
       { text: '数量(吨)', value: 'count' },
       { text: '费用(元)', value: 'amount' }
+    ],
+    coldFeeData: [],
+    coldFeeHeaders: [
+      { text: '合同名称', value: 'contractName' },
+      { text: '开始日期', value: 'startTime' },
+      { text: '结束日期', value: 'endTime' },
+      { text: '冷藏费单价(元/吨)', value: 'unitPrice' },
+      { text: '冷藏费(元)', value: 'coldFee' }
     ]
   }),
   computed: {
@@ -196,6 +216,10 @@ export default {
 
       this.outBillingData.forEach(item => {
         total += item.amount
+      })
+
+      this.coldFeeData.forEach(item => {
+        total += item.coldFee
       })
 
       return total.toFixed(3)
@@ -249,6 +273,7 @@ export default {
           startTime: model.startTime,
           endTime: model.endTime
         })
+        this.coldFeeData = await settlement.getPeriodColdFee({ customerId: model.customerId, startTime: model.startTime, endTime: model.endTime })
       }
     },
 

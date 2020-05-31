@@ -43,5 +43,14 @@ export default {
       params: { customerId: customerId, startTime: startTime, endTime: endTime }
     })
     return res.data
+  },
+
+  // 获取冷藏费用
+  async getPeriodColdFee({ customerId, startTime, endTime }) {
+    const res = await axios._get({
+      url: '/settlement/getPeriodColdFee',
+      params: { customerId: customerId, startTime: startTime, endTime: endTime }
+    })
+    return res.data
   }
 }

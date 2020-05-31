@@ -153,9 +153,12 @@ export default {
   },
   computed: {
     totalFee: function() {
-      return this.expenseData.reduce(function(acc, cur) {
-        return acc + cur.amount
-      }, 0)
+      let total = 0
+      this.expenseData.forEach(item => {
+        total = total + item.amount
+      })
+
+      return total.toFixed(3)
     }
   },
   methods: {
