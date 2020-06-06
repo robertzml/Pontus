@@ -304,6 +304,15 @@ export const menuRoutes = [
     meta: { roles: [1, 2, 3, 4] }
   },
   {
+    path: '/statistic-debt',
+    name: 'statisticDebt',
+    text: '客户欠款',
+    group: 'statistic',
+    model: false,
+    component: () => import('@/views/Statistic/Debt.vue'),
+    meta: { roles: [1, 2, 3, 4] }
+  },
+  {
     path: '/user',
     name: 'user',
     text: '用户列表',
