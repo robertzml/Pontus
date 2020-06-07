@@ -313,6 +313,15 @@ export const menuRoutes = [
     meta: { roles: [1, 2, 3, 4] }
   },
   {
+    path: '/statistic-customer-fee',
+    name: 'statisticCustomerFee',
+    text: '客户费用报表',
+    group: 'statistic',
+    model: false,
+    component: () => import('@/views/Statistic/CustomerFee.vue'),
+    meta: { roles: [1, 2, 3, 4] }
+  },
+  {
     path: '/user',
     name: 'user',
     text: '用户列表',

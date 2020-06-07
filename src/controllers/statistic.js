@@ -14,5 +14,14 @@ export default {
       params: { customerId: customerId, startTime: startTime, endTime: endTime }
     })
     return res.data
+  },
+
+  // 获取客户费用数据
+  async getCustomerFee({ customerId, startTime, endTime }) {
+    const res = await axios._get({
+      url: '/statistic/getCustomerFee',
+      params: { customerId: customerId, startTime: startTime, endTime: endTime }
+    })
+    return res.data
   }
 }
