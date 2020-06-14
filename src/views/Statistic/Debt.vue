@@ -19,38 +19,6 @@
                 <customer-select :customer-id.sync="search.customerId" :required="true"></customer-select>
               </v-col>
 
-              <v-col cols="3">
-                <v-menu
-                  v-model="startTimeMenu"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-text-field v-model="search.startTime" label="开始日期" prepend-icon="event" hide-details readonly v-on="on"></v-text-field>
-                  </template>
-                  <v-date-picker v-model="search.startTime" :day-format="$util.pickerDayFormat" @input="startTimeMenu = false"></v-date-picker>
-                </v-menu>
-              </v-col>
-
-              <v-col cols="3">
-                <v-menu
-                  v-model="endTimeMenu"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-text-field v-model="search.endTime" label="结束日期" prepend-icon="event" hide-details readonly v-on="on"></v-text-field>
-                  </template>
-                  <v-date-picker v-model="search.endTime" :day-format="$util.pickerDayFormat" @input="endTimeMenu = false"></v-date-picker>
-                </v-menu>
-              </v-col>
-
               <v-col cols="2">
                 <v-btn color="success darken-1 mt-2" :disabled="!valid" :loading="loading" @click="searchDebt">搜索</v-btn>
               </v-col>
@@ -96,9 +64,7 @@ export default {
     startTimeMenu: false,
     endTimeMenu: false,
     search: {
-      customerId: 0,
-      startTime: null,
-      endTime: null
+      customerId: 0
     },
     debtHeader: [
       { text: '客户代码', value: 'customerNumber' },
@@ -121,24 +87,13 @@ export default {
         })
         let vm = this
 
-        let model = {
-          customerId: this.search.customerId,
-          startTime: this.search.startTime,
-          endTime: this.search.endTime
-        }
-
-        settlement.getDebt(model).then(res => {
+        settlement.getDebt(this.search.customerId).then(res => {
           vm.debtData = [res]
           vm.loading = false
         })
       }
     }
   },
-  mounted: function() {
-    this.search.startTime = this.$moment()
-      .startOf('month')
-      .format('YYYY-MM-DD')
-    this.search.endTime = this.$moment().format('YYYY-MM-DD')
-  }
+  mounted: function() {}
 }
 </script>

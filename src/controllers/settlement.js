@@ -54,11 +54,11 @@ export default {
     return res.data
   },
 
-  // 获取客户欠款
-  async getDebt({ customerId, startTime, endTime }) {
+  // 获取客户实时欠款
+  async getDebt(customerId) {
     const res = await axios._get({
       url: '/settlement/getDebt',
-      params: { customerId: customerId, startTime: startTime, endTime: endTime }
+      params: { customerId: customerId }
     })
     return res.data
   }
