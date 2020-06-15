@@ -288,7 +288,7 @@ export const menuRoutes = [
   {
     path: '/statistic-expense',
     name: 'statisticExpense',
-    text: '费用报表',
+    text: '费用项目报表',
     group: 'statistic',
     model: false,
     component: () => import('@/views/Statistic/Expense.vue'),

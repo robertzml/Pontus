@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import settlement from '@/controllers/settlement'
+import statistic from '@/controllers/statistic'
 import CustomerSelect from '@/components/Control/CustomerSelect'
 
 export default {
@@ -87,7 +87,7 @@ export default {
         })
         let vm = this
 
-        settlement.getDebt(this.search.customerId).then(res => {
+        statistic.getDebt(this.search.customerId).then(res => {
           vm.debtData = [res]
           vm.loading = false
         })

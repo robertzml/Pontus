@@ -1,9 +1,9 @@
 import * as axios from '../plugins/axios'
 
 export default {
-  // 获取周期费用记录
-  async getPeriodExpense(model) {
-    const res = await axios._post({ url: '/statistic/getPeriodExpense', data: model })
+  // 获取周期费用项目
+  async getExpenseRecord(model) {
+    const res = await axios._post({ url: '/statistic/getExpenseRecord', data: model })
     return res.data
   },
 
@@ -12,6 +12,15 @@ export default {
     const res = await axios._get({
       url: '/statistic/getCustomerStockFlow',
       params: { customerId: customerId, startTime: startTime, endTime: endTime }
+    })
+    return res.data
+  },
+
+  // 获取客户实时欠款
+  async getDebt(customerId) {
+    const res = await axios._get({
+      url: '/statistic/getDebt',
+      params: { customerId: customerId }
     })
     return res.data
   },

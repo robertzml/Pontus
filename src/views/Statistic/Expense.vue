@@ -2,7 +2,7 @@
   <v-row dense>
     <v-col cols="12">
       <v-toolbar dense>
-        <v-toolbar-title>费用报表</v-toolbar-title>
+        <v-toolbar-title>费用项目报表</v-toolbar-title>
         <v-spacer></v-spacer>
 
         <v-toolbar-items> </v-toolbar-items>
@@ -187,7 +187,7 @@ export default {
           startTime: this.search.startTime,
           endTime: this.search.endTime
         }
-        statistic.getPeriodExpense(model).then(res => {
+        statistic.getExpenseRecord(model).then(res => {
           if (res.status == 0) {
             vm.expenseData = res.entity
             vm.loading = false
