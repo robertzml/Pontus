@@ -31,7 +31,7 @@
     <v-col cols="12">
       <v-card>
         <v-card-title class="deep-purple">
-          欠款列表
+          实时欠款列表
           <v-spacer></v-spacer>
         </v-card-title>
         <v-card-text class="px-0">
