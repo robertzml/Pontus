@@ -49,27 +49,7 @@
     </v-col>
 
     <v-col cols="12">
-      <v-card>
-        <v-card-title class="deep-purple">
-          仓位库存记录
-          <v-spacer></v-spacer>
-          <span class="subtitle-2 ml-4">库存总数量: {{ totalCount }}</span>
-          <span class="subtitle-2 ml-4">库存总重量: {{ totalWeight }} 吨</span>
-        </v-card-title>
-        <v-card-text class="px-0">
-          <v-data-table :headers="headers" :items="storeListData" :items-per-page="10">
-            <template v-slot:item.initialTime="{ item }">
-              {{ item.initialTime | displayDate }}
-            </template>
-            <template v-slot:item.inTime="{ item }">
-              {{ item.inTime | displayDate }}
-            </template>
-            <template v-slot:item.outTime="{ item }">
-              {{ item.outTime | displayDate }}
-            </template>
-          </v-data-table>
-        </v-card-text>
-      </v-card>
+      <store-grid :store-list="storeListData" :customer-id="search.customerId"></store-grid>
     </v-col>
 
     <v-col cols="12">
@@ -172,11 +152,13 @@ import stockOut from '@/controllers/stockOut'
 import carryIn from '@/controllers/carryIn'
 import carryOut from '@/controllers/carryOut'
 import CustomerSelect from '@/components/Control/CustomerSelect'
+import StoreGrid from '@/components/Grid/StoreGrid'
 
 export default {
   name: 'StoreSnapshot',
   components: {
-    CustomerSelect
+    CustomerSelect,
+    StoreGrid
   },
   data: () => ({
     valid: false,
@@ -188,20 +170,6 @@ export default {
     },
     contractListData: [],
     contractRules: [v => !!v.id || '请选择合同'],
-    headers: [
-      { text: '客户名称', value: 'customerName' },
-      { text: '合同名称', value: 'contractName' },
-      { text: '托盘码', value: 'trayCode' },
-      { text: '仓位码', value: 'positionNumber' },
-      { text: '货品名称', value: 'cargoName' },
-      { text: '规格', value: 'specification' },
-      { text: '批次', value: 'batch' },
-      { text: '货品总数量', value: 'storeCount' },
-      { text: '货品总重量(t)', value: 'storeWeight' },
-      { text: '初始入库时间', value: 'initialTime' },
-      { text: '入库时间', value: 'inTime' },
-      { text: '出库时间', value: 'outTime' }
-    ],
     storeListData: [],
     normalStoreHeaders: [
       { text: '客户名称', value: 'customerName' },
@@ -275,20 +243,6 @@ export default {
     }
   },
   computed: {
-    // 库存总数量
-    totalCount: function() {
-      return this.storeListData.reduce(function(acc, cur) {
-        return acc + cur.storeCount
-      }, 0)
-    },
-    // 库存总重量
-    totalWeight: function() {
-      return this.storeListData
-        .reduce(function(acc, cur) {
-          return acc + cur.storeWeight
-        }, 0.0)
-        .toFixed(4)
-    },
     // 普通库存总数量
     totalNormalCount: function() {
       return this.normalStoreListData.reduce(function(acc, cur) {
