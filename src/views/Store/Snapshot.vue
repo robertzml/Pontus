@@ -53,27 +53,7 @@
     </v-col>
 
     <v-col cols="12">
-      <v-card>
-        <v-card-title class="deep-purple darken-3">
-          普通库存记录
-          <v-spacer></v-spacer>
-          <span class="subtitle-2 ml-4">库存总数量: {{ totalNormalCount }}</span>
-          <span class="subtitle-2 ml-4">库存总重量: {{ totalNormalWeight }} 吨</span>
-        </v-card-title>
-        <v-card-text class="px-0">
-          <v-data-table :headers="normalStoreHeaders" :items="normalStoreListData" :items-per-page="10">
-            <template v-slot:item.initialTime="{ item }">
-              {{ item.initialTime | displayDate }}
-            </template>
-            <template v-slot:item.inTime="{ item }">
-              {{ item.inTime | displayDate }}
-            </template>
-            <template v-slot:item.outTime="{ item }">
-              {{ item.outTime | displayDate }}
-            </template>
-          </v-data-table>
-        </v-card-text>
-      </v-card>
+      <normal-store-grid :store-list="normalStoreListData" :customer-id="search.customerId"></normal-store-grid>
     </v-col>
 
     <v-col cols="12">
@@ -153,12 +133,14 @@ import carryIn from '@/controllers/carryIn'
 import carryOut from '@/controllers/carryOut'
 import CustomerSelect from '@/components/Control/CustomerSelect'
 import StoreGrid from '@/components/Grid/StoreGrid'
+import NormalStoreGrid from '@/components/Grid/NormalStoreGrid'
 
 export default {
   name: 'StoreSnapshot',
   components: {
     CustomerSelect,
-    StoreGrid
+    StoreGrid,
+    NormalStoreGrid
   },
   data: () => ({
     valid: false,
@@ -171,20 +153,6 @@ export default {
     contractListData: [],
     contractRules: [v => !!v.id || '请选择合同'],
     storeListData: [],
-    normalStoreHeaders: [
-      { text: '客户名称', value: 'customerName' },
-      { text: '合同名称', value: 'contractName' },
-      { text: '所属仓库', value: 'warehouseName' },
-      { text: '存放位置', value: 'place' },
-      { text: '货品名称', value: 'cargoName' },
-      { text: '规格', value: 'specification' },
-      { text: '批次', value: 'batch' },
-      { text: '货品总数量', value: 'storeCount' },
-      { text: '货品总重量(t)', value: 'storeWeight' },
-      { text: '初始入库时间', value: 'initialTime' },
-      { text: '入库时间', value: 'inTime' },
-      { text: '出库时间', value: 'outTime' }
-    ],
     normalStoreListData: [],
     stockInHeaders: [
       { text: '入库任务码', value: 'taskCode' },
