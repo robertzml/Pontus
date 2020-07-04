@@ -32,5 +32,14 @@ export default {
       params: { customerId: customerId, startTime: startTime, endTime: endTime }
     })
     return res.data
+  },
+
+  // 获取客户货品库存报表
+  async getCustomerCargoStore({ contractId, date }) {
+    const res = await axios._get({
+      url: '/statistic/getCustomerCargoStore',
+      params: { contractId: contractId, date: date }
+    })
+    return res.data
   }
 }

@@ -322,6 +322,15 @@ export const menuRoutes = [
     meta: { roles: [1, 2, 3, 4] }
   },
   {
+    path: '/statistic-customer-cargo-store',
+    name: 'statisticCustomerCargoStore',
+    text: '客户货品报表',
+    group: 'statistic',
+    model: false,
+    component: () => import('@/views/Statistic/CustomerCargoStore.vue'),
+    meta: { roles: [1, 2, 3, 4] }
+  },
+  {
     path: '/user',
     name: 'user',
     text: '用户列表',

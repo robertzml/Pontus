@@ -211,20 +211,6 @@ export default {
     }
   },
   computed: {
-    // 普通库存总数量
-    totalNormalCount: function() {
-      return this.normalStoreListData.reduce(function(acc, cur) {
-        return acc + cur.storeCount
-      }, 0)
-    },
-    // 普通库存总重量
-    totalNormalWeight: function() {
-      return this.normalStoreListData
-        .reduce(function(acc, cur) {
-          return acc + cur.storeWeight
-        }, 0.0)
-        .toFixed(4)
-    },
     // 入库总数量
     totalMoveInCount: function() {
       return this.stockInTaskData.reduce((acc, cur) => acc + cur.inCount, 0)
