@@ -9,6 +9,7 @@
         <v-btn v-if="tab == 'StockInDetails'" text @click.stop="showCreate">新建入库单</v-btn>
         <v-btn v-if="tab == 'StockInDetails' && stockInInfo.status == 75" text @click.stop="showRevert">撤回入库单</v-btn>
         <v-btn text @click.stop="refresh">刷新</v-btn>
+        <v-btn text @click.stop="print">打印</v-btn>
         <v-menu v-model="inTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290">
           <template v-slot:activator="{ on }">
             <v-text-field
@@ -107,6 +108,15 @@ export default {
     // 显示撤回入库单
     showRevert() {
       this.$refs.stockInRevertMod.init(this.stockInId)
+    },
+
+    // 打印入库单
+    print() {
+      if (this.stockInId) {
+        let url = this.$util.reportUrl() + 'stockIn?id=' + this.stockInId
+        console.log(url)
+        window.open(url)
+      }
     }
   }
 }

@@ -9,6 +9,7 @@
         <v-btn v-if="tab == 'StockOutDetails'" text @click.stop="showCreate">新建出库单</v-btn>
         <v-btn v-if="tab == 'StockOutDetails' && stockOutInfo.status == 85" text @click.stop="showRevert">撤回出库单</v-btn>
         <v-btn text @click.stop="refresh">刷新</v-btn>
+        <v-btn text @click.stop="print">打印</v-btn>
         <v-menu v-model="outTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290">
           <template v-slot:activator="{ on }">
             <v-text-field
@@ -109,6 +110,15 @@ export default {
     // 显示撤回出库单
     showRevert() {
       this.$refs.stockOutRevertMod.init(this.stockOutId)
+    },
+
+    // 打印出库单
+    print() {
+      if (this.stockOutId) {
+        let url = this.$util.reportUrl() + 'stockOut?id=' + this.stockOutId
+        console.log(url)
+        window.open(url)
+      }
     }
   }
 }

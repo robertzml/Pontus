@@ -2,6 +2,7 @@
 import moment from 'moment'
 import dict from './dict'
 import store from '../store/index'
+import config from './config'
 
 export default {
   treeListTransform(source) {
@@ -27,6 +28,10 @@ export default {
     }
 
     return tree
+  },
+
+  reportUrl() {
+    return config.baseURL + '/report/'
   },
 
   displayStatus(val) {
