@@ -21,8 +21,8 @@
         <v-card-title class="deep-purple darken-3">
           普通库存记录
           <v-spacer></v-spacer>
-          <span class="subtitle-2 ml-4">库存总数量: {{ totalCount }}</span>
-          <span class="subtitle-2 ml-4">库存总重量: {{ totalWeight }} 吨</span>
+          <span class="text-subtitle-2 ml-4">库存总数量: {{ totalCount }}</span>
+          <span class="text-subtitle-2 ml-4">库存总重量: {{ totalWeight }} 吨</span>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="filterData" :items-per-page="10" :search="filter.search">

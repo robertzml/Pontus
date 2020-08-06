@@ -56,7 +56,7 @@
 
       <v-dialog v-model="dialog" persistent max-width="300">
         <v-card>
-          <v-card-title class="headline">删除结算记录</v-card-title>
+          <v-card-title class="text-h5">删除结算记录</v-card-title>
           <v-card-text>是否确认删除该结算记录？</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>

@@ -84,10 +84,10 @@
         <v-expansion-panel-header ripple class="brown darken-3">
           搬运出库任务
           <v-spacer></v-spacer>
-          <span class="subtitle-2">托盘数量: {{ totalOutTray }}</span>
-          <span class="subtitle-2 ml-4">搬运数量: {{ totalMoveOutCount }}</span>
-          <span class="subtitle-2 ml-4">已出库数量: {{ finishMoveOutCount }}</span>
-          <span class="subtitle-2 ml-4">搬运重量: {{ totalMoveOutWeight }} 吨</span>
+          <span class="text-subtitle-2">托盘数量: {{ totalOutTray }}</span>
+          <span class="text-subtitle-2 ml-4">搬运数量: {{ totalMoveOutCount }}</span>
+          <span class="text-subtitle-2 ml-4">已出库数量: {{ finishMoveOutCount }}</span>
+          <span class="text-subtitle-2 ml-4">搬运重量: {{ totalMoveOutWeight }} 吨</span>
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="carryOutHeaders" :items="carryOutTaskList" hide-default-footer disable-filtering disable-pagination>
@@ -115,10 +115,10 @@
         <v-expansion-panel-header ripple class="brown darken-4">
           搬运入库任务
           <v-spacer></v-spacer>
-          <span class="subtitle-2">托盘数量: {{ totalInTray }}</span>
-          <span class="subtitle-2 ml-4">搬运数量: {{ totalMoveInCount }}</span>
-          <span class="subtitle-2 ml-4">已入库数量: {{ finishMoveInCount }}</span>
-          <span class="subtitle-2 ml-4">搬运重量: {{ totalMoveInWeight }} 吨</span>
+          <span class="text-subtitle-2">托盘数量: {{ totalInTray }}</span>
+          <span class="text-subtitle-2 ml-4">搬运数量: {{ totalMoveInCount }}</span>
+          <span class="text-subtitle-2 ml-4">已入库数量: {{ finishMoveInCount }}</span>
+          <span class="text-subtitle-2 ml-4">搬运重量: {{ totalMoveInWeight }} 吨</span>
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="carryInHeaders" :items="carryInTaskList" hide-default-footer disable-filtering disable-pagination>

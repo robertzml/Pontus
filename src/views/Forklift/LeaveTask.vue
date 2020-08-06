@@ -3,7 +3,7 @@
     <v-col cols="2" class="d-none d-sm-flex">
       <v-card>
         <v-list shaped>
-          <v-subheader class="subtitle-1 teal--text text--lighten-2">待出库仓位</v-subheader>
+          <v-subheader class="text-subtitle-1 teal--text text--lighten-2">待出库仓位</v-subheader>
 
           <v-list-item v-for="item in outPositionList" :key="item" :value="item">
             <v-list-item-content>

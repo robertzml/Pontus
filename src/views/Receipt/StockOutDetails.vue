@@ -12,8 +12,8 @@
         <v-expansion-panel-header ripple class="deep-purple darken-4">
           出库货物
           <v-spacer></v-spacer>
-          <span class="subtitle-2 ml-4">出库总数量: {{ totalCount }}</span>
-          <span class="subtitle-2 ml-4">出库总重量: {{ totalWeight }} 吨</span>
+          <span class="text-subtitle-2 ml-4">出库总数量: {{ totalCount }}</span>
+          <span class="text-subtitle-2 ml-4">出库总重量: {{ totalWeight }} 吨</span>
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="headers" :items="taskInfoList" :items-per-page="10">

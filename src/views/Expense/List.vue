@@ -101,7 +101,7 @@
         <v-card-title class="blue darken-2">
           入库费用列表
           <v-spacer></v-spacer>
-          <span class="subtitle-2 mr-4">入库总费用: {{ totalInBilling }} 元</span>
+          <span class="text-subtitle-2 mr-4">入库总费用: {{ totalInBilling }} 元</span>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="inBillingHeaders" :items="inBillingData" :items-per-page="10" disable-sort>
@@ -121,7 +121,7 @@
         <v-card-title class="deep-purple">
           出库费用列表
           <v-spacer></v-spacer>
-          <span class="subtitle-2 mr-4">出库总费用: {{ totalOutBilling }} 元</span>
+          <span class="text-subtitle-2 mr-4">出库总费用: {{ totalOutBilling }} 元</span>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="outBillingHeaders" :items="outBillingData" :items-per-page="10" disable-sort>

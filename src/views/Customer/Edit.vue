@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" persistent eager max-width="800px">
     <v-card>
       <v-card-title>
-        <span class="headline">客户信息</span>
+        <span class="text-h5">客户信息</span>
       </v-card-title>
       <v-divider></v-divider>
       <v-card-text>

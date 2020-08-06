@@ -44,8 +44,8 @@
           <v-card-title class="orange">
             缴费列表
             <v-spacer></v-spacer>
-            <span class="subtitle-2 ml-4">缴费总记录: {{ paymentFilterData.length }} 条</span>
-            <span class="subtitle-2 ml-4">缴费总金额: {{ totalFee }} 元</span>
+            <span class="text-subtitle-2 ml-4">缴费总记录: {{ paymentFilterData.length }} 条</span>
+            <span class="text-subtitle-2 ml-4">缴费总金额: {{ totalFee }} 元</span>
           </v-card-title>
           <v-card-text class="px-0">
             <v-data-table :headers="headers" :items="paymentFilterData" :search="filter.text" :items-per-page="10">

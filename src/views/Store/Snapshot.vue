@@ -61,8 +61,8 @@
         <v-card-title class="green darken-3">
           入库记录
           <v-spacer></v-spacer>
-          <span class="subtitle-2 ml-4">入库总数量: {{ totalMoveInCount }}</span>
-          <span class="subtitle-2 ml-4">入库总重量: {{ totalMoveInWeight }} 吨</span>
+          <span class="text-subtitle-2 ml-4">入库总数量: {{ totalMoveInCount }}</span>
+          <span class="text-subtitle-2 ml-4">入库总重量: {{ totalMoveInWeight }} 吨</span>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="stockInHeaders" :items="stockInTaskData" :items-per-page="10"> </v-data-table>
@@ -75,8 +75,8 @@
         <v-card-title class="light-green darken-3">
           出库记录
           <v-spacer></v-spacer>
-          <span class="subtitle-2 ml-4">出库总数量: {{ totalMoveOutCount }}</span>
-          <span class="subtitle-2 ml-4">出库总重量: {{ totalMoveOutWeight }} 吨</span>
+          <span class="text-subtitle-2 ml-4">出库总数量: {{ totalMoveOutCount }}</span>
+          <span class="text-subtitle-2 ml-4">出库总重量: {{ totalMoveOutWeight }} 吨</span>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="stockOutHeaders" :items="stockOutTaskData" :items-per-page="10"> </v-data-table>

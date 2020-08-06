@@ -80,7 +80,7 @@
 
           <v-dialog v-model="dialog" persistent max-width="300">
             <v-card>
-              <v-card-title class="headline">删除库存记录</v-card-title>
+              <v-card-title class="text-h5">删除库存记录</v-card-title>
               <v-card-text>
                 是否确认删除该库存记录？该库存关联库存，搬运任务均被删除，初始入库货物合计数重新计算。 占用仓位状态需手动修改。
               </v-card-text>

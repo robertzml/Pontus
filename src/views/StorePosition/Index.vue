@@ -81,7 +81,7 @@
                     <v-row v-for="depth in maxDepth" :key="depth" no-gutters>
                       <v-col v-for="layer in maxLayer" :key="layer" cols="2">
                         <v-card outlined tile :color="positionColor(positionDim[layer - 1][depth - 1])">
-                          <v-card-text class="my-0 py-0 px-1 text-center align-center caption">
+                          <v-card-text class="my-0 py-0 px-1 text-center align-center text-caption">
                             {{ positionDim[layer - 1][depth - 1].number }}
                             <v-btn text x-small color="lime" @click="viewDetails(layer, depth)">
                               View

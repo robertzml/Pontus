@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="300">
     <v-card>
-      <v-card-title class="headline">出库单确认</v-card-title>
+      <v-card-title class="text-h5">出库单确认</v-card-title>
       <v-card-text>是否确认该出库单已经出库完成？请确认所有出库货物已经下架，确认后无法再增加货物。</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>

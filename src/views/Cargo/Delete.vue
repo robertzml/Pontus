@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="300">
     <v-card>
-      <v-card-title class="headline">删除货品</v-card-title>
+      <v-card-title class="text-h5">删除货品</v-card-title>
       <v-card-text>是否确认删除该货品？仅能删除未使用过的货品。</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>

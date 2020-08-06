@@ -17,7 +17,7 @@
     <v-dialog v-model="taskEditDialog" max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">编辑</span>
+          <span class="text-h5">编辑</span>
         </v-card-title>
 
         <v-card-text>

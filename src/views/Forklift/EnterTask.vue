@@ -33,7 +33,7 @@
                 </v-btn>
               </v-col>
               <v-col cols="6" sm="6" md="6">
-                <div class="subtitle-1">
+                <div class="text-subtitle-1">
                   上架仓位: <br />
                   {{ enterPosition }}
                 </div>

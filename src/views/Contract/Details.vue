@@ -51,7 +51,7 @@
 
     <v-dialog v-model="dialog" persistent max-width="300">
       <v-card>
-        <v-card-title class="headline">强制删除合同</v-card-title>
+        <v-card-title class="text-h5">强制删除合同</v-card-title>
         <v-card-text>是否确认删除该合同？合同关联库存、出入库、计费记录均被删除，占用仓位置空。</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

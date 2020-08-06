@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="400">
     <v-card>
-      <v-card-title class="headline">托盘上架</v-card-title>
+      <v-card-title class="text-h5">托盘上架</v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-text-field label="托盘码" prepend-icon="power_input" autocomplete="off" :value="trayCode" readonly></v-text-field>

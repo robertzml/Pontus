@@ -2,11 +2,11 @@
   <v-dialog v-model="dialog" persistent eager max-width="800px">
     <v-card>
       <v-card-title>
-        <span class="headline">分类信息</span>
+        <span class="text-h5">分类信息</span>
       </v-card-title>
       <v-divider></v-divider>
       <v-card-text>
-        <v-alert v-if="categoryId != 0" dense type="info" class="mt-2 body-2">可修改名称、代码、备注</v-alert>
+        <v-alert v-if="categoryId != 0" dense type="info" class="mt-2 text-body-2">可修改名称、代码、备注</v-alert>
 
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row dense>

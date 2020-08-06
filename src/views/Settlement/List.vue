@@ -40,8 +40,8 @@
           <v-card-title class="orange">
             结算列表
             <v-spacer></v-spacer>
-            <span class="subtitle-2 ml-4">结算总记录: {{ settlementFilterData.length }} 条</span>
-            <span class="subtitle-2 ml-4">应付款总金额: {{ totalFee }} 元</span>
+            <span class="text-subtitle-2 ml-4">结算总记录: {{ settlementFilterData.length }} 条</span>
+            <span class="text-subtitle-2 ml-4">应付款总金额: {{ totalFee }} 元</span>
           </v-card-title>
           <v-card-text class="px-0">
             <v-data-table :headers="headers" :items="settlementFilterData" :search="filter.text" :items-per-page="10">

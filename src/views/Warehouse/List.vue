@@ -16,7 +16,7 @@
                 <v-card class="pa-2" tile hover>
                   <v-list-item three-line>
                     <v-list-item-content class="align-self-start">
-                      <v-list-item-title class="headline mb-4">{{ item.name }}</v-list-item-title>
+                      <v-list-item-title class="text-h5 mb-4">{{ item.name }}</v-list-item-title>
 
                       <v-list-item-subtitle class="mb-2">编号：{{ item.number }}</v-list-item-subtitle>
                       <v-list-item-subtitle class="mb-2">类型：{{ item.type | warehouseType }}</v-list-item-subtitle>

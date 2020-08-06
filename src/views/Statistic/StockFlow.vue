@@ -82,8 +82,8 @@
         <v-card-title class="deep-purple">
           出入库列表
           <v-spacer></v-spacer>
-          <span class="subtitle-2 mr-4">入库数量: {{ totalInCount }} </span>
-          <span class="subtitle-2 mr-4">出库数量: {{ totalOutCount }} </span>
+          <span class="text-subtitle-2 mr-4">入库数量: {{ totalInCount }} </span>
+          <span class="text-subtitle-2 mr-4">出库数量: {{ totalOutCount }} </span>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="stockFlowHeader" :items="stockFlowFilterData" :search="filter.text" :items-per-page="10">

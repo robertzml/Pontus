@@ -28,14 +28,14 @@
       </v-tooltip>
     </v-app-bar>
 
-    <v-content>
+    <v-main>
       <v-container fluid style="height:50px;" class="px-4 pb-0" v-if="userInfo.userGroupId == 6">
         <forklift-menu></forklift-menu>
       </v-container>
       <v-container fluid class="px-1">
         <router-view></router-view>
       </v-container>
-    </v-content>
+    </v-main>
 
     <v-snackbar v-model="alertMessage.display" :color="alertMessage.color" :timeout="5000" right top>
       {{ alertMessage.text }}

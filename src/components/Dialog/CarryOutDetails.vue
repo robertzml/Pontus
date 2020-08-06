@@ -2,7 +2,7 @@
   <v-navigation-drawer v-model="drawer" fixed temporary right width="420">
     <v-card flat>
       <v-card-title>
-        <p class="headline">搬运出库任务</p>
+        <p class="text-h5">搬运出库任务</p>
       </v-card-title>
       <v-card-text>
         <v-form>

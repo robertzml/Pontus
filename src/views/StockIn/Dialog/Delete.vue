@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="300">
     <v-card>
-      <v-card-title class="headline">删除入库单</v-card-title>
+      <v-card-title class="text-h5">删除入库单</v-card-title>
       <v-card-text>是否确认删除该入库单？仅能删除无入库货物的入库单。</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>

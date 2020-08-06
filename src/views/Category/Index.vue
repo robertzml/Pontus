@@ -47,7 +47,7 @@
 
     <v-dialog v-model="deleteDialog" persistent max-width="300">
       <v-card>
-        <v-card-title class="headline">删除分类</v-card-title>
+        <v-card-title class="text-h5">删除分类</v-card-title>
         <v-card-text>是否确认删除该分类？仅能删除无子类别和无货品使用的分类。</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

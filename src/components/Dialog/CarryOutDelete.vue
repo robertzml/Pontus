@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="300">
     <v-card>
-      <v-card-title class="headline">删除搬运出库任务</v-card-title>
+      <v-card-title class="text-h5">删除搬运出库任务</v-card-title>
       <v-card-text>是否确认删除该搬运出库任务？</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>

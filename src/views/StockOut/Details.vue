@@ -22,9 +22,9 @@
         <v-expansion-panel-header ripple class="deep-purple darken-2">
           出库货物
           <v-spacer></v-spacer>
-          <span class="subtitle-2">出库总数量: {{ totalCount }}</span>
-          <span class="subtitle-2 ml-4">已确认数量: {{ finishCount }}</span>
-          <span class="subtitle-2 ml-4">出库总重量: {{ totalWeight }} 吨</span>
+          <span class="text-subtitle-2">出库总数量: {{ totalCount }}</span>
+          <span class="text-subtitle-2 ml-4">已确认数量: {{ finishCount }}</span>
+          <span class="text-subtitle-2 ml-4">出库总重量: {{ totalWeight }} 吨</span>
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="headers" :items="taskInfoList" hide-default-footer disable-pagination>
@@ -44,7 +44,7 @@
         <v-expansion-panel-header ripple class="deep-purple darken-4">
           出库费用
           <v-spacer></v-spacer>
-          <span class="subtitle-2 ml-4">费用合计: {{ totalFee }} 元</span>
+          <span class="text-subtitle-2 ml-4">费用合计: {{ totalFee }} 元</span>
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="billingHeaders" :items="billingItems" hide-default-footer disable-pagination>

@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="300">
     <v-card>
-      <v-card-title class="headline">入库货物确认</v-card-title>
+      <v-card-title class="text-h5">入库货物确认</v-card-title>
       <v-card-text>是否确认该货物已经入库完成？请确认所有搬运任务已经上架，确认后无法再下发任务。</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
