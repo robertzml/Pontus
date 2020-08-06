@@ -40,7 +40,7 @@ export default {
     return res.data
   },
 
-  async get(id) {
+  async find(id) {
     const res = await axios._get({ url: '/stockOut/get', params: { id: id } })
     return res.data
   },

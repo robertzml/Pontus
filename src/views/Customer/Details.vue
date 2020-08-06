@@ -67,7 +67,7 @@ export default {
     }),
     loadInfo() {
       let vm = this
-      customer.get(this.info.id).then(res => {
+      customer.find(this.info.id).then(res => {
         vm.setCustomerInfo(res)
       })
     }

@@ -56,7 +56,7 @@ export default {
       }
 
       let vm = this
-      shelf.get(id).then(res => {
+      shelf.find(id).then(res => {
         vm.shelfInfo = res
       })
     }

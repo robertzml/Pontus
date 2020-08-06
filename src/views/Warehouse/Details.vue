@@ -66,7 +66,7 @@ export default {
 
     loadInfo() {
       let vm = this
-      warehouse.get(this.warehouseInfo.id).then(res => {
+      warehouse.find(this.warehouseInfo.id).then(res => {
         vm.setWarehouseInfo(res)
       })
     }

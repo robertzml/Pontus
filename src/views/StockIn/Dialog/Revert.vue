@@ -32,7 +32,7 @@ export default {
     },
 
     async loadInfo() {
-      this.stockInInfo = await stockIn.get(this.stockInId)
+      this.stockInInfo = await stockIn.find(this.stockInId)
     },
 
     // 撤回入库单

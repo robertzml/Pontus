@@ -92,7 +92,7 @@ export default {
       this.categoryId = categoryId
       let vm = this
       if (categoryId != 0) {
-        category.get(categoryId).then(res => {
+        category.find(categoryId).then(res => {
           vm.categoryInfo = res
         })
       } else {

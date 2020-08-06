@@ -62,7 +62,7 @@ export default {
       this.dialog = true
 
       let vm = this
-      carryIn.get(id).then(res => {
+      carryIn.find(id).then(res => {
         vm.carryInTask = res
       })
 

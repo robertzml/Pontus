@@ -10,7 +10,7 @@ export default {
   },
 
   // 获取缴费记录
-  async get(id) {
+  async find(id) {
     const res = await axios._get({ url: '/payment/get', params: { id: id } })
     return res.data
   },

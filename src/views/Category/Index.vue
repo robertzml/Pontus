@@ -93,7 +93,7 @@ export default {
     refresh() {
       if (this.currentCategoryId != 0) {
         let vm = this
-        category.get(this.currentCategoryId).then(res => {
+        category.find(this.currentCategoryId).then(res => {
           vm.categoryInfo = res
         })
       }

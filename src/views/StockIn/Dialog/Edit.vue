@@ -98,7 +98,7 @@ export default {
       this.stockInId = id
 
       let vm = this
-      stockIn.get(id).then(res => {
+      stockIn.find(id).then(res => {
         vm.stockInInfo = res
         vm.stockInInfo.inTime = this.$moment(vm.stockInInfo.inTime).format('YYYY-MM-DD')
 

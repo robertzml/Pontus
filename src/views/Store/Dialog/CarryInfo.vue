@@ -40,10 +40,10 @@ export default {
     async init(carryInTaskId, carryOutTaskId) {
       this.dialog = true
 
-      this.carryInInfo = await carryIn.get(carryInTaskId)
+      this.carryInInfo = await carryIn.find(carryInTaskId)
 
       if (carryOutTaskId) {
-        this.carryOutInfo = await carryOut.get(carryOutTaskId)
+        this.carryOutInfo = await carryOut.find(carryOutTaskId)
       } else {
         this.carryOutInfo = {}
       }

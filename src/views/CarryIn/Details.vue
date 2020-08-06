@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     async loadCarryIn() {
-      this.carryInInfo = await carryIn.get(this.carryInId)
+      this.carryInInfo = await carryIn.find(this.carryInId)
     }
   },
   mounted: function() {

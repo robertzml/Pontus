@@ -57,7 +57,7 @@ export default {
     },
 
     async loadInfo(id) {
-      this.itemInfo = await expenseItem.get(id)
+      this.itemInfo = await expenseItem.find(id)
     },
 
     submit() {

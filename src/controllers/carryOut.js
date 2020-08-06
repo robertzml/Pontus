@@ -3,7 +3,7 @@ import * as axios from '../plugins/axios'
 export default {
   name: 'carryOut',
 
-  async get(id) {
+  async find(id) {
     const res = await axios._get({ url: '/carryOutTask/get', params: { id: id } })
     return res.data
   },

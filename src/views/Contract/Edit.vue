@@ -142,7 +142,7 @@ export default {
         }
       } else {
         let vm = this
-        contract.get(id).then(res => {
+        contract.find(id).then(res => {
           vm.contractInfo = res
           vm.contractInfo.signDate = vm.contractInfo.signDate.substr(0, 10)
           if (vm.contractInfo.closeDate != null && vm.contractInfo.closeDate != '') {

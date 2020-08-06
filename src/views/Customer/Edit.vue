@@ -89,7 +89,7 @@ export default {
         }
       } else {
         let vm = this
-        customer.get(customerId).then(res => {
+        customer.find(customerId).then(res => {
           vm.customerInfo = res
         })
       }

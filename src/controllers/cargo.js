@@ -13,7 +13,7 @@ export default {
     return res.data
   },
 
-  async get(id) {
+  async find(id) {
     const res = await axios._get({ url: '/cargo/get', params: { id: id } })
     return res.data
   },

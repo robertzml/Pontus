@@ -135,7 +135,7 @@ export default {
     loadStockIn() {
       if (this.stockInId) {
         let vm = this
-        stockIn.get(this.stockInId).then(res => {
+        stockIn.find(this.stockInId).then(res => {
           vm.stockInInfo = res
         })
       }

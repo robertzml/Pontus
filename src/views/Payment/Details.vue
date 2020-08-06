@@ -86,7 +86,7 @@ export default {
     }),
 
     async loadInfo() {
-      this.paymentInfo = await payment.get(this.paymentId)
+      this.paymentInfo = await payment.find(this.paymentId)
     },
 
     deletePayment() {

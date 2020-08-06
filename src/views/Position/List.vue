@@ -118,7 +118,7 @@ export default {
       this.positionInfo = {}
 
       let vm = this
-      shelf.get(shelfId).then(res => {
+      shelf.find(shelfId).then(res => {
         vm.shelfInfo = res
       })
 
@@ -163,7 +163,7 @@ export default {
 
     selectPosition(depth) {
       let vm = this
-      position.get({ shelfId: this.shelfInfo.id, row: this.sRow, layer: this.sLayer, depth: depth }).then(res => {
+      position.find({ shelfId: this.shelfInfo.id, row: this.sRow, layer: this.sLayer, depth: depth }).then(res => {
         vm.positionInfo = res
       })
     },

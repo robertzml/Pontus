@@ -42,7 +42,7 @@ export default {
   }),
   methods: {
     async loadInfo() {
-      this.itemInfo = await expenseItem.get(this.itemId)
+      this.itemInfo = await expenseItem.find(this.itemId)
     }
   },
   mounted: function() {

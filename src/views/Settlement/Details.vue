@@ -98,7 +98,7 @@ export default {
     }),
 
     async loadInfo() {
-      this.settlementInfo = await settlement.get(this.settlementId)
+      this.settlementInfo = await settlement.find(this.settlementId)
     },
 
     deleteSettlement() {

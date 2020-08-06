@@ -190,7 +190,7 @@ export default {
 
     // 载入出库单
     async loadStockOut(stockOutId) {
-      this.stockOutInfo = await stockOut.get(stockOutId)
+      this.stockOutInfo = await stockOut.find(stockOutId)
     },
 
     // 修改出库数量

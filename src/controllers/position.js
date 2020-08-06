@@ -3,7 +3,7 @@ import * as axios from '../plugins/axios'
 export default {
   name: 'position',
 
-  async get({ shelfId, row, layer, depth }) {
+  async find({ shelfId, row, layer, depth }) {
     const res = await axios._get({
       url: '/position/find',
       params: { shelfId: shelfId, row: row, layer: layer, depth: depth }

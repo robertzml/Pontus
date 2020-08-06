@@ -77,7 +77,7 @@ export default {
         }
       } else {
         let vm = this
-        warehouse.get(warehouseId).then(res => {
+        warehouse.find(warehouseId).then(res => {
           vm.warehouseInfo = res
         })
       }

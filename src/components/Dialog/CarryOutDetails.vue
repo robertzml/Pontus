@@ -124,7 +124,7 @@ export default {
     },
 
     async loadInfo(id) {
-      this.carryOutInfo = await carryOut.get(id)
+      this.carryOutInfo = await carryOut.find(id)
     }
   }
 }

@@ -94,7 +94,7 @@ export default {
     }),
     loadInfo() {
       let vm = this
-      contract.get(this.info.id).then(res => {
+      contract.find(this.info.id).then(res => {
         vm.setContractInfo(res)
       })
     },

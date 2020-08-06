@@ -10,7 +10,7 @@ export default {
   },
 
   // 获取结算记录
-  async get(id) {
+  async find(id) {
     const res = await axios._get({ url: '/settlement/get', params: { id: id } })
     return res.data
   },

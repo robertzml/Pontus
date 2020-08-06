@@ -107,7 +107,7 @@ export default {
 
     // 载入搬运入库信息
     async loadInfo(id) {
-      this.carryInTask = await carryIn.get(id)
+      this.carryInTask = await carryIn.find(id)
     }
   }
 }

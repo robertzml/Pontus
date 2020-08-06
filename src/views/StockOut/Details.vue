@@ -193,7 +193,7 @@ export default {
     loadInfo() {
       if (this.stockOutId) {
         let vm = this
-        stockOut.get(this.stockOutId).then(res => {
+        stockOut.find(this.stockOutId).then(res => {
           vm.setStockOutInfo(res)
         })
       } else {

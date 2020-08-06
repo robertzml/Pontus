@@ -59,7 +59,7 @@ export default {
       this.userId = userId
 
       let vm = this
-      user.get(userId).then(res => {
+      user.find(userId).then(res => {
         vm.userInfo = res
       })
 

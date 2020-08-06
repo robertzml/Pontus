@@ -3,7 +3,7 @@ import * as axios from '../plugins/axios'
 export default {
   name: 'expenseItem',
 
-  async get(id) {
+  async find(id) {
     const res = await axios._get({ url: '/expenseItem/get', params: { id: id } })
     return res.data
   },

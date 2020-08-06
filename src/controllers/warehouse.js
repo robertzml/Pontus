@@ -12,7 +12,7 @@ export default {
     return res.data
   },
 
-  async get(id) {
+  async find(id) {
     const res = await axios._get({ url: '/warehouse/get', params: { id: id } })
     return res.data
   },

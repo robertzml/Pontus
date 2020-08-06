@@ -96,7 +96,7 @@ export default {
       this.shelfId = shelfId
 
       let vm = this
-      warehouse.get(warehouseId).then(res => {
+      warehouse.find(warehouseId).then(res => {
         vm.warehouseInfo = res
       })
 
@@ -114,7 +114,7 @@ export default {
         }
       } else {
         let vm = this
-        shelf.get(shelfId).then(res => {
+        shelf.find(shelfId).then(res => {
           vm.shelfInfo = res
         })
       }

@@ -78,7 +78,7 @@ export default {
 
     loadInfo() {
       let vm = this
-      cargo.get(this.cargoId).then(res => {
+      cargo.find(this.cargoId).then(res => {
         vm.cargoInfo = res
       })
     },

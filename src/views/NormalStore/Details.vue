@@ -216,7 +216,7 @@ export default {
     async loadData() {
       const now = this.$moment().format('YYYY-MM-DD')
 
-      this.storeInfo = await normalStore.get(this.storeId)
+      this.storeInfo = await normalStore.find(this.storeId)
       this.coldFeeInfo = await expense.getStoreColdFee({ storeId: this.storeId, current: now, storeType: 1 })
       this.orderInfo = await normalStore.findInOrder(this.storeId)
     },

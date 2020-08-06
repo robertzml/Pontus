@@ -214,7 +214,7 @@ export default {
 
     // 查看仓位详情
     async viewDetails(layer, depth) {
-      this.sPosition = await position.get({ shelfId: this.sShelfId, row: this.sRow, layer: layer, depth: depth })
+      this.sPosition = await position.find({ shelfId: this.sShelfId, row: this.sRow, layer: layer, depth: depth })
       this.storeList = await store.findStoreIn(this.sPosition.id)
     },
 
