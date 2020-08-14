@@ -33,6 +33,9 @@
               <v-btn small color="primary" @click="viewTaskItem(item)">
                 查看
               </v-btn>
+              <v-btn small color="success" class="ml-2" v-if="item.status != 75" @click="finishTaskItem(item)">
+                确认
+              </v-btn>
             </template>
           </v-data-table>
         </v-expansion-panel-content>
@@ -68,6 +71,9 @@
 
     <!-- 添加入库任务组件 -->
     <stock-in-task-create ref="createTaskMod" @close="loadTaskList"></stock-in-task-create>
+
+    <!-- 入库任务确认组件 -->
+    <stock-in-task-finish ref="stockInTaskFinishMod" @close="loadTaskList"></stock-in-task-finish>
   </v-sheet>
 </template>
 
@@ -80,6 +86,7 @@ import StockInEdit from './Dialog/Edit'
 import StockInFinish from './Dialog/Finish'
 import StockInDelete from './Dialog/Delete'
 import StockInEditBilling from './Dialog/EditBilling'
+import StockInTaskFinish from '@/components/Dialog/StockInTaskFinish'
 
 export default {
   name: 'StockInDetails',
@@ -89,7 +96,8 @@ export default {
     StockInEdit,
     StockInFinish,
     StockInDelete,
-    StockInEditBilling
+    StockInEditBilling,
+    StockInTaskFinish
   },
   data: () => ({
     panel: [0, 1, 2],
@@ -212,6 +220,11 @@ export default {
     // 查看入库任务
     viewTaskItem(val) {
       this.showTaskDetails(val)
+    },
+
+    // 确认入库任务
+    finishTaskItem(val) {
+      this.$refs.stockInTaskFinishMod.init(val.id)
     },
 
     // 显示添加入库任务

@@ -39,9 +39,11 @@
 
     <v-snackbar v-model="alertMessage.display" :color="alertMessage.color" :timeout="5000" right top>
       {{ alertMessage.text }}
-      <v-btn color="pink" small text icon @click="alertClose">
-        <v-icon>close</v-icon>
-      </v-btn>
+      <template v-slot:action="{ attrs }">
+        <v-btn color="pink" v-bind="attrs" small text icon @click="alertClose">
+          <v-icon>close</v-icon>
+        </v-btn>
+      </template>
     </v-snackbar>
   </v-app>
 </template>
