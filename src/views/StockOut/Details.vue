@@ -32,8 +32,11 @@
               <span :class="{ 'orange--text': item.status != 85 }">{{ item.status | displayStatus }}</span>
             </template>
             <template v-slot:item.action="{ item }">
-              <v-btn small color="success" @click="viewTaskItem(item)">
+              <v-btn small color="primary" @click="viewTaskItem(item)">
                 查看
+              </v-btn>
+              <v-btn small color="success" class="ml-2" v-if="item.status != 85" @click="finishTaskItem(item)">
+                确认
               </v-btn>
             </template>
           </v-data-table>
@@ -74,6 +77,9 @@
     <!-- 添加普通库出库任务组件 -->
     <stock-out-task-normal ref="taskNormalMod" @close="loadTaskList"></stock-out-task-normal>
 
+    <!-- 出库任务确认组件 -->
+    <stock-out-task-finish ref="stockOutTaskFinishMod" @close="loadTaskList"></stock-out-task-finish>
+
     <!-- 扫托盘码出库组件 -->
     <scan-tray-out ref="scanMod" @close="loadTaskList"></scan-tray-out>
   </v-sheet>
@@ -89,6 +95,7 @@ import StockOutEditBilling from './Dialog/EditBilling'
 import StockOutDetailsView from '@/components/View/StockOutDetailsView'
 import StockOutTaskSearch from '@/components/Dialog/StockOutTaskSearch'
 import StockOutTaskNormal from '@/components/Dialog/StockOutTaskNormal'
+import StockOutTaskFinish from '@/components/Dialog/StockOutTaskFinish'
 import ScanTrayOut from '@/components/Dialog/ScanTrayOut'
 
 export default {
@@ -101,6 +108,7 @@ export default {
     StockOutEditBilling,
     StockOutTaskSearch,
     StockOutTaskNormal,
+    StockOutTaskFinish,
     ScanTrayOut
   },
   data: () => ({
@@ -273,6 +281,11 @@ export default {
     // 查看出库任务
     viewTaskItem(val) {
       this.showTaskDetails(val)
+    },
+
+    // 确认出库任务
+    finishTaskItem(val) {
+      this.$refs.stockOutTaskFinishMod.init(val.id)
     }
   },
   mounted: function() {
