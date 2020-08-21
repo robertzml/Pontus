@@ -102,6 +102,10 @@
                 <v-icon left dark>pageview</v-icon>
                 查看
               </v-btn>
+              <v-btn v-if="taskInfo.status != 85" small color="warning" class="ml-2" @click="showCarryOutEdit(item)">
+                <v-icon left dark>edit</v-icon>
+                编辑
+              </v-btn>
               <v-btn v-if="item.status == 81" small color="red darken-3" class="ml-2" @click="showCarryOutDelete(item)">
                 <v-icon left dark>delete</v-icon>
                 删除
@@ -158,6 +162,9 @@
     <!-- 搬运出库删除组件 -->
     <carry-out-delete ref="carryOutDeleteMod" @close="refresh"></carry-out-delete>
 
+    <!-- 搬运出库编辑组件 -->
+    <carry-out-edit ref="carryOutEditMod" @close="refresh"></carry-out-edit>
+
     <!-- 搬运入库信息组件 -->
     <carry-in-details ref="carryInDetailsMod"></carry-in-details>
 
@@ -177,6 +184,7 @@ import StockOutTaskDelete from '@/components/Dialog/StockOutTaskDelete'
 import ScanTrayOut from '@/components/Dialog/ScanTrayOut'
 import CarryOutDetails from '@/components/Dialog/CarryOutDetails'
 import CarryOutDelete from '@/components/Dialog/CarryOutDelete'
+import CarryOutEdit from '@/components/Dialog/CarryOutEdit'
 import CarryInDetails from '@/components/Dialog/CarryInDetails'
 import CarryInEnter from '@/components/Dialog/CarryInEnter'
 
@@ -190,6 +198,7 @@ export default {
     ScanTrayOut,
     CarryOutDetails,
     CarryOutDelete,
+    CarryOutEdit,
     CarryInDetails,
     CarryInEnter
   },
@@ -347,6 +356,11 @@ export default {
     // 查看搬运出库任务
     viewCarryOutDetails(item) {
       this.$refs.carryOutDetailsMod.init(item.id)
+    },
+
+    // 编辑搬运出库任务
+    showCarryOutEdit(item) {
+      this.$refs.carryOutEditMod.init(item.id)
     },
 
     // 删除搬运出库任务

@@ -94,6 +94,12 @@ export default {
     return res.data
   },
 
+  // 编辑搬运出库任务
+  async editTask(entity) {
+    const res = await axios._post({ url: '/carryOutTask/editTask', data: entity })
+    return res.data
+  },
+
   // 删除搬运入库任务
   async delete(data) {
     const res = await axios._postqs({ url: '/carryOutTask/delete', params: data })
