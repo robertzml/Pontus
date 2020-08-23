@@ -115,8 +115,9 @@ export default {
     // 打印出库单
     print() {
       if (this.stockOutId) {
-        let url = this.$util.reportUrl() + 'stockOut?id=' + this.stockOutId
-        console.log(url)
+        let uid = this.$store.state.user.id
+        let url = this.$util.reportUrl() + 'stockOut?id=' + this.stockOutId + '&uid=' + uid
+
         window.open(url)
       }
     }
