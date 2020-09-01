@@ -30,13 +30,17 @@
                 ></v-select>
               </v-col>
 
-              <v-col cols="3">
+              <v-col cols="2">
                 <v-menu v-model="dateMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                   <template v-slot:activator="{ on }">
                     <v-text-field v-model="search.date" label="库存日期" prepend-icon="event" hide-details readonly v-on="on"></v-text-field>
                   </template>
                   <v-date-picker v-model="search.date" :day-format="$util.pickerDayFormat" @input="dateMenu = false"></v-date-picker>
                 </v-menu>
+              </v-col>
+
+              <v-col cols="1">
+                <v-checkbox v-model="search.groupByBatch" label="按批次分组"></v-checkbox>
               </v-col>
 
               <v-col cols="2">
@@ -84,7 +88,8 @@ export default {
     search: {
       customerId: 0,
       selectedContract: { number: '' },
-      date: moment().format('YYYY-MM-DD')
+      date: moment().format('YYYY-MM-DD'),
+      groupByBatch: false
     },
     filter: '',
     contractListData: [],
@@ -126,7 +131,11 @@ export default {
     // 搜索库存记录
     async searchStore() {
       if (this.$refs.form.validate()) {
-        this.storeListData = await statistic.getCustomerCargoStore({ contractId: this.search.selectedContract.id, date: this.search.date })
+        this.storeListData = await statistic.getCustomerCargoStore({
+          contractId: this.search.selectedContract.id,
+          date: this.search.date,
+          groupByBatch: this.search.groupByBatch
+        })
       }
     }
   }

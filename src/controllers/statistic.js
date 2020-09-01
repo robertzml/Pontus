@@ -35,10 +35,10 @@ export default {
   },
 
   // 获取客户货品库存报表
-  async getCustomerCargoStore({ contractId, date }) {
+  async getCustomerCargoStore({ contractId, date, groupByBatch }) {
     const res = await axios._get({
       url: '/statistic/getCustomerCargoStore',
-      params: { contractId: contractId, date: date }
+      params: { contractId: contractId, date: date, groupByBatch: groupByBatch }
     })
     return res.data
   }
