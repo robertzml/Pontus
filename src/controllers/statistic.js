@@ -41,5 +41,14 @@ export default {
       params: { contractId: contractId, date: date, groupByBatch: groupByBatch }
     })
     return res.data
+  },
+
+  // 获取客户库存日报表
+  async getCustomerTotalStore(date) {
+    const res = await axios._get({
+      url: '/statistic/getCustomerTotalStore',
+      params: { date: date }
+    })
+    return res.data
   }
 }

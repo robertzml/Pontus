@@ -331,6 +331,15 @@ export const menuRoutes = [
     meta: { roles: [1, 2, 3, 4] }
   },
   {
+    path: '/statistic-customer-total-store',
+    name: 'statisticCustomerTotalStore',
+    text: '客户库存日报表',
+    group: 'statistic',
+    model: false,
+    component: () => import('@/views/Statistic/CustomerTotalStore.vue'),
+    meta: { roles: [1, 2, 3, 4] }
+  },
+  {
     path: '/user',
     name: 'user',
     text: '用户列表',
