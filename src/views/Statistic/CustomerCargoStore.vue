@@ -58,6 +58,7 @@
           货品库存列表
           <v-spacer></v-spacer>
           <v-text-field v-model="filter" append-icon="search" label="搜索" single-line hide-details> </v-text-field>
+          <v-btn color="primary darken-1 ml-1" @click="exportList">导出Excel</v-btn>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="storeListData" :items-per-page="10" :search="filter">
@@ -76,9 +77,13 @@ import moment from 'moment'
 import contract from '@/controllers/contract'
 import statistic from '@/controllers/statistic'
 import CustomerSelect from '@/components/Control/CustomerSelect'
+import FileSaver from 'file-saver'
+import Excel from 'exceljs'
+
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
 
 export default {
-  name: 'StoreSnapshot',
+  name: 'CustomerCargoStore',
   components: {
     CustomerSelect
   },
@@ -137,6 +142,67 @@ export default {
           groupByBatch: this.search.groupByBatch
         })
       }
+    },
+
+    exportList() {
+      let workbook = new Excel.Workbook()
+
+      let sheet = workbook.addWorksheet('客户货品报表')
+
+      sheet.columns = [
+        { header: '日期', key: 'storageDate', width: 12 },
+        { header: '客户代码', key: 'customerNumber', width: 10 },
+        { header: '客户名称', key: 'customerName', width: 20 },
+        { header: '合同名称', key: 'contractName', width: 18 },
+        { header: '类别代码', key: 'categoryNumber', width: 10 },
+        { header: '类别名称', key: 'categoryName', width: 15 },
+        { header: '货品名称', key: 'cargoName', width: 15 },
+        { header: '规格', key: 'specification', width: 10 },
+        { header: '批次', key: 'batch', width: 10 },
+        { header: '在库数量', key: 'storeCount', width: 10 },
+        { header: '单位重量(kg)', key: 'unitWeight', width: 12 },
+        { header: '在库重量(t)', key: 'storeWeight', width: 12 }
+      ]
+
+      this.storeListData.forEach(item => {
+        let info = {
+          storageDate: this.$util.displayDate(item.storageDate),
+          customerNumber: item.customerNumber,
+          customerName: item.customerName,
+          contractName: item.contractName,
+          categoryNumber: item.categoryNumber,
+          categoryName: item.categoryName,
+          cargoName: item.cargoName,
+          specification: item.specification,
+          batch: item.batch,
+          storeCount: item.storeCount,
+          unitWeight: item.unitWeight,
+          storeWeight: item.storeWeight
+        }
+
+        sheet.addRow(info)
+      })
+
+      sheet.eachRow(function(row) {
+        row.eachCell(function(cell) {
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+          }
+        })
+      })
+
+      let filename = '客户货品报表.xlsx'
+      if (this.storeListData.length > 0) {
+        filename = '客户货品报表-' + this.storeListData[0].customerName + '.xlsx'
+      }
+
+      workbook.xlsx.writeBuffer().then(data => {
+        const blob = new Blob([data], { type: EXCEL_TYPE })
+        FileSaver.saveAs(blob, filename)
+      })
     }
   }
 }
