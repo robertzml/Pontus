@@ -28,6 +28,13 @@
           </v-col>
 
           <v-col cols="4" md="4" sm="4">
+            <v-text-field label="规格" v-model="cargoInfo.specification" readonly></v-text-field>
+          </v-col>
+          <v-col cols="4" md="4" sm="4">
+            <v-text-field label="资产单价" v-model="cargoInfo.assetUnit" suffix="元/吨" readonly></v-text-field>
+          </v-col>
+
+          <v-col cols="4" md="4" sm="4">
             <v-text-field label="备注" v-model="cargoInfo.remark" readonly></v-text-field>
           </v-col>
         </v-row>

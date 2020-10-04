@@ -57,11 +57,13 @@
         <v-card-title class="deep-purple">
           货品库存列表
           <v-spacer></v-spacer>
-          <v-text-field v-model="filter" append-icon="search" label="搜索" single-line hide-details> </v-text-field>
+          <span class="text-subtitle-2 mr-4">在库总数量: {{ totalStoreCount }} </span>
+          <span class="text-subtitle-2 mr-4">在库总重量: {{ totalStoreWeight }} 吨</span>
+          <span class="text-subtitle-2 mr-4">资产总价格: {{ totalAssetAmount }} 元</span>
           <v-btn color="primary darken-1 ml-1" @click="exportList">导出Excel</v-btn>
         </v-card-title>
         <v-card-text class="px-0">
-          <v-data-table :headers="headers" :items="storeListData" :items-per-page="10" :search="filter">
+          <v-data-table :headers="headers" :items="storeListData" :items-per-page="10">
             <template v-slot:item.storageDate="{ item }">
               {{ item.storageDate | displayDate }}
             </template>
@@ -112,12 +114,41 @@ export default {
       { text: '批次', value: 'batch' },
       { text: '在库数量', value: 'storeCount' },
       { text: '单位重量(kg)', value: 'unitWeight' },
-      { text: '在库重量(t)', value: 'storeWeight' }
+      { text: '在库重量(t)', value: 'storeWeight' },
+      { text: '资产价格(元)', value: 'assetAmount' }
     ]
   }),
   watch: {
     'search.customerId': function(val) {
       this.loadContract(val)
+    }
+  },
+  computed: {
+    totalStoreCount: function() {
+      let total = 0
+      this.storeListData.forEach(r => {
+        total = total + r.storeCount
+      })
+
+      return total
+    },
+
+    totalStoreWeight: function() {
+      let total = 0
+      this.storeListData.forEach(r => {
+        total = total + r.storeWeight
+      })
+
+      return total
+    },
+
+    totalAssetAmount: function() {
+      let total = 0
+      this.storeListData.forEach(r => {
+        total = total + r.assetAmount
+      })
+
+      return total
     }
   },
   methods: {

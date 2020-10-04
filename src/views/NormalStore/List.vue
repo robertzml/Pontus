@@ -142,6 +142,7 @@ export default {
       { text: '规格', value: 'specification' },
       { text: '在库总数量', value: 'storeCount' },
       { text: '在库总重量(t)', value: 'storeWeight' },
+      { text: '资产价格(元)', value: 'assetAmount' },
       { text: '初始时间', value: 'initialTime' },
       { text: '入库时间', value: 'inTime' },
       { text: '出库时间', value: 'outTime' },

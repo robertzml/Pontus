@@ -11,15 +11,19 @@
           <v-container fluid>
             <v-row>
               <v-col cols="6" md="6" sm="6">
-                <v-text-field label="货品名称*" v-model="cargoInfo.name" :rules="nameRules"></v-text-field>
-              </v-col>
-
-              <v-col cols="6" md="6" sm="6">
                 <category-select :category-id.sync="cargoInfo.categoryId"></category-select>
               </v-col>
 
               <v-col cols="6" md="6" sm="6">
+                <v-text-field label="货品名称*" v-model="cargoInfo.name" :rules="nameRules"></v-text-field>
+              </v-col>
+
+              <v-col cols="6" md="6" sm="6">
                 <v-text-field label="规格" v-model="cargoInfo.specification"></v-text-field>
+              </v-col>
+
+              <v-col cols="6" md="6" sm="6">
+                <v-text-field label="资产单价" v-model="cargoInfo.assetUnit" suffix="元/吨"></v-text-field>
               </v-col>
 
               <v-col cols="6" md="6" sm="6">
@@ -58,6 +62,7 @@ export default {
       customerId: 0,
       categoryId: 0,
       specification: '',
+      assetUnit: 0,
       remark: ''
     },
     nameRules: [v => !!v || '请输入货品名称']
@@ -70,6 +75,7 @@ export default {
         customerId: customerId,
         categoryId: 0,
         specification: '',
+        assetUnit: 0,
         remark: ''
       }
       this.loading = false

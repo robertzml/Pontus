@@ -54,8 +54,8 @@
         </v-card-text>
 
         <cargo-create ref="cargoCreateMod" @close="submit"></cargo-create>
-        <cargo-edit ref="cargoEditMod"></cargo-edit>
-        <cargo-details ref="cargoDetailsMod" @update="submit"></cargo-details>
+        <cargo-edit ref="cargoEditMod" @update="submit"></cargo-edit>
+        <cargo-details ref="cargoDetailsMod"></cargo-details>
         <cargo-delete ref="cargoDeleteMod" @close="submit"></cargo-delete>
       </v-card>
     </v-col>
@@ -92,6 +92,7 @@ export default {
       { text: '客户编号', value: 'customerNumber' },
       { text: '客户名称', value: 'customerName' },
       { text: '规格', value: 'specification' },
+      { text: '资产单价(元/吨)', value: 'assetUnit' },
       { text: '登记时间', value: 'registerTime' },
       { text: '操作', value: 'action', sortable: false }
     ]
