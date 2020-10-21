@@ -70,6 +70,8 @@ export default {
       }
     }
   },
-  mounted: function() {}
+  mounted: function() {
+    console.log(process.env.NODE_ENV)
+  }
 }
 </script>
