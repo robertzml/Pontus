@@ -13,13 +13,44 @@
         <v-card-text class="pt-1">
           <v-container fluid class="px-0">
             <v-row dense>
-              <v-col cols="6">
-                <cargo-select :cargo-id.sync="cargoId" :cargo-data="cargoListData"></cargo-select>
+              <v-col cols="12">
+                <v-card-subtitle class="pb-2 light-blue darken-4">搜索条件</v-card-subtitle>
+              </v-col>
+              <v-col cols="3">
+                <cargo-select :cargo-id.sync="search.cargoId" :required="false" :cargo-data="cargoListData"></cargo-select>
+              </v-col>
+              <v-col cols="3">
+                <v-menu
+                  v-model="searchTimeMenu"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="search.initialTime"
+                      label="初始入库日期"
+                      prepend-icon="event"
+                      clearable
+                      hide-details
+                      readonly
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="search.initialTime" :day-format="$util.pickerDayFormat" @input="searchTimeMenu = false"></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="3">
+                <v-text-field v-model="search.remark" append-icon="search" label="备注" single-line hide-details> </v-text-field>
               </v-col>
               <v-col cols="2">
                 <v-btn class="primary mt-2" @click="searchStore">搜索库存</v-btn>
               </v-col>
+            </v-row>
 
+            <v-row dense>
               <v-col cols="12">
                 <v-card-subtitle class="pb-2 light-green darken-4">过滤条件</v-card-subtitle>
                 <v-row dense>
@@ -145,8 +176,14 @@ export default {
     cargoId: '',
     cargoListData: [],
     storeListData: [],
+    searchTimeMenu: false,
     timeMenu: false,
     warehouseList: [],
+    search: {
+      cargoId: '',
+      initialTime: null,
+      remark: ''
+    },
     filter: {
       cargoId: '',
       warehouseId: 0,
@@ -227,7 +264,12 @@ export default {
 
     // 搜索库存
     async searchStore() {
-      this.storeListData = await store.findForStockOut({ contractId: this.stockOutInfo.contractId, cargoId: this.cargoId })
+      this.storeListData = await store.findForStockOut({
+        contractId: this.stockOutInfo.contractId,
+        cargoId: this.search.cargoId,
+        initialTime: this.search.initialTime,
+        remark: this.search.remark
+      })
       this.selectedStores = []
     },
 

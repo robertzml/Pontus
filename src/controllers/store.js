@@ -77,10 +77,10 @@ export default {
    * 出库时查找库存
    * @param {合同ID，货品ID} param0
    */
-  async findForStockOut({ contractId, cargoId }) {
+  async findForStockOut({ contractId, cargoId, initialTime, remark }) {
     const res = await axios._get({
       url: '/store/findForStockOut',
-      params: { contractId: contractId, cargoId: cargoId }
+      params: { contractId: contractId, cargoId: cargoId, initialTime: initialTime, remark: remark }
     })
     return res.data
   },
