@@ -65,6 +65,8 @@
         <v-card-title class="deep-purple">
           客户费用报表
           <v-spacer></v-spacer>
+          <span class="text-subtitle-2 mr-4">费用合计: {{ totalFee }} 元</span>
+          <span class="text-subtitle-2 mr-4">期末合计: {{ totalEndDebt }} 元</span>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="customerFeeHeader" :items="customerFeeData" :items-per-page="10">
@@ -116,6 +118,26 @@ export default {
     ],
     customerFeeData: []
   }),
+  computed: {
+    // 费用合计
+    totalFee: function() {
+      let total = 0
+      this.customerFeeData.forEach(r => {
+        total = total + r.totalFee
+      })
+
+      return total.toFixed(3)
+    },
+    // 期末欠款合计
+    totalEndDebt: function() {
+      let total = 0
+      this.customerFeeData.forEach(r => {
+        total = total + r.endDebt
+      })
+
+      return total.toFixed(3)
+    }
+  },
   methods: {
     searchCustomerFee() {
       if (this.$refs.form.validate()) {
