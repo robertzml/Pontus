@@ -5,6 +5,9 @@
         <v-text-field :value="$util.displayDate(taskInfo.outTime)" label="出库时间" hide-details readonly></v-text-field>
       </v-col>
       <v-col cols="3" xl="2" md="3" sm="6">
+        <v-text-field v-model="taskInfo.customerName" label="客户名称" hide-details readonly></v-text-field>
+      </v-col>
+      <v-col cols="3" xl="2" md="3" sm="6">
         <v-text-field v-model="taskInfo.flowNumber" label="出库单流水号" hide-details readonly></v-text-field>
       </v-col>
       <v-col cols="3" xl="2" md="3" sm="6">
@@ -12,10 +15,6 @@
       </v-col>
       <v-col cols="3" xl="2" md="3" sm="6">
         <v-text-field v-model="taskInfo.taskCode" label="出库任务码" hide-details readonly></v-text-field>
-      </v-col>
-
-      <v-col cols="3" xl="2" md="3" sm="6">
-        <v-text-field v-model="taskInfo.customerName" label="客户名称" hide-details readonly></v-text-field>
       </v-col>
       <v-col cols="3" xl="2" md="3" sm="6">
         <v-text-field v-model="taskInfo.cargoName" label="货品名称" hide-details readonly></v-text-field>

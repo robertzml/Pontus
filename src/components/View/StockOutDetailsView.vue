@@ -5,6 +5,12 @@
         <v-text-field :value="$util.displayDate(info.outTime)" label="出库时间" hide-details readonly></v-text-field>
       </v-col>
       <v-col cols="3" xl="2" md="3" sm="6">
+        <v-text-field v-model="info.customerNumber" label="客户编号" hide-details readonly></v-text-field>
+      </v-col>
+      <v-col cols="3" xl="2" md="3" sm="6">
+        <v-text-field v-model="info.customerName" label="客户名称" hide-details readonly></v-text-field>
+      </v-col>
+      <v-col cols="3" xl="2" md="3" sm="6">
         <v-text-field v-model="info.monthTime" label="出库月份" hide-details readonly></v-text-field>
       </v-col>
       <v-col cols="3" xl="2" md="3" sm="6">
@@ -12,12 +18,6 @@
       </v-col>
       <v-col cols="3" xl="2" md="3" sm="6">
         <v-text-field :value="$util.stockOutType(info.type)" label="出库类型" hide-details readonly></v-text-field>
-      </v-col>
-      <v-col cols="3" xl="2" md="3" sm="6">
-        <v-text-field v-model="info.customerNumber" label="客户编号" hide-details readonly></v-text-field>
-      </v-col>
-      <v-col cols="3" xl="2" md="3" sm="6">
-        <v-text-field v-model="info.customerName" label="客户名称" hide-details readonly></v-text-field>
       </v-col>
       <v-col cols="3" xl="2" md="3" sm="6">
         <v-text-field v-model="info.contractNumber" label="合同编号" hide-details readonly></v-text-field>

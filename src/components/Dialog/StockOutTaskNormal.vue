@@ -17,7 +17,7 @@
                 <cargo-select :cargo-id.sync="cargoId" :cargo-data="cargoListData"></cargo-select>
               </v-col>
               <v-col cols="2">
-                <v-btn class="primary mt-2" @click="searchStore" :disabled="!cargoId">搜索库存</v-btn>
+                <v-btn class="primary mt-2" @click="searchStore">搜索库存</v-btn>
               </v-col>
 
               <v-col cols="12">
@@ -202,10 +202,8 @@ export default {
 
     // 搜索库存
     async searchStore() {
-      if (this.cargoId) {
-        this.storeListData = await normalStore.findForStockOut({ contractId: this.stockOutInfo.contractId, cargoId: this.cargoId })
-        this.selectedStores = []
-      }
+      this.storeListData = await normalStore.findForStockOut({ contractId: this.stockOutInfo.contractId, cargoId: this.cargoId })
+      this.selectedStores = []
     },
 
     // 添加出库
