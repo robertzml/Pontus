@@ -14,7 +14,7 @@
           <v-container fluid class="px-0">
             <v-row dense>
               <v-col cols="6">
-                <cargo-select :cargo-id.sync="cargoId" :cargo-data="cargoListData"></cargo-select>
+                <cargo-select :cargo-id.sync="cargoId" :cargo-data="cargoListData" :required="false"></cargo-select>
               </v-col>
               <v-col cols="2">
                 <v-btn class="primary mt-2" @click="searchStore">搜索库存</v-btn>

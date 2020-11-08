@@ -55,7 +55,7 @@
                 <v-card-subtitle class="pb-2 light-green darken-4">过滤条件</v-card-subtitle>
                 <v-row dense>
                   <v-col cols="3">
-                    <cargo-select :cargo-id.sync="filter.cargoId" :cargo-data="cargoListData"></cargo-select>
+                    <cargo-select :cargo-id.sync="filter.cargoId" :cargo-data="cargoListData" :required="false"></cargo-select>
                   </v-col>
                   <v-col cols="3">
                     <v-select
