@@ -1,6 +1,6 @@
 import { findAll } from '../api/customer'
 import { ICustomerData } from '../models/customer'
-import { onMounted, ref, Ref } from '@vue/composition-api'
+import { onMounted, ref, Ref, reactive } from '@vue/composition-api'
 
 type CustomerContext = {
   customers: Ref<ICustomerData[]>
@@ -15,7 +15,6 @@ export default function getCustomerRepository(): CustomerContext {
 
   onMounted(getCustomers)
 
-  // console.log(repository.value)
   const ctx = { customers: repository }
   return ctx
 }
