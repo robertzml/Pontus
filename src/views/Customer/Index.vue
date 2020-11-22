@@ -4,68 +4,56 @@
       <v-toolbar dense>
         <v-toolbar-title>客户管理</v-toolbar-title>
         <v-spacer></v-spacer>
-
-        <v-toolbar-items>
-          <v-btn v-if="tab == 'CustomerDetails'" text color="amber accent-4" @click.stop="showList">返回</v-btn>
-          <v-btn text @click.stop="refresh">刷新</v-btn>
-          <v-btn v-if="tab == 'CustomerDetails'" text @click.stop="showEdit">编辑客户</v-btn>
-          <v-btn v-if="tab == 'CustomerList'" text @click.stop="showCreate">添加客户</v-btn>
-        </v-toolbar-items>
       </v-toolbar>
     </v-col>
 
     <v-col cols="12">
-      <v-slide-x-transition leave-absolute>
-        <keep-alive>
-          <component v-bind:is="tab"></component>
-        </keep-alive>
-      </v-slide-x-transition>
-    </v-col>
-
-    <v-col cols="12">
-      <customer-edit ref="customerEditMod" @update="refresh"></customer-edit>
+      <v-card class="mx-auto">
+        <v-card-title class="orange">
+          客户列表
+          <v-spacer></v-spacer>
+          <v-text-field v-model="search" append-icon="mdi-magnify" label="搜索" single-line hide-details> </v-text-field>
+        </v-card-title>
+        <v-card-text class="px-0">
+          <v-data-table :headers="headers" :search="search" :items-per-page="10">
+            <template v-slot:[`item.type`]="{ item }">
+              {{ item.type | customerType }}
+            </template>
+          </v-data-table>
+        </v-card-text>
+      </v-card>
     </v-col>
   </v-row>
 </template>
 
-<script>
-import { mapState, mapMutations, mapActions } from 'vuex'
-import CustomerList from './List'
-import CustomerDetails from './Details'
-import CustomerEdit from './Edit'
+<script lang="ts">
+import { defineComponent } from '@vue/composition-api'
+// import { findAll } from '@/api/customer'
+import getCustomerRepository from '@/composables/customerRepository'
 
-export default {
+export default defineComponent({
   name: 'CustomerIndex',
-  components: {
-    CustomerList,
-    CustomerDetails,
-    CustomerEdit
-  },
-  data: () => ({}),
-  computed: {
-    ...mapState({
-      tab: state => state.customer.tab,
-      customerInfo: state => state.customer.customerInfo
-    })
-  },
-  methods: {
-    ...mapMutations({
-      refresh: 'customer/refresh'
-    }),
+  setup() {
+    const ctx = getCustomerRepository()
 
-    ...mapActions({
-      showList: 'customer/showList'
-    }),
-
-    showCreate() {
-      this.$refs.customerEditMod.init(0)
-    },
-    showEdit() {
-      this.$refs.customerEditMod.init(this.customerInfo.id)
+    console.log(ctx)
+    return {
+      ctx
     }
   },
-  mounted: function() {
-    this.showList()
-  }
-}
+  data: () => ({
+    search: '',
+    headers: [
+      { text: '编号', value: 'number', align: 'left' },
+      { text: '客户名称', value: 'name' },
+      { text: '客户类型', value: 'type' },
+      { text: '地址', value: 'address' },
+      { text: '电话', value: 'telephone' },
+      { text: '联系人', value: 'contact' },
+      { text: '身份证号', value: 'identityCard' },
+      { text: '备注', value: 'remark' },
+      { text: '操作', value: 'action', sortable: false }
+    ]
+  })
+})
 </script>

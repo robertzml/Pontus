@@ -1,5 +1,13 @@
 {
     "editor.codeActionsOnSave": {
-        "source.fixAll": true
-    }
+        "source.fixAll.eslint": true
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "vetur.format.defaultFormatter.html": "prettier",
+    "vetur.format.options.tabSize": 2,
+    "vetur.format.options.useTabs": false,
+    "vetur.experimental.templateInterpolationService": true
 }

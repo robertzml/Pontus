@@ -1,11 +1,18 @@
 <template>
-  <v-layout align-center justify-center>
-    <v-btn>Home</v-btn>
-  </v-layout>
+  <div class="home">
+    <img alt="Vue logo" src="../assets/logo.png" />
+    <!-- <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />-->
+  </div>
 </template>
 
-<script>
-export default {
-  name: 'Home'
-}
+<script lang="ts">
+import { defineComponent } from '@vue/composition-api'
+//import HelloWorld from '@/components/HelloWorld.vue' // @ is an alias to /src
+
+export default defineComponent({
+  name: 'Home',
+  components: {
+    //HelloWorld
+  }
+})
 </script>
