@@ -15,7 +15,7 @@
           <v-text-field v-model="search" append-icon="mdi-magnify" label="搜索" single-line hide-details> </v-text-field>
         </v-card-title>
         <v-card-text class="px-0">
-          <v-data-table :headers="headers" :search="search" :items-per-page="10">
+          <v-data-table :headers="headers" :items="ctx.customers.value" :search="search" :items-per-page="10">
             <template v-slot:[`item.type`]="{ item }">
               {{ item.type | customerType }}
             </template>
@@ -53,7 +53,8 @@ export default defineComponent({
       { text: '身份证号', value: 'identityCard' },
       { text: '备注', value: 'remark' },
       { text: '操作', value: 'action', sortable: false }
-    ]
+    ],
+    itemList: []
   })
 })
 </script>
