@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
 import zhHans from 'vuetify/src/locale/zh-Hans'
+import fr from 'vuetify/src/locale/fr'
 
 Vue.use(Vuetify)
 
@@ -23,7 +24,7 @@ export default new Vuetify({
     }
   },
   lang: {
-    locales: { zhHans },
-    current: 'zh-Hans'
+    locales: { zhHans, fr },
+    current: 'zhHans'
   }
 })

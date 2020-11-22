@@ -17,7 +17,7 @@
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="ctx.customers.value" :search="search" :items-per-page="10">
             <template v-slot:[`item.type`]="{ item }">
-              {{ item.type | customerType }}
+              {{ $util.customerType(item.type) }}
             </template>
           </v-data-table>
         </v-card-text>
@@ -28,7 +28,6 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
-// import { findAll } from '@/api/customer'
 import getCustomerRepository from '@/composables/customerRepository'
 
 export default defineComponent({
@@ -36,7 +35,6 @@ export default defineComponent({
   setup() {
     const ctx = getCustomerRepository()
 
-    console.log(ctx)
     return {
       ctx
     }

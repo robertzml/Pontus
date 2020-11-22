@@ -1,5 +1,11 @@
 module.exports = {
   transpileDependencies: ['vuetify'],
+  chainWebpack: (config) => {
+    config.plugin('html').tap((args) => {
+      args[0].title = '海安润思达食品有限公司'
+      return args
+    })
+  },
   configureWebpack: {
     performance: {
       hints: 'warning',
