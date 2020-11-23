@@ -1,3 +1,4 @@
+// 客户信息类
 export interface ICustomerData {
   // 客户ID
   id: number

@@ -8,7 +8,7 @@
           <v-text-field v-model="search" append-icon="mdi-magnify" label="搜索" single-line hide-details> </v-text-field>
         </v-card-title>
         <v-card-text class="px-0">
-          <v-data-table :headers="headers" :items="dataList.value" :search="search" :items-per-page="10">
+          <v-data-table :headers="headers" :items="ctx.customers" :search="search" :items-per-page="10">
             <template v-slot:[`item.type`]="{ item }">
               {{ $util.customerType(item.type) }}
             </template>
@@ -21,15 +21,15 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
-import getCustomerRepository from '@/composables/customerRepository'
+import { getCustomerRepository } from '@/composables/customerRepository'
 
 export default defineComponent({
   name: 'CustomerList',
   setup() {
-    const { customers: dataList } = getCustomerRepository()
+    const ctx = getCustomerRepository()
 
     return {
-      dataList
+      ctx
     }
   },
   data: () => ({
