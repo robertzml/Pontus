@@ -23,25 +23,32 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { Component, Vue } from 'vue-property-decorator'
 import CustomerList from './Section/CustomerList.vue'
+import CustomerDetails from './Section/CustomerDetails.vue'
 
-export default defineComponent({
-  name: 'CustomerIndex',
+/**
+ * 客户页面视图
+ * @title 页面
+ */
+@Component({
   components: {
-    CustomerList
-  },
-  data: () => ({
-    tab: ''
-  }),
-  methods: {
-    refresh() {
-      console.log('refresh')
-    },
-
-    showList() {
-      this.tab = 'CustomerList'
-    }
+    CustomerList,
+    CustomerDetails
   }
 })
+export default class CustomerIndex extends Vue {
+  tab = ''
+
+  /**
+   * 显示客户列表
+   */
+  showList(): void {
+    this.tab = 'CustomerList'
+  }
+
+  refresh(): void {
+    console.log('refresh')
+  }
+}
 </script>

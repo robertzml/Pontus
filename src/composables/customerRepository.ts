@@ -2,7 +2,7 @@ import { findAll } from '../api/customer'
 import { ICustomerData } from '../models/customer'
 import { onMounted, reactive } from '@vue/composition-api'
 
-interface CustomerContext {
+export interface CustomerContext {
   customers: ICustomerData[]
 }
 
