@@ -28,7 +28,7 @@
                 <v-text-field v-model="$props.info.identityCard" label="身份证号" readonly></v-text-field>
               </v-col>
               <v-col cols="3" md="3" sm="6">
-                <v-text-field :value="this.$util.customerType($props.info.type)" label="客户类型" readonly></v-text-field>
+                <v-text-field :value="$util.customerType($props.info.type)" label="客户类型" readonly></v-text-field>
               </v-col>
               <v-col cols="6" md="6" sm="6">
                 <v-text-field v-model="$props.info.remark" label="备注" readonly></v-text-field>

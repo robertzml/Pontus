@@ -4,14 +4,16 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
-import util from './plugins/util'
+//import util from './plugins/util'
+import utilInstall from './plugins/util'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@mdi/font/css/materialdesignicons.css'
 
 Vue.config.productionTip = false
 Vue.use(VueCompositionAPI)
+Vue.use(utilInstall)
 
-Vue.prototype.$util = util
+// Vue.prototype.$util = util
 
 new Vue({
   router,
