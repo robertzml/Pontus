@@ -6,6 +6,9 @@ export interface CustomerContext {
   customers: ICustomerData[]
 }
 
+/**
+ * 获取全部客户信息
+ */
 export function getCustomerRepository(): CustomerContext {
   const ctx = reactive({ customers: new Array<ICustomerData>() })
 

@@ -23,6 +23,10 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { getCustomerRepository, CustomerContext } from '@/composables/customerRepository'
 
+/**
+ * 客户列表部件
+ * @name 客户列表部件
+ */
 @Component({
   setup() {
     console.log('setup in list')
@@ -35,6 +39,10 @@ import { getCustomerRepository, CustomerContext } from '@/composables/customerRe
 })
 export default class CustomerList extends Vue {
   search = ''
+
+  /**
+   * 表格列定义
+   */
   headers = [
     { text: '编号', value: 'number', align: 'left' },
     { text: '客户名称', value: 'name' },
@@ -49,29 +57,4 @@ export default class CustomerList extends Vue {
 
   ctx!: CustomerContext
 }
-
-// export default defineComponent({
-//   name: 'CustomerList',
-//   setup() {
-//     const ctx = getCustomerRepository()
-
-//     return {
-//       ctx
-//     }
-//   },
-//   data: () => ({
-//     search: '',
-//     headers: [
-//       { text: '编号', value: 'number', align: 'left' },
-//       { text: '客户名称', value: 'name' },
-//       { text: '客户类型', value: 'type' },
-//       { text: '地址', value: 'address' },
-//       { text: '电话', value: 'telephone' },
-//       { text: '联系人', value: 'contact' },
-//       { text: '身份证号', value: 'identityCard' },
-//       { text: '备注', value: 'remark' },
-//       { text: '操作', value: 'action', sortable: false }
-//     ]
-//   })
-// })
 </script>
