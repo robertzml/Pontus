@@ -25,7 +25,6 @@ import { getCustomerRepository, CustomerContext } from '@/composables/customerRe
 
 /**
  * 客户列表部件
- * @name 客户列表部件
  */
 @Component({
   setup() {
