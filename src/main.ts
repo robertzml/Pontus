@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueCompositionAPI from '@vue/composition-api'
+//import Component from 'vue-class-component'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -12,6 +13,8 @@ import '@mdi/font/css/materialdesignicons.css'
 Vue.config.productionTip = false
 Vue.use(VueCompositionAPI)
 Vue.use(utilInstall)
+
+//Component.registerHooks(['setup'])
 
 // Vue.prototype.$util = util
 

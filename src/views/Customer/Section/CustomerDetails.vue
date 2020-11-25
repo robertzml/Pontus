@@ -55,6 +55,10 @@ export default defineComponent({
       type: Object as PropType<ICustomerData>,
       required: true
     }
+  },
+
+  setup() {
+    console.log('setup in details')
   }
 })
 </script>

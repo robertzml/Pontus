@@ -35,6 +35,10 @@ import CustomerDetails from './Section/CustomerDetails.vue'
   components: {
     CustomerList,
     CustomerDetails
+  },
+
+  setup() {
+    console.log('setup in customer index')
   }
 })
 export default class CustomerIndex extends Vue {

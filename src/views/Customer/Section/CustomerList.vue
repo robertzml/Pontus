@@ -20,31 +20,58 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
-import { getCustomerRepository } from '@/composables/customerRepository'
+import { Component, Vue } from 'vue-property-decorator'
+import { getCustomerRepository, CustomerContext } from '@/composables/customerRepository'
 
-export default defineComponent({
-  name: 'CustomerList',
+@Component({
   setup() {
+    console.log('setup in list')
     const ctx = getCustomerRepository()
 
     return {
       ctx
     }
-  },
-  data: () => ({
-    search: '',
-    headers: [
-      { text: '编号', value: 'number', align: 'left' },
-      { text: '客户名称', value: 'name' },
-      { text: '客户类型', value: 'type' },
-      { text: '地址', value: 'address' },
-      { text: '电话', value: 'telephone' },
-      { text: '联系人', value: 'contact' },
-      { text: '身份证号', value: 'identityCard' },
-      { text: '备注', value: 'remark' },
-      { text: '操作', value: 'action', sortable: false }
-    ]
-  })
+  }
 })
+export default class CustomerList extends Vue {
+  search = ''
+  headers = [
+    { text: '编号', value: 'number', align: 'left' },
+    { text: '客户名称', value: 'name' },
+    { text: '客户类型', value: 'type' },
+    { text: '地址', value: 'address' },
+    { text: '电话', value: 'telephone' },
+    { text: '联系人', value: 'contact' },
+    { text: '身份证号', value: 'identityCard' },
+    { text: '备注', value: 'remark' },
+    { text: '操作', value: 'action', sortable: false }
+  ]
+
+  ctx!: CustomerContext
+}
+
+// export default defineComponent({
+//   name: 'CustomerList',
+//   setup() {
+//     const ctx = getCustomerRepository()
+
+//     return {
+//       ctx
+//     }
+//   },
+//   data: () => ({
+//     search: '',
+//     headers: [
+//       { text: '编号', value: 'number', align: 'left' },
+//       { text: '客户名称', value: 'name' },
+//       { text: '客户类型', value: 'type' },
+//       { text: '地址', value: 'address' },
+//       { text: '电话', value: 'telephone' },
+//       { text: '联系人', value: 'contact' },
+//       { text: '身份证号', value: 'identityCard' },
+//       { text: '备注', value: 'remark' },
+//       { text: '操作', value: 'action', sortable: false }
+//     ]
+//   })
+// })
 </script>
