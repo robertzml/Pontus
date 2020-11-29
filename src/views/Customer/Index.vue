@@ -13,11 +13,18 @@
     </v-col>
 
     <v-col cols="12">
+      <customer-list @show-item="showItem"></customer-list>
       <v-slide-x-transition leave-absolute>
         <keep-alive>
           <component v-bind:is="tab"></component>
         </keep-alive>
       </v-slide-x-transition>
+    </v-col>
+
+    <v-col cols="12">
+      <v-navigation-drawer v-model="drawer" fixed right temporary width="620">
+        <customer-details :info="currentCustomer"></customer-details>
+      </v-navigation-drawer>
     </v-col>
   </v-row>
 </template>
@@ -26,6 +33,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import CustomerList from './Section/CustomerList.vue'
 import CustomerDetails from './Section/CustomerDetails.vue'
+import { ICustomerData, createCustomer } from '@/models/customer'
 
 /**
  * 客户页面视图
@@ -38,17 +46,29 @@ import CustomerDetails from './Section/CustomerDetails.vue'
   },
 
   setup() {
-    console.log('setup in customer index')
+    // console.log('setup in customer index')
   }
 })
 export default class CustomerIndex extends Vue {
   tab = ''
+
+  drawer = false
+
+  currentCustomer: ICustomerData = createCustomer()
 
   /**
    * 显示客户列表
    */
   showList(): void {
     this.tab = 'CustomerList'
+  }
+
+  /**
+   * 显示客户信息
+   */
+  showItem(item: ICustomerData): void {
+    this.currentCustomer = item
+    this.drawer = true
   }
 
   refresh(): void {

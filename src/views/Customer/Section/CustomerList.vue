@@ -12,6 +12,12 @@
             <template v-slot:[`item.type`]="{ item }">
               {{ $util.customerType(item.type) }}
             </template>
+            <template v-slot:[`item.action`]="{ item }">
+              <v-btn small color="success" @click="viewItem(item)">
+                <v-icon left dark>mdi-card-search</v-icon>
+                查看
+              </v-btn>
+            </template>
           </v-data-table>
         </v-card-text>
       </v-card>
@@ -22,6 +28,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { getCustomerRepository, CustomerContext } from '@/composables/customerRepository'
+import { ICustomerData } from '@/models/customer'
 
 /**
  * 客户列表部件
@@ -55,5 +62,13 @@ export default class CustomerList extends Vue {
   ]
 
   ctx!: CustomerContext
+
+  /**
+   * 显示客户
+   * @event show-item
+   */
+  viewItem(item: ICustomerData): void {
+    this.$emit('show-item', item)
+  }
 }
 </script>

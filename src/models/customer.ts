@@ -33,3 +33,19 @@ export interface ICustomerData {
   // 状态
   status: number
 }
+
+export function createCustomer(): ICustomerData {
+  return {
+    id: 0,
+    name: '',
+    number: '',
+    address: '',
+    telephone: '',
+    contact: '',
+    contactTelephone: '',
+    identityCard: '',
+    type: 0,
+    remark: '',
+    status: -1
+  }
+}
