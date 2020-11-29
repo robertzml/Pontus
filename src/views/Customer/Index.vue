@@ -6,7 +6,6 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
-          <v-btn v-if="tab != 'CustomerList'" text color="amber accent-4" @click.stop="showList">返回</v-btn>
           <v-btn text @click.stop="refresh">刷新</v-btn>
         </v-toolbar-items>
       </v-toolbar>
@@ -14,15 +13,10 @@
 
     <v-col cols="12">
       <customer-list @show-item="showItem"></customer-list>
-      <v-slide-x-transition leave-absolute>
-        <keep-alive>
-          <component v-bind:is="tab"></component>
-        </keep-alive>
-      </v-slide-x-transition>
     </v-col>
 
     <v-col cols="12">
-      <v-navigation-drawer v-model="drawer" fixed right temporary width="620">
+      <v-navigation-drawer v-model="drawer" fixed right temporary width="650">
         <customer-details :info="currentCustomer"></customer-details>
       </v-navigation-drawer>
     </v-col>
@@ -33,7 +27,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import CustomerList from './Section/CustomerList.vue'
 import CustomerDetails from './Section/CustomerDetails.vue'
-import { ICustomerData, createCustomer } from '@/models/customer'
+import { ICustomerData } from '@/models/customer'
 
 /**
  * 客户页面视图
@@ -50,17 +44,17 @@ import { ICustomerData, createCustomer } from '@/models/customer'
   }
 })
 export default class CustomerIndex extends Vue {
-  tab = ''
-
   drawer = false
 
-  currentCustomer: ICustomerData = createCustomer()
-
   /**
-   * 显示客户列表
+   * 选中客户
    */
-  showList(): void {
-    this.tab = 'CustomerList'
+  currentCustomer!: ICustomerData
+
+  data(): { currentCustomer: ICustomerData | undefined } {
+    return {
+      currentCustomer: undefined
+    }
   }
 
   /**
@@ -71,8 +65,11 @@ export default class CustomerIndex extends Vue {
     this.drawer = true
   }
 
+  /**
+   * 刷新列表
+   */
   refresh(): void {
-    console.log('refresh')
+    // getCustomerRepository()
   }
 }
 </script>

@@ -43,13 +43,19 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import { ICustomerData } from '@/models/customer'
+import { ICustomerData, createCustomer } from '@/models/customer'
 
 /**
  * 客户信息部件
  */
 @Component
 export default class CustomerDetails extends Vue {
-  @Prop() info!: ICustomerData
+  @Prop({
+    default: () => {
+      return createCustomer()
+    },
+    required: true
+  })
+  info!: ICustomerData
 }
 </script>
