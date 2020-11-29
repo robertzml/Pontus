@@ -5,7 +5,8 @@ const topRoutes: Array<RouteConfig> = [
     path: '/',
     name: 'Home',
     meta: {
-      text: '主页'
+      text: '主页',
+      icon: 'mdi-home'
     },
     component: () => import('@/views/Home.vue')
   },
@@ -14,7 +15,61 @@ const topRoutes: Array<RouteConfig> = [
     path: '',
     meta: {
       text: '信息管理',
-      model: false,
+      icon: 'mdi-contacts',
+      roles: [1, 2, 3]
+    }
+  },
+  {
+    name: 'stock',
+    path: '',
+    meta: {
+      text: '冷库租赁',
+      icon: 'mdi-cart',
+      roles: [1, 2, 3]
+    }
+  },
+  {
+    name: 'store',
+    path: '',
+    meta: {
+      text: '库存管理',
+      icon: 'mdi-store',
+      roles: [1, 2, 3]
+    }
+  },
+  {
+    name: 'expense',
+    path: '',
+    meta: {
+      text: '费用管理',
+      icon: 'mdi-cash-usd',
+      roles: [1, 2, 3]
+    }
+  },
+  {
+    name: 'statistic',
+    path: '',
+    meta: {
+      text: '统计报表',
+      icon: 'mdi-chart-bar',
+      roles: [1, 2, 3]
+    }
+  },
+  {
+    name: 'user',
+    path: '',
+    meta: {
+      text: '用户管理',
+      icon: 'mdi-account-group',
+      roles: [1, 2, 3]
+    }
+  },
+  {
+    name: 'settings',
+    path: '',
+    meta: {
+      text: '系统设置',
+      icon: 'mdi-wrench',
       roles: [1, 2, 3]
     }
   },
@@ -23,7 +78,7 @@ const topRoutes: Array<RouteConfig> = [
     name: 'About',
     meta: {
       text: '帮助',
-      model: false,
+      icon: 'mdi-help-circle',
       roles: [1, 2, 3]
     },
     // route level code-splitting
