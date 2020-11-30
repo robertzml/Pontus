@@ -15,6 +15,7 @@
     </v-app-bar>
 
     <v-main>
+      <Tab></Tab>
       <v-container fluid class="pa-0">
         <router-view></router-view>
       </v-container>
@@ -23,16 +24,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, Vue } from 'vue-property-decorator'
 import Menu from '@/components/Menu.vue'
+import Tab from '@/components/Tab.vue'
 
-export default Vue.extend({
-  name: 'App',
-
+@Component({
   components: {
-    Menu
-  },
-
-  data: () => ({})
+    Menu,
+    Tab
+  }
 })
+export default class App extends Vue {}
 </script>

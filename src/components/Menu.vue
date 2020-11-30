@@ -20,6 +20,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { RouteConfig } from 'vue-router'
 import { routes } from '@/router/menu'
+import bus from '@/plugins/bus'
 
 @Component
 export default class Menu extends Vue {
@@ -36,6 +37,8 @@ export default class Menu extends Vue {
     if (item.path) {
       if (this.$router.currentRoute.path != item.path) {
         this.$router.push({ path: item.path })
+
+        bus.$emit('menu', item.name)
       }
     }
   }
