@@ -35,7 +35,6 @@ import { ICustomerData } from '@/models/customer'
  */
 @Component({
   setup() {
-    console.log('setup in list')
     const ctx = getCustomerRepository()
 
     return {

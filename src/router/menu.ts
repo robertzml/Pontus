@@ -99,6 +99,17 @@ const menuRoutes: Array<RouteConfig> = [
       model: false,
       roles: [1, 2, 3]
     }
+  },
+  {
+    path: '/contract',
+    name: 'contract',
+    component: () => import('@/views/Contract/Index.vue'),
+    meta: {
+      text: '合同管理',
+      group: 'info',
+      model: false,
+      roles: [1, 2, 3]
+    }
   }
 ]
 

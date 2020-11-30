@@ -35,10 +35,10 @@ export default class Menu extends Vue {
    */
   navTo(item: RouteConfig): void {
     if (item.path) {
-      if (this.$router.currentRoute.path != item.path) {
-        this.$router.push({ path: item.path })
+      bus.$emit('menu', item)
 
-        bus.$emit('menu', item.name)
+      if (this.$router.currentRoute.path != item.path) {
+        // this.$router.push({ path: item.path })
       }
     }
   }
