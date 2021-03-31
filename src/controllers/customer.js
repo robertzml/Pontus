@@ -21,5 +21,11 @@ export default {
   async update(entity) {
     const res = await axios._post({ url: '/customer/update', data: entity })
     return res.data
+  },
+
+  // 强制删除合同
+  async forceDelete(data) {
+    const res = await axios._postqs({ url: '/customer/forceDelete', params: data })
+    return res.data
   }
 }
