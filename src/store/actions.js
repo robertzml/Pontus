@@ -28,14 +28,14 @@ export default {
     axios
       ._get({ url: '/utility/getEntityStatus' })
       .then(
-        res => {
+        (res) => {
           commit('entityStatus', res.data)
         },
-        err => {
+        (err) => {
           console.log('dict' + err)
         }
       )
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
       })
   },

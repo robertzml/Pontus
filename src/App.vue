@@ -1,6 +1,12 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-if="isLogin && userInfo.userGroupId < 6" v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" :width="220" app>
+    <v-navigation-drawer
+      v-if="isLogin && userInfo.userGroupId < 6"
+      v-model="drawer"
+      :clipped="$vuetify.breakpoint.lgAndUp"
+      :width="220"
+      app
+    >
       <navigation-bar></navigation-bar>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app dense color="blue darken-3">
@@ -29,7 +35,7 @@
     </v-app-bar>
 
     <v-main>
-      <v-container fluid style="height:50px;" class="px-4 pb-0" v-if="userInfo.userGroupId == 6">
+      <v-container fluid style="height: 50px" class="px-4 pb-0" v-if="userInfo.userGroupId == 6">
         <forklift-menu></forklift-menu>
       </v-container>
       <v-container fluid class="px-1">
@@ -76,7 +82,7 @@ export default {
       this.$router.push({ name: 'home' })
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.getToken()
     this.initDict()
   }

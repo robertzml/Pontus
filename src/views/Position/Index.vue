@@ -26,7 +26,7 @@
     </v-col>
 
     <v-col cols="9">
-      <v-container class="pa-0" fluid style="max-height:310px;overflow-y:auto;overflow-x:hidden;">
+      <v-container class="pa-0" fluid style="max-height: 310px; overflow-y: auto; overflow-x: hidden">
         <v-row>
           <v-col v-for="item in shelfListData" :key="item.id" :value="item" cols="12" sm="6" md="4" class="pt-0">
             <v-card class="align-center" @click="viewShelf(item)">
@@ -35,7 +35,9 @@
                   <v-list-item-subtitle class="mb-2">编号：{{ item.number }}</v-list-item-subtitle>
                   <v-list-item-subtitle class="mb-2">类型：{{ item.type | shelfType }}</v-list-item-subtitle>
                   <v-list-item-subtitle class="mb-2">入口编号：{{ item.entranceNumber }}</v-list-item-subtitle>
-                  <v-list-item-subtitle class="mb-2">排数: {{ item.row }} 层数: {{ item.layer }} 进数: {{ item.depth }}</v-list-item-subtitle>
+                  <v-list-item-subtitle class="mb-2"
+                    >排数: {{ item.row }} 层数: {{ item.layer }} 进数: {{ item.depth }}</v-list-item-subtitle
+                  >
                   <v-list-item-subtitle>备注: {{ item.remark }}</v-list-item-subtitle>
                 </v-list-item-content>
 
@@ -72,28 +74,28 @@ export default {
     sShelf: null
   }),
   watch: {
-    sWarehouse: function(val) {
+    sWarehouse: function (val) {
       this.sShelf = null
       this.loadShelf(val.id)
     }
   },
   methods: {
-    init: function() {
+    init: function () {
       this.loadWarehouse()
     },
 
-    loadWarehouse: function() {
+    loadWarehouse: function () {
       let vm = this
-      warehouse.getList(2).then(res => {
+      warehouse.getList(2).then((res) => {
         vm.warehouseListData = res
       })
     },
 
-    loadShelf: function(warehouseId) {
+    loadShelf: function (warehouseId) {
       let vm = this
-      shelf.getList(warehouseId).then(res => {
+      shelf.getList(warehouseId).then((res) => {
         vm.shelfListData = res
-        vm.shelfListData.forEach(r => {
+        vm.shelfListData.forEach((r) => {
           r.img = require('@/assets/shelf' + r.type + '.png')
         })
       })
@@ -104,7 +106,7 @@ export default {
       this.$refs.listMod.init(item.id)
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.init()
   }
 }

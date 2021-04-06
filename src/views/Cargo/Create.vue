@@ -1,9 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="800px">
     <v-card class="mx-auto">
-      <v-card-title class="cyan">
-        货品信息
-      </v-card-title>
+      <v-card-title class="cyan"> 货品信息 </v-card-title>
 
       <v-card-text>
         <v-alert dense type="info" class="mt-2 text-body-2">名称、规格不能完全相同</v-alert>
@@ -65,7 +63,7 @@ export default {
       assetUnit: 0,
       remark: ''
     },
-    nameRules: [v => !!v || '请输入货品名称']
+    nameRules: [(v) => !!v || '请输入货品名称']
   }),
   methods: {
     init(customerId) {
@@ -92,7 +90,7 @@ export default {
         })
         let vm = this
 
-        cargo.create(this.cargoInfo).then(res => {
+        cargo.create(this.cargoInfo).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加货品成功')
             vm.$emit('close')

@@ -61,19 +61,19 @@ export default {
     }
   },
   methods: {
-    navTo: function(item) {
+    navTo: function (item) {
       this.$router.push({ name: item.name })
     },
 
     makeMenu(groupId) {
       this.items = []
-      topRoutes.forEach(item => {
+      topRoutes.forEach((item) => {
         if (item.meta.roles.includes(groupId)) {
           if (item.children != undefined) {
             item.children = []
           }
 
-          menuRoutes.forEach(sub => {
+          menuRoutes.forEach((sub) => {
             if (sub.group == item.name) {
               if (sub.meta.roles.includes(groupId)) {
                 item.children.push(sub)
@@ -85,7 +85,7 @@ export default {
       })
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.makeMenu(this.$store.state.user.userGroupId)
   }
 }

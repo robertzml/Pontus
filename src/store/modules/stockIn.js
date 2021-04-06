@@ -64,7 +64,7 @@ export default {
     },
 
     // 刷新操作
-    refresh: state => {
+    refresh: (state) => {
       state.refreshEvent = !state.refreshEvent
     }
   }

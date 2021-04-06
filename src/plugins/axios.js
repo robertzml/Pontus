@@ -9,7 +9,7 @@ const ax = axios.create({
 })
 
 // get
-export const _get = async req => {
+export const _get = async (req) => {
   try {
     const res = await ax.get(req.url, { params: req.params })
     return res
@@ -20,7 +20,7 @@ export const _get = async req => {
 }
 
 // post
-export const _post = async req => {
+export const _post = async (req) => {
   try {
     const res = await ax.post(req.url, req.data)
     return res
@@ -30,7 +30,7 @@ export const _post = async req => {
   }
 }
 
-export const _postqs = async req => {
+export const _postqs = async (req) => {
   try {
     const res = await ax.post(req.url, null, { params: req.params })
     return res

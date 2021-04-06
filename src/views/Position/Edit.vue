@@ -82,7 +82,7 @@ export default {
         return
       } else {
         let vm = this
-        position.getById(positionId).then(res => {
+        position.getById(positionId).then((res) => {
           vm.positionInfo = res
         })
       }
@@ -101,7 +101,7 @@ export default {
         if (this.positionId == 0) {
           return
         } else {
-          position.update(this.positionInfo).then(res => {
+          position.update(this.positionInfo).then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '修改仓位信息成功')
               vm.$emit('update')

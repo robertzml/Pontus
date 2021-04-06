@@ -59,7 +59,7 @@ export default {
     },
 
     // 刷新操作
-    refreshStockIn: state => {
+    refreshStockIn: (state) => {
       state.stockInRefreshEvent = !state.stockInRefreshEvent
     },
 
@@ -74,7 +74,7 @@ export default {
     },
 
     // 刷新操作
-    refreshStockOut: state => {
+    refreshStockOut: (state) => {
       state.stockOutRefreshEvent = !state.stockOutRefreshEvent
     }
   }

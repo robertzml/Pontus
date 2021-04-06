@@ -78,7 +78,9 @@
         <v-btn class="mt-6 mr-4" outlined color="red" @click.stop="startGenerate">开始生成</v-btn>
         <v-btn class="mt-6" text color="primary" @click="sheet = !sheet">关闭</v-btn>
         <div class="mt-2">
-          <p>货架号：{{ shelfInfo.number }} 货架排数： {{ shelfInfo.row }} 货架层数：{{ shelfInfo.layer }} 货架进数：{{ shelfInfo.depth }}</p>
+          <p>
+            货架号：{{ shelfInfo.number }} 货架排数： {{ shelfInfo.row }} 货架层数：{{ shelfInfo.layer }} 货架进数：{{ shelfInfo.depth }}
+          </p>
           <p>已有仓位数量：{{ positionCount }}</p>
         </div>
       </v-sheet>
@@ -118,11 +120,11 @@ export default {
       this.positionInfo = {}
 
       let vm = this
-      shelf.find(shelfId).then(res => {
+      shelf.find(shelfId).then((res) => {
         vm.shelfInfo = res
       })
 
-      position.getList({ shelfId }).then(res => {
+      position.getList({ shelfId }).then((res) => {
         vm.positionListData = res
         vm.positionCount = vm.positionListData.length
       })
@@ -141,7 +143,7 @@ export default {
 
       let vm = this
       this.loading = true
-      position.generate({ shelfId: this.shelfInfo.id }).then(res => {
+      position.generate({ shelfId: this.shelfInfo.id }).then((res) => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '生成仓位成功')
           vm.loading = false
@@ -163,14 +165,14 @@ export default {
 
     selectPosition(depth) {
       let vm = this
-      position.find({ shelfId: this.shelfInfo.id, row: this.sRow, layer: this.sLayer, depth: depth }).then(res => {
+      position.find({ shelfId: this.shelfInfo.id, row: this.sRow, layer: this.sLayer, depth: depth }).then((res) => {
         vm.positionInfo = res
       })
     },
 
     // 根据状态显示仓位颜色
     positionColor(row, layer, depth) {
-      let pos = this.positionListData.find(r => r.row == row && r.layer == layer && r.depth == depth)
+      let pos = this.positionListData.find((r) => r.row == row && r.layer == layer && r.depth == depth)
       if (pos == undefined) {
         return
       }

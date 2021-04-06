@@ -4,7 +4,7 @@ export default {
     window.sessionStorage.setItem('token', JSON.stringify(userInfo))
   },
 
-  logout: state => {
+  logout: (state) => {
     state.user = {
       login: false,
       id: '',
@@ -15,7 +15,7 @@ export default {
     window.sessionStorage.removeItem('token')
   },
 
-  getToken: state => {
+  getToken: (state) => {
     let token = window.sessionStorage.getItem('token')
     if (token == null) {
       return
@@ -42,7 +42,7 @@ export default {
     state.alertMessage.display = true
   },
 
-  alertClose: state => {
+  alertClose: (state) => {
     state.alertMessage.display = false
   },
 
