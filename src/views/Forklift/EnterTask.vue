@@ -28,9 +28,7 @@
                 <v-text-field label="货架码" v-model="shelfCode" clearable :counter="12" :rules="shelfCodeRules" ref="shelfCodeInput"></v-text-field>
               </v-col>
               <v-col cols="6" sm="6" md="2">
-                <v-btn color="success" class="mt-4 ml-4" large :disabled="!valid" :loading="loading" @click="enter">
-                  货 物 上 架
-                </v-btn>
+                <v-btn color="success" class="mt-4 ml-4" large :disabled="!valid" :loading="loading" @click="enter"> 货 物 上 架 </v-btn>
               </v-col>
               <v-col cols="6" sm="6" md="6">
                 <div class="text-subtitle-1">
@@ -215,8 +213,8 @@ export default {
     shelfCode: '',
     taskList: [],
     carryOutList: [],
-    trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
-    shelfCodeRules: [v => !!v || '请输入货架码', v => (v && v.length == 12) || '请输入正确货架码'],
+    trayCodeRules: [(v) => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
+    shelfCodeRules: [(v) => !!v || '请输入货架码', (v) => (v && v.length == 12) || '请输入正确货架码'],
     enterPosition: ''
   }),
   methods: {
@@ -274,7 +272,7 @@ export default {
         let req = { trayCode: this.trayCode, shelfCode: this.shelfCode.toUpperCase(), userId: this.$store.state.user.id }
         carryIn
           .enterTask(req)
-          .then(res => {
+          .then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '入库上架成功')
               this.trayCode = ''
@@ -295,7 +293,7 @@ export default {
       }
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.refresh()
   }
 }

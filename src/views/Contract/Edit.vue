@@ -21,14 +21,7 @@
               <v-select :items="$dict.contractType" label="合同类型*" v-model="contractInfo.type" required></v-select>
             </v-col>
             <v-col cols="6" md="6" sm="6">
-              <v-menu
-                v-model="signDateMenu"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
+              <v-menu v-model="signDateMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
                   <v-text-field v-model="contractInfo.signDate" label="签订日期" prepend-icon="event" readonly v-on="on"></v-text-field>
                 </template>
@@ -36,14 +29,7 @@
               </v-menu>
             </v-col>
             <v-col cols="6" md="6" sm="6">
-              <v-menu
-                v-model="closeDateMenu"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
+              <v-menu v-model="closeDateMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
                   <v-text-field v-model="contractInfo.closeDate" label="关闭日期" prepend-icon="event" readonly v-on="on"></v-text-field>
                 </template>
@@ -109,16 +95,16 @@ export default {
       unitPrice: 0,
       remark: ''
     },
-    nameRules: [v => !!v || '请输入合同名称'],
-    priceRule: [v => /^[0-9]+(.[0-9]{1,2})?$/.test(v) || '请输入正确冷藏费'],
-    digitalRules: [v => /^\d+$/.test(v) || '请输入数字']
+    nameRules: [(v) => !!v || '请输入合同名称'],
+    priceRule: [(v) => /^[0-9]+(.[0-9]{1,2})?$/.test(v) || '请输入正确冷藏费'],
+    digitalRules: [(v) => /^\d+$/.test(v) || '请输入数字']
   }),
   computed: {
     parameter1Rules() {
       let rules = []
 
       if (this.contractInfo.type == 1) {
-        const rule = v => /^\d+$/.test(v) || '请输入数字'
+        const rule = (v) => /^\d+$/.test(v) || '请输入数字'
         rules.push(rule)
       }
 
@@ -126,7 +112,7 @@ export default {
     }
   },
   methods: {
-    init: function(id) {
+    init: function (id) {
       this.contractId = id
       if (this.contractId == 0) {
         this.contractInfo = {
@@ -142,7 +128,7 @@ export default {
         }
       } else {
         let vm = this
-        contract.find(id).then(res => {
+        contract.find(id).then((res) => {
           vm.contractInfo = res
           vm.contractInfo.signDate = vm.contractInfo.signDate.substr(0, 10)
           if (vm.contractInfo.closeDate != null && vm.contractInfo.closeDate != '') {
@@ -156,7 +142,7 @@ export default {
       this.$refs.form.resetValidation()
     },
 
-    dayFormat: function(val) {
+    dayFormat: function (val) {
       if (val != null || val != undefined) {
         let date = new Date(val)
         return date.getDate()
@@ -176,7 +162,7 @@ export default {
         this.contractInfo.userName = this.$store.state.user.name
 
         if (this.contractId == 0) {
-          contract.create(this.contractInfo).then(res => {
+          contract.create(this.contractInfo).then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '添加合同成功')
               vm.$emit('update')
@@ -188,7 +174,7 @@ export default {
             }
           })
         } else {
-          contract.update(this.contractInfo).then(res => {
+          contract.update(this.contractInfo).then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '修改合同成功')
               vm.$emit('update')

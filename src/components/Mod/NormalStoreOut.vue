@@ -1,10 +1,8 @@
 <template>
   <v-sheet class="transparent">
     <v-data-table :headers="taskHeaders" :items="taskInfoList" hide-default-footer disable-pagination>
-      <template v-slot:item.action="{ item }">
-        <v-btn small color="success" class="mr-2" @click="editItem(item)">
-          编辑
-        </v-btn>
+      <template v-slot:[`item.action`]="{ item }">
+        <v-btn small color="success" class="mr-2" @click="editItem(item)"> 编辑 </v-btn>
         <v-btn small color="warning" @click="deleteItem(item)">删除</v-btn>
       </template>
 
@@ -100,14 +98,14 @@ export default {
     editedIndex: -1
   }),
   computed: {
-    totalOutCount: function() {
-      return this.taskInfoList.reduce(function(acc, cur) {
+    totalOutCount: function () {
+      return this.taskInfoList.reduce(function (acc, cur) {
         return acc + parseInt(cur.outCount)
       }, 0)
     }
   },
   watch: {
-    'editedItem.outCount': function(val) {
+    'editedItem.outCount': function (val) {
       this.editedItem.outWeight = ((val * this.editedItem.unitWeight) / 1000).toFixed(4)
     }
   },
@@ -128,7 +126,7 @@ export default {
         return
       }
 
-      if (this.taskInfoList.findIndex(r => r.storeId == item.id) != -1) {
+      if (this.taskInfoList.findIndex((r) => r.storeId == item.id) != -1) {
         return
       }
 

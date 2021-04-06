@@ -36,7 +36,7 @@ export default {
         this.loading = true
       })
 
-      cargo.delete({ id: this.cargoId }).then(res => {
+      cargo.delete({ id: this.cargoId }).then((res) => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '货品已删除')
           vm.$emit('close')

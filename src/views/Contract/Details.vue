@@ -75,13 +75,13 @@ export default {
   }),
   computed: {
     ...mapState({
-      info: state => state.contract.contractInfo,
-      refreshEvent: state => state.contract.refreshEvent
+      info: (state) => state.contract.contractInfo,
+      refreshEvent: (state) => state.contract.refreshEvent
     }),
     ...mapGetters(['userInfo'])
   },
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadInfo()
     }
   },
@@ -94,7 +94,7 @@ export default {
     }),
     loadInfo() {
       let vm = this
-      contract.find(this.info.id).then(res => {
+      contract.find(this.info.id).then((res) => {
         vm.setContractInfo(res)
       })
     },
@@ -105,7 +105,7 @@ export default {
       })
 
       let vm = this
-      contract.forceDelete({ id: this.info.id }).then(res => {
+      contract.forceDelete({ id: this.info.id }).then((res) => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '删除合同成功')
           vm.loading = false

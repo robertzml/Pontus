@@ -11,15 +11,7 @@
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row>
             <v-col cols="10">
-              <v-text-field
-                label="托盘码*"
-                v-model="trayCode"
-                :counter="6"
-                autofocus
-                @input="searchTray"
-                :rules="trayCodeRules"
-                @keyup.enter="searchTray"
-              >
+              <v-text-field label="托盘码*" v-model="trayCode" :counter="6" autofocus @input="searchTray" :rules="trayCodeRules" @keyup.enter="searchTray">
               </v-text-field>
               <v-text-field v-show="false"></v-text-field>
             </v-col>
@@ -163,8 +155,8 @@ export default {
     loading: false,
     stockOutInfo: {},
     carryOutList: [],
-    trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
-    numberRules: [v => /^\d+$/.test(v) || '请输入数字'],
+    trayCodeRules: [(v) => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
+    numberRules: [(v) => /^\d+$/.test(v) || '请输入数字'],
     trayCode: ''
   }),
   methods: {
@@ -206,7 +198,7 @@ export default {
           return
         }
 
-        if (this.carryOutList.some(r => r.moveCount > r.storeCount || r.moveWeight > r.storeWeight)) {
+        if (this.carryOutList.some((r) => r.moveCount > r.storeCount || r.moveWeight > r.storeWeight)) {
           this.$store.commit('alertError', '出库数量、出库重量不能大于在库')
           return
         }
@@ -223,7 +215,7 @@ export default {
         }
 
         let vm = this
-        stockOut.scanCarryOut(data).then(res => {
+        stockOut.scanCarryOut(data).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '出库提交成功')
             vm.$emit('close')

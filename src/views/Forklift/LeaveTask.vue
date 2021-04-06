@@ -15,9 +15,7 @@
     </v-col>
     <v-col cols="12" sm="12" md="10">
       <v-card class="mx-auto">
-        <v-subheader>
-          扫码下架
-        </v-subheader>
+        <v-subheader> 扫码下架 </v-subheader>
 
         <v-card-text class="pt-0">
           <v-form ref="form" v-model="valid" lazy-validation>
@@ -47,9 +45,7 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="6" sm="6" md="2">
-                <v-btn color="success" class="mt-4 ml-8" large :disabled="!valid" :loading="loading" @click="leave">
-                  货 物 下 架
-                </v-btn>
+                <v-btn color="success" class="mt-4 ml-8" large :disabled="!valid" :loading="loading" @click="leave"> 货 物 下 架 </v-btn>
               </v-col>
             </v-row>
           </v-form>
@@ -72,9 +68,7 @@
                       <v-card :color="checkIsCarryOut(item) ? 'green' : ''">
                         <v-card-title class="subheading font-weight-bold">
                           托盘码：{{ item.trayCode }}
-                          <span v-if="checkIsCarryOut(item)" class="red--text ml-2">
-                            出库任务托盘
-                          </span>
+                          <span v-if="checkIsCarryOut(item)" class="red--text ml-2"> 出库任务托盘 </span>
                         </v-card-title>
 
                         <v-list dense>
@@ -164,8 +158,8 @@ export default {
     trayCode: '',
     shelfCode: '',
     storeList: [],
-    shelfCodeRules: [v => !!v || '请输入货架码', v => (v && v.length == 12) || '请输入正确货架码'],
-    trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入正确托盘码']
+    shelfCodeRules: [(v) => !!v || '请输入货架码', (v) => (v && v.length == 12) || '请输入正确货架码'],
+    trayCodeRules: [(v) => /^[0-9]{6}$/.test(v) || '请输入正确托盘码']
   }),
   methods: {
     // 载入待出库仓位
@@ -225,7 +219,7 @@ export default {
 
         carryOut
           .leaveTask(req)
-          .then(res => {
+          .then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '出库下架成功')
               vm.trayCode = ''
@@ -244,7 +238,7 @@ export default {
       }
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.valid = false
     this.loading = false
     this.outPositionList = []

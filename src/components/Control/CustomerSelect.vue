@@ -39,12 +39,12 @@ export default {
   data: () => ({
     customerData: [],
     selectedCustomer: null,
-    customerRules2: [v => (!!v && v.id != 0) || '请选择客户']
+    customerRules2: [(v) => (!!v && v.id != 0) || '请选择客户']
   }),
   watch: {
-    customerId: function() {
+    customerId: function () {
       if (this.customerId) {
-        this.selectedCustomer = this.customerData.find(r => r.id == this.customerId)
+        this.selectedCustomer = this.customerData.find((r) => r.id == this.customerId)
       } else {
         this.selectedCustomer = null
       }
@@ -55,7 +55,7 @@ export default {
       let rules = []
 
       if (this.required) {
-        const rule = v => (!!v && v.id != 0) || '请选择客户'
+        const rule = (v) => (!!v && v.id != 0) || '请选择客户'
         rules.push(rule)
       }
 
@@ -79,9 +79,9 @@ export default {
       }
     }
   },
-  mounted: function() {
+  mounted: function () {
     let vm = this
-    customer.getList().then(res => {
+    customer.getList().then((res) => {
       vm.customerData = res
     })
   }

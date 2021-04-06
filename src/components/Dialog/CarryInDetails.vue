@@ -34,12 +34,7 @@
               <v-text-field label="货品名称" v-model="carryInTask.cargoName" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6">
-              <v-text-field
-                label="货品类别"
-                :value="`${carryInTask.categoryNumber} - ${carryInTask.categoryName}`"
-                hide-details
-                readonly
-              ></v-text-field>
+              <v-text-field label="货品类别" :value="`${carryInTask.categoryNumber} - ${carryInTask.categoryName}`" hide-details readonly></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-text-field label="规格" v-model="carryInTask.specification" hide-details readonly></v-text-field>

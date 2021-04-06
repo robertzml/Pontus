@@ -12,15 +12,7 @@
               <v-text-field label="所属仓库" v-model="warehouseInfo.name" readonly></v-text-field>
             </v-col>
             <v-col cols="4" md="4" sm="6">
-              <v-text-field
-                label="编号*"
-                v-model="shelfInfo.number"
-                :rules="numberRules"
-                hint="2位：01"
-                counter="2"
-                persistent-hint
-                required
-              ></v-text-field>
+              <v-text-field label="编号*" v-model="shelfInfo.number" :rules="numberRules" hint="2位：01" counter="2" persistent-hint required></v-text-field>
             </v-col>
             <v-col cols="4" md="4" sm="6">
               <v-select :items="this.$dict.shelfType" label="类型*" v-model="shelfInfo.type" required></v-select>
@@ -29,12 +21,7 @@
               <v-text-field label="入口数" v-model="shelfInfo.entrance" type="number" :rules="digitRules"></v-text-field>
             </v-col>
             <v-col cols="6" md="6" sm="6">
-              <v-text-field
-                label="入口编号"
-                v-model="shelfInfo.entranceNumber"
-                hint="每个入口一位，用-连接，如：X或 X-Y"
-                persistent-hint
-              ></v-text-field>
+              <v-text-field label="入口编号" v-model="shelfInfo.entranceNumber" hint="每个入口一位，用-连接，如：X或 X-Y" persistent-hint></v-text-field>
             </v-col>
             <v-col cols="4" md="4" sm="6">
               <v-text-field label="排数" v-model="shelfInfo.row" type="number" :rules="digitRules"></v-text-field>
@@ -87,16 +74,16 @@ export default {
       depth: 0,
       remark: ''
     },
-    numberRules: [v => (!!v && v.length <= 2) || '请输入编号，长度2位'],
-    digitRules: [v => (v != null && /^\d+/.test(v)) || '请输入数字']
+    numberRules: [(v) => (!!v && v.length <= 2) || '请输入编号，长度2位'],
+    digitRules: [(v) => (v != null && /^\d+/.test(v)) || '请输入数字']
   }),
   methods: {
-    init: function(warehouseId, shelfId) {
+    init: function (warehouseId, shelfId) {
       this.warehouseId = warehouseId
       this.shelfId = shelfId
 
       let vm = this
-      warehouse.find(warehouseId).then(res => {
+      warehouse.find(warehouseId).then((res) => {
         vm.warehouseInfo = res
       })
 
@@ -114,7 +101,7 @@ export default {
         }
       } else {
         let vm = this
-        shelf.find(shelfId).then(res => {
+        shelf.find(shelfId).then((res) => {
           vm.shelfInfo = res
         })
       }
@@ -124,7 +111,7 @@ export default {
       this.$refs.form.resetValidation()
     },
 
-    submit: function() {
+    submit: function () {
       if (this.$refs.form.validate()) {
         this.$nextTick(() => {
           this.loading = true
@@ -132,7 +119,7 @@ export default {
 
         let vm = this
         if (this.shelfId == 0) {
-          shelf.create(this.shelfInfo).then(res => {
+          shelf.create(this.shelfInfo).then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '添加货架成功')
               vm.$emit('update')
@@ -144,7 +131,7 @@ export default {
             }
           })
         } else {
-          shelf.update(this.shelfInfo).then(res => {
+          shelf.update(this.shelfInfo).then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '修改货架成功')
               vm.$emit('update')

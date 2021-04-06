@@ -21,15 +21,9 @@
               {{ item.status | displayStatus }}
             </template>
             <template v-slot:item.action="{ item }">
-              <v-btn small color="primary" @click="viewTaskItem(item)">
-                信息
-              </v-btn>
-              <v-btn small color="success" class="ml-2" @click="viewCarryIn(item)">
-                搬入
-              </v-btn>
-              <v-btn small color="success" class="ml-2" @click="viewCarryOut(item)">
-                搬出
-              </v-btn>
+              <v-btn small color="primary" @click="viewTaskItem(item)"> 信息 </v-btn>
+              <v-btn small color="success" class="ml-2" @click="viewCarryIn(item)"> 搬入 </v-btn>
+              <v-btn small color="success" class="ml-2" @click="viewCarryOut(item)"> 搬出 </v-btn>
             </template>
           </v-data-table>
         </v-expansion-panel-content>
@@ -139,26 +133,26 @@ export default {
   }),
   computed: {
     ...mapState({
-      refreshEvent: state => state.receipt.stockOutRefreshEvent,
-      stockOutId: state => state.receipt.stockOutId
+      refreshEvent: (state) => state.receipt.stockOutRefreshEvent,
+      stockOutId: (state) => state.receipt.stockOutId
     }),
     // 出库总数量
-    totalCount: function() {
-      return this.taskInfoList.reduce(function(acc, cur) {
+    totalCount: function () {
+      return this.taskInfoList.reduce(function (acc, cur) {
         return acc + cur.outCount
       }, 0)
     },
     // 出库总重量
-    totalWeight: function() {
+    totalWeight: function () {
       return this.taskInfoList
-        .reduce(function(acc, cur) {
+        .reduce(function (acc, cur) {
           return acc + cur.outWeight
         }, 0.0)
         .toFixed(4)
     }
   },
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadStockOut()
       this.loadTaskList()
     }
@@ -168,7 +162,7 @@ export default {
     loadStockOut() {
       if (this.stockOutId) {
         let vm = this
-        stockOut.find(this.stockOutId).then(res => {
+        stockOut.find(this.stockOutId).then((res) => {
           vm.stockOutInfo = res
         })
       }
@@ -178,7 +172,7 @@ export default {
     loadTaskList() {
       if (this.stockOutId) {
         let vm = this
-        stockOut.getTaskList(this.stockOutId).then(res => {
+        stockOut.getTaskList(this.stockOutId).then((res) => {
           vm.taskInfoList = res
         })
       } else {
@@ -194,7 +188,7 @@ export default {
     // 查看搬运清单
     viewCarryIn(item) {
       let vm = this
-      carryIn.listByStockOutTask(item.id).then(res => {
+      carryIn.listByStockOutTask(item.id).then((res) => {
         vm.carryInTaskList = res
       })
 
@@ -204,14 +198,14 @@ export default {
     // 查看搬运出库清点
     viewCarryOut(item) {
       let vm = this
-      carryOut.listByStockOutTask(item.id).then(res => {
+      carryOut.listByStockOutTask(item.id).then((res) => {
         vm.carryOutTaskList = res
       })
 
       this.bottomOut = true
     }
   },
-  activated: function() {
+  activated: function () {
     this.loadStockOut()
     this.loadTaskList()
   }

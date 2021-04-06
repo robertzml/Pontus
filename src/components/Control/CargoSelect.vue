@@ -50,9 +50,9 @@ export default {
     selectedCargo: null
   }),
   watch: {
-    cargoId: function() {
+    cargoId: function () {
       if (this.cargoId) {
-        this.selectedCargo = this.cargoData.find(r => r.id == this.cargoId)
+        this.selectedCargo = this.cargoData.find((r) => r.id == this.cargoId)
       } else {
         this.selectedCargo = null
       }
@@ -63,7 +63,7 @@ export default {
       let rules = []
 
       if (this.required) {
-        const rule = v => (!!v && v.id != 0) || '请选择类别'
+        const rule = (v) => (!!v && v.id != 0) || '请选择类别'
         rules.push(rule)
       }
 
@@ -90,6 +90,6 @@ export default {
       }
     }
   },
-  mounted: function() {}
+  mounted: function () {}
 }
 </script>

@@ -44,12 +44,12 @@ export default {
   methods: {
     loadUserGroup() {
       let vm = this
-      userGroup.getList().then(res => {
+      userGroup.getList().then((res) => {
         vm.userGroupData = res
       })
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.loadUserGroup()
   }
 }

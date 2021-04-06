@@ -3,9 +3,7 @@
     <v-col cols="12">
       <v-tabs v-model="tab" grow>
         <v-tab>图形视图</v-tab>
-        <v-tab>
-          列表视图
-        </v-tab>
+        <v-tab> 列表视图 </v-tab>
       </v-tabs>
 
       <v-tabs-items v-model="tab">
@@ -30,9 +28,7 @@
                   </v-list-item>
 
                   <v-card-actions>
-                    <v-btn small text color="success" @click.stop="viewItem(item)">
-                      查看
-                    </v-btn>
+                    <v-btn small text color="success" @click.stop="viewItem(item)"> 查看 </v-btn>
                   </v-card-actions>
                 </v-card>
               </v-col>
@@ -90,10 +86,10 @@ export default {
     ]
   }),
   computed: mapState({
-    refreshEvent: state => state.warehouse.refreshEvent
+    refreshEvent: (state) => state.warehouse.refreshEvent
   }),
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadList()
     }
   },
@@ -107,9 +103,9 @@ export default {
     // 载入仓库列表
     loadList() {
       let vm = this
-      warehouse.getList().then(res => {
+      warehouse.getList().then((res) => {
         vm.warehouseListData = res
-        vm.warehouseListData.forEach(r => {
+        vm.warehouseListData.forEach((r) => {
           r.src = require('@/assets/warehouse' + r.type + '.png')
         })
       })
@@ -119,7 +115,7 @@ export default {
       this.showDetails()
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.loadList()
   }
 }

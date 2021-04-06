@@ -32,13 +32,7 @@
         <v-text-field :value="$util.billingType(info.billingType)" label="计费方式" hide-details readonly></v-text-field>
       </v-col>
       <v-col cols="3" xl="2" md="3" sm="6">
-        <v-text-field
-          v-model="info.unitPrice"
-          label="冷藏费单价"
-          :suffix="$util.billingTypeUnit(info.billingType)"
-          hide-details
-          readonly
-        ></v-text-field>
+        <v-text-field v-model="info.unitPrice" label="冷藏费单价" :suffix="$util.billingTypeUnit(info.billingType)" hide-details readonly></v-text-field>
       </v-col>
       <v-col cols="3" xl="2" md="3" sm="6">
         <v-text-field v-model="info.vehicleNumber" label="车牌号" hide-details readonly></v-text-field>

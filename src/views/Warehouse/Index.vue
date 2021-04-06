@@ -42,8 +42,8 @@ export default {
   data: () => ({}),
   computed: {
     ...mapState({
-      tab: state => state.warehouse.tab,
-      warehouseInfo: state => state.warehouse.warehouseInfo
+      tab: (state) => state.warehouse.tab,
+      warehouseInfo: (state) => state.warehouse.warehouseInfo
     })
   },
   methods: {
@@ -54,7 +54,7 @@ export default {
       showList: 'warehouse/showList'
     }),
 
-    showCreate: function() {
+    showCreate: function () {
       this.$refs.warehouseEditMod.init(0)
     },
 
@@ -62,7 +62,7 @@ export default {
       this.$refs.warehouseEditMod.init(this.warehouseInfo.id)
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.showList()
   }
 }

@@ -59,7 +59,7 @@ export default {
       this.userId = userId
 
       let vm = this
-      user.find(userId).then(res => {
+      user.find(userId).then((res) => {
         vm.userInfo = res
       })
 
@@ -78,7 +78,7 @@ export default {
 
         let vm = this
 
-        user.update(this.userInfo).then(res => {
+        user.update(this.userInfo).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '修改用户信息成功')
             vm.$emit('update')

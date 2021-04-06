@@ -1,9 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="400px">
     <v-card>
-      <v-card-title class="lime darken-4">
-        下发搬运入库任务
-      </v-card-title>
+      <v-card-title class="lime darken-4"> 下发搬运入库任务 </v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-container fluid>
@@ -51,11 +49,11 @@ export default {
       moveWeight: 0.0,
       remark: ''
     },
-    trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
-    numberRules: [v => /^\d+$/.test(v) || '请输入数字']
+    trayCodeRules: [(v) => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
+    numberRules: [(v) => /^\d+$/.test(v) || '请输入数字']
   }),
   computed: {
-    totalWeight: function() {
+    totalWeight: function () {
       return ((this.carryInInfo.moveCount * this.stockInTask.unitWeight) / 1000).toFixed(4)
     }
   },
@@ -97,7 +95,7 @@ export default {
         this.carryInInfo.moveWeight = this.totalWeight
         this.carryInInfo.checkUserId = this.$store.state.user.id
 
-        carryIn.create(this.carryInInfo).then(res => {
+        carryIn.create(this.carryInInfo).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加任务成功')
             vm.loading = false

@@ -36,7 +36,7 @@ export default {
         this.loading = true
       })
 
-      carryIn.delete({ id: this.taskId }).then(res => {
+      carryIn.delete({ id: this.taskId }).then((res) => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '删除搬运入库任务成功')
           vm.$emit('close')

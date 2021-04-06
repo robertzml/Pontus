@@ -29,7 +29,7 @@ export default {
     loading: false,
     trayCode: '',
     shelfCode: '',
-    shelfCodeRules: [v => !!v || '请输入货架码', v => (v && v.length == 12) || '请输入正确货架码']
+    shelfCodeRules: [(v) => !!v || '请输入货架码', (v) => (v && v.length == 12) || '请输入正确货架码']
   }),
   methods: {
     init(trayCode) {
@@ -51,7 +51,7 @@ export default {
 
         let vm = this
         let req = { trayCode: this.trayCode, shelfCode: this.shelfCode.toUpperCase(), userId: this.$store.state.user.id }
-        carryIn.enterTask(req).then(res => {
+        carryIn.enterTask(req).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '入库上架成功')
             vm.loading = false

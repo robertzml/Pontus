@@ -36,8 +36,8 @@ export default {
   data: () => ({}),
   computed: {
     ...mapState({
-      stockInTab: state => state.receipt.stockInTab,
-      refreshEvent: state => state.receipt.stockInRefreshEvent
+      stockInTab: (state) => state.receipt.stockInTab,
+      refreshEvent: (state) => state.receipt.stockInRefreshEvent
     })
   },
   methods: {
@@ -49,6 +49,6 @@ export default {
       refresh: 'receipt/refreshStockIn'
     })
   },
-  mounted: function() {}
+  mounted: function () {}
 }
 </script>

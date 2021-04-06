@@ -34,8 +34,8 @@ export default {
   data: () => ({}),
   computed: {
     ...mapState({
-      tab: state => state.carryOut.tab,
-      carryOutId: state => state.carryOut.carryOutId
+      tab: (state) => state.carryOut.tab,
+      carryOutId: (state) => state.carryOut.carryOutId
     })
   },
   methods: {

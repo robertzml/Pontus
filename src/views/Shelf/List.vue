@@ -9,15 +9,13 @@
                 <v-toolbar-title>货架列表</v-toolbar-title>
                 <v-divider class="mx-4" inset vertical></v-divider>
                 <div class="flex-grow-1"></div>
-                <v-btn small="" color="primary" class="mb-2" @click="createItem">
-                  添加货架
-                </v-btn>
+                <v-btn small="" color="primary" class="mb-2" @click="createItem"> 添加货架 </v-btn>
               </v-toolbar>
             </template>
-            <template v-slot:item.type="{ item }">
+            <template v-slot:[`item.type`]="{ item }">
               {{ item.type | shelfType }}
             </template>
-            <template v-slot:item.action="{ item }">
+            <template v-slot:[`item.action`]="{ item }">
               <v-btn small color="success" @click="viewItem(item)" class="mr-2">
                 <v-icon left dark>pageview</v-icon>
                 查看
@@ -84,7 +82,7 @@ export default {
   methods: {
     loadList() {
       let vm = this
-      shelf.getList(this.warehouseId).then(res => {
+      shelf.getList(this.warehouseId).then((res) => {
         vm.shelfListData = res
       })
     },
@@ -99,7 +97,7 @@ export default {
       this.$refs.shelfEditMod.init(this.warehouseId, item.id)
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.loadList()
   }
 }

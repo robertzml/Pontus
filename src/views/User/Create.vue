@@ -62,11 +62,11 @@ export default {
       remark: ''
     },
     confirmPassword: '',
-    userNameRules: [v => !!v || '请输入用户名'],
-    nameRules: [v => !!v || '请输入姓名'],
-    userGroupRules: [v => !!v || '请选择用户组'],
-    passwordRules: [v => !!v || '请输入密码'],
-    confirmPasswordRules: [v => !!v || '请输入密码']
+    userNameRules: [(v) => !!v || '请输入用户名'],
+    nameRules: [(v) => !!v || '请输入姓名'],
+    userGroupRules: [(v) => !!v || '请选择用户组'],
+    passwordRules: [(v) => !!v || '请输入密码'],
+    confirmPasswordRules: [(v) => !!v || '请输入密码']
   }),
   methods: {
     init() {
@@ -85,7 +85,7 @@ export default {
 
         let vm = this
 
-        user.create(this.userInfo).then(res => {
+        user.create(this.userInfo).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加用户成功')
             vm.$emit('update')

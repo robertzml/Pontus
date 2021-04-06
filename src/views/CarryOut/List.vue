@@ -37,21 +37,19 @@
 
     <v-col cols="12">
       <v-card class="mx-auto">
-        <v-card-title class="orange">
-          搬运出库列表
-        </v-card-title>
+        <v-card-title class="orange"> 搬运出库列表 </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="filterData" :search="filter.search" :items-per-page="10">
-            <template v-slot:item.type="{ item }">
+            <template v-slot:[`item.type`]="{ item }">
               {{ item.type | carryOutTaskType }}
             </template>
-            <template v-slot:item.status="{ item }">
+            <template v-slot:[`item.status`]="{ item }">
               {{ item.status | displayStatus }}
             </template>
-            <template v-slot:item.moveTime="{ item }">
+            <template v-slot:[`item.moveTime`]="{ item }">
               {{ item.moveTime | displayDateTime }}
             </template>
-            <template v-slot:item.action="{ item }">
+            <template v-slot:[`item.action`]="{ item }">
               <v-btn small color="primary" @click="viewItem(item)">
                 <v-icon left dark>pageview</v-icon>
                 查看
@@ -100,29 +98,29 @@ export default {
   }),
   computed: {
     ...mapState({
-      refreshEvent: state => state.carryOut.refreshEvent
+      refreshEvent: (state) => state.carryOut.refreshEvent
     }),
     filterData() {
       let temp = this.carryOutList
 
       if (this.filter.status) {
-        temp = temp.filter(r => r.status == this.filter.status)
+        temp = temp.filter((r) => r.status == this.filter.status)
       }
 
       if (this.filter.time) {
         let t = this.$moment(this.filter.time)
-        temp = temp.filter(r => t.isSame(r.moveTime, 'day'))
+        temp = temp.filter((r) => t.isSame(r.moveTime, 'day'))
       }
 
       if (this.filter.customerId) {
-        temp = temp.filter(r => r.customerId == this.filter.customerId)
+        temp = temp.filter((r) => r.customerId == this.filter.customerId)
       }
 
       return temp
     }
   },
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadCarryOutList()
     }
   },
@@ -139,7 +137,7 @@ export default {
       this.showDetails(item.id)
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.loadCarryOutList()
   }
 }

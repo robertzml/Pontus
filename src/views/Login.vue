@@ -8,15 +8,7 @@
           </v-toolbar>
           <v-card-text>
             <v-form ref="form" v-model="valid" lazy-validation>
-              <v-text-field
-                label="用户名"
-                autofocus
-                prepend-icon="person"
-                type="text"
-                v-model="loginUser.userName"
-                :rules="nameRules"
-                required
-              ></v-text-field>
+              <v-text-field label="用户名" autofocus prepend-icon="person" type="text" v-model="loginUser.userName" :rules="nameRules" required></v-text-field>
 
               <v-text-field
                 label="密码"
@@ -50,8 +42,8 @@ export default {
       userName: '',
       password: ''
     },
-    nameRules: [v => !!v || '请输入用户名'],
-    passwordRules: [v => !!v || '请输入密码']
+    nameRules: [(v) => !!v || '请输入用户名'],
+    passwordRules: [(v) => !!v || '请输入密码']
   }),
   methods: {
     ...mapActions(['login']),
@@ -59,7 +51,7 @@ export default {
 
     submit() {
       if (this.$refs.form.validate()) {
-        this.login(this.loginUser).then(res => {
+        this.login(this.loginUser).then((res) => {
           if (res.status != 0) {
             alert(res.errorMessage)
           } else {
@@ -70,7 +62,7 @@ export default {
       }
     }
   },
-  mounted: function() {
+  mounted: function () {
     console.log(process.env.NODE_ENV)
   }
 }

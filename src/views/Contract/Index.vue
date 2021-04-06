@@ -42,8 +42,8 @@ export default {
   data: () => ({}),
   computed: {
     ...mapState({
-      tab: state => state.contract.tab,
-      contractInfo: state => state.contract.contractInfo
+      tab: (state) => state.contract.tab,
+      contractInfo: (state) => state.contract.contractInfo
     })
   },
   methods: {

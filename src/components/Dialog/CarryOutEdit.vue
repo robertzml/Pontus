@@ -1,9 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="600px">
     <v-card>
-      <v-card-title class="deep-orange">
-        编辑搬运出库任务
-      </v-card-title>
+      <v-card-title class="deep-orange"> 编辑搬运出库任务 </v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-container fluid>
@@ -51,11 +49,11 @@ export default {
     dialog: false,
     loading: false,
     carryOutTask: {},
-    moveCountRules: [v => !!v || '请输入出库数量'],
-    moveWeightRules: [v => !!v || '请输入出库重量']
+    moveCountRules: [(v) => !!v || '请输入出库数量'],
+    moveWeightRules: [(v) => !!v || '请输入出库重量']
   }),
   computed: {
-    totalWeight: function() {
+    totalWeight: function () {
       return ((this.carryOutTask.moveCount * this.carryOutTask.unitWeight) / 1000).toFixed(4)
     }
   },
@@ -65,7 +63,7 @@ export default {
       this.dialog = true
 
       let vm = this
-      carryOut.find(id).then(res => {
+      carryOut.find(id).then((res) => {
         vm.carryOutTask = res
       })
 
@@ -92,7 +90,7 @@ export default {
           remark: this.carryOutTask.remark
         }
 
-        carryOut.editTask(model).then(res => {
+        carryOut.editTask(model).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '编辑出库成功')
             vm.loading = false

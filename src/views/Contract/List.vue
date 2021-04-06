@@ -10,19 +10,19 @@
           </v-card-title>
           <v-card-text class="px-0">
             <v-data-table :headers="headers" :items="contractListData" :search="search" :items-per-page="10">
-              <template v-slot:item.type="{ item }">
+              <template v-slot:[`item.type`]="{ item }">
                 {{ item.type | contractType }}
               </template>
-              <template v-slot:item.signDate="{ item }">
+              <template v-slot:[`item.signDate`]="{ item }">
                 {{ item.signDate | displayDate }}
               </template>
-              <template v-slot:item.closeDate="{ item }">
+              <template v-slot:[`item.closeDate`]="{ item }">
                 {{ item.closeDate | displayDate }}
               </template>
-              <template v-slot:item.billingType="{ item }">
+              <template v-slot:[`item.billingType`]="{ item }">
                 {{ item.billingType | billingType }}
               </template>
-              <template v-slot:item.action="{ item }">
+              <template v-slot:[`item.action`]="{ item }">
                 <v-btn small color="success" @click="viewItem(item)">
                   <v-icon left dark>pageview</v-icon>
                   查看
@@ -60,10 +60,10 @@ export default {
     ]
   }),
   computed: mapState({
-    refreshEvent: state => state.contract.refreshEvent
+    refreshEvent: (state) => state.contract.refreshEvent
   }),
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadList()
     }
   },
@@ -77,7 +77,7 @@ export default {
 
     loadList() {
       let vm = this
-      contract.getList().then(res => {
+      contract.getList().then((res) => {
         vm.contractListData = res
       })
     },
@@ -87,7 +87,7 @@ export default {
       this.showDetails()
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.loadList()
   }
 }

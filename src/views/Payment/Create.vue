@@ -17,14 +17,7 @@
               <v-text-field label="缴费金额" v-model="paymentInfo.paidFee" suffix="元"></v-text-field>
             </v-col>
             <v-col cols="6" md="6" sm="6">
-              <v-menu
-                v-model="paidTimeMenu"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
+              <v-menu v-model="paidTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
                   <v-text-field v-model="paymentInfo.paidTime" label="缴费日期" prepend-icon="event" readonly v-on="on"></v-text-field>
                 </template>
@@ -73,8 +66,8 @@ export default {
       userId: 0,
       remark: ''
     },
-    numberRules: [v => !!v || '请输入客户编号'],
-    nameRules: [v => !!v || '请输入客户名称']
+    numberRules: [(v) => !!v || '请输入客户编号'],
+    nameRules: [(v) => !!v || '请输入客户名称']
   }),
   methods: {
     init() {
@@ -106,7 +99,7 @@ export default {
 
         payment
           .create(this.paymentInfo)
-          .then(res => {
+          .then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '添加缴费记录成功')
               vm.$emit('close')

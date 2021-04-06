@@ -21,12 +21,8 @@
               {{ item.status | displayStatus }}
             </template>
             <template v-slot:item.action="{ item }">
-              <v-btn small color="primary" @click="viewTaskItem(item)">
-                信息
-              </v-btn>
-              <v-btn small color="success" class="ml-2" @click="viewCarryIn(item)">
-                搬运
-              </v-btn>
+              <v-btn small color="primary" @click="viewTaskItem(item)"> 信息 </v-btn>
+              <v-btn small color="success" class="ml-2" @click="viewCarryIn(item)"> 搬运 </v-btn>
             </template>
           </v-data-table>
         </v-expansion-panel-content>
@@ -103,29 +99,29 @@ export default {
   }),
   computed: {
     ...mapState({
-      refreshEvent: state => state.receipt.stockInRefreshEvent,
-      stockInId: state => state.receipt.stockInId
+      refreshEvent: (state) => state.receipt.stockInRefreshEvent,
+      stockInId: (state) => state.receipt.stockInId
     }),
     // 入库总数量
-    totalCount: function() {
-      return this.taskInfoList.reduce(function(acc, cur) {
+    totalCount: function () {
+      return this.taskInfoList.reduce(function (acc, cur) {
         return acc + cur.inCount
       }, 0)
     },
     // 入库总重量
-    totalWeight: function() {
+    totalWeight: function () {
       return this.taskInfoList
-        .reduce(function(acc, cur) {
+        .reduce(function (acc, cur) {
           return acc + cur.inWeight
         }, 0.0)
         .toFixed(4)
     }
   },
   watch: {
-    stockInId: function() {
+    stockInId: function () {
       // this.loadStockIn()
     },
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadStockIn()
       this.loadTaskList()
       this.stockInTaskInfo = {}
@@ -135,7 +131,7 @@ export default {
     loadStockIn() {
       if (this.stockInId) {
         let vm = this
-        stockIn.find(this.stockInId).then(res => {
+        stockIn.find(this.stockInId).then((res) => {
           vm.stockInInfo = res
         })
       }
@@ -145,7 +141,7 @@ export default {
     loadTaskList() {
       if (this.stockInId) {
         let vm = this
-        stockIn.getTaskList(this.stockInId).then(res => {
+        stockIn.getTaskList(this.stockInId).then((res) => {
           vm.taskInfoList = res
         })
       } else {
@@ -163,14 +159,14 @@ export default {
       // this.panel = [1]
       this.stockInTaskInfo = item
       let vm = this
-      carryIn.listByStockInTask(item.id).then(res => {
+      carryIn.listByStockInTask(item.id).then((res) => {
         vm.carryInTaskList = res
       })
 
       this.bottom = true
     }
   },
-  activated: function() {
+  activated: function () {
     this.loadStockIn()
     this.loadTaskList()
     this.stockInTaskInfo = {}

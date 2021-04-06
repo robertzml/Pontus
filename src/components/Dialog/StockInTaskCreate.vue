@@ -1,9 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="800px">
     <v-card>
-      <v-card-title class="cyan">
-        添加入库任务
-      </v-card-title>
+      <v-card-title class="cyan"> 添加入库任务 </v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-container fluid>
@@ -95,10 +93,10 @@ export default {
       place: '',
       remark: ''
     },
-    warehouseRules: [v => !!v || '请选择仓库']
+    warehouseRules: [(v) => !!v || '请选择仓库']
   }),
   computed: {
-    totalWeight: function() {
+    totalWeight: function () {
       return ((this.taskInfo.inCount * this.taskInfo.unitWeight) / 1000).toFixed(4)
     }
   },
@@ -127,7 +125,7 @@ export default {
     loadCargoData() {
       if (this.stockInInfo) {
         let vm = this
-        cargo.getList(this.stockInInfo.customerId).then(res => {
+        cargo.getList(this.stockInInfo.customerId).then((res) => {
           vm.cargoListData = res
         })
       }
@@ -175,7 +173,7 @@ export default {
         this.taskInfo.userId = this.$store.state.user.id
         this.taskInfo.userName = this.$store.state.user.name
 
-        stockIn.addTask(this.taskInfo).then(res => {
+        stockIn.addTask(this.taskInfo).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加任务成功')
             vm.$emit('close')

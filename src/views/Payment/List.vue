@@ -17,15 +17,7 @@
               <v-col cols="3" md="3" sm="6">
                 <v-menu v-model="timeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                   <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="filter.time"
-                      label="缴费日期"
-                      prepend-icon="event"
-                      clearable
-                      hide-details
-                      readonly
-                      v-on="on"
-                    ></v-text-field>
+                    <v-text-field v-model="filter.time" label="缴费日期" prepend-icon="event" clearable hide-details readonly v-on="on"></v-text-field>
                   </template>
                   <v-date-picker v-model="filter.time" :day-format="$util.pickerDayFormat" @input="timeMenu = false"></v-date-picker>
                 </v-menu>
@@ -106,39 +98,39 @@ export default {
   }),
   computed: {
     ...mapState({
-      refreshEvent: state => state.payment.refreshEvent
+      refreshEvent: (state) => state.payment.refreshEvent
     }),
     // 过滤后缴费列表
     paymentFilterData() {
       let temp = this.paymentListData
 
       if (this.filter.customerId != 0) {
-        temp = temp.filter(r => r.customerId == this.filter.customerId)
+        temp = temp.filter((r) => r.customerId == this.filter.customerId)
       }
 
       if (this.filter.paidType) {
-        temp = temp.filter(r => r.paidType == this.filter.paidType)
+        temp = temp.filter((r) => r.paidType == this.filter.paidType)
       }
 
       if (this.filter.time) {
         let t = this.$moment(this.filter.time)
-        temp = temp.filter(r => t.isSame(r.paidTime))
+        temp = temp.filter((r) => t.isSame(r.paidTime))
       }
 
       return temp
     },
 
     // 缴费总金额
-    totalFee: function() {
+    totalFee: function () {
       return this.paymentFilterData
-        .reduce(function(acc, cur) {
+        .reduce(function (acc, cur) {
           return acc + cur.paidFee
         }, 0.0)
         .toFixed(3)
     }
   },
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadList()
     }
   },
@@ -154,7 +146,7 @@ export default {
       this.showDetails(item.id)
     }
   },
-  activated: function() {
+  activated: function () {
     this.loadList()
   }
 }

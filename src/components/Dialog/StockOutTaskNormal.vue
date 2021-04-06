@@ -24,24 +24,10 @@
                 <v-card-subtitle class="pb-2 light-green darken-4">过滤条件</v-card-subtitle>
                 <v-row dense>
                   <v-col cols="3">
-                    <v-select
-                      :items="warehouseList"
-                      label="存放仓库"
-                      item-text="name"
-                      item-value="id"
-                      clearable
-                      v-model="filter.warehouseId"
-                    ></v-select>
+                    <v-select :items="warehouseList" label="存放仓库" item-text="name" item-value="id" clearable v-model="filter.warehouseId"></v-select>
                   </v-col>
                   <v-col cols="3">
-                    <v-menu
-                      v-model="timeMenu"
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="290px"
-                    >
+                    <v-menu v-model="timeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                       <template v-slot:activator="{ on }">
                         <v-text-field
                           v-model="filter.initialTime"
@@ -65,21 +51,12 @@
 
             <v-row dense>
               <v-col cols="12">
-                <v-card-subtitle class="pb-2 teal darken-4">
-                  库存记录
-                </v-card-subtitle>
-                <v-data-table
-                  v-model="selectedStores"
-                  :headers="headers"
-                  :items="filterData"
-                  :search="filter.search"
-                  show-select
-                  :items-per-page="10"
-                >
-                  <template v-slot:item.status="{ item }">
+                <v-card-subtitle class="pb-2 teal darken-4"> 库存记录 </v-card-subtitle>
+                <v-data-table v-model="selectedStores" :headers="headers" :items="filterData" :search="filter.search" show-select :items-per-page="10">
+                  <template v-slot:[`item.status`]="{ item }">
                     {{ item.status | displayStatus }}
                   </template>
-                  <template v-slot:item.initialTime="{ item }">
+                  <template v-slot:[`item.initialTime`]="{ item }">
                     {{ item.initialTime | displayDate }}
                   </template>
                 </v-data-table>
@@ -157,12 +134,12 @@ export default {
       let temp = this.storeListData
 
       if (this.filter.warehouseId) {
-        temp = temp.filter(r => r.warehouseId == this.filter.warehouseId)
+        temp = temp.filter((r) => r.warehouseId == this.filter.warehouseId)
       }
 
       if (this.filter.initialTime) {
         let t = this.$moment(this.filter.initialTime)
-        temp = temp.filter(r => t.isSame(r.initialTime, 'day'))
+        temp = temp.filter((r) => t.isSame(r.initialTime, 'day'))
       }
 
       return temp
@@ -208,7 +185,7 @@ export default {
 
     // 添加出库
     addToOut() {
-      this.selectedStores.forEach(item => {
+      this.selectedStores.forEach((item) => {
         this.$refs.storeOutMod.addTask(item)
       })
     },
@@ -223,7 +200,7 @@ export default {
           return
         }
 
-        if (!taskList.every(r => r.outCount > 0)) {
+        if (!taskList.every((r) => r.outCount > 0)) {
           this.$store.commit('alertError', '请确认出库数量大于0')
           return
         }
@@ -239,7 +216,7 @@ export default {
           userId: this.$store.state.user.id
         }
 
-        stockOut.addNormalOut(data).then(res => {
+        stockOut.addNormalOut(data).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加出库成功')
             this.$emit('close')

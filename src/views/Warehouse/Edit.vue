@@ -61,11 +61,11 @@ export default {
       capacity: '',
       remark: ''
     },
-    numberRules: [v => (!!v && v.length <= 3) || '请输入编号，长度3位'],
-    nameRules: [v => !!v || '请输入名称']
+    numberRules: [(v) => (!!v && v.length <= 3) || '请输入编号，长度3位'],
+    nameRules: [(v) => !!v || '请输入名称']
   }),
   methods: {
-    init: function(warehouseId) {
+    init: function (warehouseId) {
       this.warehouseId = warehouseId
       if (warehouseId == 0) {
         this.warehouseInfo = {
@@ -77,7 +77,7 @@ export default {
         }
       } else {
         let vm = this
-        warehouse.find(warehouseId).then(res => {
+        warehouse.find(warehouseId).then((res) => {
           vm.warehouseInfo = res
         })
       }
@@ -87,7 +87,7 @@ export default {
       this.$refs.form.resetValidation()
     },
 
-    submit: function() {
+    submit: function () {
       if (this.$refs.form.validate()) {
         this.$nextTick(() => {
           this.loading = true
@@ -95,7 +95,7 @@ export default {
 
         let vm = this
         if (this.warehouseId == 0) {
-          warehouse.create(this.warehouseInfo).then(res => {
+          warehouse.create(this.warehouseInfo).then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '添加仓库成功')
               vm.$emit('update')
@@ -107,7 +107,7 @@ export default {
             }
           })
         } else {
-          warehouse.update(this.warehouseInfo).then(res => {
+          warehouse.update(this.warehouseInfo).then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '修改仓库成功')
               vm.$emit('update')

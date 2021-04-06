@@ -17,21 +17,19 @@
 
     <v-col cols="12">
       <v-card>
-        <v-card-title class="orange">
-          用户列表
-        </v-card-title>
+        <v-card-title class="orange"> 用户列表 </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="userList" :items-per-page="10" v-model="selectedUser" show-select single-select disable-sort>
-            <template v-slot:item.userGroupId="{ item }">
+            <template v-slot:[`item.userGroupId`]="{ item }">
               {{ item.userGroupId | userGroupName }}
             </template>
-            <template v-slot:item.lastLoginTime="{ item }">
+            <template v-slot:[`item.lastLoginTime`]="{ item }">
               {{ item.lastLoginTime | displayDateTime }}
             </template>
-            <template v-slot:item.currentLoginTime="{ item }">
+            <template v-slot:[`item.currentLoginTime`]="{ item }">
               {{ item.currentLoginTime | displayDateTime }}
             </template>
-            <template v-slot:item.status="{ item }">
+            <template v-slot:[`item.status`]="{ item }">
               {{ item.status | displayStatus }}
             </template>
           </v-data-table>
@@ -76,13 +74,13 @@ export default {
   methods: {
     loadUser() {
       let vm = this
-      user.getList().then(res => {
+      user.getList().then((res) => {
         vm.userList = res
       })
     },
     loadUserGroup() {
       let vm = this
-      userGroup.getList().then(res => {
+      userGroup.getList().then((res) => {
         vm.userGroupList = res
       })
     },
@@ -123,7 +121,7 @@ export default {
       this.$refs.userEditMod.init(this.selectedUser[0].id)
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.loadUserGroup()
     this.loadUser()
   }

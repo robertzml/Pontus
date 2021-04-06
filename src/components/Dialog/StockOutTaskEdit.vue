@@ -1,9 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="800px">
     <v-card>
-      <v-card-title class="cyan">
-        编辑出库货物
-      </v-card-title>
+      <v-card-title class="cyan"> 编辑出库货物 </v-card-title>
 
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
@@ -61,10 +59,10 @@ export default {
     loading: false,
     taskId: '',
     stockOutTaskInfo: {},
-    digitRules: [v => (v != null && /^\d+$/.test(v)) || '请输入数字']
+    digitRules: [(v) => (v != null && /^\d+$/.test(v)) || '请输入数字']
   }),
   watch: {
-    'stockOutTaskInfo.outCount': function(val) {
+    'stockOutTaskInfo.outCount': function (val) {
       this.stockOutTaskInfo.outWeight = ((val * this.stockOutTaskInfo.unitWeight) / 1000).toFixed(4)
     }
   },
@@ -94,7 +92,7 @@ export default {
 
         let vm = this
 
-        stockOut.editTask(this.stockOutTaskInfo).then(res => {
+        stockOut.editTask(this.stockOutTaskInfo).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '编辑任务成功')
             vm.$emit('close')

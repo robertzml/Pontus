@@ -203,12 +203,12 @@ export default {
   }),
   computed: {
     ...mapState({
-      storeId: state => state.normalStore.storeId,
-      refreshEvent: state => state.normalStore.refreshEvent
+      storeId: (state) => state.normalStore.storeId,
+      refreshEvent: (state) => state.normalStore.refreshEvent
     })
   },
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadData()
     }
   },
@@ -225,7 +225,7 @@ export default {
       this.$refs.taskInfoMod.init(item.stockInTaskId, item.stockOutTaskId)
     }
   },
-  activated: function() {
+  activated: function () {
     this.loadData()
   }
 }

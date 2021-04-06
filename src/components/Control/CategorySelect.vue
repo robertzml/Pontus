@@ -34,12 +34,12 @@ export default {
   data: () => ({
     categoryData: [],
     selectedCategory: null,
-    categoryRules: [v => (!!v && v.id != 0) || '请选择类别']
+    categoryRules: [(v) => (!!v && v.id != 0) || '请选择类别']
   }),
   watch: {
-    categoryId: function() {
+    categoryId: function () {
       if (this.categoryId) {
-        this.selectedCategory = this.categoryData.find(r => r.id == this.categoryId)
+        this.selectedCategory = this.categoryData.find((r) => r.id == this.categoryId)
       } else {
         this.selectedCategory = null
       }
@@ -62,9 +62,9 @@ export default {
       }
     }
   },
-  mounted: function() {
+  mounted: function () {
     let vm = this
-    category.getList().then(res => {
+    category.getList().then((res) => {
       vm.categoryData = res
     })
   }

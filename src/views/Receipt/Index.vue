@@ -42,7 +42,7 @@ export default {
   }),
   computed: {
     ...mapState({
-      stockInTab: state => state.receipt.stockInTab
+      stockInTab: (state) => state.receipt.stockInTab
     })
   },
   methods: {
@@ -57,6 +57,6 @@ export default {
       this.showStockInList()
     }
   },
-  mounted: function() {}
+  mounted: function () {}
 }
 </script>

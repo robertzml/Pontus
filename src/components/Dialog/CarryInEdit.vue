@@ -1,9 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="600px">
     <v-card>
-      <v-card-title class="deep-orange">
-        编辑搬运入库任务
-      </v-card-title>
+      <v-card-title class="deep-orange"> 编辑搬运入库任务 </v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-container fluid>
@@ -47,12 +45,12 @@ export default {
     dialog: false,
     loading: false,
     carryInTask: {},
-    trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
-    moveCountRules: [v => !!v || '请输入入库数量'],
-    moveWeightRules: [v => !!v || '请输入入库重量']
+    trayCodeRules: [(v) => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
+    moveCountRules: [(v) => !!v || '请输入入库数量'],
+    moveWeightRules: [(v) => !!v || '请输入入库重量']
   }),
   computed: {
-    totalWeight: function() {
+    totalWeight: function () {
       return ((this.carryInTask.moveCount * this.carryInTask.unitWeight) / 1000).toFixed(4)
     }
   },
@@ -62,7 +60,7 @@ export default {
       this.dialog = true
 
       let vm = this
-      carryIn.find(id).then(res => {
+      carryIn.find(id).then((res) => {
         vm.carryInTask = res
       })
 
@@ -89,7 +87,7 @@ export default {
           remark: this.carryInTask.remark
         }
 
-        carryIn.editTask(model).then(res => {
+        carryIn.editTask(model).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '编辑入库成功')
             vm.loading = false

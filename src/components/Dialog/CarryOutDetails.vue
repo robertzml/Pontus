@@ -44,12 +44,7 @@
                 <v-text-field label="货品名称" v-model="carryOutInfo.cargoName" hide-details readonly></v-text-field>
               </v-col>
               <v-col cols="6">
-                <v-text-field
-                  label="货品类别"
-                  :value="`${carryOutInfo.categoryNumber} - ${carryOutInfo.categoryName}`"
-                  hide-details
-                  readonly
-                ></v-text-field>
+                <v-text-field label="货品类别" :value="`${carryOutInfo.categoryNumber} - ${carryOutInfo.categoryName}`" hide-details readonly></v-text-field>
               </v-col>
 
               <v-col cols="6">

@@ -16,10 +16,8 @@
 
     <v-col cols="6">
       <v-card dark>
-        <v-card-title class="orange">
-          分类列表
-        </v-card-title>
-        <v-card-text class="px-0" style="max-height:600px; overflow-y:scroll">
+        <v-card-title class="orange"> 分类列表 </v-card-title>
+        <v-card-text class="px-0" style="max-height: 600px; overflow-y: scroll">
           <v-treeview :items="categoryNodes" @update:active="showActive" dense activatable rounded></v-treeview>
         </v-card-text>
       </v-card>
@@ -27,9 +25,7 @@
 
     <v-col cols="6">
       <v-card dark scrollable>
-        <v-card-title class="purple accent-2">
-          分类信息
-        </v-card-title>
+        <v-card-title class="purple accent-2"> 分类信息 </v-card-title>
         <v-card-text class="px-5">
           <v-form>
             <v-text-field v-model="categoryInfo.name" label="名称" readonly></v-text-field>
@@ -79,7 +75,7 @@ export default {
   methods: {
     loadCategory() {
       let vm = this
-      category.getList().then(res => {
+      category.getList().then((res) => {
         vm.categoryList = res
         vm.categoryNodes = vm.$util.treeListTransform(res)
       })
@@ -87,13 +83,13 @@ export default {
     showActive(item) {
       if (item.length > 0) {
         this.currentCategoryId = item[0]
-        this.categoryInfo = this.categoryList.find(r => r.id == item[0])
+        this.categoryInfo = this.categoryList.find((r) => r.id == item[0])
       }
     },
     refresh() {
       if (this.currentCategoryId != 0) {
         let vm = this
-        category.find(this.currentCategoryId).then(res => {
+        category.find(this.currentCategoryId).then((res) => {
           vm.categoryInfo = res
         })
       }
@@ -113,7 +109,7 @@ export default {
         this.deleteLoading = true
       })
 
-      category.delete({ id: this.currentCategoryId }).then(res => {
+      category.delete({ id: this.currentCategoryId }).then((res) => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '删除分类成功')
           vm.loadCategory()
@@ -126,7 +122,7 @@ export default {
       })
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.loadCategory()
   }
 }

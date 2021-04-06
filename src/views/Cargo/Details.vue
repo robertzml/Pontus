@@ -1,9 +1,7 @@
 <template>
   <v-dialog v-model="dialog" max-width="800px">
     <v-card class="mx-auto">
-      <v-card-title class="deep-purple">
-        货品信息
-      </v-card-title>
+      <v-card-title class="deep-purple"> 货品信息 </v-card-title>
 
       <v-card-text>
         <v-row dense>
@@ -74,7 +72,7 @@ export default {
 
     loadInfo() {
       let vm = this
-      cargo.find(this.cargoId).then(res => {
+      cargo.find(this.cargoId).then((res) => {
         vm.cargoInfo = res
       })
     }

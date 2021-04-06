@@ -1,8 +1,6 @@
 <template>
   <v-card>
-    <v-card-title class="cyan">
-      搬运出库任务信息
-    </v-card-title>
+    <v-card-title class="cyan"> 搬运出库任务信息 </v-card-title>
     <v-card-text>
       <carry-out-details-view :carryOutInfo="carryOutInfo"> </carry-out-details-view>
     </v-card-text>
@@ -26,12 +24,12 @@ export default {
   }),
   computed: {
     ...mapState({
-      refreshEvent: state => state.carryOut.refreshEvent,
-      carryOutId: state => state.carryOut.carryOutId
+      refreshEvent: (state) => state.carryOut.refreshEvent,
+      carryOutId: (state) => state.carryOut.carryOutId
     })
   },
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadCarryOut()
     }
   },
@@ -40,7 +38,7 @@ export default {
       this.carryOutInfo = await carryOut.find(this.carryOutId)
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.loadCarryOut()
   }
 }

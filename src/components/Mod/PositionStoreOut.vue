@@ -1,10 +1,8 @@
 <template>
   <v-sheet class="transparent">
     <v-data-table :headers="taskHeaders" :items="taskInfoList" hide-default-footer disable-pagination>
-      <template v-slot:item.action="{ item }">
-        <v-btn small color="success" class="mr-2" @click="editItem(item)">
-          编辑
-        </v-btn>
+      <template v-slot:[`item.action`]="{ item }">
+        <v-btn small color="success" class="mr-2" @click="editItem(item)"> 编辑 </v-btn>
         <v-btn small color="warning" @click="deleteItem(item)">删除</v-btn>
       </template>
 
@@ -108,14 +106,14 @@ export default {
     editedIndex: -1
   }),
   computed: {
-    totalMoveCount: function() {
-      return this.taskInfoList.reduce(function(acc, cur) {
+    totalMoveCount: function () {
+      return this.taskInfoList.reduce(function (acc, cur) {
         return acc + parseInt(cur.moveCount)
       }, 0)
     }
   },
   watch: {
-    'editedItem.moveCount': function(val) {
+    'editedItem.moveCount': function (val) {
       this.editedItem.moveWeight = ((val * this.editedItem.unitWeight) / 1000).toFixed(4)
     }
   },
@@ -135,7 +133,7 @@ export default {
       if (item == null || item == undefined) {
         return
       }
-      if (this.taskInfoList.findIndex(r => r.storeId == item.id) != -1) {
+      if (this.taskInfoList.findIndex((r) => r.storeId == item.id) != -1) {
         return
       }
 
@@ -162,7 +160,7 @@ export default {
       this.editedIndex = this.taskInfoList.indexOf(item)
       this.editedItem = Object.assign({}, item)
 
-      position.getById(item.positionId).then(res => {
+      position.getById(item.positionId).then((res) => {
         this.positionInfo = res
 
         if (this.positionInfo.viceShelfCode) {

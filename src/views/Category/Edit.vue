@@ -81,18 +81,18 @@ export default {
     secondClass: [],
     firstId: 0,
     secondId: 0,
-    numberRules: [v => !!v || '请输入编号'],
-    nameRules: [v => !!v || '请输入名称'],
-    hierarchyRules: [v => (v && /^[1-3]{1}$/.test(v)) || '级别在1-3'],
-    firstRules: [v => !!v || '请选择一级分类'],
-    secondRules: [v => !!v || '请选择二级分类']
+    numberRules: [(v) => !!v || '请输入编号'],
+    nameRules: [(v) => !!v || '请输入名称'],
+    hierarchyRules: [(v) => (v && /^[1-3]{1}$/.test(v)) || '级别在1-3'],
+    firstRules: [(v) => !!v || '请选择一级分类'],
+    secondRules: [(v) => !!v || '请选择二级分类']
   }),
   methods: {
     init(categoryId) {
       this.categoryId = categoryId
       let vm = this
       if (categoryId != 0) {
-        category.find(categoryId).then(res => {
+        category.find(categoryId).then((res) => {
           vm.categoryInfo = res
         })
       } else {
@@ -103,7 +103,7 @@ export default {
           parentId: null,
           remark: ''
         }
-        category.getFirst().then(res => {
+        category.getFirst().then((res) => {
           vm.firstClass = res
         })
       }
@@ -115,7 +115,7 @@ export default {
 
     selectFirst(val) {
       let vm = this
-      category.getChildren(val).then(res => {
+      category.getChildren(val).then((res) => {
         vm.secondClass = res
       })
     },
@@ -128,7 +128,7 @@ export default {
 
         let vm = this
         if (this.categoryId != 0) {
-          category.update(this.categoryInfo).then(res => {
+          category.update(this.categoryInfo).then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '编辑分类信息成功')
               vm.$emit('update')
@@ -146,7 +146,7 @@ export default {
             this.categoryInfo.parentId = this.secondId
           }
 
-          category.create(this.categoryInfo).then(res => {
+          category.create(this.categoryInfo).then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '添加分类信息成功')
               vm.$emit('update')

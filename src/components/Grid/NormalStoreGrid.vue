@@ -26,13 +26,13 @@
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="filterData" :items-per-page="10" :search="filter.search">
-            <template v-slot:item.initialTime="{ item }">
+            <template v-slot:[`item.initialTime`]="{ item }">
               {{ item.initialTime | displayDate }}
             </template>
-            <template v-slot:item.inTime="{ item }">
+            <template v-slot:[`item.inTime`]="{ item }">
               {{ item.inTime | displayDate }}
             </template>
-            <template v-slot:item.outTime="{ item }">
+            <template v-slot:[`item.outTime`]="{ item }">
               {{ item.outTime | displayDate }}
             </template>
           </v-data-table>
@@ -87,29 +87,29 @@ export default {
       let temp = this.storeList
 
       if (this.filter.cargoId) {
-        temp = temp.filter(r => r.cargoId == this.filter.cargoId)
+        temp = temp.filter((r) => r.cargoId == this.filter.cargoId)
       }
 
       return temp
     },
 
     // 库存总数量
-    totalCount: function() {
-      return this.storeList.reduce(function(acc, cur) {
+    totalCount: function () {
+      return this.storeList.reduce(function (acc, cur) {
         return acc + cur.storeCount
       }, 0)
     },
     // 库存总重量
-    totalWeight: function() {
+    totalWeight: function () {
       return this.storeList
-        .reduce(function(acc, cur) {
+        .reduce(function (acc, cur) {
           return acc + cur.storeWeight
         }, 0.0)
         .toFixed(4)
     }
   },
   watch: {
-    customerId: function() {
+    customerId: function () {
       this.loadCargoData(this.customerId)
     }
   },
@@ -118,7 +118,7 @@ export default {
     loadCargoData(customerId) {
       if (customerId) {
         let vm = this
-        cargo.getList(customerId).then(res => {
+        cargo.getList(customerId).then((res) => {
           vm.cargoList = res
         })
       } else {

@@ -20,14 +20,7 @@
                 <cargo-select :cargo-id.sync="search.cargoId" :required="false" :cargo-data="cargoListData"></cargo-select>
               </v-col>
               <v-col cols="3">
-                <v-menu
-                  v-model="searchTimeMenu"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
+                <v-menu v-model="searchTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="search.initialTime"
@@ -58,24 +51,10 @@
                     <cargo-select :cargo-id.sync="filter.cargoId" :cargo-data="cargoListData" :required="false"></cargo-select>
                   </v-col>
                   <v-col cols="3">
-                    <v-select
-                      :items="warehouseList"
-                      label="存放仓库"
-                      item-text="name"
-                      item-value="id"
-                      clearable
-                      v-model="filter.warehouseId"
-                    ></v-select>
+                    <v-select :items="warehouseList" label="存放仓库" item-text="name" item-value="id" clearable v-model="filter.warehouseId"></v-select>
                   </v-col>
                   <v-col cols="3">
-                    <v-menu
-                      v-model="timeMenu"
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="290px"
-                    >
+                    <v-menu v-model="timeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                       <template v-slot:activator="{ on }">
                         <v-text-field
                           v-model="filter.initialTime"
@@ -99,24 +78,15 @@
 
             <v-row dense>
               <v-col cols="12">
-                <v-card-subtitle class="pb-2 teal darken-4">
-                  库存记录
-                </v-card-subtitle>
-                <v-data-table
-                  v-model="selectedStores"
-                  :headers="headers"
-                  :items="filterData"
-                  :search="filter.search"
-                  show-select
-                  :items-per-page="10"
-                >
-                  <template v-slot:item.status="{ item }">
+                <v-card-subtitle class="pb-2 teal darken-4"> 库存记录 </v-card-subtitle>
+                <v-data-table v-model="selectedStores" :headers="headers" :items="filterData" :search="filter.search" show-select :items-per-page="10">
+                  <template v-slot:[`item.status`]="{ item }">
                     {{ item.status | displayStatus }}
                   </template>
-                  <template v-slot:item.initialTime="{ item }">
+                  <template v-slot:[`item.initialTime`]="{ item }">
                     {{ item.initialTime | displayDate }}
                   </template>
-                  <template v-slot:item.action="{ item }">
+                  <template v-slot:[`item.action`]="{ item }">
                     <v-btn small color="primary" @click="viewItem(item)">
                       <v-icon left dark>pageview</v-icon>
                       查看
@@ -214,16 +184,16 @@ export default {
       let temp = this.storeListData
 
       if (this.filter.cargoId) {
-        temp = temp.filter(r => r.cargoId == this.filter.cargoId)
+        temp = temp.filter((r) => r.cargoId == this.filter.cargoId)
       }
 
       if (this.filter.warehouseId) {
-        temp = temp.filter(r => r.warehouseId == this.filter.warehouseId)
+        temp = temp.filter((r) => r.warehouseId == this.filter.warehouseId)
       }
 
       if (this.filter.initialTime) {
         let t = this.$moment(this.filter.initialTime)
-        temp = temp.filter(r => t.isSame(r.initialTime, 'day'))
+        temp = temp.filter((r) => t.isSame(r.initialTime, 'day'))
       }
 
       return temp
@@ -295,7 +265,7 @@ export default {
 
     // 添加出库
     addToOut() {
-      this.selectedStores.forEach(item => {
+      this.selectedStores.forEach((item) => {
         this.$refs.storeOutMod.addTask(item)
       })
     },
@@ -321,7 +291,7 @@ export default {
           userId: this.$store.state.user.id
         }
 
-        stockOut.addPositionOut(data).then(res => {
+        stockOut.addPositionOut(data).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加出库成功')
             this.$emit('close')

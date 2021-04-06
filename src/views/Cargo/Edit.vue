@@ -1,9 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent eager max-width="800px">
     <v-card class="mx-auto">
-      <v-card-title class="cyan">
-        编辑货品
-      </v-card-title>
+      <v-card-title class="cyan"> 编辑货品 </v-card-title>
 
       <v-card-text>
         <v-alert dense type="info" class="mt-2 text-body-2">名称、规格不能完全相同，可修改名称、规格、备注。</v-alert>
@@ -66,7 +64,7 @@ export default {
       assetUnit: 0,
       remark: ''
     },
-    nameRules: [v => !!v || '请输入货品名称']
+    nameRules: [(v) => !!v || '请输入货品名称']
   }),
   methods: {
     init(customerId, cargoId) {
@@ -83,7 +81,7 @@ export default {
 
     loadInfo() {
       let vm = this
-      cargo.find(this.cargoId).then(res => {
+      cargo.find(this.cargoId).then((res) => {
         vm.cargoInfo = res
       })
     },
@@ -95,7 +93,7 @@ export default {
         })
         let vm = this
 
-        cargo.update(this.cargoInfo).then(res => {
+        cargo.update(this.cargoInfo).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '编辑货品成功')
             vm.$emit('update')

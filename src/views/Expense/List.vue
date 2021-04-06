@@ -34,14 +34,7 @@
               </v-col>
 
               <v-col cols="3">
-                <v-menu
-                  v-model="startTimeMenu"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
+                <v-menu v-model="startTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                   <template v-slot:activator="{ on }">
                     <v-text-field v-model="search.startTime" label="开始日期" prepend-icon="event" hide-details readonly v-on="on"></v-text-field>
                   </template>
@@ -50,14 +43,7 @@
               </v-col>
 
               <v-col cols="3">
-                <v-menu
-                  v-model="endTimeMenu"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
+                <v-menu v-model="endTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                   <template v-slot:activator="{ on }">
                     <v-text-field v-model="search.endTime" label="结束日期" prepend-icon="event" hide-details readonly v-on="on"></v-text-field>
                   </template>
@@ -105,10 +91,10 @@
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="inBillingHeaders" :items="inBillingData" :items-per-page="10" disable-sort>
-            <template v-slot:item.inTime="{ item }">
+            <template v-slot:[`item.inTime`]="{ item }">
               {{ item.inTime | displayDate }}
             </template>
-            <template v-slot:item.unitPrice="{ item }">
+            <template v-slot:[`item.unitPrice`]="{ item }">
               {{ item.type == 2 ? item.unitPrice : '' }}
             </template>
           </v-data-table>
@@ -125,10 +111,10 @@
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="outBillingHeaders" :items="outBillingData" :items-per-page="10" disable-sort>
-            <template v-slot:item.outTime="{ item }">
+            <template v-slot:[`item.outTime`]="{ item }">
               {{ item.outTime | displayDate }}
             </template>
-            <template v-slot:item.unitPrice="{ item }">
+            <template v-slot:[`item.unitPrice`]="{ item }">
               {{ item.type == 2 ? item.unitPrice : '' }}
             </template>
           </v-data-table>
@@ -160,7 +146,7 @@ export default {
       endTime: null
     },
     contractListData: [],
-    contractRules: [v => !!v.id || '请选择合同'],
+    contractRules: [(v) => !!v.id || '请选择合同'],
     inBillingData: [],
     inBillingHeaders: [
       { text: '日期', value: 'inTime' },
@@ -183,22 +169,22 @@ export default {
     ]
   }),
   watch: {
-    'search.customerId': function(val) {
+    'search.customerId': function (val) {
       this.loadContract(val)
     }
   },
   computed: {
-    totalInBilling: function() {
+    totalInBilling: function () {
       return this.inBillingData
-        .reduce(function(acc, cur) {
+        .reduce(function (acc, cur) {
           return acc + cur.amount
         }, 0.0)
         .toFixed(3)
     },
 
-    totalOutBilling: function() {
+    totalOutBilling: function () {
       return this.outBillingData
-        .reduce(function(acc, cur) {
+        .reduce(function (acc, cur) {
           return acc + cur.amount
         }, 0.0)
         .toFixed(3)
@@ -231,10 +217,8 @@ export default {
       }
     }
   },
-  mounted: function() {
-    this.search.startTime = this.$moment()
-      .startOf('month')
-      .format('YYYY-MM-DD')
+  mounted: function () {
+    this.search.startTime = this.$moment().startOf('month').format('YYYY-MM-DD')
     this.search.endTime = this.$moment().format('YYYY-MM-DD')
   }
 }

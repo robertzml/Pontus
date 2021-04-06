@@ -35,9 +35,7 @@
                   <v-list-item-subtitle class="mb-2">编号：{{ item.number }}</v-list-item-subtitle>
                   <v-list-item-subtitle class="mb-2">类型：{{ item.type | shelfType }}</v-list-item-subtitle>
                   <v-list-item-subtitle class="mb-2">入口编号：{{ item.entranceNumber }}</v-list-item-subtitle>
-                  <v-list-item-subtitle class="mb-2"
-                    >排数: {{ item.row }} 层数: {{ item.layer }} 进数: {{ item.depth }}</v-list-item-subtitle
-                  >
+                  <v-list-item-subtitle class="mb-2">排数: {{ item.row }} 层数: {{ item.layer }} 进数: {{ item.depth }}</v-list-item-subtitle>
                   <v-list-item-subtitle>备注: {{ item.remark }}</v-list-item-subtitle>
                 </v-list-item-content>
 

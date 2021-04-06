@@ -1,8 +1,6 @@
 <template>
   <v-card class="mx-auto">
-    <v-card-title>
-      货架信息
-    </v-card-title>
+    <v-card-title> 货架信息 </v-card-title>
     <v-card-text>
       <v-form>
         <v-row dense>
@@ -56,7 +54,7 @@ export default {
       }
 
       let vm = this
-      shelf.find(id).then(res => {
+      shelf.find(id).then((res) => {
         vm.shelfInfo = res
       })
     }

@@ -1,9 +1,7 @@
 <template>
   <v-dialog v-model="dialog" max-width="800px">
     <v-card flat>
-      <v-card-title class="brown darken-3">
-        出库货物信息
-      </v-card-title>
+      <v-card-title class="brown darken-3"> 出库货物信息 </v-card-title>
 
       <v-card-text>
         <stock-out-task-details-view :task-info="taskInfo"> </stock-out-task-details-view>
@@ -33,7 +31,7 @@ export default {
   methods: {
     init(id) {
       let vm = this
-      stockOut.getTask(id).then(res => {
+      stockOut.getTask(id).then((res) => {
         vm.taskInfo = res
       })
       this.dialog = true

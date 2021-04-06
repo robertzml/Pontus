@@ -1,9 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="400px">
     <v-card>
-      <v-card-title class="lime darken-4">
-        托盘系统搬运
-      </v-card-title>
+      <v-card-title class="lime darken-4"> 托盘系统搬运 </v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row>
@@ -41,7 +39,7 @@ export default {
     positionInfo: {},
     trayCode: '',
     targetPosition: '',
-    targetPositionRules: [v => !!v || '请输入仓位码', v => (v && v.length == 15) || '请输入正确仓位码']
+    targetPositionRules: [(v) => !!v || '请输入仓位码', (v) => (v && v.length == 15) || '请输入正确仓位码']
   }),
   methods: {
     async init(pos) {
@@ -68,7 +66,7 @@ export default {
         let req = { positionId: this.positionInfo.id, targetPosition: this.targetPosition.toUpperCase(), userId: this.$store.state.user.id }
         store
           .moveTray(req)
-          .then(res => {
+          .then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '托盘移动成功')
               vm.loading = false

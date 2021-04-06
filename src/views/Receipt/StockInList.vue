@@ -32,9 +32,7 @@
 
     <v-col cols="12">
       <v-card flat>
-        <v-card-title class="blue">
-          入库单
-        </v-card-title>
+        <v-card-title class="blue"> 入库单 </v-card-title>
 
         <v-data-table :headers="stockInHeaders" :items="stockInFilterData" :search="filter.text" :items-per-page="10">
           <template v-slot:item.inTime="{ item }">
@@ -91,30 +89,30 @@ export default {
   }),
   computed: {
     ...mapState({
-      refreshEvent: state => state.receipt.stockInRefreshEvent
+      refreshEvent: (state) => state.receipt.stockInRefreshEvent
     }),
     // 过滤后入库单列表
     stockInFilterData() {
       let temp = this.stockInListData
 
       if (this.filter.customerId != 0) {
-        temp = temp.filter(r => r.customerId == this.filter.customerId)
+        temp = temp.filter((r) => r.customerId == this.filter.customerId)
       }
 
       if (this.filter.stockInType) {
-        temp = temp.filter(r => r.type == this.filter.stockInType)
+        temp = temp.filter((r) => r.type == this.filter.stockInType)
       }
 
       if (this.filter.time) {
         let t = this.$moment(this.filter.time)
-        temp = temp.filter(r => t.isSame(r.inTime))
+        temp = temp.filter((r) => t.isSame(r.inTime))
       }
 
       return temp
     }
   },
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadStockInList()
     }
   },
@@ -125,7 +123,7 @@ export default {
 
     loadStockInList() {
       let vm = this
-      stockIn.getList().then(res => {
+      stockIn.getList().then((res) => {
         vm.stockInListData = res
       })
     },
@@ -138,7 +136,7 @@ export default {
       this.showStockInDetails(item.id)
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.loadStockInList()
   }
 }

@@ -3,9 +3,7 @@
     <v-col cols="12" class="pt-0">
       <v-card flat class="mx-auto">
         <v-card-text>
-          <p class="title mb-0 text--primary">
-            货品管理
-          </p>
+          <p class="title mb-0 text--primary">货品管理</p>
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-row>
               <v-col cols="6">
@@ -33,10 +31,10 @@
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="cargoListData" :search="search" :items-per-page="10">
-            <template v-slot:item.registerTime="{ item }">
+            <template v-slot:[`item.registerTime`]="{ item }">
               {{ item.registerTime | displayDate }}
             </template>
-            <template v-slot:item.action="{ item }">
+            <template v-slot:[`item.action`]="{ item }">
               <v-btn small color="success" @click="viewItem(item)" class="mr-2">
                 <v-icon left dark>pageview</v-icon>
                 查看
@@ -105,7 +103,7 @@ export default {
     submit() {
       if (this.$refs.form.validate()) {
         let vm = this
-        cargo.getList(this.customerId).then(res => {
+        cargo.getList(this.customerId).then((res) => {
           vm.cargoListData = res
         })
       }
@@ -129,7 +127,7 @@ export default {
       this.$refs.cargoDeleteMod.init(val.id)
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.init()
   }
 }

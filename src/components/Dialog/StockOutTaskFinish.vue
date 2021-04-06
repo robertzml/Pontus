@@ -36,7 +36,7 @@ export default {
         this.loading = true
       })
 
-      stockOut.finishTask({ taskId: this.taskId }).then(res => {
+      stockOut.finishTask({ taskId: this.taskId }).then((res) => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '确认任务成功')
           vm.$emit('close')
