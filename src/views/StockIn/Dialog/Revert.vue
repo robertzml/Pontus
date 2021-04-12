@@ -42,7 +42,7 @@ export default {
         this.loading = true
       })
 
-      stockIn.revert({ id: this.stockInId }).then(res => {
+      stockIn.revert({ id: this.stockInId }).then((res) => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '入库单已撤回')
           vm.$emit('close')

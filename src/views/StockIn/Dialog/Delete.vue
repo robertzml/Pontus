@@ -36,7 +36,7 @@ export default {
         this.loading = true
       })
 
-      stockIn.deleteStockIn({ id: this.stockInId }).then(res => {
+      stockIn.deleteStockIn({ id: this.stockInId }).then((res) => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '入库单已删除')
           vm.$emit('close')

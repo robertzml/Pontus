@@ -36,7 +36,7 @@ export default {
       let vm = this
       system
         .fixNormalStoreStockInId()
-        .then(res => {
+        .then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '操作完成')
             vm.loading = false
@@ -58,7 +58,7 @@ export default {
       let vm = this
       system
         .fixNormalStoreInitialTime()
-        .then(res => {
+        .then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '操作完成')
             vm.loading = false

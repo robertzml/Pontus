@@ -1,8 +1,6 @@
 <template>
   <v-card class="mx-auto">
-    <v-card-title class="cyan">
-      仓位信息
-    </v-card-title>
+    <v-card-title class="cyan"> 仓位信息 </v-card-title>
     <v-card-text class="pb-1">
       <v-form>
         <v-container class="px-1">

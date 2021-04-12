@@ -93,26 +93,26 @@
       <v-tabs-items v-model="tab">
         <v-tab-item>
           <v-data-table :headers="carryInHeaders" :items="carryInListData" :items-per-page="10">
-            <template v-slot:item.type="{ item }">
+            <template v-slot:[`item.type`]="{ item }">
               {{ item.type | carryInTaskType }}
             </template>
-            <template v-slot:item.status="{ item }">
+            <template v-slot:[`item.status`]="{ item }">
               {{ item.status | displayStatus }}
             </template>
-            <template v-slot:item.moveTime="{ item }">
+            <template v-slot:[`item.moveTime`]="{ item }">
               {{ item.moveTime | displayDateTime }}
             </template>
           </v-data-table>
         </v-tab-item>
         <v-tab-item>
           <v-data-table :headers="carryOutHeaders" :items="carryOutListData" :items-per-page="10">
-            <template v-slot:item.type="{ item }">
+            <template v-slot:[`item.type`]="{ item }">
               {{ item.type | carryOutTaskType }}
             </template>
-            <template v-slot:item.status="{ item }">
+            <template v-slot:[`item.status`]="{ item }">
               {{ item.status | displayStatus }}
             </template>
-            <template v-slot:item.moveTime="{ item }">
+            <template v-slot:[`item.moveTime`]="{ item }">
               {{ item.moveTime | displayDateTime }}
             </template>
           </v-data-table>
@@ -151,7 +151,7 @@ export default {
       date: moment().format('YYYY-MM-DD')
     },
     contractListData: [],
-    contractRules: [v => !!v.id || '请选择合同'],
+    contractRules: [(v) => !!v.id || '请选择合同'],
     storeListData: [],
     normalStoreListData: [],
     stockInHeaders: [
@@ -206,25 +206,25 @@ export default {
     carryOutListData: []
   }),
   watch: {
-    'search.customerId': function(val) {
+    'search.customerId': function (val) {
       this.loadContract(val)
     }
   },
   computed: {
     // 入库总数量
-    totalMoveInCount: function() {
+    totalMoveInCount: function () {
       return this.stockInTaskData.reduce((acc, cur) => acc + cur.inCount, 0)
     },
     // 入库总重量
-    totalMoveInWeight: function() {
+    totalMoveInWeight: function () {
       return this.stockInTaskData.reduce((acc, cur) => acc + cur.inWeight, 0).toFixed(4)
     },
     // 出库总数量
-    totalMoveOutCount: function() {
+    totalMoveOutCount: function () {
       return this.stockOutTaskData.reduce((acc, cur) => acc + cur.outCount, 0)
     },
     // 出库总重量
-    totalMoveOutWeight: function() {
+    totalMoveOutWeight: function () {
       return this.stockOutTaskData.reduce((acc, cur) => acc + cur.outWeight, 0).toFixed(4)
     }
   },

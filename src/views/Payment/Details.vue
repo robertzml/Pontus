@@ -70,13 +70,13 @@ export default {
   }),
   computed: {
     ...mapState({
-      paymentId: state => state.payment.paymentId,
-      refreshEvent: state => state.payment.refreshEvent
+      paymentId: (state) => state.payment.paymentId,
+      refreshEvent: (state) => state.payment.refreshEvent
     }),
     ...mapGetters(['userInfo'])
   },
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadInfo()
     }
   },
@@ -95,7 +95,7 @@ export default {
       })
 
       let vm = this
-      payment.delete({ id: this.paymentId }).then(res => {
+      payment.delete({ id: this.paymentId }).then((res) => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '删除缴费记录成功')
           vm.loading = false
@@ -108,7 +108,7 @@ export default {
       })
     }
   },
-  activated: function() {
+  activated: function () {
     this.loadInfo()
   }
 }

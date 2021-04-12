@@ -2,9 +2,7 @@
   <v-row dense>
     <v-col cols="12">
       <v-card class="mx-auto">
-        <v-card-title class="cyan">
-          仓库信息
-        </v-card-title>
+        <v-card-title class="cyan"> 仓库信息 </v-card-title>
         <v-card-text>
           <v-form>
             <v-row dense>
@@ -50,11 +48,11 @@ export default {
   },
   data: () => ({}),
   computed: mapState({
-    warehouseInfo: state => state.warehouse.warehouseInfo,
-    refreshEvent: state => state.warehouse.refreshEvent
+    warehouseInfo: (state) => state.warehouse.warehouseInfo,
+    refreshEvent: (state) => state.warehouse.refreshEvent
   }),
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadInfo()
       this.$refs.shelfListMod.loadList()
     }
@@ -66,7 +64,7 @@ export default {
 
     loadInfo() {
       let vm = this
-      warehouse.find(this.warehouseInfo.id).then(res => {
+      warehouse.find(this.warehouseInfo.id).then((res) => {
         vm.setWarehouseInfo(res)
       })
     }

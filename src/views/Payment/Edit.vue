@@ -2,14 +2,14 @@
   <v-dialog v-model="dialog" persistent eager max-width="800px">
     <v-card>
       <v-card-title>
-        <span class="text-h5">添加缴费信息</span>
+        <span class="text-h5">编辑缴费信息</span>
       </v-card-title>
       <v-divider></v-divider>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row dense>
             <v-col cols="6" md="6" sm="6">
-              <customer-select :customer-id.sync="paymentInfo.customerId"></customer-select>
+              <v-text-field label="客户" v-model="customerName" readonly></v-text-field>
             </v-col>
             <v-col cols="6" md="6" sm="6">
               <v-text-field label="票号" v-model="paymentInfo.ticketNumber" readonly></v-text-field>
@@ -47,18 +47,17 @@
 
 <script>
 import payment from '@/controllers/payment'
-import CustomerSelect from '@/components/Control/CustomerSelect'
+import customer from '@/controllers/customer'
 
 export default {
   name: 'PaymentCreate',
-  components: {
-    CustomerSelect
-  },
+  components: {},
   data: () => ({
     valid: true,
     loading: false,
     dialog: false,
     paidTimeMenu: false,
+    paymentId: 0,
     paymentInfo: {
       ticketNumber: '',
       paidFee: 0,
@@ -67,24 +66,34 @@ export default {
       userId: 0,
       remark: ''
     },
+    customerName: '',
     numberRules: [(v) => !!v || '请输入客户编号'],
     nameRules: [(v) => !!v || '请输入客户名称']
   }),
   methods: {
-    init() {
-      this.paymentInfo = {
-        ticketNumber: '',
-        paidFee: 0,
-        paidTime: this.$moment().format('YYYY-MM-DD'),
-        paidType: 1,
-        userId: 0,
-        remark: ''
-      }
+    init(id) {
+      this.paymentId = id
+
+      let vm = this
+      payment.find(this.paymentId).then((res) => {
+        vm.paymentInfo = res
+        vm.paymentInfo.paidTime = vm.paymentInfo.paidTime.substr(0, 10)
+
+        vm.getCustomer(res.customerId)
+      })
 
       this.loading = false
       this.dialog = true
       this.$nextTick(() => {
         this.$refs.form.resetValidation()
+      })
+    },
+
+    getCustomer(id) {
+      let vm = this
+
+      customer.find(id).then((res) => {
+        vm.customerName = res.name
       })
     },
 
@@ -99,10 +108,10 @@ export default {
         this.paymentInfo.userName = this.$store.state.user.name
 
         payment
-          .create(this.paymentInfo)
+          .update(this.paymentInfo)
           .then((res) => {
             if (res.status == 0) {
-              vm.$store.commit('alertSuccess', '添加缴费记录成功')
+              vm.$store.commit('alertSuccess', '编辑缴费记录成功')
               vm.$emit('close')
               vm.loading = false
               vm.dialog = false

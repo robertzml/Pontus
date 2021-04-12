@@ -39,15 +39,7 @@
         <v-card-text class="pt-0">
           <v-row dense>
             <v-col cols="3">
-              <v-select
-                :items="warehouseList"
-                label="存放仓库"
-                item-text="name"
-                item-value="id"
-                v-model="filter.warehouseId"
-                hide-details
-                clearable
-              ></v-select>
+              <v-select :items="warehouseList" label="存放仓库" item-text="name" item-value="id" v-model="filter.warehouseId" hide-details clearable></v-select>
             </v-col>
             <v-col cols="3">
               <v-select
@@ -73,24 +65,22 @@
 
     <v-col cols="12">
       <v-card>
-        <v-card-title class="orange">
-          库存列表
-        </v-card-title>
+        <v-card-title class="orange"> 库存列表 </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="filterData" :search="filter.search" :items-per-page="10">
-            <template v-slot:item.status="{ item }">
+            <template v-slot:[`item.status`]="{ item }">
               {{ item.status | displayStatus }}
             </template>
-            <template v-slot:item.initialTime="{ item }">
+            <template v-slot:[`item.initialTime`]="{ item }">
               {{ item.initialTime | displayDate }}
             </template>
-            <template v-slot:item.inTime="{ item }">
+            <template v-slot:[`item.inTime`]="{ item }">
               {{ item.inTime | displayDate }}
             </template>
-            <template v-slot:item.outTime="{ item }">
+            <template v-slot:[`item.outTime`]="{ item }">
               {{ item.outTime | displayDate }}
             </template>
-            <template v-slot:item.action="{ item }">
+            <template v-slot:[`item.action`]="{ item }">
               <v-btn small color="primary" @click="viewItem(item)">
                 <v-icon left dark>pageview</v-icon>
                 查看
@@ -130,7 +120,7 @@ export default {
       search: ''
     },
     contractListData: [],
-    contractRules: [v => !!v.id || '请选择合同'],
+    contractRules: [(v) => !!v.id || '请选择合同'],
     cargoList: [],
     warehouseList: [],
     storeData: [],
@@ -151,31 +141,31 @@ export default {
     ]
   }),
   watch: {
-    'search.customerId': function(val) {
+    'search.customerId': function (val) {
       this.loadContract(val)
       this.loadCargoData(val)
     },
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.searchStore()
     }
   },
   computed: {
     ...mapState({
-      refreshEvent: state => state.store.refreshEvent
+      refreshEvent: (state) => state.store.refreshEvent
     }),
     filterData() {
       let temp = this.storeData
 
       if (this.filter.warehouseId) {
-        temp = temp.filter(r => r.warehouseId == this.filter.warehouseId)
+        temp = temp.filter((r) => r.warehouseId == this.filter.warehouseId)
       }
 
       if (this.filter.status) {
-        temp = temp.filter(r => r.status == this.filter.status)
+        temp = temp.filter((r) => r.status == this.filter.status)
       }
 
       if (this.filter.cargoId) {
-        temp = temp.filter(r => r.cargoId == this.filter.cargoId)
+        temp = temp.filter((r) => r.cargoId == this.filter.cargoId)
       }
 
       return temp
@@ -207,7 +197,7 @@ export default {
     loadCargoData(customerId) {
       if (customerId) {
         let vm = this
-        cargo.getList(customerId).then(res => {
+        cargo.getList(customerId).then((res) => {
           vm.cargoList = res
         })
       } else {
@@ -227,7 +217,7 @@ export default {
       this.showDetails(item.id)
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.loadWarehouse()
   }
 }

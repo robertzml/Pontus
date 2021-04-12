@@ -81,8 +81,8 @@ export default {
     },
     tableItems: [],
     fieldItems: [],
-    nameRules: [v => !!v || '请输入名称'],
-    formatRules: [v => !!v || '请输入格式']
+    nameRules: [(v) => !!v || '请输入名称'],
+    formatRules: [(v) => !!v || '请输入格式']
   }),
   methods: {
     init(sequenceId) {
@@ -102,7 +102,7 @@ export default {
         }
       } else {
         let vm = this
-        sequence.getTemplate(sequenceId).then(res => {
+        sequence.getTemplate(sequenceId).then((res) => {
           vm.sequenceInfo = res
 
           vm.loadColumnNames(vm.sequenceInfo.tableName)
@@ -117,14 +117,14 @@ export default {
 
     loadTableNames() {
       let vm = this
-      this.$store.dispatch('getTableList').then(res => {
+      this.$store.dispatch('getTableList').then((res) => {
         vm.tableItems = res
       })
     },
 
     loadColumnNames(val) {
       let vm = this
-      this.$store.dispatch('getColumnList', val).then(res => {
+      this.$store.dispatch('getColumnList', val).then((res) => {
         vm.fieldItems = res
       })
     },
@@ -141,7 +141,7 @@ export default {
 
         let vm = this
         if (!this.sequenceId || this.sequenceId == '') {
-          sequence.createTemplate(this.sequenceInfo).then(res => {
+          sequence.createTemplate(this.sequenceInfo).then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '添加编号模板成功')
               vm.$emit('update')
@@ -153,7 +153,7 @@ export default {
             }
           })
         } else {
-          sequence.updateTemplate(this.sequenceInfo).then(res => {
+          sequence.updateTemplate(this.sequenceInfo).then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '修改编号模板成功')
               vm.$emit('update')

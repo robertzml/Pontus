@@ -14,7 +14,7 @@
             return-object
             label="仓库选择"
             @change="selectWarehouse"
-            style="width:200px;"
+            style="width: 200px"
           >
             <template v-slot:selection="{ item }"> {{ item.number }} - {{ item.name }} </template>
           </v-select>
@@ -83,12 +83,8 @@
                         <v-card outlined tile :color="positionColor(positionDim[layer - 1][depth - 1])">
                           <v-card-text class="my-0 py-0 px-1 text-center align-center text-caption">
                             {{ positionDim[layer - 1][depth - 1].number }}
-                            <v-btn text x-small color="lime" @click="viewDetails(layer, depth)">
-                              View
-                            </v-btn>
-                            <v-btn text x-small color="orange" @click="moveTray(layer, depth)">
-                              Move
-                            </v-btn>
+                            <v-btn text x-small color="lime" @click="viewDetails(layer, depth)"> View </v-btn>
+                            <v-btn text x-small color="orange" @click="moveTray(layer, depth)"> Move </v-btn>
                           </v-card-text>
                         </v-card>
                       </v-col>
@@ -140,7 +136,7 @@ export default {
       }
       this.sRow = 0
       this.positionListData = []
-      this.currentShelf = this.shelfListData.find(r => r.id == val)
+      this.currentShelf = this.shelfListData.find((r) => r.id == val)
     },
     sRow(val) {
       if (val == undefined || val == 0) {
@@ -150,23 +146,23 @@ export default {
     }
   },
   computed: {
-    maxDepth: function() {
+    maxDepth: function () {
       if (this.positionListData.length == 0) {
         return 0
       }
-      const dep = this.positionListData.map(r => r.depth)
+      const dep = this.positionListData.map((r) => r.depth)
       return Math.max(...dep)
     },
 
-    maxLayer: function() {
+    maxLayer: function () {
       if (this.positionListData.length == 0) {
         return 0
       }
-      const layer = this.positionListData.map(r => r.layer)
+      const layer = this.positionListData.map((r) => r.layer)
       return Math.max(...layer)
     },
 
-    positionDim: function() {
+    positionDim: function () {
       let arr = new Array()
 
       for (let i = 0; i < this.maxLayer; i++) {
@@ -186,7 +182,7 @@ export default {
 
     loadWarehouse() {
       let vm = this
-      warehouse.getList(2).then(res => {
+      warehouse.getList(2).then((res) => {
         vm.warehouseListData = res
       })
     },
@@ -194,7 +190,7 @@ export default {
     // 菜单栏选择仓库，载入货架列表
     selectWarehouse(val) {
       let vm = this
-      shelf.getList(val.id).then(res => {
+      shelf.getList(val.id).then((res) => {
         vm.shelfListData = res
       })
     },
@@ -202,13 +198,13 @@ export default {
     // 载入一列中的仓位
     loadPosition() {
       let vm = this
-      position.getList({ shelfId: this.sShelfId, row: this.sRow }).then(res => {
+      position.getList({ shelfId: this.sShelfId, row: this.sRow }).then((res) => {
         vm.positionListData = res
       })
     },
 
     positionIndex(row, layer, depth) {
-      let pos = this.positionListData.find(r => r.row == row && r.layer == layer && r.depth == depth)
+      let pos = this.positionListData.find((r) => r.row == row && r.layer == layer && r.depth == depth)
       return pos
     },
 
@@ -220,7 +216,7 @@ export default {
 
     // 移动托盘
     moveTray(layer, depth) {
-      const pos = this.positionListData.find(r => r.row == this.sRow && r.layer == layer && r.depth == depth)
+      const pos = this.positionListData.find((r) => r.row == this.sRow && r.layer == layer && r.depth == depth)
       if (pos.status != 32) {
         this.$store.commit('alertError', '该仓位无托盘，无法移动')
         return
@@ -240,7 +236,7 @@ export default {
       }
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.init()
   }
 }

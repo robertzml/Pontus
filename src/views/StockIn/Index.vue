@@ -12,17 +12,7 @@
         <v-btn text @click.stop="print">打印</v-btn>
         <v-menu v-model="inTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290">
           <template v-slot:activator="{ on }">
-            <v-text-field
-              v-model="monthTime"
-              prefix="入库月份"
-              style="width:180px;"
-              single-line
-              hide-details
-              solo
-              flat
-              readonly
-              v-on="on"
-            ></v-text-field>
+            <v-text-field v-model="monthTime" prefix="入库月份" style="width: 180px" single-line hide-details solo flat readonly v-on="on"></v-text-field>
           </template>
           <v-date-picker v-model="monthTime" type="month" @input="inTimeMenu = false"></v-date-picker>
         </v-menu>
@@ -70,9 +60,9 @@ export default {
   }),
   computed: {
     ...mapState({
-      tab: state => state.stockIn.tab,
-      stockInId: state => state.stockIn.stockInId,
-      stockInInfo: state => state.stockIn.stockInInfo
+      tab: (state) => state.stockIn.tab,
+      stockInId: (state) => state.stockIn.stockInId,
+      stockInInfo: (state) => state.stockIn.stockInInfo
     }),
     monthTime: {
       get() {

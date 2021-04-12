@@ -41,16 +41,16 @@
           </v-card-title>
           <v-card-text class="px-0">
             <v-data-table :headers="headers" :items="paymentFilterData" :search="filter.text" :items-per-page="10">
-              <template v-slot:item.paidType="{ item }">
+              <template v-slot:[`item.paidType`]="{ item }">
                 {{ item.paidType | paidType }}
               </template>
-              <template v-slot:item.paidTime="{ item }">
+              <template v-slot:[`item.paidTime`]="{ item }">
                 {{ item.paidTime | displayDate }}
               </template>
-              <template v-slot:item.createTime="{ item }">
+              <template v-slot:[`item.createTime`]="{ item }">
                 {{ item.createTime | displayDateTime }}
               </template>
-              <template v-slot:item.action="{ item }">
+              <template v-slot:[`item.action`]="{ item }">
                 <v-btn small color="success" @click="viewItem(item)">
                   <v-icon left dark>pageview</v-icon>
                   查看

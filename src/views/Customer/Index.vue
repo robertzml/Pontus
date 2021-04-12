@@ -44,8 +44,8 @@ export default {
   data: () => ({}),
   computed: {
     ...mapState({
-      tab: state => state.customer.tab,
-      customerInfo: state => state.customer.customerInfo
+      tab: (state) => state.customer.tab,
+      customerInfo: (state) => state.customer.customerInfo
     })
   },
   methods: {
@@ -64,7 +64,7 @@ export default {
       this.$refs.customerEditMod.init(this.customerInfo.id)
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.showList()
   }
 }

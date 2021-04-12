@@ -13,14 +13,7 @@
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-row dense>
               <v-col cols="6">
-                <v-text-field
-                  label="托盘码"
-                  v-model="trayCode"
-                  :counter="6"
-                  clearable
-                  :rules="trayCodeRules"
-                  @keyup.enter="searchTray"
-                ></v-text-field>
+                <v-text-field label="托盘码" v-model="trayCode" :counter="6" clearable :rules="trayCodeRules" @keyup.enter="searchTray"></v-text-field>
 
                 <v-text-field v-show="false"></v-text-field>
               </v-col>
@@ -81,7 +74,7 @@ export default {
   data: () => ({
     valid: false,
     trayCode: '',
-    trayCodeRules: [v => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
+    trayCodeRules: [(v) => /^[0-9]{6}$/.test(v) || '请输入托盘码'],
     storeListData: [],
     carryInListData: [],
     carryOutListData: []
@@ -95,7 +88,7 @@ export default {
       }
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.trayCode = ''
   }
 }

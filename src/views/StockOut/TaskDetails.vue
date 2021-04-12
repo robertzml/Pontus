@@ -26,13 +26,13 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="carryOutHeaders" :items="carryOutTaskList" hide-default-footer disable-filtering disable-pagination>
-            <template v-slot:item.type="{ item }">
+            <template v-slot:[`item.type`]="{ item }">
               {{ item.type | carryOutTaskType }}
             </template>
-            <template v-slot:item.status="{ item }">
+            <template v-slot:[`item.status`]="{ item }">
               <span :class="{ 'orange--text': item.status != 85 }">{{ item.status | displayStatus }}</span>
             </template>
-            <template v-slot:item.action="{ item }">
+            <template v-slot:[`item.action`]="{ item }">
               <v-btn small color="primary" @click="viewCarryOutDetails(item)">
                 <v-icon left dark>pageview</v-icon>
                 查看
@@ -61,10 +61,10 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="carryInHeaders" :items="carryInTaskList" hide-default-footer disable-filtering disable-pagination>
-            <template v-slot:item.status="{ item }">
+            <template v-slot:[`item.status`]="{ item }">
               {{ item.status | displayStatus }}
             </template>
-            <template v-slot:item.action="{ item }">
+            <template v-slot:[`item.action`]="{ item }">
               <v-btn small color="primary" @click="viewCarryInDetails(item)">
                 <v-icon left dark>pageview</v-icon>
                 查看
@@ -166,15 +166,15 @@ export default {
   }),
   computed: {
     ...mapState({
-      taskInfo: state => state.stockOut.stockOutTaskInfo,
-      refreshEvent: state => state.stockOut.refreshEvent
+      taskInfo: (state) => state.stockOut.stockOutTaskInfo,
+      refreshEvent: (state) => state.stockOut.refreshEvent
     }),
-    totalOutTray: function() {
+    totalOutTray: function () {
       return this.carryOutTaskList.length
     },
-    finishMoveOutCount: function() {
+    finishMoveOutCount: function () {
       let total = 0
-      this.carryOutTaskList.forEach(item => {
+      this.carryOutTaskList.forEach((item) => {
         if (item.status == 85) {
           total += item.moveCount
         }
@@ -182,28 +182,28 @@ export default {
 
       return total
     },
-    totalMoveOutCount: function() {
+    totalMoveOutCount: function () {
       let total = 0
-      this.carryOutTaskList.forEach(item => {
+      this.carryOutTaskList.forEach((item) => {
         total += item.moveCount
       })
 
       return total
     },
-    totalMoveOutWeight: function() {
+    totalMoveOutWeight: function () {
       let total = 0
-      this.carryOutTaskList.forEach(item => {
+      this.carryOutTaskList.forEach((item) => {
         total += item.moveWeight
       })
 
       return total.toFixed(4)
     },
-    totalInTray: function() {
+    totalInTray: function () {
       return this.carryInTaskList.length
     },
-    finishMoveInCount: function() {
+    finishMoveInCount: function () {
       let total = 0
-      this.carryInTaskList.forEach(item => {
+      this.carryInTaskList.forEach((item) => {
         if (item.status == 75) {
           total += item.moveCount
         }
@@ -211,17 +211,17 @@ export default {
 
       return total
     },
-    totalMoveInCount: function() {
+    totalMoveInCount: function () {
       let total = 0
-      this.carryInTaskList.forEach(item => {
+      this.carryInTaskList.forEach((item) => {
         total += item.moveCount
       })
 
       return total
     },
-    totalMoveInWeight: function() {
+    totalMoveInWeight: function () {
       let total = 0
-      this.carryInTaskList.forEach(item => {
+      this.carryInTaskList.forEach((item) => {
         total += item.moveWeight
       })
 
@@ -229,7 +229,7 @@ export default {
     }
   },
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadStockOutTask()
       if (this.taskInfo.stockOutType == 2) {
         this.loadCarryOutTask()
@@ -249,7 +249,7 @@ export default {
 
     loadStockOutTask() {
       let vm = this
-      stockOut.getTask(this.taskInfo.id).then(res => {
+      stockOut.getTask(this.taskInfo.id).then((res) => {
         vm.setTaskInfo(res)
       })
     },
@@ -257,7 +257,7 @@ export default {
     // 载入搬运出库任务
     loadCarryOutTask() {
       let vm = this
-      carryOut.listByStockOutTask(this.taskInfo.id).then(res => {
+      carryOut.listByStockOutTask(this.taskInfo.id).then((res) => {
         vm.carryOutTaskList = res
       })
     },
@@ -265,7 +265,7 @@ export default {
     // 载入临时搬运入库任务
     loadCarryInTask() {
       let vm = this
-      carryIn.listByStockOutTask(this.taskInfo.id).then(res => {
+      carryIn.listByStockOutTask(this.taskInfo.id).then((res) => {
         vm.carryInTaskList = res
       })
     },
@@ -315,7 +315,7 @@ export default {
       this.$refs.carryInEnterMod.init(item.trayCode)
     }
   },
-  mounted: function() {
+  mounted: function () {
     if (this.taskInfo.stockOutType == 2) {
       this.loadCarryOutTask()
       this.loadCarryInTask()

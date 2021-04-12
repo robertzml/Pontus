@@ -1,12 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer
-      v-if="isLogin && userInfo.userGroupId < 6"
-      v-model="drawer"
-      :clipped="$vuetify.breakpoint.lgAndUp"
-      :width="220"
-      app
-    >
+    <v-navigation-drawer v-if="isLogin && userInfo.userGroupId < 6" v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" :width="220" app>
       <navigation-bar></navigation-bar>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app dense color="blue darken-3">

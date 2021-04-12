@@ -1,21 +1,12 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="800px">
     <v-card>
-      <v-card-title>
-        编辑入库单
-      </v-card-title>
+      <v-card-title> 编辑入库单 </v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row dense>
             <v-col cols="6" md="6" sm="6">
-              <v-menu
-                v-model="stockInTimeMenu"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
+              <v-menu v-model="stockInTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
                   <v-text-field v-model="stockInInfo.inTime" label="入库时间" prepend-icon="event" readonly v-on="on"></v-text-field>
                 </template>
@@ -91,14 +82,14 @@ export default {
     },
     selectedContract: { number: '' },
     contractListData: [],
-    contractRules: [v => !!v.id || '请选择合同']
+    contractRules: [(v) => !!v.id || '请选择合同']
   }),
   methods: {
-    init: function(id) {
+    init: function (id) {
       this.stockInId = id
 
       let vm = this
-      stockIn.find(id).then(res => {
+      stockIn.find(id).then((res) => {
         vm.stockInInfo = res
         vm.stockInInfo.inTime = this.$moment(vm.stockInInfo.inTime).format('YYYY-MM-DD')
 
@@ -118,7 +109,7 @@ export default {
         return
       }
       let vm = this
-      contract.getList(customerId).then(res => {
+      contract.getList(customerId).then((res) => {
         vm.contractListData = res
         if (res.length > 0) {
           vm.selectedContract = res[0]
@@ -137,7 +128,7 @@ export default {
         this.stockInInfo.userId = this.$store.state.user.id
         this.stockInInfo.userName = this.$store.state.user.name
 
-        stockIn.update(this.stockInInfo).then(res => {
+        stockIn.update(this.stockInInfo).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '编辑入库成功')
             vm.$emit('close')

@@ -6,9 +6,7 @@
         <v-expansion-panel-content eager>
           <stock-in-task-details-view :task-info="taskInfo">
             <template v-slot:action>
-              <v-btn color="indigo darken-3" v-if="taskInfo.status == 71 && taskInfo.stockInType == 2" @click.stop="showCarryInCreate">
-                任务下发
-              </v-btn>
+              <v-btn color="indigo darken-3" v-if="taskInfo.status == 71 && taskInfo.stockInType == 2" @click.stop="showCarryInCreate"> 任务下发 </v-btn>
               <v-btn color="success darken-1" v-if="taskInfo.status == 71" @click.stop="showFinishTask">确认入库货物</v-btn>
               <v-btn color="warning" v-if="taskInfo.status != 75" @click.stop="showEditTask">编辑入库货物</v-btn>
               <v-btn color="red darken-3" v-if="taskInfo.status != 75" @click.stop="showDeleteTask">删除入库货物</v-btn>
@@ -30,13 +28,13 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="carryInTaskHeaders" :items="carryInTaskList" hide-default-footer disable-filtering disable-pagination>
-            <template v-slot:item.checkTime="{ item }">
+            <template v-slot:[`item.checkTime`]="{ item }">
               {{ item.checkTime | displayDateTime }}
             </template>
-            <template v-slot:item.status="{ item }">
+            <template v-slot:[`item.status`]="{ item }">
               <span :class="{ 'green--text': item.status == 75 }">{{ item.status | displayStatus }}</span>
             </template>
-            <template v-slot:item.action="{ item }">
+            <template v-slot:[`item.action`]="{ item }">
               <v-btn small color="primary darken-1" @click="showCarryInDetails(item)">
                 <v-icon left dark>pageview</v-icon>
                 查看
@@ -133,15 +131,15 @@ export default {
       /**
        * 入库任务单
        */
-      taskInfo: state => state.stockIn.stockInTaskInfo,
-      refreshEvent: state => state.stockIn.refreshEvent
+      taskInfo: (state) => state.stockIn.stockInTaskInfo,
+      refreshEvent: (state) => state.stockIn.refreshEvent
     }),
-    totalInTray: function() {
+    totalInTray: function () {
       return this.carryInTaskList.length
     },
-    finishMoveInCount: function() {
+    finishMoveInCount: function () {
       let total = 0
-      this.carryInTaskList.forEach(item => {
+      this.carryInTaskList.forEach((item) => {
         if (item.status == 75) {
           total += item.moveCount
         }
@@ -149,17 +147,17 @@ export default {
 
       return total
     },
-    totalMoveInCount: function() {
+    totalMoveInCount: function () {
       let total = 0
-      this.carryInTaskList.forEach(item => {
+      this.carryInTaskList.forEach((item) => {
         total += item.moveCount
       })
 
       return total
     },
-    totalMoveInWeight: function() {
+    totalMoveInWeight: function () {
       let total = 0
-      this.carryInTaskList.forEach(item => {
+      this.carryInTaskList.forEach((item) => {
         total += item.moveWeight
       })
 
@@ -167,7 +165,7 @@ export default {
     }
   },
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadStockInTask()
       if (this.taskInfo.stockInType == 2) {
         this.loadCarryInTask()
@@ -186,7 +184,7 @@ export default {
     // 载入入库任务
     loadStockInTask() {
       let vm = this
-      stockIn.getTask(this.taskInfo.id).then(res => {
+      stockIn.getTask(this.taskInfo.id).then((res) => {
         vm.setTaskInfo(res)
       })
     },
@@ -194,7 +192,7 @@ export default {
     // 载入搬运入库任务
     loadCarryInTask() {
       let vm = this
-      carryIn.listByStockInTask(this.taskInfo.id).then(res => {
+      carryIn.listByStockInTask(this.taskInfo.id).then((res) => {
         vm.carryInTaskList = res
       })
     },
@@ -245,7 +243,7 @@ export default {
       this.$refs.carryInDeleteMod.init(item.id)
     }
   },
-  mounted: function() {
+  mounted: function () {
     if (this.taskInfo.stockInType == 2) {
       this.loadCarryInTask()
     }

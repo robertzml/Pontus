@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto">
-    <v-list shaped max-height="700" style="overflow-y:scroll;">
+    <v-list shaped max-height="700" style="overflow-y: scroll">
       <v-subheader class="text-subtitle-1 teal--text text--lighten-2">入库单列表</v-subheader>
       <v-list-item-group v-model="model" color="primary" mandatory>
         <v-list-item v-for="item in stockInList" :key="item.id" :value="item.id">
@@ -24,19 +24,19 @@ export default {
     model: ''
   }),
   watch: {
-    monthTime: function() {
+    monthTime: function () {
       this.loadStockInList()
     },
-    model: function(val) {
+    model: function (val) {
       this.showDetails(val)
     },
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadStockInList()
     }
   },
   computed: mapState({
-    monthTime: state => state.stockIn.monthTime,
-    refreshEvent: state => state.stockIn.refreshEvent
+    monthTime: (state) => state.stockIn.monthTime,
+    refreshEvent: (state) => state.stockIn.refreshEvent
   }),
   methods: {
     ...mapActions({
@@ -48,7 +48,7 @@ export default {
       this.stockInList = await stockIn.getListByMonth(this.monthTime)
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.loadStockInList()
   }
 }

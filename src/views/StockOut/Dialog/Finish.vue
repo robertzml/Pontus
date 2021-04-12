@@ -36,7 +36,7 @@ export default {
         this.loading = true
       })
 
-      stockOut.confirm({ id: this.stockOutId }).then(res => {
+      stockOut.confirm({ id: this.stockOutId }).then((res) => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '出库单已确认')
           vm.$emit('close')

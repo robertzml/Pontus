@@ -3,9 +3,7 @@
     <v-row dense>
       <v-col cols="12">
         <v-card class="mx-auto">
-          <v-card-title class="cyan">
-            自动编号模板信息
-          </v-card-title>
+          <v-card-title class="cyan"> 自动编号模板信息 </v-card-title>
           <v-card-text>
             <v-form>
               <v-row dense>
@@ -65,7 +63,7 @@ export default {
       }
 
       let vm = this
-      sequence.getTemplate(id).then(res => {
+      sequence.getTemplate(id).then((res) => {
         vm.info = res
       })
     }

@@ -81,9 +81,7 @@
           <v-dialog v-model="dialog" persistent max-width="300">
             <v-card>
               <v-card-title class="text-h5">删除库存记录</v-card-title>
-              <v-card-text>
-                是否确认删除该库存记录？该库存关联库存，搬运任务均被删除，初始入库货物合计数重新计算。 占用仓位状态需手动修改。
-              </v-card-text>
+              <v-card-text> 是否确认删除该库存记录？该库存关联库存，搬运任务均被删除，初始入库货物合计数重新计算。 占用仓位状态需手动修改。 </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue-grey lighten-3" text @click="dialog = false">取消</v-btn>
@@ -244,13 +242,13 @@ export default {
   }),
   computed: {
     ...mapState({
-      storeId: state => state.store.storeId,
-      refreshEvent: state => state.store.refreshEvent
+      storeId: (state) => state.store.storeId,
+      refreshEvent: (state) => state.store.refreshEvent
     }),
     ...mapGetters(['userInfo'])
   },
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadData()
     }
   },
@@ -278,7 +276,7 @@ export default {
       })
 
       let vm = this
-      store.forceDelete({ id: this.storeId }).then(res => {
+      store.forceDelete({ id: this.storeId }).then((res) => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '删除库存记录成功')
           vm.loading = false
@@ -291,7 +289,7 @@ export default {
       })
     }
   },
-  activated: function() {
+  activated: function () {
     this.loadData()
   }
 }

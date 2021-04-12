@@ -1,9 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="800px">
     <v-card>
-      <v-card-title class="lime darken-3">
-        编辑入库任务
-      </v-card-title>
+      <v-card-title class="lime darken-3"> 编辑入库任务 </v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-container fluid>
@@ -72,7 +70,7 @@ export default {
     taskInfo: {}
   }),
   computed: {
-    totalWeight: function() {
+    totalWeight: function () {
       return (this.taskInfo.inCount * this.taskInfo.unitWeight) / 1000
     }
   },
@@ -110,7 +108,7 @@ export default {
         this.taskInfo.cargoId = this.cargoId
         this.taskInfo.inWeight = this.totalWeight
 
-        stockIn.updateTask(this.taskInfo).then(res => {
+        stockIn.updateTask(this.taskInfo).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '编辑任务成功')
             vm.$emit('close')
