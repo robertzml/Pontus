@@ -14,14 +14,7 @@
               <customer-select :customer-id.sync="settlementInfo.customerId"></customer-select>
             </v-col>
             <v-col cols="3">
-              <v-menu
-                v-model="startTimeMenu"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
+              <v-menu v-model="startTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
                   <v-text-field v-model="settlementInfo.startTime" label="开始日期" prepend-icon="event" readonly v-on="on"></v-text-field>
                 </template>
@@ -29,14 +22,7 @@
               </v-menu>
             </v-col>
             <v-col cols="3">
-              <v-menu
-                v-model="endTimeMenu"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
+              <v-menu v-model="endTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
                   <v-text-field v-model="settlementInfo.endTime" label="结束日期" prepend-icon="event" readonly v-on="on"></v-text-field>
                 </template>
@@ -61,10 +47,10 @@
         <v-tabs-items v-model="tab">
           <v-tab-item>
             <v-data-table :headers="coldFeeHeaders" :items="coldFeeData" :items-per-page="10" disable-sort>
-              <template v-slot:item.startTime="{ item }">
+              <template v-slot:[`item.startTime`]="{ item }">
                 {{ item.startTime | displayDate }}
               </template>
-              <template v-slot:item.endTime="{ item }">
+              <template v-slot:[`item.endTime`]="{ item }">
                 {{ item.endTime | displayDate }}
               </template>
             </v-data-table>
@@ -72,10 +58,10 @@
 
           <v-tab-item>
             <v-data-table :headers="inBillingHeaders" :items="inBillingData" :items-per-page="10" disable-sort>
-              <template v-slot:item.inTime="{ item }">
+              <template v-slot:[`item.inTime`]="{ item }">
                 {{ item.inTime | displayDate }}
               </template>
-              <template v-slot:item.unitPrice="{ item }">
+              <template v-slot:[`item.unitPrice`]="{ item }">
                 {{ item.type == 2 ? item.unitPrice : '' }}
               </template>
             </v-data-table>
@@ -83,10 +69,10 @@
 
           <v-tab-item>
             <v-data-table :headers="outBillingHeaders" :items="outBillingData" :items-per-page="10" disable-sort>
-              <template v-slot:item.outTime="{ item }">
+              <template v-slot:[`item.outTime`]="{ item }">
                 {{ item.outTime | displayDate }}
               </template>
-              <template v-slot:item.unitPrice="{ item }">
+              <template v-slot:[`item.unitPrice`]="{ item }">
                 {{ item.type == 2 ? item.unitPrice : '' }}
               </template>
             </v-data-table>
@@ -111,22 +97,11 @@
               <v-text-field v-model="dueFee" label="应付款" readonly suffix="元"></v-text-field>
             </v-col>
             <v-col cols="3">
-              <v-menu
-                v-model="settleTimeMenu"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
+              <v-menu v-model="settleTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
                   <v-text-field v-model="settlementInfo.settleTime" label="结算时间" prepend-icon="event" readonly v-on="on"></v-text-field>
                 </template>
-                <v-date-picker
-                  v-model="settlementInfo.settleTime"
-                  :day-format="$util.pickerDayFormat"
-                  @input="settleTimeMenu = false"
-                ></v-date-picker>
+                <v-date-picker v-model="settlementInfo.settleTime" :day-format="$util.pickerDayFormat" @input="settleTimeMenu = false"></v-date-picker>
               </v-menu>
             </v-col>
             <v-col cols="6">
@@ -176,8 +151,8 @@ export default {
       userName: '',
       remark: ''
     },
-    numberRules: [v => !!v || '请输入客户编号'],
-    nameRules: [v => !!v || '请输入客户名称'],
+    numberRules: [(v) => !!v || '请输入客户编号'],
+    nameRules: [(v) => !!v || '请输入客户名称'],
     inBillingData: [],
     inBillingHeaders: [
       { text: '日期', value: 'inTime' },
@@ -208,24 +183,24 @@ export default {
     ]
   }),
   computed: {
-    sumFee: function() {
+    sumFee: function () {
       let total = 0.0
-      this.inBillingData.forEach(item => {
+      this.inBillingData.forEach((item) => {
         total += item.amount
       })
 
-      this.outBillingData.forEach(item => {
+      this.outBillingData.forEach((item) => {
         total += item.amount
       })
 
-      this.coldFeeData.forEach(item => {
+      this.coldFeeData.forEach((item) => {
         total += item.coldFee
       })
 
       return total.toFixed(3)
     },
 
-    dueFee: function() {
+    dueFee: function () {
       let fee = ((this.sumFee * this.settlementInfo.discount) / 100.0 - this.settlementInfo.remission).toFixed(3)
       return fee
     }
@@ -234,9 +209,7 @@ export default {
     init() {
       this.settlementInfo = {
         customerId: 0,
-        startTime: this.$moment()
-          .startOf('month')
-          .format('YYYY-MM-DD'),
+        startTime: this.$moment().startOf('month').format('YYYY-MM-DD'),
         endTime: this.$moment().format('YYYY-MM-DD'),
         sumFee: 0.0,
         discount: 100.0,
@@ -290,7 +263,7 @@ export default {
 
         settlement
           .create(this.settlementInfo)
-          .then(res => {
+          .then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '添加结算记录成功')
               vm.$emit('close')

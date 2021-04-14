@@ -43,7 +43,7 @@ export default {
   data: () => ({}),
   computed: {
     ...mapState({
-      tab: state => state.settlement.tab
+      tab: (state) => state.settlement.tab
     })
   },
   methods: {

@@ -16,18 +16,11 @@
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-row dense>
               <v-col cols="3">
-                <customer-select :customer-id.sync="search.customerId" :required="true"></customer-select>
+                <customer-select :customer-id.sync="search.customerId" :required="false"></customer-select>
               </v-col>
 
               <v-col cols="3">
-                <v-menu
-                  v-model="startTimeMenu"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
+                <v-menu v-model="startTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                   <template v-slot:activator="{ on }">
                     <v-text-field v-model="search.startTime" label="开始日期" prepend-icon="event" hide-details readonly v-on="on"></v-text-field>
                   </template>
@@ -36,14 +29,7 @@
               </v-col>
 
               <v-col cols="3">
-                <v-menu
-                  v-model="endTimeMenu"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
+                <v-menu v-model="endTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                   <template v-slot:activator="{ on }">
                     <v-text-field v-model="search.endTime" label="结束日期" prepend-icon="event" hide-details readonly v-on="on"></v-text-field>
                   </template>
@@ -65,11 +51,15 @@
         <v-card-subtitle class="pb-2 light-green darken-4">过滤条件</v-card-subtitle>
         <v-card-text class="pt-0">
           <v-row dense>
-            <v-col cols="4">
+            <v-col cols="3">
+              <customer-select :customer-id.sync="filter.customerId" :required="false"></customer-select>
+            </v-col>
+
+            <v-col cols="3">
               <v-select :items="$dict.flowType" label="流水类型" v-model="filter.flowType" clearable></v-select>
             </v-col>
 
-            <v-col cols="4">
+            <v-col cols="3">
               <v-text-field v-model="filter.text" append-icon="search" label="搜索" clearable single-line hide-details> </v-text-field>
             </v-col>
           </v-row>
@@ -87,10 +77,10 @@
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="stockFlowHeader" :items="stockFlowFilterData" :search="filter.text" :items-per-page="10">
-            <template v-slot:item.flowDate="{ item }">
+            <template v-slot:[`item.flowDate`]="{ item }">
               {{ item.flowDate | displayDate }}
             </template>
-            <template v-slot:item.type="{ item }">
+            <template v-slot:[`item.type`]="{ item }">
               {{ item.type | flowType }}
             </template>
           </v-data-table>
@@ -120,6 +110,7 @@ export default {
       endTime: null
     },
     filter: {
+      customerId: 0,
       flowType: 0,
       text: ''
     },
@@ -144,29 +135,33 @@ export default {
     stockFlowFilterData() {
       let temp = this.stockFlowData
 
+      if (this.filter.customerId) {
+        temp = temp.filter((r) => r.customerId == this.filter.customerId)
+      }
+
       if (this.filter.flowType) {
-        temp = temp.filter(r => r.type == this.filter.flowType)
+        temp = temp.filter((r) => r.type == this.filter.flowType)
       }
 
       return temp
     },
 
-    totalInCount: function() {
-      const inList = this.stockFlowData.filter(r => r.type == 1)
+    totalInCount: function () {
+      const inList = this.stockFlowData.filter((r) => r.type == 1)
 
       let total = 0
-      inList.forEach(r => {
+      inList.forEach((r) => {
         total = total + r.flowCount
       })
 
       return total
     },
 
-    totalOutCount: function() {
-      const outList = this.stockFlowData.filter(r => r.type == 2)
+    totalOutCount: function () {
+      const outList = this.stockFlowData.filter((r) => r.type == 2)
 
       let total = 0
-      outList.forEach(r => {
+      outList.forEach((r) => {
         total = total + r.flowCount
       })
 
@@ -187,17 +182,15 @@ export default {
           endTime: this.search.endTime
         }
 
-        statistic.getCustomerStockFlow(model).then(res => {
+        statistic.getCustomerStockFlow(model).then((res) => {
           vm.stockFlowData = res
           vm.loading = false
         })
       }
     }
   },
-  mounted: function() {
-    this.search.startTime = this.$moment()
-      .startOf('month')
-      .format('YYYY-MM-DD')
+  mounted: function () {
+    this.search.startTime = this.$moment().startOf('month').format('YYYY-MM-DD')
     this.search.endTime = this.$moment().format('YYYY-MM-DD')
   }
 }

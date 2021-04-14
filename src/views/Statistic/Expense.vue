@@ -34,14 +34,7 @@
               </v-col>
 
               <v-col cols="3">
-                <v-menu
-                  v-model="startTimeMenu"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
+                <v-menu v-model="startTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                   <template v-slot:activator="{ on }">
                     <v-text-field v-model="search.startTime" label="开始日期" prepend-icon="event" hide-details readonly v-on="on"></v-text-field>
                   </template>
@@ -50,14 +43,7 @@
               </v-col>
 
               <v-col cols="3">
-                <v-menu
-                  v-model="endTimeMenu"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
+                <v-menu v-model="endTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                   <template v-slot:activator="{ on }">
                     <v-text-field v-model="search.endTime" label="结束日期" prepend-icon="event" hide-details readonly v-on="on"></v-text-field>
                   </template>
@@ -105,7 +91,7 @@
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="expenseData" hide-default-footer disable-pagination>
-            <template v-slot:item.type="{ item }">
+            <template v-slot:[`item.type`]="{ item }">
               {{ item.type | expenseItemType }}
             </template>
           </v-data-table>
@@ -137,7 +123,7 @@ export default {
       endTime: null
     },
     contractListData: [],
-    contractRules: [v => !!v.id || '请选择合同'],
+    contractRules: [(v) => !!v.id || '请选择合同'],
     headers: [
       { text: '费用代码', value: 'code' },
       { text: '费用项目', value: 'name' },
@@ -147,14 +133,14 @@ export default {
     expenseData: []
   }),
   watch: {
-    'search.customerId': function(val) {
+    'search.customerId': function (val) {
       this.loadContract(val)
     }
   },
   computed: {
-    totalFee: function() {
+    totalFee: function () {
       let total = 0
-      this.expenseData.forEach(item => {
+      this.expenseData.forEach((item) => {
         total = total + item.amount
       })
 
@@ -187,7 +173,7 @@ export default {
           startTime: this.search.startTime,
           endTime: this.search.endTime
         }
-        statistic.getExpenseRecord(model).then(res => {
+        statistic.getExpenseRecord(model).then((res) => {
           if (res.status == 0) {
             vm.expenseData = res.entity
             vm.loading = false
@@ -199,10 +185,8 @@ export default {
       }
     }
   },
-  mounted: function() {
-    this.search.startTime = this.$moment()
-      .startOf('month')
-      .format('YYYY-MM-DD')
+  mounted: function () {
+    this.search.startTime = this.$moment().startOf('month').format('YYYY-MM-DD')
     this.search.endTime = this.$moment().format('YYYY-MM-DD')
   }
 }

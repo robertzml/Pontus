@@ -36,10 +36,10 @@
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="debtHeader" :items="debtData" :items-per-page="10">
-            <template v-slot:item.startTime="{ item }">
+            <template v-slot:[`item.startTime`]="{ item }">
               {{ item.startTime | displayDate }}
             </template>
-            <template v-slot:item.endTime="{ item }">
+            <template v-slot:[`item.endTime`]="{ item }">
               {{ item.endTime | displayDate }}
             </template>
           </v-data-table>
@@ -87,13 +87,13 @@ export default {
         })
         let vm = this
 
-        statistic.getDebt(this.search.customerId).then(res => {
+        statistic.getDebt(this.search.customerId).then((res) => {
           vm.debtData = [res]
           vm.loading = false
         })
       }
     }
   },
-  mounted: function() {}
+  mounted: function () {}
 }
 </script>

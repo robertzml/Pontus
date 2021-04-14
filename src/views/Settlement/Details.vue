@@ -82,13 +82,13 @@ export default {
   }),
   computed: {
     ...mapState({
-      settlementId: state => state.settlement.settlementId,
-      refreshEvent: state => state.settlement.refreshEvent
+      settlementId: (state) => state.settlement.settlementId,
+      refreshEvent: (state) => state.settlement.refreshEvent
     }),
     ...mapGetters(['userInfo'])
   },
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadInfo()
     }
   },
@@ -107,7 +107,7 @@ export default {
       })
 
       let vm = this
-      settlement.delete({ id: this.settlementId }).then(res => {
+      settlement.delete({ id: this.settlementId }).then((res) => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '删除结算记录成功')
           vm.loading = false
@@ -120,7 +120,7 @@ export default {
       })
     }
   },
-  activated: function() {
+  activated: function () {
     this.loadInfo()
   }
 }
