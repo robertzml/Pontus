@@ -250,15 +250,6 @@ export const menuRoutes = [
     meta: { roles: [1, 2, 3, 4] }
   },
   {
-    path: '/expenselist',
-    name: 'expenseList',
-    text: '费用清单',
-    group: 'expense',
-    model: false,
-    component: () => import('@/views/Expense/List.vue'),
-    meta: { roles: [1, 2, 3, 4] }
-  },
-  {
     path: '/dailycoldfee',
     name: 'dailyColdFee',
     text: '冷藏费清单',

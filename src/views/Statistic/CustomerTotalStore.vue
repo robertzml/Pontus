@@ -40,7 +40,7 @@
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="storeListData" :items-per-page="10" :search="filter">
-            <template v-slot:item.storageDate="{ item }">
+            <template v-slot:[`item.storageDate`]="{ item }">
               {{ item.storageDate | displayDate }}
             </template>
           </v-data-table>
@@ -98,7 +98,7 @@ export default {
         { header: '在库重量(t)', key: 'totalWeight', width: 12 }
       ]
 
-      this.storeListData.forEach(item => {
+      this.storeListData.forEach((item) => {
         let info = {
           storageDate: this.$util.displayDate(item.storageDate),
           customerNumber: item.customerNumber,
@@ -110,8 +110,8 @@ export default {
         sheet.addRow(info)
       })
 
-      sheet.eachRow(function(row) {
-        row.eachCell(function(cell) {
+      sheet.eachRow(function (row) {
+        row.eachCell(function (cell) {
           cell.border = {
             top: { style: 'thin' },
             left: { style: 'thin' },
@@ -123,7 +123,7 @@ export default {
 
       let filename = '客户库存日报表.xlsx'
 
-      workbook.xlsx.writeBuffer().then(data => {
+      workbook.xlsx.writeBuffer().then((data) => {
         const blob = new Blob([data], { type: EXCEL_TYPE })
         FileSaver.saveAs(blob, filename)
       })

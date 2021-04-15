@@ -20,14 +20,7 @@
               </v-col>
 
               <v-col cols="3">
-                <v-menu
-                  v-model="startTimeMenu"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
+                <v-menu v-model="startTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                   <template v-slot:activator="{ on }">
                     <v-text-field v-model="search.startTime" label="开始日期" prepend-icon="event" hide-details readonly v-on="on"></v-text-field>
                   </template>
@@ -36,14 +29,7 @@
               </v-col>
 
               <v-col cols="3">
-                <v-menu
-                  v-model="endTimeMenu"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
+                <v-menu v-model="endTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                   <template v-slot:activator="{ on }">
                     <v-text-field v-model="search.endTime" label="结束日期" prepend-icon="event" hide-details readonly v-on="on"></v-text-field>
                   </template>
@@ -70,10 +56,10 @@
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="customerFeeHeader" :items="customerFeeData" :items-per-page="10">
-            <template v-slot:item.startTime="{ item }">
+            <template v-slot:[`item.startTime`]="{ item }">
               {{ item.startTime | displayDate }}
             </template>
-            <template v-slot:item.endTime="{ item }">
+            <template v-slot:[`item.endTime`]="{ item }">
               {{ item.endTime | displayDate }}
             </template>
           </v-data-table>
@@ -120,18 +106,18 @@ export default {
   }),
   computed: {
     // 费用合计
-    totalFee: function() {
+    totalFee: function () {
       let total = 0
-      this.customerFeeData.forEach(r => {
+      this.customerFeeData.forEach((r) => {
         total = total + r.totalFee
       })
 
       return total.toFixed(3)
     },
     // 期末欠款合计
-    totalEndDebt: function() {
+    totalEndDebt: function () {
       let total = 0
-      this.customerFeeData.forEach(r => {
+      this.customerFeeData.forEach((r) => {
         total = total + r.endDebt
       })
 
@@ -152,17 +138,15 @@ export default {
           endTime: this.search.endTime
         }
 
-        statistic.getCustomerFee(model).then(res => {
+        statistic.getCustomerFee(model).then((res) => {
           vm.customerFeeData = res
           vm.loading = false
         })
       }
     }
   },
-  mounted: function() {
-    this.search.startTime = this.$moment()
-      .startOf('month')
-      .format('YYYY-MM-DD')
+  mounted: function () {
+    this.search.startTime = this.$moment().startOf('month').format('YYYY-MM-DD')
     this.search.endTime = this.$moment().format('YYYY-MM-DD')
   }
 }

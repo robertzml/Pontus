@@ -98,12 +98,53 @@
         </v-card-text>
       </v-card>
     </v-col>
+
+    <v-col cols="12">
+      <v-card>
+        <v-card-title class="blue darken-2">
+          入库费用列表
+          <v-spacer></v-spacer>
+          <span class="text-subtitle-2 mr-4">入库总费用: {{ totalInBilling }} 元</span>
+        </v-card-title>
+        <v-card-text class="px-0">
+          <v-data-table :headers="inBillingHeaders" :items="inBillingData" :items-per-page="10" disable-sort>
+            <template v-slot:[`item.inTime`]="{ item }">
+              {{ item.inTime | displayDate }}
+            </template>
+            <template v-slot:[`item.unitPrice`]="{ item }">
+              {{ item.type == 2 ? item.unitPrice : '' }}
+            </template>
+          </v-data-table>
+        </v-card-text>
+      </v-card>
+    </v-col>
+
+    <v-col cols="12">
+      <v-card>
+        <v-card-title class="teal darken-3">
+          出库费用列表
+          <v-spacer></v-spacer>
+          <span class="text-subtitle-2 mr-4">出库总费用: {{ totalOutBilling }} 元</span>
+        </v-card-title>
+        <v-card-text class="px-0">
+          <v-data-table :headers="outBillingHeaders" :items="outBillingData" :items-per-page="10" disable-sort>
+            <template v-slot:[`item.outTime`]="{ item }">
+              {{ item.outTime | displayDate }}
+            </template>
+            <template v-slot:[`item.unitPrice`]="{ item }">
+              {{ item.type == 2 ? item.unitPrice : '' }}
+            </template>
+          </v-data-table>
+        </v-card-text>
+      </v-card>
+    </v-col>
   </v-row>
 </template>
 
 <script>
 import contract from '@/controllers/contract'
 import statistic from '@/controllers/statistic'
+import expense from '@/controllers/expense'
 import CustomerSelect from '@/components/Control/CustomerSelect'
 
 export default {
@@ -130,7 +171,27 @@ export default {
       { text: '计费方式', value: 'type' },
       { text: '费用(元)', value: 'amount' }
     ],
-    expenseData: []
+    expenseData: [],
+    inBillingData: [],
+    inBillingHeaders: [
+      { text: '日期', value: 'inTime' },
+      { text: '流水单', value: 'flowNumber' },
+      { text: '费用代码', value: 'code' },
+      { text: '费用名称', value: 'name' },
+      { text: '单价', value: 'unitPrice' },
+      { text: '数量(吨)', value: 'count' },
+      { text: '费用(元)', value: 'amount' }
+    ],
+    outBillingData: [],
+    outBillingHeaders: [
+      { text: '日期', value: 'outTime' },
+      { text: '流水单', value: 'flowNumber' },
+      { text: '费用代码', value: 'code' },
+      { text: '费用名称', value: 'name' },
+      { text: '单价', value: 'unitPrice' },
+      { text: '数量(吨)', value: 'count' },
+      { text: '费用(元)', value: 'amount' }
+    ]
   }),
   watch: {
     'search.customerId': function (val) {
@@ -145,6 +206,22 @@ export default {
       })
 
       return total.toFixed(3)
+    },
+
+    totalInBilling: function () {
+      return this.inBillingData
+        .reduce(function (acc, cur) {
+          return acc + cur.amount
+        }, 0.0)
+        .toFixed(3)
+    },
+
+    totalOutBilling: function () {
+      return this.outBillingData
+        .reduce(function (acc, cur) {
+          return acc + cur.amount
+        }, 0.0)
+        .toFixed(3)
     }
   },
   methods: {
@@ -160,7 +237,7 @@ export default {
       }
     },
 
-    searchExpense() {
+    async searchExpense() {
       if (this.$refs.form.validate()) {
         this.$nextTick(() => {
           this.loading = true
@@ -182,6 +259,9 @@ export default {
             vm.loading = false
           }
         })
+
+        this.inBillingData = await expense.getPeriodInBilling({ contractId: model.contractId, startTime: model.startTime, endTime: model.endTime })
+        this.outBillingData = await expense.getPeriodOutBilling({ contractId: model.contractId, startTime: model.startTime, endTime: model.endTime })
       }
     }
   },
