@@ -1,21 +1,12 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="800px">
     <v-card>
-      <v-card-title>
-        编辑出库单
-      </v-card-title>
+      <v-card-title> 编辑出库单 </v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row dense>
             <v-col cols="6" md="6" sm="6">
-              <v-menu
-                v-model="stockOutTimeMenu"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
+              <v-menu v-model="stockOutTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
                   <v-text-field v-model="stockOutInfo.outTime" label="出库时间" prepend-icon="event" readonly v-on="on"></v-text-field>
                 </template>
@@ -32,13 +23,7 @@
             </v-col>
 
             <v-col cols="6" md="6" sm="6">
-              <v-text-field
-                label="所属合同"
-                v-model="stockOutInfo.contractName"
-                :hint="stockOutInfo.contractNumber"
-                persistent-hint
-                readonly
-              ></v-text-field>
+              <v-text-field label="所属合同" v-model="stockOutInfo.contractName" :hint="stockOutInfo.contractNumber" persistent-hint readonly></v-text-field>
             </v-col>
 
             <v-col cols="6" md="6" sm="6">
@@ -90,7 +75,7 @@ export default {
       this.stockOutId = id
 
       let vm = this
-      stockOut.find(id).then(res => {
+      stockOut.find(id).then((res) => {
         vm.stockOutInfo = res
         vm.stockOutInfo.outTime = this.$moment(vm.stockOutInfo.outTime).format('YYYY-MM-DD')
       })
@@ -111,7 +96,7 @@ export default {
         this.stockOutInfo.userId = this.$store.state.user.id
         this.stockOutInfo.userName = this.$store.state.user.name
 
-        stockOut.update(this.stockOutInfo).then(res => {
+        stockOut.update(this.stockOutInfo).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '编辑出库成功')
             vm.$emit('close')

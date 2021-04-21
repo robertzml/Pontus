@@ -1,21 +1,12 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="800px">
     <v-card>
-      <v-card-title>
-        新建出库单
-      </v-card-title>
+      <v-card-title> 新建出库单 </v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row>
             <v-col cols="6" md="6" sm="6">
-              <v-menu
-                v-model="stockOutTimeMenu"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
+              <v-menu v-model="stockOutTimeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
                   <v-text-field v-model="stockOutInfo.outTime" label="出库时间" prepend-icon="event" readonly v-on="on"></v-text-field>
                 </template>
@@ -94,15 +85,15 @@ export default {
     },
     selectedContract: { id: 0, number: '' },
     contractListData: [],
-    contractRules: [v => !!v.id || '请选择合同']
+    contractRules: [(v) => !!v.id || '请选择合同']
   }),
   watch: {
-    'stockOutInfo.customerId': function(val) {
+    'stockOutInfo.customerId': function (val) {
       this.loadContract(val)
     }
   },
   methods: {
-    init: function() {
+    init: function () {
       this.stockOutInfo = {
         outTime: this.$moment().format('YYYY-MM-DD'),
         monthTime: '',
@@ -129,7 +120,7 @@ export default {
       }
 
       let vm = this
-      contract.getList(customerId).then(res => {
+      contract.getList(customerId).then((res) => {
         vm.contractListData = res
         if (res.length > 0) {
           vm.selectedContract = res[0]
@@ -160,7 +151,7 @@ export default {
         this.stockOutInfo.userId = this.$store.state.user.id
         this.stockOutInfo.userName = this.$store.state.user.name
 
-        stockOut.create(this.stockOutInfo).then(res => {
+        stockOut.create(this.stockOutInfo).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加出库成功')
             vm.$emit('close')
@@ -174,6 +165,6 @@ export default {
       }
     }
   },
-  mounted: function() {}
+  mounted: function () {}
 }
 </script>

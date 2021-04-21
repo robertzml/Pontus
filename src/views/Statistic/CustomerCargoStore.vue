@@ -64,7 +64,7 @@
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="storeListData" :items-per-page="10">
-            <template v-slot:item.storageDate="{ item }">
+            <template v-slot:[`item.storageDate`]="{ item }">
               {{ item.storageDate | displayDate }}
             </template>
           </v-data-table>
@@ -100,7 +100,7 @@ export default {
     },
     filter: '',
     contractListData: [],
-    contractRules: [v => !!v.id || '请选择合同'],
+    contractRules: [(v) => !!v.id || '请选择合同'],
     storeListData: [],
     headers: [
       { text: '日期', value: 'storageDate' },
@@ -119,32 +119,32 @@ export default {
     ]
   }),
   watch: {
-    'search.customerId': function(val) {
+    'search.customerId': function (val) {
       this.loadContract(val)
     }
   },
   computed: {
-    totalStoreCount: function() {
+    totalStoreCount: function () {
       let total = 0
-      this.storeListData.forEach(r => {
+      this.storeListData.forEach((r) => {
         total = total + r.storeCount
       })
 
       return total
     },
 
-    totalStoreWeight: function() {
+    totalStoreWeight: function () {
       let total = 0
-      this.storeListData.forEach(r => {
+      this.storeListData.forEach((r) => {
         total = total + r.storeWeight
       })
 
-      return total
+      return total.toFixed(3)
     },
 
-    totalAssetAmount: function() {
+    totalAssetAmount: function () {
       let total = 0
-      this.storeListData.forEach(r => {
+      this.storeListData.forEach((r) => {
         total = total + r.assetAmount
       })
 
@@ -195,7 +195,7 @@ export default {
         { header: '在库重量(t)', key: 'storeWeight', width: 12 }
       ]
 
-      this.storeListData.forEach(item => {
+      this.storeListData.forEach((item) => {
         let info = {
           storageDate: this.$util.displayDate(item.storageDate),
           customerNumber: item.customerNumber,
@@ -214,8 +214,8 @@ export default {
         sheet.addRow(info)
       })
 
-      sheet.eachRow(function(row) {
-        row.eachCell(function(cell) {
+      sheet.eachRow(function (row) {
+        row.eachCell(function (cell) {
           cell.border = {
             top: { style: 'thin' },
             left: { style: 'thin' },
@@ -230,7 +230,7 @@ export default {
         filename = '客户货品报表-' + this.storeListData[0].customerName + '.xlsx'
       }
 
-      workbook.xlsx.writeBuffer().then(data => {
+      workbook.xlsx.writeBuffer().then((data) => {
         const blob = new Blob([data], { type: EXCEL_TYPE })
         FileSaver.saveAs(blob, filename)
       })

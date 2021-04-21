@@ -294,15 +294,15 @@ export const menuRoutes = [
     component: () => import('@/views/Statistic/StockFlow.vue'),
     meta: { roles: [1, 2, 3, 4] }
   },
-  {
-    path: '/statistic-debt',
-    name: 'statisticDebt',
-    text: '客户欠款',
-    group: 'statistic',
-    model: false,
-    component: () => import('@/views/Statistic/Debt.vue'),
-    meta: { roles: [1, 2, 3, 4] }
-  },
+  // {
+  //   path: '/statistic-debt',
+  //   name: 'statisticDebt',
+  //   text: '客户欠款',
+  //   group: 'statistic',
+  //   model: false,
+  //   component: () => import('@/views/Statistic/Debt.vue'),
+  //   meta: { roles: [1, 2, 3, 4] }
+  // },
   {
     path: '/statistic-customer-fee',
     name: 'statisticCustomerFee',
