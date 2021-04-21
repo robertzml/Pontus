@@ -30,6 +30,20 @@
                 <v-text-field label="保质期" v-model="taskInfo.durability" suffix="月"></v-text-field>
               </v-col>
 
+              <v-col cols="6" md="4" sm="6" v-if="stockInInfo.type == 1">
+                <v-select
+                  :items="warehouseList"
+                  label="存放仓库"
+                  item-text="name"
+                  item-value="id"
+                  :rules="warehouseRules"
+                  v-model="taskInfo.warehouseId"
+                ></v-select>
+              </v-col>
+              <v-col cols="6" md="8" sm="6" v-if="stockInInfo.type == 1">
+                <v-text-field label="存放位置" v-model="taskInfo.place"></v-text-field>
+              </v-col>
+
               <v-col cols="12" md="12" sm="12">
                 <v-text-field label="库存附加信息" v-model="taskInfo.remark"></v-text-field>
               </v-col>
@@ -50,6 +64,7 @@
 <script>
 import stockIn from '@/controllers/stockIn'
 import cargo from '@/controllers/cargo'
+import warehouse from '@/controllers/warehouse'
 import CargoSelect from '@/components/Control/CargoSelect'
 
 export default {
@@ -67,7 +82,10 @@ export default {
     taskId: '',
     cargoId: '',
     cargoListData: [],
-    taskInfo: {}
+    stockInInfo: {},
+    taskInfo: {},
+    warehouseList: [],
+    warehouseRules: [(v) => !!v || '请选择仓库']
   }),
   computed: {
     totalWeight: function () {
@@ -89,7 +107,17 @@ export default {
     async loadData() {
       this.cargoListData = await cargo.getList(this.customerId)
       this.taskInfo = await stockIn.getTask(this.taskId)
+      this.stockInInfo = await stockIn.find(this.taskInfo.stockInId)
       this.cargoId = this.taskInfo.cargoId
+
+      if (this.stockInInfo.type == 1) {
+        this.loadWarehouse()
+      }
+    },
+
+    // 载入仓库
+    async loadWarehouse() {
+      this.warehouseList = await warehouse.getList(1)
     },
 
     updateTask() {

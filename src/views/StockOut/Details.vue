@@ -28,16 +28,12 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="headers" :items="taskInfoList" hide-default-footer disable-pagination>
-            <template v-slot:item.status="{ item }">
+            <template v-slot:[`item.status`]="{ item }">
               <span :class="{ 'orange--text': item.status != 85 }">{{ item.status | displayStatus }}</span>
             </template>
-            <template v-slot:item.action="{ item }">
-              <v-btn small color="primary" @click="viewTaskItem(item)">
-                查看
-              </v-btn>
-              <v-btn small color="success" class="ml-2" v-if="item.status != 85" @click="finishTaskItem(item)">
-                确认
-              </v-btn>
+            <template v-slot:[`item.action`]="{ item }">
+              <v-btn small color="primary" @click="viewTaskItem(item)"> 查看 </v-btn>
+              <v-btn small color="success" class="ml-2" v-if="item.status != 85" @click="finishTaskItem(item)"> 确认 </v-btn>
             </template>
           </v-data-table>
         </v-expansion-panel-content>
@@ -51,7 +47,7 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="billingHeaders" :items="billingItems" hide-default-footer disable-pagination>
-            <template v-slot:item.unitPrice="{ item }">
+            <template v-slot:[`item.unitPrice`]="{ item }">
               {{ item.unitPrice == 0 ? '' : item.unitPrice }}
             </template>
           </v-data-table>
@@ -136,13 +132,13 @@ export default {
   }),
   computed: {
     ...mapState({
-      stockOutId: state => state.stockOut.stockOutId,
-      info: state => state.stockOut.stockOutInfo,
-      refreshEvent: state => state.stockOut.refreshEvent
+      stockOutId: (state) => state.stockOut.stockOutId,
+      info: (state) => state.stockOut.stockOutInfo,
+      refreshEvent: (state) => state.stockOut.refreshEvent
     }),
-    finishCount: function() {
+    finishCount: function () {
       let total = 0
-      this.taskInfoList.forEach(item => {
+      this.taskInfoList.forEach((item) => {
         if (item.status == 85) {
           total += item.outCount
         }
@@ -150,25 +146,25 @@ export default {
 
       return total
     },
-    totalCount: function() {
+    totalCount: function () {
       let total = 0
-      this.taskInfoList.forEach(item => {
+      this.taskInfoList.forEach((item) => {
         total += item.outCount
       })
 
       return total
     },
-    totalWeight: function() {
+    totalWeight: function () {
       let total = 0
-      this.taskInfoList.forEach(item => {
+      this.taskInfoList.forEach((item) => {
         total += item.outWeight
       })
 
       return total.toFixed(4)
     },
-    totalFee: function() {
+    totalFee: function () {
       let total = 0
-      this.billingItems.forEach(item => {
+      this.billingItems.forEach((item) => {
         total += item.amount
       })
 
@@ -176,12 +172,12 @@ export default {
     }
   },
   watch: {
-    stockOutId: function() {
+    stockOutId: function () {
       this.loadInfo()
       this.loadTaskList()
       this.loadBilling()
     },
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadInfo()
       this.loadTaskList()
       this.loadBilling()
@@ -201,7 +197,7 @@ export default {
     loadInfo() {
       if (this.stockOutId) {
         let vm = this
-        stockOut.find(this.stockOutId).then(res => {
+        stockOut.find(this.stockOutId).then((res) => {
           vm.setStockOutInfo(res)
         })
       } else {
@@ -213,7 +209,7 @@ export default {
     loadTaskList() {
       if (this.stockOutId) {
         let vm = this
-        stockOut.getTaskList(this.stockOutId).then(res => {
+        stockOut.getTaskList(this.stockOutId).then((res) => {
           vm.taskInfoList = res
         })
       } else {
@@ -269,7 +265,7 @@ export default {
     // 设置冷藏费差价
     setDiffCold() {
       let vm = this
-      stockOut.setDiffCold({ stockOutId: this.stockOutId }).then(res => {
+      stockOut.setDiffCold({ stockOutId: this.stockOutId }).then((res) => {
         if (res.status == 0) {
           vm.loadBilling()
         } else {
@@ -288,7 +284,7 @@ export default {
       this.$refs.stockOutTaskFinishMod.init(val.id)
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.loadInfo()
     this.loadTaskList()
     this.loadBilling()
