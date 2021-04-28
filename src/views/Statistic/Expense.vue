@@ -88,6 +88,7 @@
           费用列表
           <v-spacer></v-spacer>
           <span class="text-subtitle-2 mr-4">费用合计: {{ totalFee }} 元</span>
+          <v-btn color="primary darken-1 ml-1" @click="exportList1">导出Excel</v-btn>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="expenseData" hide-default-footer disable-pagination>
@@ -105,6 +106,7 @@
           入库费用列表
           <v-spacer></v-spacer>
           <span class="text-subtitle-2 mr-4">入库总费用: {{ totalInBilling }} 元</span>
+          <v-btn color="primary darken-1 ml-1" @click="exportList2">导出Excel</v-btn>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="inBillingHeaders" :items="inBillingData" :items-per-page="10" disable-sort>
@@ -125,6 +127,7 @@
           出库费用列表
           <v-spacer></v-spacer>
           <span class="text-subtitle-2 mr-4">出库总费用: {{ totalOutBilling }} 元</span>
+          <v-btn color="primary darken-1 ml-1" @click="exportList3">导出Excel</v-btn>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="outBillingHeaders" :items="outBillingData" :items-per-page="10" disable-sort>
@@ -146,6 +149,10 @@ import contract from '@/controllers/contract'
 import statistic from '@/controllers/statistic'
 import expense from '@/controllers/expense'
 import CustomerSelect from '@/components/Control/CustomerSelect'
+import FileSaver from 'file-saver'
+import Excel from 'exceljs'
+
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
 
 export default {
   name: 'StatisticExpense',
@@ -263,6 +270,143 @@ export default {
         this.inBillingData = await expense.getPeriodInBilling({ contractId: model.contractId, startTime: model.startTime, endTime: model.endTime })
         this.outBillingData = await expense.getPeriodOutBilling({ contractId: model.contractId, startTime: model.startTime, endTime: model.endTime })
       }
+    },
+
+    exportList1() {
+      let workbook = new Excel.Workbook()
+
+      let sheet = workbook.addWorksheet('费用项目报表')
+
+      sheet.columns = [
+        { header: '费用代码', key: 'code', width: 12 },
+        { header: '费用项目', key: 'name', width: 12 },
+        { header: '计费方式', key: 'type', width: 12 },
+        { header: '费用(元)', key: 'amount', width: 12 }
+      ]
+
+      this.expenseData.forEach((item) => {
+        let info = {
+          code: item.code,
+          name: item.name,
+          type: item.type,
+          amount: item.amount
+        }
+
+        sheet.addRow(info)
+      })
+
+      sheet.eachRow(function (row) {
+        row.eachCell(function (cell) {
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+          }
+        })
+      })
+
+      let filename = '费用项目报表.xlsx'
+
+      workbook.xlsx.writeBuffer().then((data) => {
+        const blob = new Blob([data], { type: EXCEL_TYPE })
+        FileSaver.saveAs(blob, filename)
+      })
+    },
+
+    exportList2() {
+      let workbook = new Excel.Workbook()
+
+      let sheet = workbook.addWorksheet('入库费用报表')
+
+      sheet.columns = [
+        { header: '日期', key: 'inTime', width: 12 },
+        { header: '流水单', key: 'flowNumber', width: 18 },
+        { header: '费用代码', key: 'code', width: 12 },
+        { header: '费用名称', key: 'name', width: 12 },
+        { header: '单价', key: 'unitPrice', width: 12 },
+        { header: '数量(吨)', key: 'count', width: 12 },
+        { header: '费用(元)', key: 'amount', width: 12 }
+      ]
+
+      this.inBillingData.forEach((item) => {
+        let info = {
+          inTime: this.$util.displayDate(item.inTime),
+          flowNumber: item.flowNumber,
+          code: item.code,
+          name: item.name,
+          unitPrice: item.unitPrice,
+          count: item.count,
+          amount: item.amount
+        }
+
+        sheet.addRow(info)
+      })
+
+      sheet.eachRow(function (row) {
+        row.eachCell(function (cell) {
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+          }
+        })
+      })
+
+      let filename = '入库费用报表.xlsx'
+
+      workbook.xlsx.writeBuffer().then((data) => {
+        const blob = new Blob([data], { type: EXCEL_TYPE })
+        FileSaver.saveAs(blob, filename)
+      })
+    },
+    exportList3() {
+      let workbook = new Excel.Workbook()
+
+      let sheet = workbook.addWorksheet('出库费用报表')
+
+      sheet.columns = [
+        { header: '日期', key: 'outTime', width: 12 },
+        { header: '流水单', key: 'flowNumber', width: 18 },
+        { header: '费用代码', key: 'code', width: 12 },
+        { header: '费用名称', key: 'name', width: 12 },
+        { header: '单价', key: 'unitPrice', width: 12 },
+        { header: '数量(吨)', key: 'count', width: 12 },
+        { header: '费用(元)', key: 'amount', width: 12 }
+      ]
+
+      this.outBillingData.forEach((item) => {
+        let info = {
+          outTime: this.$util.displayDate(item.outTime),
+          flowNumber: item.flowNumber,
+          code: item.code,
+          name: item.name,
+          unitPrice: item.unitPrice,
+          count: item.count,
+          amount: item.amount
+        }
+
+        sheet.addRow(info)
+      })
+
+      sheet.eachRow(function (row) {
+        row.eachCell(function (cell) {
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+          }
+        })
+      })
+
+      let filename = '出库费用报表.xlsx'
+
+      workbook.xlsx.writeBuffer().then((data) => {
+        const blob = new Blob([data], { type: EXCEL_TYPE })
+        FileSaver.saveAs(blob, filename)
+      })
     }
   },
   mounted: function () {

@@ -174,15 +174,12 @@ export default {
         let info = {
           customerNumber: item.customerNumber,
           customerName: item.customerName,
-
           startTime: this.$util.displayDate(item.startTime),
           endTime: this.$util.displayDate(item.endTime),
-
           startDebt: item.startDebt,
           baseFee: item.baseFee,
           coldFee: item.coldFee,
           miscFee: item.miscFee,
-
           totalFee: item.totalFee,
           receiveFee: item.receiveFee,
           discount: item.discount,
