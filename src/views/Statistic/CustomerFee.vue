@@ -2,7 +2,7 @@
   <v-row dense>
     <v-col cols="12">
       <v-toolbar dense>
-        <v-toolbar-title>客户欠款</v-toolbar-title>
+        <v-toolbar-title>客户费用报表</v-toolbar-title>
         <v-spacer></v-spacer>
 
         <v-toolbar-items> </v-toolbar-items>
@@ -53,6 +53,7 @@
           <v-spacer></v-spacer>
           <span class="text-subtitle-2 mr-4">费用合计: {{ totalFee }} 元</span>
           <span class="text-subtitle-2 mr-4">期末合计: {{ totalEndDebt }} 元</span>
+          <v-btn color="primary darken-1 ml-1" @click="exportList">导出Excel</v-btn>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="customerFeeHeader" :items="customerFeeData" :items-per-page="10">
@@ -72,6 +73,10 @@
 <script>
 import statistic from '@/controllers/statistic'
 import CustomerSelect from '@/components/Control/CustomerSelect'
+import FileSaver from 'file-saver'
+import Excel from 'exceljs'
+
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
 
 export default {
   name: 'StatisticCustomerFee',
@@ -143,6 +148,67 @@ export default {
           vm.loading = false
         })
       }
+    },
+
+    exportList() {
+      let workbook = new Excel.Workbook()
+
+      let sheet = workbook.addWorksheet('客户货品报表')
+
+      sheet.columns = [
+        { header: '客户代码', key: 'customerNumber', width: 12 },
+        { header: '客户名称', key: 'customerName', width: 20 },
+        { header: '期初日期', key: 'startTime', width: 12 },
+        { header: '期末日期', key: 'endTime', width: 12 },
+        { header: '期初欠款(元)', key: 'startDebt', width: 12 },
+        { header: '基本费用(元)', key: 'baseFee', width: 12 },
+        { header: '冷藏费用(元)', key: 'coldFee', width: 12 },
+        { header: '其它费用(元)', key: 'miscFee', width: 12 },
+        { header: '费用合计(元)', key: 'totalFee', width: 12 },
+        { header: '回收款(元)', key: 'receiveFee', width: 12 },
+        { header: '折扣(元)', key: 'discount', width: 12 },
+        { header: '期末欠款(元)', key: 'endDebt', width: 12 }
+      ]
+
+      this.customerFeeData.forEach((item) => {
+        let info = {
+          customerNumber: item.customerNumber,
+          customerName: item.customerName,
+
+          startTime: this.$util.displayDate(item.startTime),
+          endTime: this.$util.displayDate(item.endTime),
+
+          startDebt: item.startDebt,
+          baseFee: item.baseFee,
+          coldFee: item.coldFee,
+          miscFee: item.miscFee,
+
+          totalFee: item.totalFee,
+          receiveFee: item.receiveFee,
+          discount: item.discount,
+          endDebt: item.endDebt
+        }
+
+        sheet.addRow(info)
+      })
+
+      sheet.eachRow(function (row) {
+        row.eachCell(function (cell) {
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+          }
+        })
+      })
+
+      let filename = '客户费用报表.xlsx'
+
+      workbook.xlsx.writeBuffer().then((data) => {
+        const blob = new Blob([data], { type: EXCEL_TYPE })
+        FileSaver.saveAs(blob, filename)
+      })
     }
   },
   mounted: function () {
