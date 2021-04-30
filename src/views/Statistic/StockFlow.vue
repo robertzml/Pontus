@@ -74,6 +74,7 @@
           <v-spacer></v-spacer>
           <span class="text-subtitle-2 mr-4">入库数量: {{ totalInCount }} </span>
           <span class="text-subtitle-2 mr-4">出库数量: {{ totalOutCount }} </span>
+          <v-btn color="primary darken-1 ml-1" @click="exportList">导出Excel</v-btn>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="stockFlowHeader" :items="stockFlowFilterData" :search="filter.text" :items-per-page="10">
@@ -93,6 +94,10 @@
 <script>
 import statistic from '@/controllers/statistic'
 import CustomerSelect from '@/components/Control/CustomerSelect'
+import FileSaver from 'file-saver'
+import Excel from 'exceljs'
+
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
 
 export default {
   name: 'StatisticStockFlow',
@@ -187,6 +192,63 @@ export default {
           vm.loading = false
         })
       }
+    },
+
+    exportList() {
+      let workbook = new Excel.Workbook()
+
+      let sheet = workbook.addWorksheet('出入库报表')
+
+      sheet.columns = [
+        { header: '流水日期', key: 'flowDate', width: 12 },
+        { header: '流水类型', key: 'type', width: 10 },
+        { header: '流水单号', key: 'flowNumber', width: 18 },
+        { header: '客户名称', key: 'customerName', width: 20 },
+        { header: '合同名称', key: 'contractName', width: 18 },
+        { header: '类别代码', key: 'categoryNumber', width: 10 },
+        { header: '类别名称', key: 'categoryName', width: 15 },
+        { header: '货品名称', key: 'cargoName', width: 15 },
+        { header: '规格', key: 'specification', width: 10 },
+        { header: '流水数量', key: 'flowCount', width: 10 },
+        { header: '单位重量(kg)', key: 'unitWeight', width: 12 },
+        { header: '流水重量(t)', key: 'flowWeight', width: 12 }
+      ]
+
+      this.stockFlowData.forEach((item) => {
+        let info = {
+          flowDate: this.$util.displayDate(item.flowDate),
+          type: this.$util.flowType(item.type),
+          flowNumber: item.flowNumber,
+          customerName: item.customerName,
+          contractName: item.contractName,
+          categoryNumber: item.categoryNumber,
+          categoryName: item.categoryName,
+          cargoName: item.cargoName,
+          specification: item.specification,
+          flowCount: item.flowCount,
+          unitWeight: item.unitWeight,
+          flowWeight: item.flowWeight
+        }
+
+        sheet.addRow(info)
+      })
+
+      sheet.eachRow(function (row) {
+        row.eachCell(function (cell) {
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+          }
+        })
+      })
+
+      let filename = '出入库报表.xlsx'
+      workbook.xlsx.writeBuffer().then((data) => {
+        const blob = new Blob([data], { type: EXCEL_TYPE })
+        FileSaver.saveAs(blob, filename)
+      })
     }
   },
   mounted: function () {

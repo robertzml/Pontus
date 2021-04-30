@@ -10,10 +10,10 @@
           </v-card-title>
           <v-card-text class="px-0">
             <v-data-table :headers="headers" :items="customerData" :search="search" :items-per-page="10">
-              <template v-slot:item.type="{ item }">
+              <template v-slot:[`item.type`]="{ item }">
                 {{ item.type | customerType }}
               </template>
-              <template v-slot:item.action="{ item }">
+              <template v-slot:[`item.action`]="{ item }">
                 <v-btn small color="success" @click="viewItem(item)">
                   <v-icon left dark>pageview</v-icon>
                   查看
@@ -49,10 +49,10 @@ export default {
     ]
   }),
   computed: mapState({
-    refreshEvent: state => state.customer.refreshEvent
+    refreshEvent: (state) => state.customer.refreshEvent
   }),
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadList()
     }
   },
@@ -65,7 +65,7 @@ export default {
     }),
     loadList() {
       let vm = this
-      customer.getList().then(res => {
+      customer.getList().then((res) => {
         vm.customerData = res
       })
     },
@@ -74,7 +74,7 @@ export default {
       this.showDetails()
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.loadList()
   }
 }
