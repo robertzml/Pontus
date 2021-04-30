@@ -84,13 +84,17 @@
 
     <v-col cols="12">
       <v-card>
-        <v-card-title class="deep-purple"> 冷藏费列表 </v-card-title>
+        <v-card-title class="deep-purple">
+          冷藏费列表
+          <v-spacer></v-spacer>
+          <v-btn color="primary darken-1 ml-1" @click="exportList">导出Excel</v-btn>
+        </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="coldFeeListData" :items-per-page="10" disable-sort>
-            <template v-slot:item.recordDate="{ item }">
+            <template v-slot:[`item.recordDate`]="{ item }">
               {{ item.recordDate | displayDate }}
             </template>
-            <template v-slot:item.flowType="{ item }">
+            <template v-slot:[`item.flowType`]="{ item }">
               {{ item.flowType | flowType }}
             </template>
           </v-data-table>
@@ -104,6 +108,10 @@
 import contract from '@/controllers/contract'
 import expense from '@/controllers/expense'
 import CustomerSelect from '@/components/Control/CustomerSelect'
+import FileSaver from 'file-saver'
+import Excel from 'exceljs'
+
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
 
 export default {
   name: 'ExpenseDailyColdFee',
@@ -202,6 +210,88 @@ export default {
           }
         })
       }
+    },
+
+    exportList() {
+      let workbook = new Excel.Workbook()
+
+      let sheet = workbook.addWorksheet('冷藏费清单')
+
+      if (this.search.selectedContract.billingType == 1) {
+        sheet.columns = [
+          { header: '日期', key: 'recordDate', width: 12 },
+          { header: '货品名称', key: 'cargoName', width: 15 },
+          { header: '流水类型', key: 'flowType', width: 10 },
+          { header: '流水数量', key: 'count', width: 20 },
+          { header: '单位重量(kg)', key: 'unitMeter', width: 12 },
+          { header: '出入库重量(t)', key: 'flowMeter', width: 12 },
+          { header: '在库重量(t)', key: 'totalMeter', width: 12 },
+          { header: '日冷藏费(元)', key: 'dailyFee', width: 12 },
+          { header: '冷藏费累计(元)', key: 'totalFee', width: 15 }
+        ]
+
+        this.coldFeeListData.forEach((item) => {
+          let info = {
+            recordDate: this.$util.displayDate(item.recordDate),
+            cargoName: item.cargoName,
+            flowType: this.$util.flowType(item.flowType),
+            count: item.count,
+            unitMeter: item.unitMeter,
+            flowMeter: item.flowMeter,
+            totalMeter: item.totalMeter,
+            dailyFee: item.dailyFee,
+            totalFee: item.totalFee
+          }
+
+          sheet.addRow(info)
+        })
+      } else if (this.search.selectedContract.billingType == 2) {
+        sheet.columns = [
+          { header: '日期', key: 'recordDate', width: 12 },
+          { header: '货品名称', key: 'cargoName', width: 15 },
+          { header: '流水类型', key: 'flowType', width: 10 },
+          { header: '流水数量', key: 'count', width: 20 },
+          { header: '单位计量', key: 'unitMeter', width: 12 },
+          { header: '出入库计量(件)', key: 'flowMeter', width: 12 },
+          { header: '在库计量(件)', key: 'totalMeter', width: 12 },
+          { header: '日冷藏费(元)', key: 'dailyFee', width: 12 },
+          { header: '冷藏费累计(元)', key: 'totalFee', width: 15 }
+        ]
+
+        this.coldFeeListData.forEach((item) => {
+          let info = {
+            recordDate: this.$util.displayDate(item.recordDate),
+            cargoName: item.cargoName,
+            flowType: this.$util.flowType(item.flowType),
+            count: item.count,
+            unitMeter: item.unitMeter,
+            flowMeter: item.flowMeter,
+            totalMeter: item.totalMeter,
+            dailyFee: item.dailyFee,
+            totalFee: item.totalFee
+          }
+
+          sheet.addRow(info)
+        })
+      }
+
+      sheet.eachRow(function (row) {
+        row.eachCell(function (cell) {
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+          }
+        })
+      })
+
+      let filename = '冷藏费清单.xlsx'
+
+      workbook.xlsx.writeBuffer().then((data) => {
+        const blob = new Blob([data], { type: EXCEL_TYPE })
+        FileSaver.saveAs(blob, filename)
+      })
     }
   },
   mounted: function () {

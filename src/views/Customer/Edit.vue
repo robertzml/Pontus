@@ -69,8 +69,8 @@ export default {
       type: 1,
       remark: ''
     },
-    numberRules: [v => !!v || '请输入客户编号'],
-    nameRules: [v => !!v || '请输入客户名称']
+    numberRules: [(v) => !!v || '请输入客户编号'],
+    nameRules: [(v) => !!v || '请输入客户名称']
   }),
   methods: {
     init(customerId) {
@@ -89,7 +89,7 @@ export default {
         }
       } else {
         let vm = this
-        customer.find(customerId).then(res => {
+        customer.find(customerId).then((res) => {
           vm.customerInfo = res
         })
       }
@@ -107,7 +107,7 @@ export default {
 
         let vm = this
         if (this.customerId == 0) {
-          customer.create(this.customerInfo).then(res => {
+          customer.create(this.customerInfo).then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '添加客户信息成功')
               vm.$emit('update')
@@ -119,7 +119,7 @@ export default {
             }
           })
         } else {
-          customer.update(this.customerInfo).then(res => {
+          customer.update(this.customerInfo).then((res) => {
             if (res.status == 0) {
               vm.$store.commit('alertSuccess', '修改客户信息成功')
               vm.$emit('update')

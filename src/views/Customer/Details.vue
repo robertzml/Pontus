@@ -70,13 +70,13 @@ export default {
   }),
   computed: {
     ...mapState({
-      info: state => state.customer.customerInfo,
-      refreshEvent: state => state.customer.refreshEvent
+      info: (state) => state.customer.customerInfo,
+      refreshEvent: (state) => state.customer.refreshEvent
     }),
     ...mapGetters(['userInfo'])
   },
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadInfo()
     }
   },
@@ -89,7 +89,7 @@ export default {
     }),
     loadInfo() {
       let vm = this
-      customer.find(this.info.id).then(res => {
+      customer.find(this.info.id).then((res) => {
         vm.setCustomerInfo(res)
       })
     },
@@ -100,7 +100,7 @@ export default {
       })
 
       let vm = this
-      customer.forceDelete({ id: this.info.id }).then(res => {
+      customer.forceDelete({ id: this.info.id }).then((res) => {
         if (res.status == 0) {
           vm.$store.commit('alertSuccess', '删除员工成功')
           vm.loading = false
