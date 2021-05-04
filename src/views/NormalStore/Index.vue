@@ -36,8 +36,8 @@ export default {
   data: () => ({}),
   computed: {
     ...mapState({
-      tab: state => state.normalStore.tab,
-      refreshEvent: state => state.normalStore.refreshEvent
+      tab: (state) => state.normalStore.tab,
+      refreshEvent: (state) => state.normalStore.refreshEvent
     })
   },
   methods: {

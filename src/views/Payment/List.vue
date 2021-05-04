@@ -38,6 +38,7 @@
             <v-spacer></v-spacer>
             <span class="text-subtitle-2 ml-4">缴费总记录: {{ paymentFilterData.length }} 条</span>
             <span class="text-subtitle-2 ml-4">缴费总金额: {{ totalFee }} 元</span>
+            <v-btn color="primary darken-1 ml-1" @click="exportList">导出Excel</v-btn>
           </v-card-title>
           <v-card-text class="px-0">
             <v-data-table :headers="headers" :items="paymentFilterData" :search="filter.text" :items-per-page="10">
@@ -68,6 +69,10 @@
 import { mapState, mapActions } from 'vuex'
 import payment from '@/controllers/payment'
 import CustomerSelect from '@/components/Control/CustomerSelect'
+import FileSaver from 'file-saver'
+import Excel from 'exceljs'
+
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
 
 export default {
   name: 'PaymentList',
@@ -144,6 +149,58 @@ export default {
     },
     viewItem(item) {
       this.showDetails(item.id)
+    },
+
+    exportList() {
+      let workbook = new Excel.Workbook()
+
+      let sheet = workbook.addWorksheet('缴费列表')
+
+      sheet.columns = [
+        { header: '票号', key: 'ticketNumber', width: 16 },
+        { header: '客户代码', key: 'customerNumber', width: 12 },
+        { header: '客户名称', key: 'customerName', width: 20 },
+        { header: '缴费金额(元)', key: 'paidFee', width: 12 },
+        { header: '缴费日期', key: 'paidTime', width: 12 },
+        { header: '缴费方式', key: 'paidType', width: 12 },
+        { header: '登记人', key: 'userName', width: 12 },
+        { header: '登记时间', key: 'createTime', width: 12 },
+        { header: '备注', key: 'remark', width: 12 }
+      ]
+
+      this.paymentListData.forEach((item) => {
+        let info = {
+          ticketNumber: item.ticketNumber,
+          customerNumber: item.customerNumber,
+          customerName: item.customerName,
+          paidFee: item.paidFee,
+          paidTime: this.$util.displayDate(item.paidTime),
+          paidType: this.$util.paidType(item.paidType),
+          userName: item.userName,
+          createTime: this.$util.displayDate(item.createTime),
+          remark: item.remark
+        }
+
+        sheet.addRow(info)
+      })
+
+      sheet.eachRow(function (row) {
+        row.eachCell(function (cell) {
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+          }
+        })
+      })
+
+      let filename = '缴费列表.xlsx'
+
+      workbook.xlsx.writeBuffer().then((data) => {
+        const blob = new Blob([data], { type: EXCEL_TYPE })
+        FileSaver.saveAs(blob, filename)
+      })
     }
   },
   activated: function () {

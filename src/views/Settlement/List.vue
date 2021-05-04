@@ -13,15 +13,7 @@
               <v-col cols="4">
                 <v-menu v-model="timeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                   <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="filter.time"
-                      label="结算日期"
-                      prepend-icon="event"
-                      clearable
-                      hide-details
-                      readonly
-                      v-on="on"
-                    ></v-text-field>
+                    <v-text-field v-model="filter.time" label="结算日期" prepend-icon="event" clearable hide-details readonly v-on="on"></v-text-field>
                   </template>
                   <v-date-picker v-model="filter.time" :day-format="$util.pickerDayFormat" @input="timeMenu = false"></v-date-picker>
                 </v-menu>
@@ -45,19 +37,19 @@
           </v-card-title>
           <v-card-text class="px-0">
             <v-data-table :headers="headers" :items="settlementFilterData" :search="filter.text" :items-per-page="10">
-              <template v-slot:item.paidType="{ item }">
+              <template v-slot:[`item.paidType`]="{ item }">
                 {{ item.paidType | paidType }}
               </template>
-              <template v-slot:item.startTime="{ item }">
+              <template v-slot:[`item.startTime`]="{ item }">
                 {{ item.startTime | displayDate }}
               </template>
-              <template v-slot:item.endTime="{ item }">
+              <template v-slot:[`item.endTime`]="{ item }">
                 {{ item.endTime | displayDate }}
               </template>
-              <template v-slot:item.settleTime="{ item }">
+              <template v-slot:[`item.settleTime`]="{ item }">
                 {{ item.settleTime | displayDate }}
               </template>
-              <template v-slot:item.action="{ item }">
+              <template v-slot:[`item.action`]="{ item }">
                 <v-btn small color="success" @click="viewItem(item)">
                   <v-icon left dark>pageview</v-icon>
                   查看
@@ -104,35 +96,35 @@ export default {
   }),
   computed: {
     ...mapState({
-      refreshEvent: state => state.settlement.refreshEvent
+      refreshEvent: (state) => state.settlement.refreshEvent
     }),
     // 过滤后结算列表
     settlementFilterData() {
       let temp = this.settlementListData
 
       if (this.filter.customerId != 0) {
-        temp = temp.filter(r => r.customerId == this.filter.customerId)
+        temp = temp.filter((r) => r.customerId == this.filter.customerId)
       }
 
       if (this.filter.time) {
         let t = this.$moment(this.filter.time)
-        temp = temp.filter(r => t.isSame(r.settleTime))
+        temp = temp.filter((r) => t.isSame(r.settleTime))
       }
 
       return temp
     },
 
     // 结算总金额
-    totalFee: function() {
+    totalFee: function () {
       return this.settlementFilterData
-        .reduce(function(acc, cur) {
+        .reduce(function (acc, cur) {
           return acc + cur.dueFee
         }, 0.0)
         .toFixed(3)
     }
   },
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadList()
     }
   },
@@ -148,7 +140,7 @@ export default {
       this.showDetails(item.id)
     }
   },
-  activated: function() {
+  activated: function () {
     this.loadList()
   }
 }

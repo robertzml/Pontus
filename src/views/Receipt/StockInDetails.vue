@@ -17,10 +17,10 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-data-table :headers="headers" :items="taskInfoList" :items-per-page="10">
-            <template v-slot:item.status="{ item }">
+            <template v-slot:[`item.status`]="{ item }">
               {{ item.status | displayStatus }}
             </template>
-            <template v-slot:item.action="{ item }">
+            <template v-slot:[`item.action`]="{ item }">
               <v-btn small color="primary" @click="viewTaskItem(item)"> 信息 </v-btn>
               <v-btn small color="success" class="ml-2" @click="viewCarryIn(item)"> 搬运 </v-btn>
             </template>
@@ -36,13 +36,13 @@
         <v-card-title class="lime darken-3">搬运入库列表</v-card-title>
         <v-card-text style="height: 300px">
           <v-data-table :headers="carryInTaskHeaders" :items="carryInTaskList" hide-default-footer disable-filtering disable-pagination>
-            <template v-slot:item.status="{ item }">
+            <template v-slot:[`item.status`]="{ item }">
               {{ item.status | displayStatus }}
             </template>
-            <template v-slot:item.moveTime="{ item }">
+            <template v-slot:[`item.moveTime`]="{ item }">
               {{ item.moveTime | displayDateTime }}
             </template>
-            <template v-slot:item.inTime="{ item }">
+            <template v-slot:[`item.inTime`]="{ item }">
               {{ item.inTime | displayDate }}
             </template>
           </v-data-table>

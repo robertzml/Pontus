@@ -68,19 +68,19 @@
         <v-card-title class="amber darken-3"> 库存列表 </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="filterData" :search="filter.search" :items-per-page="10">
-            <template v-slot:item.status="{ item }">
+            <template v-slot:[`item.status`]="{ item }">
               {{ item.status | displayStatus }}
             </template>
-            <template v-slot:item.initialTime="{ item }">
+            <template v-slot:[`item.initialTime`]="{ item }">
               {{ item.initialTime | displayDate }}
             </template>
-            <template v-slot:item.inTime="{ item }">
+            <template v-slot:[`item.inTime`]="{ item }">
               {{ item.inTime | displayDate }}
             </template>
-            <template v-slot:item.outTime="{ item }">
+            <template v-slot:[`item.outTime`]="{ item }">
               {{ item.outTime | displayDate }}
             </template>
-            <template v-slot:item.action="{ item }">
+            <template v-slot:[`item.action`]="{ item }">
               <v-btn small color="primary" @click="viewItem(item)">
                 <v-icon left dark>pageview</v-icon>
                 查看
