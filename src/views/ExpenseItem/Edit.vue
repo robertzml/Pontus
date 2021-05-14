@@ -43,7 +43,7 @@ export default {
     loading: false,
     dialog: false,
     itemInfo: {},
-    nameRules: [v => !!v || '请输入费用项目']
+    nameRules: [(v) => !!v || '请输入费用项目']
   }),
   methods: {
     init(id) {
@@ -67,7 +67,7 @@ export default {
         })
 
         let vm = this
-        expenseItem.update(this.itemInfo).then(res => {
+        expenseItem.update(this.itemInfo).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '编辑费用项目成功')
             vm.$emit('close')

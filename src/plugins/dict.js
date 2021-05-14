@@ -125,6 +125,12 @@ export default {
     { text: '支付宝', value: 6 }
   ],
 
+  /** 冰块类型 */
+  iceType: [
+    { text: '整冰', value: 1 },
+    { text: '碎冰', value: 2 }
+  ],
+
   /** 用户组 */
   userGroup: [
     { text: '超级管理员', value: 1 },

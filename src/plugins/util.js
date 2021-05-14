@@ -242,5 +242,15 @@ export default {
     } else {
       return ''
     }
+  },
+
+  // 冰块类型
+  iceType: (type) => {
+    let it = dict.iceType.find((r) => r.value == type)
+    if (it != undefined) {
+      return it.text
+    } else {
+      return ''
+    }
   }
 }

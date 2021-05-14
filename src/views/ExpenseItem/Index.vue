@@ -45,8 +45,8 @@ export default {
   data: () => ({}),
   computed: {
     ...mapState({
-      tab: state => state.expenseItem.tab,
-      itemId: state => state.expenseItem.itemId
+      tab: (state) => state.expenseItem.tab,
+      itemId: (state) => state.expenseItem.itemId
     })
   },
   methods: {

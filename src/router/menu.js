@@ -45,6 +45,15 @@ export const topRoutes = [
     meta: { roles: [1, 2, 3, 4] }
   },
   {
+    name: 'ice',
+    icon: 'ac_unit',
+    'icon-alt': 'ac_unit',
+    text: '冰块管理',
+    model: false,
+    children: [],
+    meta: { roles: [1, 2, 3, 4] }
+  },
+  {
     name: 'expense',
     icon: 'attach_money',
     'icon-alt': 'attach_money',
@@ -247,6 +256,15 @@ export const menuRoutes = [
     group: 'store',
     model: false,
     component: () => import('@/views/Store/Snapshot.vue'),
+    meta: { roles: [1, 2, 3, 4] }
+  },
+  {
+    path: '/ice-stock',
+    name: 'iceStock',
+    text: '冰块入库',
+    group: 'ice',
+    model: false,
+    component: () => import('@/views/Ice/Stock.vue'),
     meta: { roles: [1, 2, 3, 4] }
   },
   {

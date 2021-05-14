@@ -1,8 +1,6 @@
 <template>
   <v-card>
-    <v-card-title class="cyan">
-      费用项目信息
-    </v-card-title>
+    <v-card-title class="cyan"> 费用项目信息 </v-card-title>
     <v-card-text>
       <v-row dense>
         <v-col cols="6" md="6" sm="6">
@@ -32,20 +30,20 @@ export default {
     itemInfo: {}
   }),
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadInfo()
     }
   },
   computed: mapState({
-    itemId: state => state.expenseItem.itemId,
-    refreshEvent: state => state.expenseItem.refreshEvent
+    itemId: (state) => state.expenseItem.itemId,
+    refreshEvent: (state) => state.expenseItem.refreshEvent
   }),
   methods: {
     async loadInfo() {
       this.itemInfo = await expenseItem.find(this.itemId)
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.loadInfo()
   }
 }
