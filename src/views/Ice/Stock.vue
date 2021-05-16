@@ -7,7 +7,6 @@
 
         <v-toolbar-items>
           <v-btn text @click.stop="showCreate">冰块入库</v-btn>
-          <v-btn text @click.stop="refresh">刷新</v-btn>
         </v-toolbar-items>
       </v-toolbar>
     </v-col>
@@ -68,10 +67,7 @@
               {{ item.createTime | displayDateTime }}
             </template>
             <template v-slot:[`item.action`]="{ item }">
-              <v-btn small color="success" @click="viewItem(item)">
-                <v-icon left dark>pageview</v-icon>
-                查看
-              </v-btn>
+              <v-btn small color="warning" @click="deleteItem(item)"> 删除 </v-btn>
             </template>
           </v-data-table>
         </v-card-text>
@@ -81,6 +77,18 @@
     <v-col cols="12">
       <ice-stock-create ref="iceStockCreateMod" @close="loadIceStock"></ice-stock-create>
     </v-col>
+
+    <v-dialog v-model="dialog" persistent max-width="300">
+      <v-card>
+        <v-card-title class="text-h5">删除冰块入库记录</v-card-title>
+        <v-card-text>是否确认删除该冰块入库记录？</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue-grey lighten-3" text @click="dialog = false">取消</v-btn>
+          <v-btn color="green darken-1" text :loading="loading" @click="deleteIceStock">确定</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 
@@ -96,6 +104,8 @@ export default {
 
   data: () => ({
     valid: false,
+    dialog: false,
+    loading: false,
     stockYearMenu: false,
     search: {
       stockYear: 2020
@@ -115,7 +125,8 @@ export default {
       { text: '登记时间', value: 'createTime' },
       { text: '备注', value: 'remark' },
       { text: '操作', value: 'action', sortable: false }
-    ]
+    ],
+    deleteId: ''
   }),
 
   computed: {
@@ -155,6 +166,31 @@ export default {
 
     showCreate() {
       this.$refs.iceStockCreateMod.init()
+    },
+
+    deleteItem(item) {
+      this.dialog = true
+      this.deleteId = item.id
+    },
+
+    deleteIceStock() {
+      this.$nextTick(() => {
+        this.loading = true
+      })
+
+      let vm = this
+      ice.delete({ id: this.deleteId }).then((res) => {
+        if (res.status == 0) {
+          vm.$store.commit('alertSuccess', '删除冰块入库记录成功')
+          vm.loading = false
+          vm.dialog = false
+          vm.deleteId = ''
+          vm.loadIceStock()
+        } else {
+          vm.$store.commit('alertError', res.errorMessage)
+          vm.loading = false
+        }
+      })
     }
   },
   mounted() {

@@ -20,5 +20,15 @@ export default {
   async getList(year) {
     const res = await axios._get({ url: '/iceStock/list', params: { year: year } })
     return res.data
+  },
+
+  /**
+   * 删除冰块入库
+   * @param {*} data
+   * @returns
+   */
+  async delete(data) {
+    const res = await axios._postqs({ url: '/iceStock/delete', params: data })
+    return res.data
   }
 }
