@@ -7,6 +7,7 @@
 
         <v-toolbar-items>
           <v-btn text @click.stop="showCreate">冰块入库</v-btn>
+          <v-btn text @click.stop="showStockOut">整冰制冰出库</v-btn>
         </v-toolbar-items>
       </v-toolbar>
     </v-col>
@@ -61,6 +62,10 @@
             </v-col>
 
             <v-col cols="3">
+              <v-select :items="$dict.iceStockType" label="出入库类型" v-model="filter.stockType" clearable></v-select>
+            </v-col>
+
+            <v-col cols="3">
               <v-text-field v-model="filter.text" append-icon="search" label="搜索" clearable single-line hide-details> </v-text-field>
             </v-col>
           </v-row>
@@ -100,6 +105,8 @@
 
     <v-col cols="12">
       <ice-stock-in ref="iceStockInMod" @close="loadIceStock"></ice-stock-in>
+
+      <ice-stock-out ref="iceStockOutMod" @close="loadIceStock"></ice-stock-out>
     </v-col>
 
     <v-dialog v-model="dialog" persistent max-width="300">
@@ -119,11 +126,13 @@
 <script>
 import ice from '@/controllers/ice'
 import IceStockIn from './Dialog/StockIn.vue'
+import IceStockOut from './Dialog/StockOut.vue'
 
 export default {
   name: 'IceStock',
   components: {
-    IceStockIn
+    IceStockIn,
+    IceStockOut
   },
 
   data: () => ({
@@ -136,6 +145,7 @@ export default {
     },
     filter: {
       iceType: 0,
+      stockType: 0,
       text: ''
     },
     digitalRules: [(v) => /^\d+$/.test(v) || '请输入数字'],
@@ -164,6 +174,10 @@ export default {
 
       if (this.filter.iceType) {
         temp = temp.filter((r) => r.iceType == this.filter.iceType)
+      }
+
+      if (this.filter.stockType) {
+        temp = temp.filter((r) => r.stockType == this.filter.stockType)
       }
 
       return temp
@@ -200,6 +214,10 @@ export default {
 
     showCreate() {
       this.$refs.iceStockInMod.init()
+    },
+
+    showStockOut() {
+      this.$refs.iceStockOutMod.init()
     },
 
     deleteItem(item) {

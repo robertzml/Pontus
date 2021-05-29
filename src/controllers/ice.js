@@ -14,6 +14,15 @@ export default {
   },
 
   /**
+   * 整冰制冰出库
+   * @param {*} entity
+   */
+  async stockOut(entity) {
+    const res = await axios._post({ url: '/iceStock/stockOut', data: entity })
+    return res.data
+  },
+
+  /**
    * 冰块入库列表
    * @returns
    */
