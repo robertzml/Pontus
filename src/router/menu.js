@@ -268,6 +268,15 @@ export const menuRoutes = [
     meta: { roles: [1, 2, 3, 4] }
   },
   {
+    path: '/ice-sale',
+    name: 'iceSale',
+    text: '冰块销售',
+    group: 'ice',
+    model: false,
+    component: () => import('@/views/Ice/Sale.vue'),
+    meta: { roles: [1, 2, 3, 4] }
+  },
+  {
     path: '/dailycoldfee',
     name: 'dailyColdFee',
     text: '冷藏费清单',
