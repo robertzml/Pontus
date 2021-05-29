@@ -13,6 +13,27 @@
 
     <v-col cols="12">
       <v-card flat>
+        <v-card-subtitle class="pb-2 red darken-1">总计出入库数量</v-card-subtitle>
+        <v-card-text class="py-0">
+          <v-row dense>
+            <v-col cols="4">
+              <v-text-field label="整冰入库数量" v-model="completeInCount" readonly></v-text-field>
+            </v-col>
+
+            <v-col cols="4">
+              <v-text-field label="碎冰入库数量" v-model="fragmentInCount" readonly></v-text-field>
+            </v-col>
+
+            <v-col cols="4">
+              <v-text-field label="整冰制冰出库数量" v-model="completeOutCount" readonly></v-text-field>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-col>
+
+    <v-col cols="12">
+      <v-card flat>
         <v-card-subtitle class="pb-2 light-blue darken-4">搜索条件</v-card-subtitle>
         <v-card-text class="py-0">
           <v-form ref="form" v-model="valid" lazy-validation>
@@ -130,7 +151,10 @@ export default {
       { text: '备注', value: 'remark' },
       { text: '操作', value: 'action', sortable: false }
     ],
-    deleteId: ''
+    deleteId: '',
+    completeInCount: 0,
+    fragmentInCount: 0,
+    completeOutCount: 0
   }),
 
   computed: {
@@ -160,6 +184,12 @@ export default {
   methods: {
     async loadIceStock() {
       this.iceStockList = await ice.getList(this.search.stockYear)
+    },
+
+    async loadIceCount() {
+      this.completeInCount = await ice.getCompleteIn()
+      this.completeOutCount = await ice.getCompleteOut()
+      this.fragmentInCount = await ice.getFragmentIn()
     },
 
     searchStock() {
@@ -199,6 +229,8 @@ export default {
   },
   mounted() {
     this.search.stockYear = this.$moment().year()
+
+    this.loadIceCount()
   }
 }
 </script>

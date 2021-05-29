@@ -30,5 +30,24 @@ export default {
   async delete(data) {
     const res = await axios._postqs({ url: '/iceStock/delete', params: data })
     return res.data
+  },
+
+  /**
+   *
+   * @returns 获取整冰入库数量
+   */
+  async getCompleteIn() {
+    const res = await axios._get({ url: '/iceStock/getCompleteIn' })
+    return res.data
+  },
+
+  async getCompleteOut() {
+    const res = await axios._get({ url: '/iceStock/getCompleteOut' })
+    return res.data
+  },
+
+  async getFragmentIn() {
+    const res = await axios._get({ url: '/iceStock/getFragmentIn' })
+    return res.data
   }
 }
