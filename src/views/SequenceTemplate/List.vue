@@ -10,13 +10,13 @@
           </v-card-title>
           <v-card-text class="px-0">
             <v-data-table :headers="headers" :items="sequenceListData" :search="search" :items-per-page="10">
-              <template v-slot:item.includeDate="{ item }">
+              <template v-slot:[`item.includeDate`]="{ item }">
                 {{ item.includeDate | displayBoolean1 }}
               </template>
-              <template v-slot:item.strict="{ item }">
+              <template v-slot:[`item.strict`]="{ item }">
                 {{ item.strict | displayBoolean1 }}
               </template>
-              <template v-slot:item.action="{ item }">
+              <template v-slot:[`item.action`]="{ item }">
                 <v-btn small color="success" @click="viewItem(item)">
                   <v-icon left dark>pageview</v-icon>
                   查看
@@ -55,7 +55,7 @@ export default {
   methods: {
     loadList() {
       let vm = this
-      sequence.getTemplateList().then(res => {
+      sequence.getTemplateList().then((res) => {
         vm.sequenceListData = res
       })
     },
@@ -63,7 +63,7 @@ export default {
       this.$emit('toDetails', item.id)
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.loadList()
   }
 }

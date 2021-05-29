@@ -1,9 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="800px">
     <v-card>
-      <v-card-title>
-        设置出库费用
-      </v-card-title>
+      <v-card-title> 设置出库费用 </v-card-title>
       <v-card-text>
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row dense v-for="item in billingItems" :key="item.code">
@@ -49,12 +47,12 @@ export default {
     billingItems: [],
     stockOutId: '',
     stockOutTaskList: [],
-    numberRules: [v => (v != null && /^[0-9]+(.[0-9]{1,3})?$/.test(v)) || '请输入数字，最多3位小数']
+    numberRules: [(v) => (v != null && /^[0-9]+(.[0-9]{1,3})?$/.test(v)) || '请输入数字，最多3位小数']
   }),
   computed: {
-    totalWeight: function() {
+    totalWeight: function () {
       let total = 0
-      this.stockOutTaskList.forEach(item => {
+      this.stockOutTaskList.forEach((item) => {
         total += item.outWeight
       })
 
@@ -84,10 +82,10 @@ export default {
       this.billingItems = await stockOut.getBilling(this.stockOutId)
 
       let exp = await expenseItem.getList()
-      this.expenseItems = exp.filter(r => r.type != 3)
+      this.expenseItems = exp.filter((r) => r.type != 3)
 
-      this.expenseItems.forEach(item => {
-        let bill = this.billingItems.find(r => r.expenseItemId == item.id)
+      this.expenseItems.forEach((item) => {
+        let bill = this.billingItems.find((r) => r.expenseItemId == item.id)
         if (bill == undefined) {
           bill = {
             expenseItemId: item.id,
@@ -123,11 +121,11 @@ export default {
 
         let vm = this
 
-        this.billingItems.forEach(item => {
+        this.billingItems.forEach((item) => {
           item.stockOutId = this.stockOutId
         })
 
-        stockOut.setBilling(this.billingItems).then(res => {
+        stockOut.setBilling(this.billingItems).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '设置费用成功')
             vm.$emit('close')

@@ -47,8 +47,8 @@ export default {
       type: 1,
       remark: ''
     },
-    numberRules: [v => (!!v && v.length <= 3) || '请输入代码，长度3位'],
-    nameRules: [v => !!v || '请输入费用项目']
+    numberRules: [(v) => (!!v && v.length <= 3) || '请输入代码，长度3位'],
+    nameRules: [(v) => !!v || '请输入费用项目']
   }),
   methods: {
     init() {
@@ -72,7 +72,7 @@ export default {
         })
 
         let vm = this
-        expenseItem.create(this.itemInfo).then(res => {
+        expenseItem.create(this.itemInfo).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '添加费用项目成功')
             vm.$emit('close')

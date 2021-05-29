@@ -10,10 +10,10 @@
           </v-card-title>
           <v-card-text class="px-0">
             <v-data-table :headers="headers" :items="expenseItemList" :search="search" :items-per-page="10">
-              <template v-slot:item.type="{ item }">
+              <template v-slot:[`item.type`]="{ item }">
                 {{ item.type | expenseItemType }}
               </template>
-              <template v-slot:item.action="{ item }">
+              <template v-slot:[`item.action`]="{ item }">
                 <v-btn small color="primary" @click="viewItem(item)">
                   <v-icon left dark>pageview</v-icon>
                   查看
@@ -45,10 +45,10 @@ export default {
     ]
   }),
   computed: mapState({
-    refreshEvent: state => state.expenseItem.refreshEvent
+    refreshEvent: (state) => state.expenseItem.refreshEvent
   }),
   watch: {
-    refreshEvent: function() {
+    refreshEvent: function () {
       this.loadList()
     }
   },
@@ -66,7 +66,7 @@ export default {
       this.showDetails(item.id)
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.loadList()
   }
 }
