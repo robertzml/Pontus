@@ -252,5 +252,15 @@ export default {
     } else {
       return ''
     }
+  },
+
+  // 冰块出入库类型
+  iceStockType: (type) => {
+    let st = dict.iceStockType.find((r) => r.value == type)
+    if (st != undefined) {
+      return st.text
+    } else {
+      return ''
+    }
   }
 }

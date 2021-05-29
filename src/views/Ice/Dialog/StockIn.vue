@@ -42,7 +42,7 @@
 import ice from '@/controllers/ice'
 
 export default {
-  name: 'IceStockCreate',
+  name: 'IceStockIn',
   data: () => ({
     dialog: false,
     submitLoading: false,
@@ -86,7 +86,7 @@ export default {
         this.iceStockInfo.userId = this.$store.state.user.id
         this.iceStockInfo.userName = this.$store.state.user.name
 
-        ice.createStock(this.iceStockInfo).then((res) => {
+        ice.stockIn(this.iceStockInfo).then((res) => {
           if (res.status == 0) {
             vm.$store.commit('alertSuccess', '冰块入库成功')
             vm.$emit('close')

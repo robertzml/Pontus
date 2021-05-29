@@ -261,7 +261,7 @@ export const menuRoutes = [
   {
     path: '/ice-stock',
     name: 'iceStock',
-    text: '冰块入库',
+    text: '冰块出入库',
     group: 'ice',
     model: false,
     component: () => import('@/views/Ice/Stock.vue'),

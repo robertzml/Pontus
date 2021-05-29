@@ -2,7 +2,7 @@
   <v-row dense>
     <v-col cols="12">
       <v-toolbar dense>
-        <v-toolbar-title>冰块入库</v-toolbar-title>
+        <v-toolbar-title>冰块出入库</v-toolbar-title>
         <v-spacer></v-spacer>
 
         <v-toolbar-items>
@@ -50,7 +50,7 @@
     <v-col cols="12">
       <v-card>
         <v-card-title class="orange">
-          冰块入库列表
+          冰块出入库列表
           <v-spacer></v-spacer>
           <span class="text-subtitle-2 ml-4">入库总记录: {{ iceStockFilterData.length }} 条</span>
           <span class="text-subtitle-2 ml-4">入库总数量: {{ totalInCount }} </span>
@@ -59,6 +59,9 @@
           <v-data-table :headers="headers" :items="iceStockFilterData" :search="filter.text" :items-per-page="10">
             <template v-slot:[`item.iceType`]="{ item }">
               {{ item.iceType | iceType }}
+            </template>
+            <template v-slot:[`item.iceStockType`]="{ item }">
+              {{ item.stockType | iceStockType }}
             </template>
             <template v-slot:[`item.stockTime`]="{ item }">
               {{ item.stockTime | displayDate }}
@@ -75,7 +78,7 @@
     </v-col>
 
     <v-col cols="12">
-      <ice-stock-create ref="iceStockCreateMod" @close="loadIceStock"></ice-stock-create>
+      <ice-stock-in ref="iceStockInMod" @close="loadIceStock"></ice-stock-in>
     </v-col>
 
     <v-dialog v-model="dialog" persistent max-width="300">
@@ -94,12 +97,12 @@
 
 <script>
 import ice from '@/controllers/ice'
-import IceStockCreate from './Dialog/Create.vue'
+import IceStockIn from './Dialog/StockIn.vue'
 
 export default {
   name: 'IceStock',
   components: {
-    IceStockCreate
+    IceStockIn
   },
 
   data: () => ({
@@ -120,6 +123,7 @@ export default {
       { text: '流水单号', value: 'flowNumber', align: 'left' },
       { text: '入库时间', value: 'stockTime' },
       { text: '冰块类型', value: 'iceType' },
+      { text: '出入库类型', value: 'iceStockType' },
       { text: '入库数量', value: 'flowCount' },
       { text: '登记人', value: 'userName' },
       { text: '登记时间', value: 'createTime' },
@@ -165,7 +169,7 @@ export default {
     },
 
     showCreate() {
-      this.$refs.iceStockCreateMod.init()
+      this.$refs.iceStockInMod.init()
     },
 
     deleteItem(item) {

@@ -71,6 +71,10 @@ const filters = (Vue) => {
   Vue.filter('iceType', function (val) {
     return util.iceType(val)
   })
+
+  Vue.filter('iceStockType', function (val) {
+    return util.iceStockType(val)
+  })
 }
 
 export default filters

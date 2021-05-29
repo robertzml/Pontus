@@ -131,6 +131,13 @@ export default {
     { text: '碎冰', value: 2 }
   ],
 
+  /** 冰块出入库类型 */
+  iceStockType: [
+    { text: '整冰入库', value: 1 },
+    { text: '碎冰入库', value: 2 },
+    { text: '整冰制冰出库', value: 3 }
+  ],
+
   /** 用户组 */
   userGroup: [
     { text: '超级管理员', value: 1 },

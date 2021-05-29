@@ -8,8 +8,8 @@ export default {
    * @param {*} entity
    * @returns
    */
-  async createStock(entity) {
-    const res = await axios._post({ url: '/iceStock/create', data: entity })
+  async stockIn(entity) {
+    const res = await axios._post({ url: '/iceStock/stockIn', data: entity })
     return res.data
   },
 
