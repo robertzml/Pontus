@@ -52,6 +52,26 @@ export default {
   },
 
   /**
+   * 冰块销售列表
+   * @param {*} year 年度
+   * @returns
+   */
+  async getSaleList(year) {
+    const res = await axios._get({ url: '/iceSale/list', params: { year: year } })
+    return res.data
+  },
+
+  /**
+   * 删除冰块销售
+   * @param {*} data
+   * @returns
+   */
+  async deleteSale(data) {
+    const res = await axios._postqs({ url: '/iceSale/delete', params: data })
+    return res.data
+  },
+
+  /**
    *
    * @returns 获取整冰入库数量
    */

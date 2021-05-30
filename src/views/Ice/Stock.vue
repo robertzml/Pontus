@@ -139,7 +139,6 @@ export default {
     valid: false,
     dialog: false,
     loading: false,
-    stockYearMenu: false,
     search: {
       stockYear: 2020
     },
