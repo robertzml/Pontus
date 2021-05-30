@@ -139,7 +139,7 @@ export default {
         return
       }
       let vm = this
-      contract.getList(customerId).then((res) => {
+      contract.listByType(customerId, 4).then((res) => {
         vm.contractListData = res
         if (res.length > 0) {
           vm.selectedContract = res[0]
@@ -156,10 +156,11 @@ export default {
         let vm = this
         this.iceSaleInfo.userId = this.$store.state.user.id
         this.iceSaleInfo.userName = this.$store.state.user.name
+        this.iceSaleInfo.contractId = this.selectedContract.id
 
-        ice.stockIn(this.iceSaleInfo).then((res) => {
+        ice.addSale(this.iceSaleInfo).then((res) => {
           if (res.status == 0) {
-            vm.$store.commit('alertSuccess', '冰块入库成功')
+            vm.$store.commit('alertSuccess', '添加冰块销售成功')
             vm.$emit('close')
             vm.submitLoading = false
             vm.dialog = false

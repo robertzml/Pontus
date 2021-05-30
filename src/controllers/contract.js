@@ -8,6 +8,17 @@ export default {
     return res.data
   },
 
+  /**
+   * 按类型获取合同
+   * @param {*} customerId 客户ID
+   * @param {*} type 合同类型 4:冰块合同
+   * @returns
+   */
+  async listByType(customerId, type) {
+    const res = await axios._get({ url: '/contract/listByType', params: { customerId: customerId, type: type } })
+    return res.data
+  },
+
   async find(id) {
     const res = await axios._get({ url: '/contract/get', params: { id: id } })
     return res.data

@@ -42,6 +42,16 @@ export default {
   },
 
   /**
+   * 添加冰块销售
+   * @param {*} entity 冰块销售对象
+   * @returns
+   */
+  async addSale(entity) {
+    const res = await axios._post({ url: '/iceSale/create', data: entity })
+    return res.data
+  },
+
+  /**
    *
    * @returns 获取整冰入库数量
    */
