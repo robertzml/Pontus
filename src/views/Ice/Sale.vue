@@ -13,6 +13,35 @@
 
     <v-col cols="12">
       <v-card flat>
+        <v-card-title class="pb-2 red darken-1">
+          总计销售库存数量
+          <v-spacer></v-spacer>
+          <v-btn text @click.stop="loadSaleCount">刷新</v-btn>
+        </v-card-title>
+        <v-card-text class="py-0">
+          <v-row dense>
+            <v-col cols="3">
+              <v-text-field label="整冰销售数量" v-model="completeSaleCount" readonly></v-text-field>
+            </v-col>
+
+            <v-col cols="3">
+              <v-text-field label="碎冰销售数量" v-model="fragmentSaleCount" readonly></v-text-field>
+            </v-col>
+
+            <v-col cols="3">
+              <v-text-field label="整冰在库数量" v-model="completeStoreCount" readonly></v-text-field>
+            </v-col>
+
+            <v-col cols="3">
+              <v-text-field label="碎冰在库数量" v-model="fragmentStoreCount" readonly></v-text-field>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-col>
+
+    <v-col cols="12">
+      <v-card flat>
         <v-card-subtitle class="pb-2 light-blue darken-4">搜索条件</v-card-subtitle>
         <v-card-text class="py-0">
           <v-form ref="form" v-model="valid" lazy-validation>
@@ -54,6 +83,7 @@
           <v-spacer></v-spacer>
           <span class="text-subtitle-2 ml-4">销售总记录: {{ iceSaleFilterData.length }} 条</span>
           <span class="text-subtitle-2 ml-4">销售总数量: {{ totalSaleCount }} </span>
+          <span class="text-subtitle-2 ml-4">销售总金额: {{ totalSaleFee }} 元</span>
         </v-card-title>
         <v-card-text class="px-0">
           <v-data-table :headers="headers" :items="iceSaleFilterData" :search="filter.text" :items-per-page="10">
@@ -75,7 +105,7 @@
     </v-col>
 
     <v-col cols="12">
-      <ice-sale-create ref="iceSaleMod"></ice-sale-create>
+      <ice-sale-create ref="iceSaleMod" @close="loadIceSale"></ice-sale-create>
     </v-col>
 
     <v-dialog v-model="dialog" persistent max-width="300">
@@ -119,6 +149,7 @@ export default {
       { text: '流水单号', value: 'flowNumber', align: 'left' },
       { text: '销售时间', value: 'saleTime' },
       { text: '冰块类型', value: 'iceType' },
+      { text: '客户名称', value: 'customerName' },
       { text: '销售数量', value: 'saleCount' },
       { text: '销售单价', value: 'saleUnitPrice' },
       { text: '销售金额(元)', value: 'saleFee' },
@@ -128,7 +159,11 @@ export default {
       { text: '操作', value: 'action', sortable: false }
     ],
     iceSaleList: [],
-    deleteId: ''
+    deleteId: '',
+    completeSaleCount: 0,
+    fragmentSaleCount: 0,
+    completeStoreCount: 0,
+    fragmentStoreCount: 0
   }),
 
   computed: {
@@ -152,12 +187,30 @@ export default {
       })
 
       return total
+    },
+
+    totalSaleFee: function () {
+      const list = this.iceSaleFilterData
+
+      let total = 0
+      list.forEach((r) => {
+        total = total + r.saleFee
+      })
+
+      return total
     }
   },
 
   methods: {
     async loadIceSale() {
       this.iceSaleList = await ice.getSaleList(this.search.saleYear)
+    },
+
+    async loadSaleCount() {
+      this.completeSaleCount = await ice.getCompleteSale()
+      this.fragmentSaleCount = await ice.getFragmentSale()
+      this.completeStoreCount = await ice.getCompleteStore()
+      this.fragmentStoreCount = await ice.getFragmentStore()
     },
 
     searchSale() {
@@ -197,6 +250,8 @@ export default {
   },
   mounted() {
     this.search.saleYear = this.$moment().year()
+
+    this.loadSaleCount()
   }
 }
 </script>

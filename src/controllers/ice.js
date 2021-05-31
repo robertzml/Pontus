@@ -88,5 +88,25 @@ export default {
   async getFragmentIn() {
     const res = await axios._get({ url: '/iceStock/getFragmentIn' })
     return res.data
+  },
+
+  async getCompleteSale() {
+    const res = await axios._get({ url: '/iceSale/getCompleteSale' })
+    return res.data
+  },
+
+  async getFragmentSale() {
+    const res = await axios._get({ url: '/iceSale/getFragmentSale' })
+    return res.data
+  },
+
+  async getCompleteStore() {
+    const res = await axios._get({ url: '/iceSale/getCompleteStore' })
+    return res.data
+  },
+
+  async getFragmentStore() {
+    const res = await axios._get({ url: '/iceSale/getFragmentStore' })
+    return res.data
   }
 }
